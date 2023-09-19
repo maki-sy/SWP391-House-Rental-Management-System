@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>EstateAgency Bootstrap Template - Index</title>
+    <title>Login | Rental House</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -256,9 +256,19 @@
                                 <span class="far fa-user"></span>
                                 <input type="password" name="re-password" id="re-password" placeholder="Re-Password">
                             </div>
+                            <!-- Them phan chon role -->
+                            <div class="role form-group">
+                                <select class="form-field d-flex align-items-center form-control" id="role" name="role">
+                                    <span class="far fa-user"></span>
+                                    <option value="" disabled selected>Select the role you are interested in...
+                                    </option>
+                                    <option value="Tennant">Tennant</option>
+                                    <option value="Landlord">Landlord</option>
+                                </select>
+                            </div>
 
                             <button class="btn mt-3">Register</button>
-                            
+
                             <input type="hidden" name="type" value="register">
                         </form>
 
