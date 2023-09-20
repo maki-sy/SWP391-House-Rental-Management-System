@@ -4,6 +4,7 @@
  */
 package service;
 
+import DAO.LandlordDAO;
 import DAO.TenantDAO;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -11,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Landlord;
 import model.Tenant;
 
 /**
@@ -18,25 +20,27 @@ import model.Tenant;
  * @author DTS
  */
 public class UserService {
-    
+
     private static final TenantDAO TENANT_DAO = new TenantDAO();
-    
-    public enum TenantStatus {
-        VER, // verified
-        UNV, // unverified email
-        BAN, // banned
-        DEL, // deleted
-    }
-    
-    
+    private static final LandlordDAO LANDLORD_DAO = new LandlordDAO();
+
     public void registerTenant(String firstName, String lastName, String email, String phone, String password) {
         byte[] salt = generateSalt();
         byte[] hashedPassword = hashingPassword(password, salt);
-        
-        
-        Tenant t = new Tenant(-1, email, hashedPassword, salt, firstName, lastName, null, phone, null, TenantStatus.UNV);
+
+        // tenantID is set IDENTITY, we don't need to explicit set it. -1 is just a dummy value
+        Tenant t = new Tenant(-1, email, hashedPassword, salt, firstName, lastName, null, phone, null, Tenant.TenantStatus.UNV);
         TENANT_DAO.addTenant(t);
-    
+
+    }
+
+    public void registerLandlord(String firstName, String lastName, String email, String phone, String password) {
+        byte[] salt = generateSalt();
+        byte[] hashedPassword = hashingPassword(password, salt);
+
+        // landlordID is set IDENTITY, we don't need to explicit set it. -1 is just a dummy value
+        Landlord landlord = new Landlord(-1, email, hashedPassword, salt, firstName, lastName, null, phone, null, Landlord.LandlordStatus.UNV, 0);
+        LANDLORD_DAO.addLandlord(landlord);
     }
 
     /**

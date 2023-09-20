@@ -43,7 +43,7 @@ public class TenantDAO extends DBContext {
                 String statusStr = rs.getString(10);
                 
                 // https://stackoverflow.com/questions/604424/how-to-get-an-enum-value-from-a-string-value-in-java
-                UserService.TenantStatus tStatus = UserService.TenantStatus.valueOf(statusStr);
+                Tenant.TenantStatus tStatus = Tenant.TenantStatus.valueOf(statusStr);
                 
                 Tenant t = new Tenant(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, tStatus);
                 tenantList.add(t);
@@ -80,6 +80,7 @@ public class TenantDAO extends DBContext {
 
             updateRecord = preStatement.executeUpdate();
         } catch (SQLException ex) {
+            System.err.println("addTenant() function report: " + ex.getMessage());
             Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 

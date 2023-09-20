@@ -4,21 +4,19 @@
  */
 package model;
 
-import service.UserService;
-
 /**
  *
  * @author DTS
  */
-public class Tenant {
-    
-    public enum TenantStatus {        
+public class Landlord {
+
+    public enum LandlordStatus {
         UNV, // unverified email
+        UNC, // unverified landlord reputation
         VER, // verified
         BAN, // banned
         DEL, // deleted
     }
-    
     private int id;
     private String email;
     private byte[] hashedPassword;
@@ -28,9 +26,10 @@ public class Tenant {
     private String address;
     private String phone;
     private String civilID;
-    private TenantStatus status;
+    private LandlordStatus status;
+    private int point;
 
-    public Tenant(int id, String email, byte[] hashedPassword, byte[] salt, String firstName, String lastName, String address, String phone, String civilID, TenantStatus status) {
+    public Landlord(int id, String email, byte[] hashedPassword, byte[] salt, String firstName, String lastName, String address, String phone, String civilID, LandlordStatus status, int point) {
         this.id = id;
         this.email = email;
         this.hashedPassword = hashedPassword;
@@ -41,6 +40,7 @@ public class Tenant {
         this.phone = phone;
         this.civilID = civilID;
         this.status = status;
+        this.point = point;
     }
 
     public int getId() {
@@ -49,10 +49,6 @@ public class Tenant {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public byte[] getHashedPassword() {
@@ -111,13 +107,19 @@ public class Tenant {
         this.civilID = civilID;
     }
 
-    public TenantStatus getStatus() {
+    public LandlordStatus getStatus() {
         return status;
     }
 
-    public void setStatus(TenantStatus status) {
+    public void setStatus(LandlordStatus status) {
         this.status = status;
     }
-    
-    
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
 }
