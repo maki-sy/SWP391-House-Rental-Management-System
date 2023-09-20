@@ -239,6 +239,19 @@ SELECT * FROM Landlord;
 --(2,2,2,'Rejected'),
 --(2,2,3,'Rejected');
 
+SELECT Email, 'Tenant' AS SourceTable
+FROM Tenant
+WHERE Email = 'haquangthangvnn@gmail.com'
+UNION ALL
+SELECT Email, 'Landlord' AS SourceTable
+FROM Landlord
+WHERE Email = 'youhaquangthangvnn@gmail.com'
+UNION ALL
+SELECT Email, 'Admin' AS SourceTable
+FROM Admin
+WHERE Email = 'haquangthangvnn@gmail.com';
+
+
 
 --select*from Orders;
 --insert Transactions values 

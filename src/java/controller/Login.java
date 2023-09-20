@@ -2,16 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.tenant;
+package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Tenant;
+import jakarta.servlet.http.HttpSession;
 import service.UserService;
 
 /**
@@ -50,12 +49,12 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         UserService userService = new UserService();
-        
+
         String type = request.getParameter("type");
         if (type == null) {
             return;
         }
-        
+
         if (type.equals("register")) {
             String firstName = request.getParameter("first-name");
             String lastName = request.getParameter("last-name");
@@ -79,16 +78,30 @@ public class Login extends HttpServlet {
             if (!password.equals(rePassword)) {
                 return;
             }
-            
+
             if (role.equals("Tenant")) {
                 userService.registerTenant(firstName, lastName, email, phoneNumber, password);
             }
             if (role.equals("Landlord")) {
                 userService.registerLandlord(firstName, lastName, email, phoneNumber, password);
             }
-            
+
             response.sendRedirect("trang-chu");
             return;
+        }
+
+        if (type.equals("login")) {
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+
+            boolean loginSuccess = userService.login(email, password);
+            if (loginSuccess) {
+                HttpSession session = request.getSession();
+                session.setAttribute("email", email);
+                System.out.println("Login thanh cong");
+            } else {
+                response.sendRedirect("trang-chu");
+            }
         }
     }
 
