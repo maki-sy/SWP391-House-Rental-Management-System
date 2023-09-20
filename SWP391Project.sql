@@ -1,37 +1,38 @@
 ﻿--create database SWP391;
 --use SWP391;
---drop SWP391;
+--use master;
+--drop database SWP391;
 CREATE TABLE Admin (
-id int IDENTITY NOT NULL, 
-email varchar(100) NOT NULL, 
-hashed_password varbinary(80) NOT NULL, 
-salt varbinary(50) NOT NULL,
-points_source int NOT NULL,
-received_points int NOT NULL, 
+	id int IDENTITY NOT NULL, 
+	email varchar(100) NOT NULL, 
+	hashed_password varbinary(80) NOT NULL, 
+	salt varbinary(50) NOT NULL,
+	points_source int NOT NULL,
+	received_points int NOT NULL, 
 );
 
 
 CREATE TABLE Landlord (
-id int IDENTITY NOT NULL, 
-email varchar(100) NOT NULL, 
-hashed_password varbinary(80) NOT NULL, 
-salt varbinary(50) NOT NULL,
-first_name varchar(20) NOT NULL,
-last_name varchar(20) NOT NULL,
-address varchar(255) NOT NULL, 
-phone varchar(15) NOT NULL, 
-civil_id nvarchar(200) NULL, 
-status varchar(20) NOT NULL, 
-account_points int NOT NULL, 
+	id int IDENTITY NOT NULL, 
+	email varchar(100) NOT NULL, 
+	hashed_password varbinary(80) NOT NULL, 
+	salt varbinary(50) NOT NULL,
+	first_name varchar(20) NOT NULL,
+	last_name varchar(20) NOT NULL,
+	address varchar(255), 
+	phone varchar(15) NOT NULL, 
+	civil_id nvarchar(200) NULL, 
+	status varchar(20) NOT NULL, 
+	account_points int NOT NULL, 
 );
 
 
 CREATE TABLE [Orders] (
-order_id int IDENTITY NOT NULL, 
-tenant_id int NOT NULL, 
-landlord_id int NOT NULL,
-post_id int NOT NULL, 
-status varchar(50) NOT NULL, 
+	order_id int IDENTITY NOT NULL, 
+	tenant_id int NOT NULL, 
+	landlord_id int NOT NULL,
+	post_id int NOT NULL, 
+	status varchar(50) NOT NULL, 
 );
 
 CREATE TABLE Post_Image(
@@ -225,6 +226,12 @@ insert Tenant values
 ('qwerty@gmail.com', CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),'Thang','Ha', 'So 25 Duong Lang','0923232323',null, 'Occupying'),
 ('qwe@gmail.com', CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),'Thang','Ha', 'So 25 Duong Lang','0924242424',null, 'Free');
 select*from Tenant;
+
+--INSERT INTO Tenant (id, email, hashed_password, salt, first_name, last_name, address, phone, civil_id, status) VALUES
+--(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+SELECT * FROM Tenant;
+SELECT * FROM Landlord;
 
 --Bang Orders va Transactions se add du lieu qua Java Servlet, chua co constraint giua Landlord va Post trong 2 bang nay.
 --insert Orders values
