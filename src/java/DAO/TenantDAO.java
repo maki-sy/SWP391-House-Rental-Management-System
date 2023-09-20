@@ -41,10 +41,10 @@ public class TenantDAO extends DBContext {
                 String phone = rs.getString(8);
                 String civilID = rs.getString(9);
                 String statusStr = rs.getString(10);
-                
+
                 // https://stackoverflow.com/questions/604424/how-to-get-an-enum-value-from-a-string-value-in-java
                 Tenant.TenantStatus tStatus = Tenant.TenantStatus.valueOf(statusStr);
-                
+
                 Tenant t = new Tenant(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, tStatus);
                 tenantList.add(t);
             }
@@ -85,5 +85,39 @@ public class TenantDAO extends DBContext {
         }
 
         return updateRecord;
+    }
+
+    /**
+     *
+     * @param email
+     * @return
+     */
+    public Tenant getTenantByEmail(String email) {
+        String sqlCommand = "SELECT * FROM Tenant WHERE email = ?;";
+        Tenant t = null;
+        try {
+            PreparedStatement pre = connect.prepareStatement(sqlCommand);
+            pre.setString(1, email);
+
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                byte[] hashedPassword = rs.getBytes(3);
+                byte[] salt = rs.getBytes(4);
+                String firstName = rs.getString(5);
+                String lastName = rs.getString(6);
+                String address = rs.getString(7);
+                String phone = rs.getString(8);
+                String civilID = rs.getString(9);
+                Tenant.TenantStatus status = Tenant.TenantStatus.valueOf(rs.getString(10));
+
+                t = new Tenant(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, status);
+            }
+        } catch (SQLException ex) {
+            System.err.println("getTenantByEmail(String email) reports: " + ex.getMessage());
+            Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return t;
     }
 }

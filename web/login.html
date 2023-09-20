@@ -207,15 +207,16 @@
                             <div class="text-center mt-4 name">
                                 Log in
                             </div>
-                            <form class="p-3 mt-3">
+                            <form class="p-3 mt-3 login-form" action="login" method="POST">
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
-                                    <input type="text" name="userName" id="userName" placeholder="Username">
+                                    <input type="email" name="email" id="email" placeholder="Email">
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="fas fa-key"></span>
                                     <input type="password" name="password" id="pwd" placeholder="Password">
                                 </div>
+                                <input type="hidden" name="type" value="login">
                                 <button class="btn mt-3">Login</button>
                             </form>
                             <div class="text-center fs-6">
