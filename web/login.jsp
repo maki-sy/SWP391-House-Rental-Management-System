@@ -208,7 +208,7 @@
                                 Log in
                             </div>
                             <%if(request.getAttribute("errorMsg") != null) { %>
-                            <p><%= request.getAttribute("errorMessage") %></p>
+                            <p><%= (String)request.getAttribute("errorMsg") %></p>
                             <% } %>
                             <form class="p-3 mt-3 login-form" action="login" method="POST">
                                 <div class="form-field d-flex align-items-center">

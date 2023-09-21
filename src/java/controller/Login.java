@@ -35,13 +35,19 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         HttpSession session = request.getSession();
-        Object loggedAccount = session.getAttribute("user");
-        if (loggedAccount != null) {
-            response.sendRedirect("trang-chu");
-            return;
-        }
         String type = request.getParameter("type");
-        if (type != null && type.equals("logout")) { // user click on logout under profile picture
+        if (type == null) {
+            type = "login";
+        }
+        if (type.equals("login")) {
+            Object loggedAccount = session.getAttribute("user");
+            if (loggedAccount != null) {
+                response.sendRedirect("trang-chu");
+                return;
+            }
+        }
+
+        if (type.equals("logout")) { // user click on logout under profile picture
 
             session.invalidate();
             response.sendRedirect("trang-chu");
@@ -112,8 +118,9 @@ public class Login extends HttpServlet {
 
             Object loggedAccount = userService.login(email, password);
             if (loggedAccount == null) { // login fail
+                System.out.println("LOGIN FAILED");
                 request.setAttribute("errorMsg", "Wrong email/password. Or email does not exist");
-                request.getRequestDispatcher("login").forward(request, response);
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
                 return;
             } else { // login sucess
                 HttpSession session = request.getSession();

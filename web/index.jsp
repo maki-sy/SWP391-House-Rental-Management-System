@@ -180,7 +180,7 @@
           </ul>
         </div>
         <div class="nav-item btn" style="padding: 0.35rem 1rem;">
-          <a href="login">Login/Register</a>
+          <a href="login?type=login">Login/Register</a>
         </div>
 
         <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse"
