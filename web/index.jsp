@@ -1,3 +1,9 @@
+<%
+    String role = session.getAttribute("role") == null ? null : (String) session.getAttribute("role");
+    Object loggedUser = session.getAttribute("user") == null ? null : session.getAttribute("user");
+
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -132,8 +138,8 @@
   </div><!-- End Property Search Section -->>
 
   <!-- ======= Header/Navbar ======= -->
-  <!-- Header cho khách (guest) -->
-  <% isLogin=true; if{isLogin} { %>
+  <!-- Header cho khach -->
+  <% if(role == null) { %>
 
     <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
       <div class="container">
@@ -143,13 +149,13 @@
           <span></span>
           <span></span>
         </button>
-        <a class="navbar-brand text-brand" href="index.html">Rental<span class="color-b">House</span></a>
+        <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
 
         <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
           <ul class="navbar-nav">
 
             <li class="nav-item">
-              <a class="nav-link active" href="index.html">Home</a>
+              <a class="nav-link active" href="trang-chu">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link " href="property-grid.html">Houses</a>
@@ -174,7 +180,7 @@
           </ul>
         </div>
         <div class="nav-item btn" style="padding: 0.35rem 1rem;">
-          <a href="login">Login/Register</a>
+          <a href="login?type=login">Login/Register</a>
         </div>
 
         <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse"
@@ -185,7 +191,7 @@
       </div>
     </nav>
 
-    <!-- Header cho người dùng đã đăng nhập -->
+    <!-- Header cho nguoi dung da dang nhap -->
     <%} else {%>
       <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
         <div class="container">
@@ -196,13 +202,13 @@
             <span></span>
             <span></span>
           </button>
-          <a class="navbar-brand text-brand" href="index.html">Rental<span class="color-b">House</span></a>
+          <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
 
           <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
             <ul class="navbar-nav">
 
               <li class="nav-item">
-                <a class="nav-link active" href="index.html">Home</a>
+                <a class="nav-link active" href="trang-chu">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link " href="property-grid.html">Houses</a>
@@ -237,7 +243,7 @@
                 <div class="dropdown-menu">
                   <a class="dropdown-item " href="./profile-personal.html">Manage rental house</a>
                   <a class="dropdown-item " href="./profile-personal.html">Manage account</a>
-                  <a class="dropdown-item " href="#!">Logout</a>
+                  <a class="dropdown-item " href="login?type=logout">Logout</a>
                 </div>
               </li>
 

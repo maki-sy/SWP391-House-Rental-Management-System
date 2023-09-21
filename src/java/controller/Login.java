@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Landlord;
+import model.Tenant;
 import service.UserService;
 
 /**
@@ -20,7 +22,6 @@ import service.UserService;
 @WebServlet(name = "Login", urlPatterns = {"/login"})
 public class Login extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -33,7 +34,26 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        request.getRequestDispatcher("/login.html").forward(request, response);
+        HttpSession session = request.getSession();
+        String type = request.getParameter("type");
+        if (type == null) {
+            type = "login";
+        }
+        if (type.equals("login")) {
+            Object loggedAccount = session.getAttribute("user");
+            if (loggedAccount != null) {
+                response.sendRedirect("trang-chu");
+                return;
+            }
+        }
+
+        if (type.equals("logout")) { // user click on logout under profile picture
+
+            session.invalidate();
+            response.sendRedirect("trang-chu");
+            return;
+        }
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
     /**
@@ -55,6 +75,7 @@ public class Login extends HttpServlet {
             return;
         }
 
+        // Handle register logic
         if (type.equals("register")) {
             String firstName = request.getParameter("first-name");
             String lastName = request.getParameter("last-name");
@@ -90,16 +111,29 @@ public class Login extends HttpServlet {
             return;
         }
 
+        // Handle login logic
         if (type.equals("login")) {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            boolean loginSuccess = userService.login(email, password);
-            if (loginSuccess) {
+            Object loggedAccount = userService.login(email, password);
+            if (loggedAccount == null) { // login fail
+                System.out.println("LOGIN FAILED");
+                request.setAttribute("errorMsg", "Wrong email/password. Or email does not exist");
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            } else { // login sucess
                 HttpSession session = request.getSession();
-                session.setAttribute("email", email);
-                System.out.println("Login thanh cong");
-            } else {
+                session.setAttribute("user", loggedAccount);
+
+                if (loggedAccount instanceof Tenant) {
+                    session.setAttribute("role", "tenant");
+                }
+
+                if (loggedAccount instanceof Landlord) {
+                    session.setAttribute("role", "landlord");
+                }
+
                 response.sendRedirect("trang-chu");
             }
         }

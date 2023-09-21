@@ -151,13 +151,13 @@
                 <span></span>
                 <span></span>
             </button>
-            <a class="navbar-brand text-brand" href="index.html">Rental<span class="color-b">House</span></a>
+            <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
 
             <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
                 <ul class="navbar-nav">
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
+                        <a class="nav-link active" href="trang-chu">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="property-grid.html">Houses</a>
@@ -207,6 +207,9 @@
                             <div class="text-center mt-4 name">
                                 Log in
                             </div>
+                            <%if(request.getAttribute("errorMsg") != null) { %>
+                            <p><%= (String)request.getAttribute("errorMsg") %></p>
+                            <% } %>
                             <form class="p-3 mt-3 login-form" action="login" method="POST">
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
