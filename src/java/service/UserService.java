@@ -51,29 +51,37 @@ public class UserService {
      *
      * @param email
      * @param password raw password user inputted
-     * @return
+     * @return Object represent Tenant or Landlord if login success, null if unsuccess
      */
-    public boolean login(String email, String password) {
-        String[] info = USER_DAO.checkAccount(email); // info of the account in DB corresponding to email
-        if (info == null) { // email does not exist in the DB
-            return false;
-        }
-        String table = info[1];
-        if (table.equals("Tenant")) {
-            Tenant t = TENANT_DAO.getTenantByEmail(email);
+    public Object login(String email, String password) {
+
+        Tenant t = TENANT_DAO.getTenantByEmail(email);
+        if (t != null) {
             byte[] salt = t.getSalt();
             byte[] correctPass = t.getHashedPassword();
             byte[] inputPass = hashingPassword(password, salt);
-            return Arrays.equals(correctPass, inputPass);
+            boolean sucess = Arrays.equals(correctPass, inputPass);
+            if (sucess) {
+                return t;
+            } else {
+                return null;
+            }
         }
-        if (table.equals("Landlord")) {
-            Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
+
+        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
+        if (l != null) {
             byte[] salt = l.getSalt();
             byte[] correctPass = l.getHashedPassword();
             byte[] inputPass = hashingPassword(password, salt);
-            return Arrays.equals(correctPass, inputPass);
+            boolean sucess = Arrays.equals(correctPass, inputPass);
+            if (sucess) {
+                return l;
+            } else {
+                return null;
+            }
         }
-        return false; // NEED TO UPDATE ASAP
+
+        return null; // NEED TO UPDATE ASAP
     }
 
     /**
