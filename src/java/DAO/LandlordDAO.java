@@ -85,6 +85,11 @@ public class LandlordDAO extends DBContext {
         return added;
     }
 
+    /**
+     * 
+     * @param email
+     * @return 
+     */
     public Landlord getLandlordByEmail(String email) {
         String sqlCommand = "SELECT * FROM Landlord WHERE email = ?;";
         Landlord l = null;
@@ -114,5 +119,7 @@ public class LandlordDAO extends DBContext {
 
         return l;
     }
+    
+    
 
 }
