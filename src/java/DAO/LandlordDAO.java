@@ -119,6 +119,8 @@ public class LandlordDAO extends DBContext {
 
         return l;
     }
+    
+    
 
     public int updateLandlordByEmail(Landlord landlord) {
         String sqlCommand = "UPDATE [Landlord]\n"
