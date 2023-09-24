@@ -1,5 +1,9 @@
 ﻿use master
 go
+alter database SWP391 set SINGLE_USER WITH ROLLBACK IMMEDIATE;
+go
+use master
+go
 drop database if exists SWP391;
 go
 create database SWP391;
