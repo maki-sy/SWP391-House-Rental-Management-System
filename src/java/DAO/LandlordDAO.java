@@ -86,9 +86,9 @@ public class LandlordDAO extends DBContext {
     }
 
     /**
-     * 
+     *
      * @param email
-     * @return 
+     * @return
      */
     public Landlord getLandlordByEmail(String email) {
         String sqlCommand = "SELECT * FROM Landlord WHERE email = ?;";
@@ -121,5 +121,39 @@ public class LandlordDAO extends DBContext {
     }
     
     
+
+    public int updateLandlordByEmail(Landlord landlord) {
+        String sqlCommand = "UPDATE [Landlord]\n"
+                + "   SET [hashed_password] = ?\n"
+                + "      ,[salt] = ?\n"
+                + "      ,[first_name] = ?\n"
+                + "      ,[last_name] = ?\n"
+                + "      ,[address] = ?\n"
+                + "      ,[phone] = ?\n"
+                + "      ,[civil_id] = ?\n"
+                + "      ,[status] = ?\n"
+                + "      ,[account_points] = ?\n"
+                + " WHERE email = ?;";
+        int modified = 0;
+        try {
+            PreparedStatement pstmt = connect.prepareStatement(sqlCommand);
+            pstmt.setBytes(1, landlord.getHashedPassword());
+            pstmt.setBytes(2, landlord.getSalt());
+            pstmt.setString(3, landlord.getFirstName());
+            pstmt.setString(4, landlord.getLastName());
+            pstmt.setString(5, landlord.getAddress());
+            pstmt.setString(6, landlord.getPhone());
+            pstmt.setString(7, landlord.getCivilID());
+            pstmt.setString(8, landlord.getStatus().name());
+            pstmt.setInt(9, landlord.getPoint());
+            pstmt.setString(10, landlord.getEmail());
+
+            modified = pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateLandlordByEmail() reports " + ex.getMessage());
+            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return modified;
+    }
 
 }
