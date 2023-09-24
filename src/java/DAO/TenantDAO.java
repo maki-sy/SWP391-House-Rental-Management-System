@@ -88,9 +88,11 @@ public class TenantDAO extends DBContext {
     }
 
     /**
+     * Get Tenant object by email
      *
      * @param email
-     * @return
+     * @return Tenant corresponding to email address, or null if there is no
+     * tenant meet criterion
      */
     public Tenant getTenantByEmail(String email) {
         String sqlCommand = "SELECT * FROM Tenant WHERE email = ?;";
@@ -119,5 +121,42 @@ public class TenantDAO extends DBContext {
         }
 
         return t;
+    }
+
+    /**
+     *
+     * @param tenant
+     * @return
+     */
+    public int updateTenantByEmail(Tenant tenant) {
+        String sqlCommand = "UPDATE [Tenant]\n"
+                + "   SET [hashed_password] = ?\n"
+                + "      ,[salt] = ?\n"
+                + "      ,[first_name] = ?\n"
+                + "      ,[last_name] = ?\n"
+                + "      ,[address] = ?\n"
+                + "      ,[phone] = ?\n"
+                + "      ,[civil_id] = ?\n"
+                + "      ,[status] = ?\n"
+                + " WHERE email = ?;";
+        int modified = 0;
+        try {
+            PreparedStatement preStatement = connect.prepareStatement(sqlCommand);
+            preStatement.setBytes(1, tenant.getHashedPassword());
+            preStatement.setBytes(2, tenant.getSalt());
+            preStatement.setString(3, tenant.getFirstName());
+            preStatement.setString(4, tenant.getLastName());
+            preStatement.setString(5, tenant.getAddress());
+            preStatement.setString(6, tenant.getPhone());
+            preStatement.setString(7, tenant.getCivilID());
+            preStatement.setString(8, tenant.getStatus().name());
+            preStatement.setString(9, tenant.getEmail());
+
+            modified = preStatement.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateTenant() reports " + ex.getMessage());
+            Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return modified;
     }
 }

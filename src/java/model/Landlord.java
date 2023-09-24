@@ -14,6 +14,7 @@ public class Landlord {
         UNV, // unverified email
         UNC, // unverified landlord reputation
         VER, // verified
+        CFM, // verified email + reputation
         BAN, // banned
         DEL, // deleted
     }
