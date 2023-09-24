@@ -1,11 +1,7 @@
-﻿use master
-go
-drop database if exists SWP391;
-go
-create database SWP391;
-go
-use SWP391;
-go
+﻿--create database SWP391;
+--use SWP391;
+--use master;
+--drop database SWP391;
 CREATE TABLE Admin (
 	id int IDENTITY NOT NULL, 
 	email varchar(100) NOT NULL, 
