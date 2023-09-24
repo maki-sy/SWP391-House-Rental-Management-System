@@ -51,12 +51,12 @@
     </div>
     <span class="close-box-collapse right-boxed bi bi-x"></span>
     <div class="box-collapse-wrap form">
-      <form class="form-a">
+        <form action="search" method="POST" class="form-a">
         <div class="row">
           <div class="col-md-12 mb-2">
             <div class="form-group">
               <label class="pb-2" for="Type">Keyword</label>
-              <input type="text" class="form-control form-control-lg form-control-a" placeholder="Keyword">
+              <input name="txt" type="text" class="form-control form-control-lg form-control-a" placeholder="Keyword">
             </div>
           </div>
           <div class="col-md-6 mb-2">
@@ -158,7 +158,7 @@
               <a class="nav-link active" href="trang-chu">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link " href="property-grid.html">Houses</a>
+              <a class="nav-link " href="Post">Houses</a>
             </li>
 
             <li class="nav-item">
@@ -211,7 +211,7 @@
                 <a class="nav-link active" href="trang-chu">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="property-grid.html">Houses</a>
+                <a class="nav-link " href="Post">Houses</a>
               </li>
 
               <li class="nav-item">
@@ -448,7 +448,7 @@
                       <h2 class="title-a">Latest Properties</h2>
                     </div>
                     <div class="title-link">
-                      <a href="property-grid.html">All Property
+                      <a href="Post">All Property
                         <span class="bi bi-chevron-right"></span>
                       </a>
                     </div>
