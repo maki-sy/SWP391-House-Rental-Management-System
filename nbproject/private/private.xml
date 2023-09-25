@@ -3,16 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/model/Tenant.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/DAO/TenantDAO.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/model/Token.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/controller/Login.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/DAO/TokenDAO.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/service/UserService.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/model/Landlord.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/DAO/LandlordDAO.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/src/java/controller/AccountVerification.java</file>
-            <file>file:/D:/FPT-Semester-5/SWP391/swp391-house-rental-management/web/login.jsp</file>
+            <file>file:/D:/FPT%20Sem5/AnhNT/swp391-house-rental-management/web/index.jsp</file>
+            <file>file:/D:/FPT%20Sem5/AnhNT/swp391-house-rental-management/web/property-grid.jsp</file>
         </group>
     </open-files>
 </project-private>

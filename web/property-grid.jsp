@@ -39,7 +39,6 @@
   <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role"); Object
     loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); %>
     <!-- End JSP Code -->
-
     <!-- ======= Property Search Section ======= -->
     <div class="click-closed"></div>
     <!--/ Form Search Star /-->
