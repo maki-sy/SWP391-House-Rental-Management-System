@@ -160,24 +160,24 @@
                         <a class="nav-link active" href="trang-chu">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="property-grid.html">Houses</a>
+                        <a class="nav-link " href="property-grid.jsp">Houses</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " href="agents-grid.html">Landlords</a>
+                        <a class="nav-link " href="agents-grid.jsp">Landlords</a>
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item " href="property-single.html">House Detail</a>
-                            <a class="dropdown-item " href="agent-single.html">Landlord Detail</a>
+                            <a class="dropdown-item " href="property-single.jsp">House Detail</a>
+                            <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
                         </div>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " href="contact.html">Contact</a>
+                        <a class="nav-link " href="contact.jsp">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -207,24 +207,26 @@
                             <div class="text-center mt-4 name">
                                 Log in
                             </div>
-                            <%if(request.getAttribute("errorMsg") != null) { %>
-                            <p><%= (String)request.getAttribute("errorMsg") %></p>
-                            <% } %>
-                            <form class="p-3 mt-3 login-form" action="login" method="POST">
-                                <div class="form-field d-flex align-items-center">
-                                    <span class="far fa-user"></span>
-                                    <input type="email" name="email" id="email" placeholder="Email">
-                                </div>
-                                <div class="form-field d-flex align-items-center">
-                                    <span class="fas fa-key"></span>
-                                    <input type="password" name="password" id="pwd" placeholder="Password">
-                                </div>
-                                <input type="hidden" name="type" value="login">
-                                <button class="btn mt-3">Login</button>
-                            </form>
-                            <div class="text-center fs-6">
-                                <a href="#">Forget password?</a>
-                            </div>
+                            <%if(request.getAttribute("errorMsg") !=null) { %>
+                                <p>
+                                    <%= (String)request.getAttribute("errorMsg") %>
+                                </p>
+                                <% } %>
+                                    <form class="p-3 mt-3 login-form" action="login" method="POST">
+                                        <div class="form-field d-flex align-items-center">
+                                            <span class="far fa-user"></span>
+                                            <input type="email" name="email" id="email" placeholder="Email">
+                                        </div>
+                                        <div class="form-field d-flex align-items-center">
+                                            <span class="fas fa-key"></span>
+                                            <input type="password" name="password" id="pwd" placeholder="Password">
+                                        </div>
+                                        <input type="hidden" name="type" value="login">
+                                        <button class="btn mt-3">Login</button>
+                                    </form>
+                                    <div class="text-center fs-6">
+                                        <a href="#">Forget password?</a>
+                                    </div>
                         </div>
                     </div>
                     <div class="col-md-8 wrapper">
