@@ -67,76 +67,65 @@
                                 <input name="txt" type="text" class="form-control form-control-lg form-control-a" placeholder="Keyword">
                             </div>
                         </div>
-                        <!--          <div class="col-md-6 mb-2">
-                                    <div class="form-group mt-3">
-                                      <label class="pb-2" for="Type">Type</label>
-                                      <select class="form-control form-select form-control-a" id="Type">
-                                        <option>All Type</option>
-                                        <option>For Rent</option>
-                                        <option>For Sale</option>
-                                        <option>Open House</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-6 mb-2">
-                                    <div class="form-group mt-3">
-                                      <label class="pb-2" for="city">City</label>
-                                      <select class="form-control form-select form-control-a" id="city">
-                                        <option>All City</option>
-                                        <option>Alabama</option>
-                                        <option>Arizona</option>
-                                        <option>California</option>
-                                        <option>Colorado</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-6 mb-2">
-                                    <div class="form-group mt-3">
-                                      <label class="pb-2" for="bedrooms">Bedrooms</label>
-                                      <select class="form-control form-select form-control-a" id="bedrooms">
-                                        <option>Any</option>
-                                        <option>01</option>
-                                        <option>02</option>
-                                        <option>03</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                        
-                                  <div class="col-md-6 mb-2">
-                                    <div class="form-group mt-3">
-                                      <label class="pb-2" for="bathrooms">Bathrooms</label>
-                                      <select class="form-control form-select form-control-a" id="bathrooms">
-                                        <option>Any</option>
-                                        <option>01</option>
-                                        <option>02</option>
-                                        <option>03</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-6 mb-2">
-                                    <div class="form-group mt-3">
-                                      <label class="pb-2" for="price">Min Price</label>
-                                      <select class="form-control form-select form-control-a" id="price">
-                                        <option>Unlimite</option>
-                                        <option>$50,000</option>
-                                        <option>$100,000</option>
-                                        <option>$150,000</option>
-                                        <option>$200,000</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-6 mb-2">
-                                    <div class="form-group mt-3">
-                                      <label class="pb-2" for="price">Max price</label>
-                                      <select class="form-control form-select form-control-a" id="price">
-                                        <option>Unlimite</option>
-                                        <option>$50,000</option>
-                                        <option>$100,000</option>
-                                        <option>$150,000</option>
-                                        <option>$200,000</option>
-                                      </select>
-                                    </div>
-                                  </div>-->
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="Type">Type</label>
+                                <select class="form-control form-select form-control-a" id="Type">
+                                    <option>All Type</option>
+                                    <option>For Rent</option>
+                                    <option>For Sale</option>
+                                    <option>Open House</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="bedrooms">Bedrooms</label>
+                                <select class="form-control form-select form-control-a" id="bedrooms">
+                                    <option>Any</option>
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="price">Price From</label>
+                                <select class="form-control form-select form-control-a" id="price">
+                                    <option>Unlimite</option>
+                                    <option>$50,000</option>
+                                    <option>$100,000</option>
+                                    <option>$150,000</option>
+                                    <option>$200,000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="price">To Price</label>
+                                <select class="form-control form-select form-control-a" id="price">
+                                    <option>Unlimite</option>
+                                    <option>$50,000</option>
+                                    <option>$100,000</option>
+                                    <option>$150,000</option>
+                                    <option>$200,000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="bathrooms">Areas</label>
+                                <select class="form-control form-select form-control-a" id="bathrooms">
+                                    <option>Any</option>
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-b">Search Property</button>
                         </div>
@@ -213,7 +202,7 @@
                     <ul class="navbar-nav">
 
                         <li class="nav-item">
-                            <a class="nav-link " href="index.html">Home</a>
+                            <a class="nav-link " href="trang-chu">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="Post">Houses</a>
@@ -282,7 +271,7 @@
                         <div class="col-md-12 col-lg-4">
                             <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">
+                                    <li class="breadcrumb-item ">
                                         <a href="trang-chu">Home</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">
@@ -310,6 +299,7 @@
                                                   </select>
                                                 </form>
                                               </div>-->
+
                         </div>
                         <%for(PostRental p:list){
                         int postID = p.getId();
@@ -320,17 +310,18 @@
                             <div class="card-box-a card-shadow">
                                 <%if(image_url.size() == 0){%>
                                 <div class="img-box-a">
-                                    <img src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg" alt="" class="img-a img-fluid">
+                                    <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
                                 </div>
                                 <%}%>
                                 <%for(PostImage po:image_url){%>
                                 <%if(po.getImg_type().equals("thumbails")){%>
                                 <div class="img-box-a">
-                                    <img src="<%=po.getImg_url()%>" alt="" class="img-a img-fluid">
+                                    <img src="<%=po.getImg_url()%>" alt="" class="img-a img-fluid img-thumbnail"
+                                    style ="overflow-clip-margin: content-box; overflow: clip;">
                                 </div>
                                 <%break;}else{%>
                                 <div class="img-box-a">
-                                    <img src="https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg" alt="" class="img-a img-fluid">
+                                    <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
                                 </div>
                                 <%continue;}}%>
                                 <div class="card-overlay">
