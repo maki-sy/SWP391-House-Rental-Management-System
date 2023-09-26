@@ -186,6 +186,14 @@
                     <i class="bi bi-search"></i>
                 </button>
 
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item " href="/ManageServicesPage">Manage services</a>
+                    <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
+                    <a class="dropdown-item " href="login?type=logout">Logout</a>
+                  </div>
+                </li>
+
+              </ul>
             </div>
         </nav>
         <!-- Header cho nguoi dung da dang nhap -->
