@@ -30,6 +30,9 @@ public class Landlord {
     private LandlordStatus status;
     private int point;
 
+    public Landlord() {
+    }
+
     public Landlord(int id, String email, byte[] hashedPassword, byte[] salt, String firstName, String lastName, String address, String phone, String civilID, LandlordStatus status, int point) {
         this.id = id;
         this.email = email;

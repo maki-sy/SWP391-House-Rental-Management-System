@@ -119,8 +119,6 @@ public class LandlordDAO extends DBContext {
 
         return l;
     }
-    
-    
 
     public int updateLandlordByEmail(Landlord landlord) {
         String sqlCommand = "UPDATE [Landlord]\n"
@@ -154,6 +152,32 @@ public class LandlordDAO extends DBContext {
             Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return modified;
+    }
+
+    public Landlord getLandlordById(int targetId) {
+        String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
+        try {
+            PreparedStatement pre = connect.prepareStatement(sqlCommand);
+            pre.setInt(1, targetId);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                String email = rs.getString(2);
+                byte[] hashedPassword = rs.getBytes(3);
+                byte[] salt = rs.getBytes(4);
+                String firstName = rs.getString(5);
+                String lastName = rs.getString(6);
+                String address = rs.getString(7);
+                String phone = rs.getString(8);
+                String civilID = rs.getString(9);
+                Landlord.LandlordStatus status = Landlord.LandlordStatus.valueOf(rs.getString(10));
+                int point = rs.getInt(11);
+                Landlord landlord = new Landlord(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, status, point);
+                return landlord;
+            }
+        } catch (SQLException ex) {
+        }
+        return null;
     }
 
 }
