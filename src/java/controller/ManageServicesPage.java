@@ -24,13 +24,13 @@ public class ManageServicesPage extends HttpServlet {
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
         // 1 tenant 2 landlord 3 admin
-        switch (user.getId()) {
+        switch (user.getRole_id()) {
             // go to Tenant services manager
             case 1:
                 break;
             // go to Landlord services manager
             case 2:
-                response.sendRedirect("/landlord-quan-ly-dich-vu");
+                response.sendRedirect("/landlordServices");
                 break;
             // go to Admin services manager
             default:

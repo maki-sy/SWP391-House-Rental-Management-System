@@ -48,6 +48,25 @@ public class OrdersDAO extends DBContext {
         return Orders;
     }
     
+    public ArrayList<Orders> getOrdersByLandlordIdWithConditions(int targetLandlordId, String conditions){
+        ArrayList<Orders> Orders = new ArrayList<>();
+        String sqlCommand = "SELECT * FROM Orders WHERE landlord_id =" + targetLandlordId + "AND" + conditions;
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int orderId = rs.getInt(1);
+                int tenantId = rs.getInt(2);
+                int landlordId = rs.getInt(3);
+                int postId = rs.getInt(4);
+                String status = rs.getString(5);
+                Orders order = new Orders(orderId, tenantId, landlordId, postId, status);
+                Orders.add(order);
+            }
+        } catch (SQLException ex) {
+        }
+        return Orders;
+    }
+    
     public static void main(String[] args) {
         OrdersDAO dao = new OrdersDAO();
         ArrayList<Orders> list = dao.getAllOrders();
