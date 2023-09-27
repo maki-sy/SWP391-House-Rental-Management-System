@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -67,7 +68,8 @@ public class PostDAO extends DBContext {
         }
         return post;
     }
-    public List<PostRental> getPostDetailsbyID(int pid){
+
+    public List<PostRental> getPostDetailsbyID(int pid) {
         List<PostRental> post = new ArrayList<>();
         String sqlCommand = "SELECT * FROM POST where id = " + pid;
         ResultSet rs = getData(sqlCommand);
@@ -96,7 +98,8 @@ public class PostDAO extends DBContext {
 
         return post;
     }
-    public List<PostRental> searchPostByKeyword(String key){
+
+    public List<PostRental> searchPostByKeyword(String key) {
         List<PostRental> post = new ArrayList<>();
         String sqlCommand = "SELECT * FROM Post WHERE name LIKE '%" + key + "%'";
         ResultSet rs = getData(sqlCommand);
@@ -115,7 +118,7 @@ public class PostDAO extends DBContext {
                 int promotion_id = rs.getInt(11);
                 Date start = rs.getDate(12);
                 Date end = rs.getDate(13);
-                
+
                 PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, status, promotion_id, start, end);
                 post.add(po);
                 System.out.println("abcabc");
@@ -126,6 +129,30 @@ public class PostDAO extends DBContext {
 
         return post;
     }
-    
 
+    public void RemovePostPromotion_id(int id) {
+        try {
+            String sql = "UPDATE Post SET promotion_id=null WHERE promotion_id=?";
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void UpdatePostPromotion_id(int post_id,int promotion_id) {
+        try {
+            String sql = "UPDATE Post SET promotion_id=? WHERE id=?";
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, promotion_id);
+            stm.setInt(2, post_id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void main(String[] args) {
+        PostDAO p=new PostDAO();
+        //p.UpdatePostPromotion_id(3, 3);
+    }
 }
