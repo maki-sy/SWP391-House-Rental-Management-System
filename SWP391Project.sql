@@ -1,6 +1,8 @@
 ﻿--create database SWP391;
 --use SWP391;
 --drop database SWP391;
+--use master;
+
 CREATE TABLE Users(
 id int IDENTITY NOT NULL,
 email varchar(100) NULL,

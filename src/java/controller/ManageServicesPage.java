@@ -24,7 +24,7 @@ public class ManageServicesPage extends HttpServlet {
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
         // 1 tenant 2 landlord 3 admin
-        switch (user.getRole_id()) {
+        switch (user.getRoleID()) {
             // go to Tenant services manager
             case 1:
                 break;

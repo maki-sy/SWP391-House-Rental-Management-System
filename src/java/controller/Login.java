@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Landlord;
 import model.Tenant;
+import model.Users;
 import service.UserService;
 
 /**
@@ -115,25 +116,16 @@ public class Login extends HttpServlet {
         if (type.equals("login")) {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
+            String role = request.getParameter("role");
 
-            Object loggedAccount = userService.login(email, password);
-            if (loggedAccount == null) { // login fail
+            Users loggedUser = userService.login(email, password, Integer.valueOf(role));
+            if (loggedUser == null) { // login fail
                 System.out.println("LOGIN FAILED");
                 request.setAttribute("errorMsg", "Wrong email/password. Or email does not exist");
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
-                return;
             } else { // login sucess
                 HttpSession session = request.getSession();
-                session.setAttribute("user", loggedAccount);
-
-                if (loggedAccount instanceof Tenant) {
-                    session.setAttribute("role", "tenant");
-                }
-
-                if (loggedAccount instanceof Landlord) {
-                    session.setAttribute("role", "landlord");
-                }
-
+                session.setAttribute("user", loggedUser);
                 response.sendRedirect("trang-chu");
             }
         }

@@ -236,43 +236,77 @@ public class UserService {
         return token;
     }
 
+//    /**
+//     * Login for tenant and landlord
+//     *
+//     * @param email
+//     * @param password raw password user inputted
+//     * @return Object represent Tenant or Landlord if login success, null if
+//     * unsuccess
+//     */
+//    public Object login(String email, String password, String role) {
+//        
+//        
+//        Tenant t = TENANT_DAO.getTenantByEmail(email);
+//        if (t != null) {
+//            byte[] salt = t.getSalt();
+//            byte[] correctPass = t.getHashedPassword();
+//            byte[] inputPass = hashingPassword(password, salt);
+//            boolean sucess = Arrays.equals(correctPass, inputPass);
+//            if (sucess) {
+//                return t;
+//            } else {
+//                return null;
+//            }
+//        }
+//
+//        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
+//        if (l != null) {
+//            byte[] salt = l.getSalt();
+//            byte[] correctPass = l.getHashedPassword();
+//            byte[] inputPass = hashingPassword(password, salt);
+//            boolean sucess = Arrays.equals(correctPass, inputPass);
+//            if (sucess) {
+//                return l;
+//            } else {
+//                return null;
+//            }
+//        }
+//
+//        return null; // NEED TO UPDATE ASAP
+//    }
     /**
      * Login for tenant and landlord
      *
      * @param email
      * @param password raw password user inputted
-     * @return Object represent Tenant or Landlord if login success, null if
-     * unsuccess
+     * @param roleID role id of user
+     * @return Users object logged in if successfully, or null if log in fail
      */
-    public Object login(String email, String password) {
+    public Users login(String email, String password, int roleID) {
 
-        Tenant t = TENANT_DAO.getTenantByEmail(email);
-        if (t != null) {
-            byte[] salt = t.getSalt();
-            byte[] correctPass = t.getHashedPassword();
-            byte[] inputPass = hashingPassword(password, salt);
-            boolean sucess = Arrays.equals(correctPass, inputPass);
-            if (sucess) {
-                return t;
-            } else {
-                return null;
-            }
+        Users user = USER_DAO.getUserByEmailRole(email, roleID);
+        if (user == null) { // there is no user with such type and role
+            System.out.println("login() says: There is no account with email " + email + " and roleID " + roleID);
+            return null;
         }
 
-        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
-        if (l != null) {
-            byte[] salt = l.getSalt();
-            byte[] correctPass = l.getHashedPassword();
-            byte[] inputPass = hashingPassword(password, salt);
-            boolean sucess = Arrays.equals(correctPass, inputPass);
-            if (sucess) {
-                return l;
-            } else {
-                return null;
-            }
+        // verify whether this account activated or not
+        if (user.getStatus() == Users.Status.UNV) {
+            System.out.println("Account " + email + " has not been activated");
+            return null;
         }
 
-        return null; // NEED TO UPDATE ASAP
+        byte[] salt = user.getSalt();
+        byte[] correctPass = user.getHashedPassword();
+        byte[] inputPass = hashingPassword(password, salt);
+        boolean sucess = Arrays.equals(correctPass, inputPass);
+
+        if (sucess) {
+            return user;
+        } else {
+            return null;
+        }
     }
 
     /**

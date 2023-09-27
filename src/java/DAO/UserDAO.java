@@ -112,6 +112,29 @@ public class UserDAO extends DBContext {
         return users;
     }
 
+    public Users getUserByEmailRole(String email, int roleID) {
+        String SQL = "SELECT * FROM Users WHERE email = ? AND role_id = ?;";
+        Users user = null;
+        try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setString(1, email);
+            preStmt.setInt(2, roleID);
+
+            ResultSet rs = preStmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                byte[] hashedPwd = rs.getBytes(3);
+                byte[] salt = rs.getBytes(4);
+                Users.Status status = Users.Status.valueOf(rs.getString(6));
+
+                user = new Users(id, email, hashedPwd, salt, roleID, status);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+    }
+
     /**
      *
      * @param user
