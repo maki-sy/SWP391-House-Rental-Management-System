@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Tenant;
-import service.UserService;
 
 /**
  *
@@ -32,23 +31,20 @@ public class TenantDAO extends DBContext {
         try {
             while (rs.next()) {
                 int id = rs.getInt(1);
-                String email = rs.getString(2);
-                byte[] hashedPassword = rs.getBytes(3);
-                byte[] salt = rs.getBytes(4);
-                String firstName = rs.getString(5);
-                String lastName = rs.getString(6);
-                String address = rs.getString(7);
-                String phone = rs.getString(8);
-                String civilID = rs.getString(9);
-                String statusStr = rs.getString(10);
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                String address = rs.getString(4);
+                String phone = rs.getString(5);
+                String civilID = rs.getString(6);
 
                 // https://stackoverflow.com/questions/604424/how-to-get-an-enum-value-from-a-string-value-in-java
-                Tenant.TenantStatus tStatus = Tenant.TenantStatus.valueOf(statusStr);
+//                Tenant.TenantStatus tStatus = Tenant.TenantStatus.valueOf(statusStr);
 
-                Tenant t = new Tenant(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, tStatus);
+                Tenant t = new Tenant(id, firstName, lastName, address, phone, civilID);
                 tenantList.add(t);
             }
         } catch (SQLException ex) {
+            System.out.println("getAllTenants() reports " + ex.getMessage());
             Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -63,20 +59,18 @@ public class TenantDAO extends DBContext {
      * otherwise
      */
     public int addTenant(Tenant t) {
-        String sqlCommand = "INSERT INTO Tenant (email, hashed_password, salt, first_name, last_name, address, phone, civil_id, status) VALUES\n"
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sqlCommand = "INSERT INTO Tenant (id, first_name, last_name, address, phone, civil_id) VALUES\n"
+                + "(?, ?, ?, ?, ?, ?);";
         int updateRecord = 0;
+        System.out.println(t);
         try {
             PreparedStatement preStatement = connect.prepareStatement(sqlCommand);
-            preStatement.setString(1, t.getEmail());
-            preStatement.setBytes(2, t.getHashedPassword());
-            preStatement.setBytes(3, t.getSalt());
-            preStatement.setString(4, t.getFirstName());
-            preStatement.setString(5, t.getLastName());
-            preStatement.setString(6, t.getAddress());
-            preStatement.setString(7, t.getPhone());
-            preStatement.setString(8, t.getCivilID());
-            preStatement.setString(9, t.getStatus().name());
+            preStatement.setInt(1, t.getId());
+            preStatement.setString(2, t.getFirstName());
+            preStatement.setString(3, t.getLastName());
+            preStatement.setString(4, t.getAddress());
+            preStatement.setString(5, t.getPhone());
+            preStatement.setString(6, t.getCivilID());
 
             updateRecord = preStatement.executeUpdate();
         } catch (SQLException ex) {
@@ -88,35 +82,32 @@ public class TenantDAO extends DBContext {
     }
 
     /**
-     * Get Tenant object by email
+     * Get Tenant object by UserID.
      *
-     * @param email
-     * @return Tenant corresponding to email address, or null if there is no
-     * tenant meet criterion
+     * @param userID
+     * @return Tenant corresponding to FK UserID, or null if there is no tenant
+     * meet criterion
      */
-    public Tenant getTenantByEmail(String email) {
-        String sqlCommand = "SELECT * FROM Tenant WHERE email = ?;";
+    public Tenant getTenantByUserID(int userID) {
+        String sqlCommand = "SELECT * FROM Tenant WHERE id = ?;";
         Tenant t = null;
         try {
             PreparedStatement pre = connect.prepareStatement(sqlCommand);
-            pre.setString(1, email);
+            pre.setInt(1, userID);
 
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt(1);
-                byte[] hashedPassword = rs.getBytes(3);
-                byte[] salt = rs.getBytes(4);
-                String firstName = rs.getString(5);
-                String lastName = rs.getString(6);
-                String address = rs.getString(7);
-                String phone = rs.getString(8);
-                String civilID = rs.getString(9);
-                Tenant.TenantStatus status = Tenant.TenantStatus.valueOf(rs.getString(10));
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                String address = rs.getString(4);
+                String phone = rs.getString(5);
+                String civilID = rs.getString(6);
+                
 
-                t = new Tenant(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, status);
+                t = new Tenant(userID, firstName, lastName, address, phone, civilID);
             }
         } catch (SQLException ex) {
-            System.err.println("getTenantByEmail(String email) reports: " + ex.getMessage());
+            System.err.println("getTenantByEmail(int userID) reports: " + ex.getMessage());
             Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -124,33 +115,29 @@ public class TenantDAO extends DBContext {
     }
 
     /**
-     *
+     * Update Tenant in the DB by UserID
      * @param tenant
      * @return
      */
-    public int updateTenantByEmail(Tenant tenant) {
+    public int updateTenantByID(Tenant tenant) {
         String sqlCommand = "UPDATE [Tenant]\n"
-                + "   SET [hashed_password] = ?\n"
-                + "      ,[salt] = ?\n"
-                + "      ,[first_name] = ?\n"
+                + "   SET [first_name] = ?\n"
                 + "      ,[last_name] = ?\n"
                 + "      ,[address] = ?\n"
                 + "      ,[phone] = ?\n"
                 + "      ,[civil_id] = ?\n"
-                + "      ,[status] = ?\n"
-                + " WHERE email = ?;";
+                + " WHERE id = ?;";
         int modified = 0;
         try {
             PreparedStatement preStatement = connect.prepareStatement(sqlCommand);
-            preStatement.setBytes(1, tenant.getHashedPassword());
-            preStatement.setBytes(2, tenant.getSalt());
-            preStatement.setString(3, tenant.getFirstName());
-            preStatement.setString(4, tenant.getLastName());
-            preStatement.setString(5, tenant.getAddress());
-            preStatement.setString(6, tenant.getPhone());
-            preStatement.setString(7, tenant.getCivilID());
-            preStatement.setString(8, tenant.getStatus().name());
-            preStatement.setString(9, tenant.getEmail());
+
+            preStatement.setString(1, tenant.getFirstName());
+            preStatement.setString(2, tenant.getLastName());
+            preStatement.setString(3, tenant.getAddress());
+            preStatement.setString(4, tenant.getPhone());
+            preStatement.setString(5, tenant.getCivilID());
+            
+            preStatement.setInt(6, tenant.getId());
 
             modified = preStatement.executeUpdate();
         } catch (SQLException ex) {

@@ -54,19 +54,21 @@ public class TokenDAO extends DBContext {
      */
     public int addToken(Token token) {
         String sqlCommand = "INSERT INTO [Token]\n"
-                + "           ([email]\n"
+                + "           ([user_id]\n"
+                + "           ,[email]\n"
                 + "           ,[token]\n"
                 + "           ,[expired_date]\n"
                 + "           ,[type])\n"
                 + "     VALUES\n"
-                + "           (?, ?, ?, ?)";
+                + "           (?, ?, ?, ?, ?)";
         int added = 0;
         try {
             PreparedStatement preStatement = connect.prepareStatement(sqlCommand);
-            preStatement.setString(1, token.getEmail());
-            preStatement.setString(2, token.getToken());
-            preStatement.setString(3, token.getExpireDate());
-            preStatement.setString(4, token.getType().name());
+            preStatement.setInt(1, token.getUserID());
+            preStatement.setString(2, token.getEmail());
+            preStatement.setString(3, token.getToken());
+            preStatement.setString(4, token.getExpireDate());
+            preStatement.setString(5, token.getType().name());
 
             added = preStatement.executeUpdate();
         } catch (SQLException ex) {
@@ -101,11 +103,12 @@ public class TokenDAO extends DBContext {
         }
         return null;
     }
-    
+
     /**
      * Get token object by raw string token
+     *
      * @param token
-     * @return 
+     * @return
      */
     public Token getToken(String token) {
         String sqlCommand = "SELECT * FROM Token WHERE token = ?;";
@@ -114,14 +117,15 @@ public class TokenDAO extends DBContext {
             PreparedStatement pstmt = connect.prepareStatement(sqlCommand);
             pstmt.setString(1, token);
             ResultSet rs = pstmt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 int id = rs.getInt(1);
-                String email = rs.getString(2);
-                String expiredDate = rs.getTimestamp(4).toString();
+                int userID = rs.getInt(2);
+                String email = rs.getString(3);
+                String expiredDate = rs.getString(5);
                 System.out.println("Time in String: " + expiredDate);
-                Token.TokenType type = Token.TokenType.valueOf(rs.getString(5));
-                
-                t = new Token(id, email, token, expiredDate, type);
+                Token.TokenType type = Token.TokenType.valueOf(rs.getString(6));
+
+                t = new Token(id, userID, email, token, expiredDate, type);
             }
         } catch (SQLException ex) {
             System.out.println("getToken() reports " + ex.getMessage());

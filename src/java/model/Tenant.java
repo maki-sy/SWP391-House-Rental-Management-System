@@ -4,71 +4,37 @@
  */
 package model;
 
-import service.UserService;
-
 /**
  *
  * @author DTS
  */
 public class Tenant {
     
-    public enum TenantStatus {        
-        UNV, // unverified email
-        VER, // verified
-        BAN, // banned
-        DEL, // deleted
-    }
+//    public enum TenantStatus {
+//        UNV, // unverified email
+//        VER, // verified
+//        BAN, // banned
+//        DEL, // deleted
+//    }
     
     private int id;
-    private String email;
-    private byte[] hashedPassword;
-    private byte[] salt;
     private String firstName;
     private String lastName;
     private String address;
     private String phone;
     private String civilID;
-    private TenantStatus status;
 
-    public Tenant(int id, String email, byte[] hashedPassword, byte[] salt, String firstName, String lastName, String address, String phone, String civilID, TenantStatus status) {
+    public Tenant(int id, String firstName, String lastName, String address, String phone, String civilID) {
         this.id = id;
-        this.email = email;
-        this.hashedPassword = hashedPassword;
-        this.salt = salt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phone = phone;
         this.civilID = civilID;
-        this.status = status;
     }
 
     public int getId() {
         return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public byte[] getHashedPassword() {
-        return hashedPassword;
-    }
-
-    public void setHashedPassword(byte[] hashedPassword) {
-        this.hashedPassword = hashedPassword;
-    }
-
-    public byte[] getSalt() {
-        return salt;
-    }
-
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
     }
 
     public String getFirstName() {
@@ -111,12 +77,9 @@ public class Tenant {
         this.civilID = civilID;
     }
 
-    public TenantStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TenantStatus status) {
-        this.status = status;
+    @Override
+    public String toString() {
+        return "Tenant{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", phone=" + phone + ", civilID=" + civilID + '}';
     }
     
     
