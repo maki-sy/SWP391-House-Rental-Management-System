@@ -1,12 +1,15 @@
 ﻿--create database SWP391;
 --use SWP391;
 --drop database SWP391;
+--use master;
+
 CREATE TABLE Users(
 id int IDENTITY NOT NULL,
 email varchar(100) NULL,
 hashed_password varbinary(80) NULL, 
 salt varbinary(50) NULL,
 role_id int NULL,
+status nvarchar(20) NULL, 
 );
 CREATE TABLE Landlord (
 id int NOT NULL, 
@@ -15,7 +18,6 @@ last_name nvarchar(20) NULL,
 address nvarchar(255) NULL, 
 phone varchar(15) NULL, 
 civil_id nvarchar(200) NULL, 
-status nvarchar(20) NULL, 
 account_points int NULL, 
 );
 CREATE TABLE Tenant (
@@ -25,7 +27,6 @@ last_name nvarchar(20) NULL,
 address nvarchar(255) NULL, 
 phone varchar(15) NULL, 
 civil_id nvarchar(200) NULL, 
-status nvarchar(20) NULL, 
 );
 CREATE TABLE Admin (
 id int NOT NULL, 
@@ -57,10 +58,15 @@ NumOfBedrooms int NULL,
 address nvarchar(255) NULL, 
 description nvarchar(2000) NULL, 
 landlord_id int NULL, 
+location_id int NULL,
 status nvarchar(20) NULL, 
 promotion_id int NULL, 
 post_start_date date NULL, 
 post_end_date date NULL, 
+);
+CREATE TABLE Property_Location (
+id int IDENTITY NOT NULL, 
+location_name nvarchar(50) NULL, 
 );
 CREATE TABLE Property_type (
 type_id int IDENTITY NOT NULL, 
@@ -117,16 +123,19 @@ ban_end_date date null,
 
 CREATE TABLE Token(
 id int IDENTITY NOT NULL,
+user_id INT NOT NULL,
 email varchar(100) NULL,
-token nvarchar(255) NULL,
-expired_date timestamp NULL,
-type nvarchar(50) NULL,
+token varchar(255) NULL,
+expired_date DATETIME NULL,
+type varchar(50) NULL,
 );
 
 CREATE TABLE User_role(
 id int IDENTITY NOT NULL,
 role_name varchar(20) NOT NULL,
 );
+alter table Property_location add constraint PK_Location
+PRIMARY KEY (id);
 alter table Users add constraint PK_Users
 PRIMARY KEY (id);
 alter table Admin add constraint PK_Admin
@@ -179,6 +188,7 @@ ALTER TABLE Wishlist ADD CONSTRAINT FK_Wishlist_Post FOREIGN KEY (property_id) R
 ALTER TABLE Wishlist ADD CONSTRAINT FK_Wishlist_Tenant FOREIGN KEY (user_id) REFERENCES Users (id);
 ALTER TABLE Post_image ADD CONSTRAINT FK_Post_image_Post FOREIGN KEY (post_id) REFERENCES Post(id);
 ALTER TABLE Users ADD CONSTRAINT FK_Users_Role FOREIGN KEY(role_id) REFERENCES User_role(id);
+ALTER TABLE Post ADD CONSTRAINT FK_Post_Location FOREIGN KEY(location_id) REFERENCES Property_location(id);
 ------------------------------DROP TABLE/CONSTRAINT-------------------------------------
 --ALTER TABLE Post DROP CONSTRAINT FK_Post_Landlord;--1
 --ALTER TABLE [Order] DROP CONSTRAINT FK_Order_Post;--2
@@ -206,20 +216,24 @@ ALTER TABLE Users ADD CONSTRAINT FK_Users_Role FOREIGN KEY(role_id) REFERENCES U
 --insert Admin values
 --('thanghqhe176429@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),0);
 --select * from admin;
-
-insert Property_type values
-('Nha Tro'),
-('Chung cu');
+--insert Property_Location values
+--('Cay xang 39'),
+--('Tay Ho'),
+--('Landmark 69'),
+--('Dong Da');
+--insert Property_type values
+--('Nha Tro'),
+--('Chung cu');
 select*from Property_type;
 insert User_role values
 ('Tenant'),
 ('Landlord'),
 ('Admin');
 select*from User_role;
-insert Promotions values
-(20, '20% discount for the first 3 months of rent','06/21/2023','07/21/2023'),
-(10, '10% discount for the first month of rent','06/21/2023','07/21/2023'),
-(50, '50% for the first month if the length of contract is more than 3 months','06/21/2023','07/21/2023')
+--insert Promotions values
+--(20, '20% discount for the first 3 months of rent','06/21/2023','07/21/2023'),
+--(10, '10% discount for the first month of rent','06/21/2023','07/21/2023'),
+--(50, '50% for the first month if the length of contract is more than 3 months','06/21/2023','07/21/2023')
 select* from Promotions;
 --insert Users values
 
@@ -231,56 +245,56 @@ select* from Promotions;
 --('tienpvhe163824@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2,'Thang','Ha','259 Burbank Street, Texas','0942676767',null, 'VER', 2000),
 --('asd@gmail.com',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2,'Thang','Ha','159 Wall Street, New York City','0942434343',null, 'UNV', 13000),
 --('asds@gmail.com',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2,'Thang','Ha','101 Plankton Street, Virginia','0944121212',null, 'UNV', 20);
-insert Users values
 
-('sytthe176623@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),3),
-('tungdthe176669@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),1),
-('antnthe176694@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),1),
-('thanghq176429@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),1),
-('khanhnbhe170920@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2),
-('tienpvhe163824@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2),
-('asd@gmail.com',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2),
-('asds@gmail.com',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2);
+--insert Users values
+--('sytthe176623@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),3, 'VER'),
+--('tungdthe176669@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),1, 'VER'),
+--('antnthe176694@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),1, 'VER'),
+--('thanghq176429@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),1, 'VER'),
+--('khanhnbhe170920@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2, 'VER'),
+--('tienpvhe163824@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2, 'VER'),
+--('asd@gmail.com',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2, 'UNV'),
+--('asds@gmail.com',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),2, 'UNV');
 
-insert Admin values
-(1,'Truong','Sy','0942010101');
+--insert Admin values
+--(1,'Truong','Sy','0942010101');
 
-insert Tenant values
-(2,'Thang','Ha','259 Burbank Street, Texas','0942121212',null, 'VER'),
-(3,'Thang','Ha','259 Burbank Street, Texas','0942343434',null, 'VER'),
-(4,'Thang','Ha','259 Burbank Street, Texas','0942454545',null, 'UNV');
+--insert Tenant values
+--(2,'Thang','Ha','259 Burbank Street, Texas','0942121212',null),
+--(3,'Thang','Ha','259 Burbank Street, Texas','0942343434',null),
+--(4,'Thang','Ha','259 Burbank Street, Texas','0942454545',null);
 
-insert Landlord values
-(5,'Sy','Truong','259 Burbank Street, Texas','0942565656',null, 'VER', 0),
-(6,'Hieu','Nguyen','259 Burbank Street, Texas','0942676767',null, 'VER', 2000),
-(7,'Minh','Nguyen','159 Wall Street, New York City','0942434343',null, 'UNV', 13000),
-(8,'Thang','Ha','101 Plankton Street, Virginia','0944121212',null, 'UNV', 20);
+--insert Landlord values
+--(5,'Sy','Truong','259 Burbank Street, Texas','0942565656',null, 0),
+--(6,'Hieu','Nguyen','259 Burbank Street, Texas','0942676767',null, 2000),
+--(7,'Minh','Nguyen','159 Wall Street, New York City','0942434343',null, 13000),
+--(8,'Thang','Ha','101 Plankton Street, Virginia','0944121212',null, 20);
 
-insert Post values
-('Nha Tro Hoa Hong', 2000, 1, 20, 2, '270 Duong Lang, Dong Da, Ha Noi', 'Description', 6, 'Not Occupied', null, '07/25/2022','08/25/2022'),
-('Nha Tro Thai Binh', 800, 1, 10, 1, '27 Duong Song Da, Long Bien, Ha Noi', 'Description', 6, 'Not Occupied', null, '07/25/2022','08/25/2022'),
-('Nha Tro Co Loan', 1000, 1, 15, 2, '210 Duong Hai Ba Trung, Cau Giay, Ha Noi', 'Description', 7, 'Not Occupied', 2, '07/26/2023','08/26/2023'),
-('Nha Tro Co Hang', 1200, 1, 15, 1, '120 Duong Ho Chi Minh, Cau Giay, Ha Noi', 'Description', 7, 'Not Occupied', 1, '07/26/2023','08/26/2023'),
-('Nha Tro FU', 1800, 1, 20, 2, '20 Duong Thang Long, Dong Da, Ha Noi', 'Description', 7, 'Not Occupied', null, '07/25/2022','08/25/2022'),
-('Chung cu Phenika', 1500,2, 18, 1, '75 Duong Giai Phong, Thanh Xuan, Ha Noi', 'Description', 8, 'Not occupied', null, '01/11/2023','02/11/2023'),
-('Chung cu Hoa Lac', 1200, 2, 14, 1, '25 Duong Le Hong Phong, Hoan Kiem, Ha Noi', 'Description', 8, 'Occupied', null, '06/24/2023','06/30/2023'),
-('Chung cu HoLA', 1500, 2, 20, 1, '234 Yen Lang, Dong Da, Ha Noi', 'Description', 6, 'Occupied', null, '06/24/2023','06/30/2023'),
-('Chung cu Funfact', 2100, 2, 20, 3, '250 Yen Lang, Dong Da, Ha Noi', 'Description', 6, 'Not Occupied', null, '06/02/2023','07/02/2023'),
-('Chung cu ABC', 900, 2, 20, 2, '102 Pham Hung, Cau Giay, Ha Noi', 'Description', 7, 'Not Occupied', null, '06/21/2023','07/21/2023'),
-('Chung cu HLE', 1500, 2, 20, 1, '234 Yen Lang, Dong Da, Ha Noi', 'Description', 6, 'Occupied', null, '06/24/2023','06/30/2023');
+--insert Post values
+--('Nha Tro Hoa Hong', 2000, 1, 20, 2, '270 Duong Lang, Dong Da, Ha Noi', 'Description', 6,1, 'Not Occupied', null, '07/25/2022','08/25/2022'),
+--('Nha Tro Thai Binh', 800, 1, 10, 1, '27 Duong Song Da, Long Bien, Ha Noi', 'Description', 6,1, 'Not Occupied', null, '07/25/2022','08/25/2022'),
+--('Nha Tro Co Loan', 1000, 1, 15, 2, '210 Duong Hai Ba Trung, Cau Giay, Ha Noi', 'Description', 7,1, 'Not Occupied', 2, '07/26/2023','08/26/2023'),
+--('Nha Tro Co Hang', 1200, 1, 15, 1, '120 Duong Ho Chi Minh, Cau Giay, Ha Noi', 'Description', 7,2, 'Not Occupied', 1, '07/26/2023','08/26/2023'),
+--('Nha Tro FU', 1800, 1, 20, 2, '20 Duong Thang Long, Dong Da, Ha Noi', 'Description', 7,2, 'Not Occupied', null, '07/25/2022','08/25/2022'),
+--('Chung cu Phenika', 1500,2, 18, 1, '75 Duong Giai Phong, Thanh Xuan, Ha Noi', 'Description', 8,2, 'Not occupied', null, '01/11/2023','02/11/2023'),
+--('Chung cu Hoa Lac', 1200, 2, 14, 1, '25 Duong Le Hong Phong, Hoan Kiem, Ha Noi', 'Description', 8,3, 'Occupied', null, '06/24/2023','06/30/2023'),
+--('Chung cu HoLA', 1500, 2, 20, 1, '234 Yen Lang, Dong Da, Ha Noi', 'Description', 6,3, 'Occupied', 3, '06/24/2023','06/30/2023'),
+--('Chung cu Funfact', 2100, 2, 20, 3, '250 Yen Lang, Dong Da, Ha Noi', 'Description', 6,4, 'Not Occupied', null, '06/02/2023','07/02/2023'),
+--('Chung cu ABC', 900, 2, 20, 2, '102 Pham Hung, Cau Giay, Ha Noi', 'Description', 7,4, 'Not Occupied', null, '06/21/2023','07/21/2023'),
+--('Chung cu HLE', 1500, 2, 20, 1, '234 Yen Lang, Dong Da, Ha Noi', 'Description', 6,4, 'Occupied', null, '06/24/2023','06/30/2023');
 select*from Post;
 
-insert Orders values
-(1,1,1,'Approved'),
-(2,2,2,'Rejected'),
-(2,2,3,'Rejected');
- insert Wishlist values
- (2,1),
- (2,2),
- (2,3),
- (3,7),
- (3,8),
- (3,9);
+--insert Orders values
+--(1,1,1,'Approved'),
+--(2,2,2,'Rejected'),
+--(2,2,3,'Rejected');
+-- insert Wishlist values
+-- (2,1),
+-- (2,2),
+-- (2,3),
+-- (3,7),
+-- (3,8),
+-- (3,9);
 select*from User_role;
 select*from Wishlist;
 select*from Users;

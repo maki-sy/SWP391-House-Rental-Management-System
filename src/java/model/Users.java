@@ -2,18 +2,51 @@ package model;
 
 public class Users {
 
+    public enum Role {
+        TENANT(1),
+        LANDLORD(2),
+        ADMIN(3);
+
+        private final int id;
+
+        private Role(int id) {
+            this.id = id;
+        }
+
+        public int getValue() {
+            return id;
+        }
+    }
+
+    public enum Status {
+        UNV,
+        VER,
+        BAN,
+        DEL,
+    }
+
     private int id;
     private String email;
-    private int hashedPassword;
-    private int salt;
-    private int roleId;
+    private byte[] hashedPassword;
+    private byte[] salt;
+    private int roleID;
+    private Status status;
 
-    public Users(int id, String email, int hashedPassword, int salt, int roleId) {
+    public Users(int id, String email, byte[] hashedPassword, byte[] salt, int roleId, Status status) {
         this.id = id;
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.salt = salt;
-        this.roleId = roleId;
+        this.roleID = roleId;
+        this.status = status;
+    }
+
+    public Users(String email, byte[] hashedPassword, byte[] salt, int roleId, Status status) {
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+        this.salt = salt;
+        this.roleID = roleId;
+        this.status = status;
     }
 
     public Users() {
@@ -35,33 +68,41 @@ public class Users {
         this.email = email;
     }
 
-    public int getHashedPassword() {
+    public byte[] getHashedPassword() {
         return hashedPassword;
     }
 
-    public void setHashedPassword(int hashedPassword) {
+    public void setHashedPassword(byte[] hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
 
-    public int getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(int salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
-    public int getRole_id() {
-        return roleId;
+    public int getRoleID() {
+        return roleID;
     }
 
-    public void setRole_id(int roleId) {
-        this.roleId = roleId;
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }    
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Users{" + "id=" + id + ", email=" + email + ", hashedPassword=" + hashedPassword + ", salt=" + salt + ", roleId=" + roleId + '}';
+        return "Users{" + "id=" + id + ", email=" + email + ", hashedPassword=" + hashedPassword + ", salt=" + salt + ", roleId=" + roleID + ", status=" + status + '}';
     }
-    
+
 }

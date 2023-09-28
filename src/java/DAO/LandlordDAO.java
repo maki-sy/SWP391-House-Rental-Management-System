@@ -30,18 +30,14 @@ public class LandlordDAO extends DBContext {
         try {
             while (rs.next()) {
                 int id = rs.getInt(1);
-                String email = rs.getString(2);
-                byte[] hashedPassword = rs.getBytes(3);
-                byte[] salt = rs.getBytes(4);
-                String firstName = rs.getString(5);
-                String lastName = rs.getString(6);
-                String address = rs.getString(7);
-                String phone = rs.getString(8);
-                String civilID = rs.getString(9);
-                Landlord.LandlordStatus status = Landlord.LandlordStatus.valueOf(rs.getString(10));
-                int point = rs.getInt(11);
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                String address = rs.getString(4);
+                String phone = rs.getString(5);
+                String civilID = rs.getString(6);
+                int point = rs.getInt(7);
 
-                Landlord landlord = new Landlord(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, status, point);
+                Landlord landlord = new Landlord(id, firstName, lastName, address, phone, civilID, point);
                 landlords.add(landlord);
             }
         } catch (SQLException ex) {
@@ -59,22 +55,19 @@ public class LandlordDAO extends DBContext {
      */
     public int addLandlord(Landlord landlord) {
         int added = 0;
-        String sqlCommand = "INSERT INTO [Landlord] ([email],[hashed_password],[salt],[first_name],[last_name],[address],[phone],[civil_id],[status],[account_points])\n"
-                + "     VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String sqlCommand = "INSERT INTO [Landlord] ([id],[first_name],[last_name],[address],[phone],[civil_id],[account_points])\n"
+                + "     VALUES (?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement preStatement = connect.prepareStatement(sqlCommand);
 
-            preStatement.setString(1, landlord.getEmail());
-            preStatement.setBytes(2, landlord.getHashedPassword());
-            preStatement.setBytes(3, landlord.getSalt());
-            preStatement.setString(4, landlord.getFirstName());
-            preStatement.setString(5, landlord.getLastName());
-            preStatement.setString(6, landlord.getAddress());
-            preStatement.setString(7, landlord.getPhone());
-            preStatement.setString(8, landlord.getCivilID());
-            preStatement.setString(9, landlord.getStatus().name());
-            preStatement.setInt(10, landlord.getPoint());
+            preStatement.setInt(1, landlord.getId());
+            preStatement.setString(2, landlord.getFirstName());
+            preStatement.setString(3, landlord.getLastName());
+            preStatement.setString(4, landlord.getAddress());
+            preStatement.setString(5, landlord.getPhone());
+            preStatement.setString(6, landlord.getCivilID());
+            preStatement.setInt(7, landlord.getPoint());
 
             added = preStatement.executeUpdate();
         } catch (SQLException ex) {
@@ -90,27 +83,24 @@ public class LandlordDAO extends DBContext {
      * @param email
      * @return
      */
-    public Landlord getLandlordByEmail(String email) {
-        String sqlCommand = "SELECT * FROM Landlord WHERE email = ?;";
+    public Landlord getLandlordByUserID(int userID) {
+        String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
         Landlord l = null;
         try {
             PreparedStatement pre = connect.prepareStatement(sqlCommand);
-            pre.setString(1, email);
+            pre.setInt(1, userID);
 
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt(1);
-                byte[] hashedPassword = rs.getBytes(3);
-                byte[] salt = rs.getBytes(4);
-                String firstName = rs.getString(5);
-                String lastName = rs.getString(6);
-                String address = rs.getString(7);
-                String phone = rs.getString(8);
-                String civilID = rs.getString(9);
-                Landlord.LandlordStatus status = Landlord.LandlordStatus.valueOf(rs.getString(10));
-                int point = rs.getInt(11);
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                String address = rs.getString(4);
+                String phone = rs.getString(5);
+                String civilID = rs.getString(6);
+                int point = rs.getInt(7);
 
-                l = new Landlord(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, status, point);
+                l = new Landlord(id, firstName, lastName, address, phone, civilID, point);
             }
         } catch (SQLException ex) {
             System.err.println("getLandlordByEmail(String email) reports: " + ex.getMessage());
@@ -120,31 +110,30 @@ public class LandlordDAO extends DBContext {
         return l;
     }
 
-    public int updateLandlordByEmail(Landlord landlord) {
+    /**
+     * Update landlord which has id in the DB = landlord.id
+     * @param landlord
+     * @return 
+     */
+    public int updateLandlordByID(Landlord landlord) {
         String sqlCommand = "UPDATE [Landlord]\n"
-                + "   SET [hashed_password] = ?\n"
-                + "      ,[salt] = ?\n"
-                + "      ,[first_name] = ?\n"
+                + "   SET [first_name] = ?\n"
                 + "      ,[last_name] = ?\n"
                 + "      ,[address] = ?\n"
                 + "      ,[phone] = ?\n"
                 + "      ,[civil_id] = ?\n"
-                + "      ,[status] = ?\n"
                 + "      ,[account_points] = ?\n"
-                + " WHERE email = ?;";
+                + " WHERE id = ?;";
         int modified = 0;
         try {
             PreparedStatement pstmt = connect.prepareStatement(sqlCommand);
-            pstmt.setBytes(1, landlord.getHashedPassword());
-            pstmt.setBytes(2, landlord.getSalt());
-            pstmt.setString(3, landlord.getFirstName());
-            pstmt.setString(4, landlord.getLastName());
-            pstmt.setString(5, landlord.getAddress());
-            pstmt.setString(6, landlord.getPhone());
-            pstmt.setString(7, landlord.getCivilID());
-            pstmt.setString(8, landlord.getStatus().name());
-            pstmt.setInt(9, landlord.getPoint());
-            pstmt.setString(10, landlord.getEmail());
+            pstmt.setString(1, landlord.getFirstName());
+            pstmt.setString(2, landlord.getLastName());
+            pstmt.setString(3, landlord.getAddress());
+            pstmt.setString(4, landlord.getPhone());
+            pstmt.setString(5, landlord.getCivilID());
+            pstmt.setInt(6, landlord.getPoint());
+            pstmt.setInt(7, landlord.getId());
 
             modified = pstmt.executeUpdate();
         } catch (SQLException ex) {
@@ -154,30 +143,30 @@ public class LandlordDAO extends DBContext {
         return modified;
     }
 
-    public Landlord getLandlordById(int targetId) {
-        String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
-        try {
-            PreparedStatement pre = connect.prepareStatement(sqlCommand);
-            pre.setInt(1, targetId);
-            ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt(1);
-                String email = rs.getString(2);
-                byte[] hashedPassword = rs.getBytes(3);
-                byte[] salt = rs.getBytes(4);
-                String firstName = rs.getString(5);
-                String lastName = rs.getString(6);
-                String address = rs.getString(7);
-                String phone = rs.getString(8);
-                String civilID = rs.getString(9);
-                Landlord.LandlordStatus status = Landlord.LandlordStatus.valueOf(rs.getString(10));
-                int point = rs.getInt(11);
-                Landlord landlord = new Landlord(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, status, point);
-                return landlord;
-            }
-        } catch (SQLException ex) {
-        }
-        return null;
-    }
+//    public Landlord getLandlordById(int targetId) {
+//        String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
+//        try {
+//            PreparedStatement pre = connect.prepareStatement(sqlCommand);
+//            pre.setInt(1, targetId);
+//            ResultSet rs = pre.executeQuery();
+//            if (rs.next()) {
+//                int id = rs.getInt(1);
+//                String email = rs.getString(2);
+//                byte[] hashedPassword = rs.getBytes(3);
+//                byte[] salt = rs.getBytes(4);
+//                String firstName = rs.getString(5);
+//                String lastName = rs.getString(6);
+//                String address = rs.getString(7);
+//                String phone = rs.getString(8);
+//                String civilID = rs.getString(9);
+//                Landlord.LandlordStatus status = Landlord.LandlordStatus.valueOf(rs.getString(10));
+//                int point = rs.getInt(11);
+//                Landlord landlord = new Landlord(id, email, hashedPassword, salt, firstName, lastName, address, phone, civilID, status, point);
+//                return landlord;
+//            }
+//        } catch (SQLException ex) {
+//        }
+//        return null;
+//    }
 
 }

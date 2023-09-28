@@ -9,22 +9,37 @@ package model;
  * @author DTS
  */
 public class Token {
+
     public enum TokenType {
         CONFIRMATION,
         FORGOTPWD
     }
     private int id;
+    private int userID;
     private String email;
     private String token;
     private String expireDate;
     private TokenType type;
 
-    public Token(int id, String email, String token, String expireDate, TokenType type) {
+    public Token(int id, int userID, String email, String token, String expireDate, TokenType type) {
         this.id = id;
+        this.userID = userID;
         this.email = email;
         this.token = token;
         this.expireDate = expireDate;
         this.type = type;
+    }
+
+    public Token(int userID, String email, String token, String expireDate, TokenType type) {
+        this.userID = userID;
+        this.email = email;
+        this.token = token;
+        this.expireDate = expireDate;
+        this.type = type;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 
     public int getId() {
@@ -45,6 +60,6 @@ public class Token {
 
     public TokenType getType() {
         return type;
-    }  
-    
+    }
+
 }
