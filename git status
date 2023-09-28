@@ -1,0 +1,44 @@
+[33m96036d4[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m feat: add promotion and UI promotion manage, UI add promotion's form
+[33mda0454a[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'anhnthe176694' into 'main'
+[33m262ae0b[m[33m ([m[1;31morigin/anhnthe176694[m[33m)[m Resolve Conflict for last
+[33m7bac519[m resolve conflict
+[33m56b5b23[m fixPostPage
+[33mbe63644[m Merge branch 'ThangHQ' into 'main'
+[33m582c9bf[m[33m ([m[1;31morigin/ThangHQ[m[33m)[m Merge branch 'main' into 'ThangHQ'
+[33m1826a5e[m feat: Register for Landlord and Tenant (email confirmation)
+[33m2e5e090[m feat:View and Search
+[33m050709c[m[33m ([m[1;31morigin/sytthe176623[m[33m)[m Merge branch 'tienpvhe163824' into 'main'
+[33m256e9ca[m Feat: create new jsp page for landlord management
+[33md6a89a9[m Feat: SQL quick create
+[33m1373ea9[m Merge branch 'tienpvhe163824' into 'main'
+[33m9a1b001[m Feat: jsp format link fixed
+[33ma8e083a[m Merge branch 'revert-fd74a14f' into 'main'
+[33m1fd92c1[m Revert "Merge branch 'tienpvhe163824' into 'main'"
+[33mfd74a14[m Merge branch 'tienpvhe163824' into 'main'
+[33m5920988[m Feat: fix jsp format link
+[33mfef3e3a[m Merge branch 'ThangHQ' into 'main'
+[33m6204b1f[m Fixing login for wrong password cases
+[33m9c4378c[m feat: Update and fix login function
+[33m01fb904[m Merge branch 'tienpvhe163824' into 'main'
+[33m8167caa[m Merge branch 'ThangHQ' into 'main'
+[33m985a380[m feat: basic login (not yet truely completed) for Landlord and Tenant
+[33mcedc4e3[m Merge branch 'ThangHQ' into 'main'
+[33m62e90b2[m Feat: FE UI after login
+[33mc9808c6[m feat: Add register function for Landlord, including password encryption SHA-512. Minor bug fixes
+[33mdfe47af[m Merge branch 'tienpvhe163824' into 'main'
+[33mb2d36d9[m Feat: add new login role FE
+[33m0b17c78[m Merge branch 'ThangHQ' into 'main'
+[33mac7a5d0[m feat: Update template. Create register function for Tenant
+[33m80d1dcd[m Merge branch 'ThangHQ' into 'main'
+[33m72d7d8b[m feat: Adding FE template
+[33m726a9ce[m Merge branch 'ThangHQ' into 'main'
+[33mf595396[m Fixing project structure
+[33md54e7a0[m Merge branch 'ThangHQ' into 'main'
+[33m81d54e8[m test .gitkeep
+[33m7a105b6[m Add web.xml
+[33m7cf20bb[m Merge branch 'ThangHQ' into 'main'
+[33m056985b[m refactor: update package structure
+[33md340029[m Merge branch 'ThangHQ' into 'main'
+[33m26ae379[m feat: Create packages structure
+[33m8622704[m Initial commit
+[33m32e3e32[m add README
