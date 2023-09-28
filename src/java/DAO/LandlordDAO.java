@@ -142,6 +142,22 @@ public class LandlordDAO extends DBContext {
         }
         return modified;
     }
+    public int updateProfileByID(int landlord_id, String fname, String lname, String address, String phone) { 
+        int n = 0;
+        String sql = "UPDATE [Landlord] SET [first_name]=?,[last_name] = ?,[address]=? ,[phone] = ? WHERE [id]=?;";
+        try {
+            PreparedStatement pre = connect.prepareStatement(sql);
+            pre.setString(1, fname);
+            pre.setString(2, lname);
+            pre.setString(3, address);
+            pre.setString(4, phone);
+            pre.setInt(5, landlord_id);
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
 
 //    public Landlord getLandlordById(int targetId) {
 //        String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
