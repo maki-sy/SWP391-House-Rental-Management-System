@@ -58,6 +58,8 @@ public class UserService {
      * @param password Raw password
      */
     public void registerTenant(String firstName, String lastName, String email, String phone, String password) {
+        
+        System.out.println("registerTenant() called");
         // Check for User with role Tenant with existance emai
         List<Users> usersList = USER_DAO.getUsersByEmail(email);
         Predicate<Users> byStatus = user -> user.getStatus() != Users.Status.UNV;
@@ -76,19 +78,19 @@ public class UserService {
             byte[] hashedPassword = hashingPassword(password, salt);
 
             // Add user record to Users table DB     
-            int lastID = USER_DAO.getLastUserID();
-            Users user = new Users(lastID + 1, email, hashedPassword, salt, Users.Role.TENANT.getValue(), Users.Status.UNV);
-            USER_DAO.addUser(user);
+//            int lastID = USER_DAO.getLastUserID();
+            Users user = new Users(email, hashedPassword, salt, Users.Role.TENANT.getValue(), Users.Status.UNV);
+            int userID = USER_DAO.addUser(user);
 
             // Add tenant record to Tenant table
-            Tenant tenant = new Tenant(user.getId(), firstName, lastName, null, phone, null);
+            Tenant tenant = new Tenant(userID, firstName, lastName, null, phone, null);
             TENANT_DAO.addTenant(tenant);
 
             // Generate token for email verification
-            Token token = generateUserToken(user.getId(), email, Token.TokenType.CONFIRMATION);
+            Token token = generateUserToken(userID, email, Token.TokenType.CONFIRMATION);
 
             // Send an email with token to user's email to verify email address
-            sendConfirmationEmail(email, token.getToken());
+            sendConfirmationEmail(email, token.getToken(), "TENANT");
         } else { // This email have been used to register tenant before
             System.out.println("DUPLICATE EMAIL WITH TENANT ROLE");
         }
@@ -113,19 +115,19 @@ public class UserService {
             byte[] hashedPassword = hashingPassword(password, salt);
 
             // Add user record to Users table DB     
-            int lastID = USER_DAO.getLastUserID();
-            Users user = new Users(lastID + 1, email, hashedPassword, salt, Users.Role.LANDLORD.getValue(), Users.Status.UNV);
-            USER_DAO.addUser(user);
+//            int lastID = USER_DAO.getLastUserID();
+            Users user = new Users(email, hashedPassword, salt, Users.Role.LANDLORD.getValue(), Users.Status.UNV);
+            int lastID = USER_DAO.addUser(user);
 
             // Add tenant record to Tenant table
-            Landlord landlord = new Landlord(user.getId(), firstName, lastName, null, phone, null, 0);
+            Landlord landlord = new Landlord(lastID, firstName, lastName, null, phone, null, 0);
             LANDLORD_DAO.addLandlord(landlord);
 
             // Generate token for email verification
             Token token = generateUserToken(user.getId(), email, Token.TokenType.CONFIRMATION);
 
             // Send an email with token to user's email to verify email address
-            sendConfirmationEmail(email, token.getToken());
+            sendConfirmationEmail(email, token.getToken(), "LANDLORD");
         }
     }
 
@@ -187,11 +189,11 @@ public class UserService {
      *
      * @param receivedEmail
      * @param token formatted token string (token with format: The first 3
-     * characters indicate user role)
+     * @param role A String describe role user register for
      */
-    private void sendConfirmationEmail(String receivedEmail, String token) {
+    private void sendConfirmationEmail(String receivedEmail, String token, String role) {
         String subject = "Confirm registration for House Rental Management System";
-        String content = "Hi " + receivedEmail + ", you received this email because you've been registered as a member in our website. Here is your confimation link to verify your email <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/verify?token=" + token + "\">CLICK HERE TO CONFIRM</a>";
+        String content = "Hi " + receivedEmail + ", you received this email because you've been registered as a " + role + " in our website. Here is your confimation link to verify your email <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/verify?token=" + token + "\">CLICK HERE TO CONFIRM</a>";
 
         // Send confirmation email to user
         sendEmail(receivedEmail, subject, content);
@@ -348,20 +350,21 @@ public class UserService {
      * Handle logic for email confirmation
      *
      * @param tokenStr
+     * @return
      */
-    public void verifyEmail(String tokenStr) {
+    public boolean verifyEmail(String tokenStr) {
 
         Token token = TOKEN_DAO.getToken(tokenStr);
         if (token == null) { // invalid token: token does not exist in the DB
             System.out.println("Token does not exist in the DB");
-            return;
+            return false;
         }
 
         // Check for expire time of token
         boolean expired = isTokenExpire(token);
         if (expired) { // If token already expired
             System.out.println("Token expired");
-            return;
+            return false;
         }
 
         // Get User object corresponding to token
@@ -371,8 +374,10 @@ public class UserService {
         if (!isActived) {
             user.setStatus(Users.Status.VER);
             USER_DAO.updateUser(user);
+            return true;
         } else {
             System.out.println("THERE IS ALREADY ANOTHER ACCOUNT WITH THIS EMAIL ADDRESS");
+            return false;
         }
     }
 

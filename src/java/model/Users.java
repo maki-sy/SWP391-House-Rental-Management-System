@@ -41,6 +41,16 @@ public class Users {
         this.status = status;
     }
 
+    /**
+     * Create Users object with a dummy userID (since user_id is set as IDENTITY
+     * in the DB)
+     *
+     * @param email
+     * @param hashedPassword
+     * @param salt
+     * @param roleId
+     * @param status
+     */
     public Users(String email, byte[] hashedPassword, byte[] salt, int roleId, Status status) {
         this.email = email;
         this.hashedPassword = hashedPassword;
@@ -90,7 +100,7 @@ public class Users {
 
     public void setRoleID(int roleID) {
         this.roleID = roleID;
-    }    
+    }
 
     public Status getStatus() {
         return status;
