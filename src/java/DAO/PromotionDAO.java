@@ -112,7 +112,7 @@ public class PromotionDAO extends DBContext {
 
     public static void main(String[] args) {
         PromotionDAO d = new PromotionDAO();
-//        d.removePromotion(2);
+ //       d.removePromotion(10); ok
 //        List<Promotion> list = d.getAllPromotion();
 //        for (Promotion promotion : list) {
 //            System.out.println(promotion.getPromotion_id());

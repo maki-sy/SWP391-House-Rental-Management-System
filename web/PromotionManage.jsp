@@ -174,7 +174,7 @@
                                                 <td>${o.promotion_start_date}</td>
                                                 <td>${o.promotion_end_date}</td>
                                                 <td><a href="#">Edit</a>/
-                                                    <a href="#">Delete</a>
+                                                    <a href="RemovePromotion?service=promotion&id=${o.promotion_id}">Delete</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>

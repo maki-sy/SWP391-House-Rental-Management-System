@@ -38,4 +38,10 @@ public class PromotionService {
         List<Promotion> list =PROMOTION_DAO.getAllPromotion();
         return list;
     }
+    public void DeletePostPromotionId(int id){
+        POST_DAO.RemovePostPromotion_id(id);
+    }
+    public void DeletePromotion(int id){
+        PROMOTION_DAO.removePromotion(id);
+    }
 }
