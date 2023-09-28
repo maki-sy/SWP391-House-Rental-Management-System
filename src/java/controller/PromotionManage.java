@@ -36,7 +36,7 @@ public class PromotionManage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        List<Promotion> listPromotion=pservice.getAllPromotion();
+        List<Promotion> listPromotion = pservice.getAllPromotion();
         request.setAttribute("listPromotion", listPromotion);
         request.getRequestDispatcher("PromotionManage.jsp").forward(request, response);
     }
