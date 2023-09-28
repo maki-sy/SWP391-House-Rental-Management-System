@@ -18,30 +18,37 @@ public class PromotionService {
 
     private static final PromotionDAO PROMOTION_DAO = new PromotionDAO();
     private static final PostDAO POST_DAO = new PostDAO();
-    public List<PostRental> GetPostByLandlordID(int id){
+
+    public List<PostRental> GetPostByLandlordID(int id) {
         List<PostRental> listp = POST_DAO.getAllPosts();
         //chua co get post by landlord id
         return listp;
-    } 
-    public List<PostRental> GetPost(){
+    }
+
+    public List<PostRental> GetPost() {
         List<PostRental> listp = POST_DAO.getAllPosts();
         return listp;
-    } 
-    public int createReturnId(Promotion pro){
-        int id=PROMOTION_DAO.createReturnPromotionID(pro);
+    }
+
+    public int createReturnId(Promotion pro) {
+        int id = PROMOTION_DAO.createReturnPromotionID(pro);
         return id;
     }
-    public void UpdatePostPromotionID(int post_id,int promotion_id){
+
+    public void UpdatePostPromotionID(int post_id, int promotion_id) {
         POST_DAO.UpdatePostPromotion_id(post_id, promotion_id);
     }
-    public List<Promotion> getAllPromotion(){
-        List<Promotion> list =PROMOTION_DAO.getAllPromotion();
+
+    public List<Promotion> getAllPromotion() {
+        List<Promotion> list = PROMOTION_DAO.getAllPromotion();
         return list;
     }
-    public void DeletePostPromotionId(int id){
+
+    public void DeletePostPromotionId(int id) {
         POST_DAO.RemovePostPromotion_id(id);
     }
-    public void DeletePromotion(int id){
+
+    public void DeletePromotion(int id) {
         PROMOTION_DAO.removePromotion(id);
     }
 }

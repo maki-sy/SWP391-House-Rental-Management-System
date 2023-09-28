@@ -140,7 +140,8 @@ public class PostDAO extends DBContext {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void UpdatePostPromotion_id(int post_id,int promotion_id) {
+
+    public void UpdatePostPromotion_id(int post_id, int promotion_id) {
         try {
             String sql = "UPDATE Post SET promotion_id=? WHERE id=?";
             PreparedStatement stm = connect.prepareStatement(sql);
@@ -151,8 +152,9 @@ public class PostDAO extends DBContext {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public static void main(String[] args) {
-        PostDAO p=new PostDAO();
+        PostDAO p = new PostDAO();
         //p.UpdatePostPromotion_id(3, 3);
     }
 }

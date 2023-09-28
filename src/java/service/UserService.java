@@ -58,7 +58,7 @@ public class UserService {
      * @param password Raw password
      */
     public void registerTenant(String firstName, String lastName, String email, String phone, String password) {
-        
+
         System.out.println("registerTenant() called");
         // Check for User with role Tenant with existance emai
         List<Users> usersList = USER_DAO.getUsersByEmail(email);
@@ -117,14 +117,14 @@ public class UserService {
             // Add user record to Users table DB     
 //            int lastID = USER_DAO.getLastUserID();
             Users user = new Users(email, hashedPassword, salt, Users.Role.LANDLORD.getValue(), Users.Status.UNV);
-            int lastID = USER_DAO.addUser(user);
+            int userID = USER_DAO.addUser(user);
 
             // Add tenant record to Tenant table
-            Landlord landlord = new Landlord(lastID, firstName, lastName, null, phone, null, 0);
+            Landlord landlord = new Landlord(userID, firstName, lastName, null, phone, null, 0);
             LANDLORD_DAO.addLandlord(landlord);
 
             // Generate token for email verification
-            Token token = generateUserToken(user.getId(), email, Token.TokenType.CONFIRMATION);
+            Token token = generateUserToken(userID, email, Token.TokenType.CONFIRMATION);
 
             // Send an email with token to user's email to verify email address
             sendConfirmationEmail(email, token.getToken(), "LANDLORD");
@@ -369,6 +369,9 @@ public class UserService {
 
         // Get User object corresponding to token
         Users user = USER_DAO.getUserByID(token.getUserID());
+        if (user == null) {
+            return false;
+        }
         // check whether has another account corresponding to this email has activated
         boolean isActived = checkActiveAccount(user.getEmail());
         if (!isActived) {
