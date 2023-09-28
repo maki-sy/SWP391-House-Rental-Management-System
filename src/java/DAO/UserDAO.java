@@ -7,6 +7,7 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -92,9 +93,11 @@ public class UserDAO extends DBContext {
      */
     public List<Users> getUsersByEmail(String email) {
         List<Users> users = new ArrayList<>();
-        String SQL = "SELECT * FROM Users";
-        ResultSet rs = getData(SQL);
+        String SQL = "SELECT * FROM Users WHERE email = ?;";
         try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setString(1, email);
+            ResultSet rs = preStmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt(1);
                 byte[] hashedPwd = rs.getBytes(3);
@@ -137,33 +140,47 @@ public class UserDAO extends DBContext {
 
     /**
      *
-     * @param user
-     * @return
+     * @param user Users object to added to the DB. userID field will be ignored
+     * since user_id in the DB is set as IDENTITY
+     * @return ID of user have just added to the DB. Or -1 if there is error
      */
     public int addUser(Users user) {
-        String SQL = "INSERT INTO [Users]\n"
-                + "           ([email]\n"
-                + "           ,[hashed_password]\n"
-                + "           ,[salt]\n"
-                + "           ,[role_id]\n"
-                + "           ,[status])"
-                + "     VALUES (?, ?, ?, ?, ?)";
+        // Method 1: INSERT return user_id
+//        String SQL = "INSERT INTO Users (email, hashed_password, salt, role_id, status)\n"
+//                + "  OUTPUT INSERTED.id\n"
+//                + "VALUES (?,?,?,?,?);";
+        
+        // Method 2: Using PreparedStatement to return IDENTITY columns
+        String SQL = "INSERT INTO USers(email, hashed_password, salt, role_id, status\n)"
+                + "VALUES (?,?,?,?,?);";
 
-        int added = 0;
+        // ===== DEBUG =====
+        System.out.println(user);
+        // ===== DEBUG =====
+        int userID = -1;
+
         try {
-            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            PreparedStatement preStmt = connect.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             preStmt.setString(1, user.getEmail());
             preStmt.setBytes(2, user.getHashedPassword());
             preStmt.setBytes(3, user.getSalt());
             preStmt.setInt(4, user.getRoleID());
             preStmt.setString(5, user.getStatus().name());
 
-            added = preStmt.executeUpdate();
+            preStmt.executeUpdate();
 
+            // get id IDENTITY column SQL just generated for us
+            ResultSet userRS = preStmt.getGeneratedKeys();
+            if (userRS.next()) {
+                userID = userRS.getInt(1);
+                System.out.println("User added with IDENTITY id = " + userID);
+                return userID;
+            }
         } catch (SQLException ex) {
+            System.out.println("addUser() reports " + ex.getMessage());
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return added;
+        return userID;
     }
 
     /**
@@ -171,7 +188,7 @@ public class UserDAO extends DBContext {
      * @return
      */
     public int getLastUserID() {
-        String SQL = " SELECT IDENT_CURRENT('[Users]');";
+        String SQL = "SELECT IDENT_CURRENT('[Users]');";
         int id = 0;
         ResultSet rs = getData(SQL);
         try {
@@ -246,7 +263,7 @@ public class UserDAO extends DBContext {
      * This function check is there any account with this email has been
      * activated in the DB
      *
-     * @param userID
+     * @param email
      * @return true if already has an account with this email activated. False
      * otherwise
      */

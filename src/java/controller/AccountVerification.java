@@ -15,6 +15,7 @@ import service.UserService;
 
 /**
  * Servlet class to handle account email confirmation, forgot password
+ *
  * @author DTS
  */
 @WebServlet(name = "AccountVerification", urlPatterns = {"/verify"})
@@ -31,11 +32,14 @@ public class AccountVerification extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         UserService uService = new UserService();
-        
+
         String token = request.getParameter("token");
-        uService.verifyEmail(token);
+        boolean verified = uService.verifyEmail(token);
+
+        request.setAttribute("verified", verified);
+        request.getRequestDispatcher("email-confirm-done.jsp").forward(request, response);
         // TODO: handle token null
     }
 
@@ -50,6 +54,6 @@ public class AccountVerification extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 }
