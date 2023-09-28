@@ -7,6 +7,7 @@ package service;
 import DAO.LandlordDAO;
 import DAO.TenantDAO;
 import DAO.TokenDAO;
+import DAO.UserDAO;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -26,12 +27,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Properties;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import model.Landlord;
 import model.Tenant;
 import model.Token;
+import model.Users;
 
 /**
  *
@@ -42,7 +47,7 @@ public class UserService {
     private static final TenantDAO TENANT_DAO = new TenantDAO();
     private static final LandlordDAO LANDLORD_DAO = new LandlordDAO();
     private static final TokenDAO TOKEN_DAO = new TokenDAO();
-//    private static final UserDAO USER_DAO = new UserDAO();
+    private static final UserDAO USER_DAO = new UserDAO();
 
     /**
      *
@@ -53,47 +58,81 @@ public class UserService {
      * @param password Raw password
      */
     public void registerTenant(String firstName, String lastName, String email, String phone, String password) {
-        // Check for Tenant with existance emai
-        Tenant tenant = TENANT_DAO.getTenantByEmail(email);
-        if (tenant == null) { // email have not been registered
+        
+        System.out.println("registerTenant() called");
+        // Check for User with role Tenant with existance emai
+        List<Users> usersList = USER_DAO.getUsersByEmail(email);
+        Predicate<Users> byStatus = user -> user.getStatus() != Users.Status.UNV;
+        Predicate<Users> byRole = user -> user.getRoleID() == Users.Role.TENANT.getValue();
+        List<Users> tenantList = usersList.stream().filter(byRole).collect(Collectors.toList());
+
+        if (tenantList.isEmpty()) { // This email have never been registered as tenant before. And also there is no account the same email, that has been VERIFIED
+            // Check if there is account with email, and is already activated (verified/banned/etc. )
+            List<Users> userStatus = usersList.stream().filter(byStatus).collect(Collectors.toList());
+            if (!userStatus.isEmpty()) {
+                System.out.println("AN ACCOUNT WITH THIS EMAIL ALREADY EXISTS AND ACTIVATED");
+                return;
+            }
+
             byte[] salt = generateSalt();
             byte[] hashedPassword = hashingPassword(password, salt);
 
-            // tenantID is set IDENTITY, we don't need to explicit set it. -1 is just a dummy value
-            tenant = new Tenant(-1, email, hashedPassword, salt, firstName, lastName, null, phone, null, Tenant.TenantStatus.UNV);
+            // Add user record to Users table DB     
+//            int lastID = USER_DAO.getLastUserID();
+            Users user = new Users(email, hashedPassword, salt, Users.Role.TENANT.getValue(), Users.Status.UNV);
+            int userID = USER_DAO.addUser(user);
+
+            // Add tenant record to Tenant table
+            Tenant tenant = new Tenant(userID, firstName, lastName, null, phone, null);
             TENANT_DAO.addTenant(tenant);
 
             // Generate token for email verification
-            Token token = generateToken("TEN", email, Token.TokenType.CONFIRMATION);
+            Token token = generateUserToken(userID, email, Token.TokenType.CONFIRMATION);
 
             // Send an email with token to user's email to verify email address
-            sendConfirmationEmail(email, token.getToken());
-        } else { // this email has already been used
-            // DEBUG
-            System.out.println("Email " + email + " has already been registered as Tenant role");
+            sendConfirmationEmail(email, token.getToken(), "TENANT");
+        } else { // This email have been used to register tenant before
+            System.out.println("DUPLICATE EMAIL WITH TENANT ROLE");
         }
     }
 
     public void registerLandlord(String firstName, String lastName, String email, String phone, String password) {
-        Landlord landlord = LANDLORD_DAO.getLandlordByEmail(email);
-        if (landlord == null) { // email have not been registered
+        // Check for User with role Tenant with existance emai
+        List<Users> usersList = USER_DAO.getUsersByEmail(email);
+        Predicate<Users> byStatus = user -> user.getStatus() != Users.Status.UNV;
+        Predicate<Users> byRole = user -> user.getRoleID() == Users.Role.LANDLORD.getValue();
+        List<Users> landlordList = usersList.stream().filter(byRole).collect(Collectors.toList());
+
+        if (landlordList.isEmpty()) { // This email have never been registered as tenant before
+            // Check if there is account with email, and is already activated (verified/banned/etc. )
+            List<Users> userStatus = usersList.stream().filter(byStatus).collect(Collectors.toList());
+            if (!userStatus.isEmpty()) {
+                System.out.println("AN ACCOUNT WITH THIS EMAIL ALREADY EXISTS AND ACTIVATED");
+                return;
+            }
+
             byte[] salt = generateSalt();
             byte[] hashedPassword = hashingPassword(password, salt);
 
-            // landlordID is set IDENTITY, we don't need to explicit set it. -1 is just a dummy value
-            landlord = new Landlord(-1, email, hashedPassword, salt, firstName, lastName, null, phone, null, Landlord.LandlordStatus.UNV, 0);
+            // Add user record to Users table DB     
+//            int lastID = USER_DAO.getLastUserID();
+            Users user = new Users(email, hashedPassword, salt, Users.Role.LANDLORD.getValue(), Users.Status.UNV);
+            int lastID = USER_DAO.addUser(user);
+
+            // Add tenant record to Tenant table
+            Landlord landlord = new Landlord(lastID, firstName, lastName, null, phone, null, 0);
             LANDLORD_DAO.addLandlord(landlord);
-            
+
             // Generate token for email verification
-            Token token = generateToken("LAN", email, Token.TokenType.CONFIRMATION);
+            Token token = generateUserToken(user.getId(), email, Token.TokenType.CONFIRMATION);
 
             // Send an email with token to user's email to verify email address
-            sendConfirmationEmail(email, token.getToken());
-        } else {
-            // DEBUG
-            System.out.println("Email " + email + " has already been registered as Landlord role");
+            sendConfirmationEmail(email, token.getToken(), "LANDLORD");
         }
+    }
 
+    private boolean checkActiveAccount(String email) {
+        return USER_DAO.checkActiveAccount(email);
     }
 
     /**
@@ -150,11 +189,11 @@ public class UserService {
      *
      * @param receivedEmail
      * @param token formatted token string (token with format: The first 3
-     * characters indicate user role)
+     * @param role A String describe role user register for
      */
-    private void sendConfirmationEmail(String receivedEmail, String token) {
+    private void sendConfirmationEmail(String receivedEmail, String token, String role) {
         String subject = "Confirm registration for House Rental Management System";
-        String content = "Hi " + receivedEmail + ", you received this email because you've been registered as a member in our website. Here is your confimation link to verify your email <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/verify?token=" + token + "\">CLICK HERE TO CONFIRM</a>";
+        String content = "Hi " + receivedEmail + ", you received this email because you've been registered as a " + role + " in our website. Here is your confimation link to verify your email <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/verify?token=" + token + "\">CLICK HERE TO CONFIRM</a>";
 
         // Send confirmation email to user
         sendEmail(receivedEmail, subject, content);
@@ -179,66 +218,97 @@ public class UserService {
     /**
      * Generate token object corresponding to an email, and then add it to DB
      *
-     * @param usrRole First 3 characters role of an user (TEN, ADM, LAN)). In
-     * this function, user's role will be embedded to the raw token, therefore
-     * when server interpret token, it can determine user role just by looking
-     * at the token
+     * @param userID userID ties to this token
      * @param email email to generate token, after the token is generated, an
      * record will be added to the DB corresponding to this email
      * @param type Token's type as in Token.TokenType
      *
      * @return token object just created
      */
-    private Token generateToken(String usrRole, String email, Token.TokenType type) {
+    private Token generateUserToken(int userID, String email, Token.TokenType type) {
         String tokenStr = generateTokenStr();
-        tokenStr = usrRole + tokenStr;
+//        tokenStr = usrRole + tokenStr;
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expire = now.plusMinutes(10); // token will expire in 10 minutes
 
         // token id is IDENTITTY in DB, -1 is just a dummy value
-        Token token = new Token(-1, email, tokenStr, expire.toString(), type);
+        Token token = new Token(userID, email, tokenStr, expire.toString(), type);
         TOKEN_DAO.addToken(token);
         return token;
     }
 
+//    /**
+//     * Login for tenant and landlord
+//     *
+//     * @param email
+//     * @param password raw password user inputted
+//     * @return Object represent Tenant or Landlord if login success, null if
+//     * unsuccess
+//     */
+//    public Object login(String email, String password, String role) {
+//        
+//        
+//        Tenant t = TENANT_DAO.getTenantByEmail(email);
+//        if (t != null) {
+//            byte[] salt = t.getSalt();
+//            byte[] correctPass = t.getHashedPassword();
+//            byte[] inputPass = hashingPassword(password, salt);
+//            boolean sucess = Arrays.equals(correctPass, inputPass);
+//            if (sucess) {
+//                return t;
+//            } else {
+//                return null;
+//            }
+//        }
+//
+//        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
+//        if (l != null) {
+//            byte[] salt = l.getSalt();
+//            byte[] correctPass = l.getHashedPassword();
+//            byte[] inputPass = hashingPassword(password, salt);
+//            boolean sucess = Arrays.equals(correctPass, inputPass);
+//            if (sucess) {
+//                return l;
+//            } else {
+//                return null;
+//            }
+//        }
+//
+//        return null; // NEED TO UPDATE ASAP
+//    }
     /**
      * Login for tenant and landlord
      *
      * @param email
      * @param password raw password user inputted
-     * @return Object represent Tenant or Landlord if login success, null if
-     * unsuccess
+     * @param roleID role id of user
+     * @return Users object logged in if successfully, or null if log in fail
      */
-    public Object login(String email, String password) {
+    public Users login(String email, String password, int roleID) {
 
-        Tenant t = TENANT_DAO.getTenantByEmail(email);
-        if (t != null) {
-            byte[] salt = t.getSalt();
-            byte[] correctPass = t.getHashedPassword();
-            byte[] inputPass = hashingPassword(password, salt);
-            boolean sucess = Arrays.equals(correctPass, inputPass);
-            if (sucess) {
-                return t;
-            } else {
-                return null;
-            }
+        Users user = USER_DAO.getUserByEmailRole(email, roleID);
+        if (user == null) { // there is no user with such type and role
+            System.out.println("login() says: There is no account with email " + email + " and roleID " + roleID);
+            return null;
         }
 
-        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
-        if (l != null) {
-            byte[] salt = l.getSalt();
-            byte[] correctPass = l.getHashedPassword();
-            byte[] inputPass = hashingPassword(password, salt);
-            boolean sucess = Arrays.equals(correctPass, inputPass);
-            if (sucess) {
-                return l;
-            } else {
-                return null;
-            }
+        // verify whether this account activated or not
+        if (user.getStatus() == Users.Status.UNV) {
+            System.out.println("Account " + email + " has not been activated");
+            return null;
         }
 
-        return null; // NEED TO UPDATE ASAP
+        byte[] salt = user.getSalt();
+        byte[] correctPass = user.getHashedPassword();
+        byte[] inputPass = hashingPassword(password, salt);
+        boolean sucess = Arrays.equals(correctPass, inputPass);
+
+        if (sucess) {
+            return user;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -280,36 +350,34 @@ public class UserService {
      * Handle logic for email confirmation
      *
      * @param tokenStr
+     * @return
      */
-    public void verifyEmail(String tokenStr) {
+    public boolean verifyEmail(String tokenStr) {
 
         Token token = TOKEN_DAO.getToken(tokenStr);
         if (token == null) { // invalid token: token does not exist in the DB
             System.out.println("Token does not exist in the DB");
-            return;
+            return false;
         }
 
         // Check for expire time of token
         boolean expired = isTokenExpire(token);
         if (expired) { // If token already expired
             System.out.println("Token expired");
-            return;
+            return false;
         }
-        // Intepret the first 3 characters to determine user role
-        String role = tokenStr.substring(0, 3);
 
-        switch (role) {
-            case "TEN":
-                Tenant tenant = TENANT_DAO.getTenantByEmail(token.getEmail());
-                tenant.setStatus(Tenant.TenantStatus.VER);
-                TENANT_DAO.updateTenantByEmail(tenant);
-                break;
-                
-            case "LAN":
-                Landlord landlord = LANDLORD_DAO.getLandlordByEmail(token.getEmail());
-                landlord.setStatus(Landlord.LandlordStatus.VER);
-                LANDLORD_DAO.updateLandlordByEmail(landlord);
-                break;
+        // Get User object corresponding to token
+        Users user = USER_DAO.getUserByID(token.getUserID());
+        // check whether has another account corresponding to this email has activated
+        boolean isActived = checkActiveAccount(user.getEmail());
+        if (!isActived) {
+            user.setStatus(Users.Status.VER);
+            USER_DAO.updateUser(user);
+            return true;
+        } else {
+            System.out.println("THERE IS ALREADY ANOTHER ACCOUNT WITH THIS EMAIL ADDRESS");
+            return false;
         }
     }
 

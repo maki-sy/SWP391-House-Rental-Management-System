@@ -1,3 +1,11 @@
+<!-- ======= JSP ======= -->
+<%@ page import="model.Users" %>
+<%
+    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+%>  
+<!-- End JSP Code -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,10 +43,7 @@
     </head>
 
     <body>
-        <!-- ======= JSP ======= -->
-        <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role"); Object
-    loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); %>
-        <!-- End JSP Code -->
+        
         <!-- ======= Property Search Section ======= -->
         <div class="click-closed"></div>
         <!--/ Form Search Star /-->
@@ -136,7 +141,7 @@
 
         <!-- ======= Header/Navbar ======= -->
         <!-- Header cho khach -->
-        <% if(role==null) { %>
+        <% if(user == null) { %>
         <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
@@ -189,6 +194,14 @@
                     <i class="bi bi-search"></i>
                 </button>
 
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item " href="/ManageServicesPage">Manage services</a>
+                    <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
+                    <a class="dropdown-item " href="login?type=logout">Logout</a>
+                  </div>
+                </li>
+
+              </ul>
             </div>
         </nav>
         <!-- Header cho nguoi dung da dang nhap -->
