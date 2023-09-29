@@ -292,7 +292,7 @@
                                                 <p class="mb-0">First Name</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="text-muted mb-0"><input type="text" name="fname" value="<%=tenant.getFirstName()%>" pattern="^[a-zA-Z]*$" required></p>
+                                                <p class="text-muted mb-0"><input type="text" name="fname" value="<%=tenant.getFirstName()%>" pattern="^[a-zA-Z ]*$" required></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -301,7 +301,7 @@
                                                 <p class="mb-0">Last Name</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="text-muted mb-0"><input type="text" name="lname" value="<%=tenant.getLastName()%>" pattern="^[a-zA-Z]*$" required></p>
+                                                <p class="text-muted mb-0"><input type="text" name="lname" value="<%=tenant.getLastName()%>" pattern="^[a-zA-Z ]*$" required></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -323,8 +323,9 @@
                                                 <p class="text-muted mb-0"><input type="text" name="phone" value="<%=tenant.getPhone()%>" maxlength="10" pattern="[0-9]{10}" required></p>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-primary"><input type="submit" value="update" name="submit"></button>
-                                        <button type="button" class="btn btn-primary"><input type="reset" value="reset"></button>
+                                        
+                                        <input class="btn btn-primary" type="submit" value="update" name="submit">
+                                        <input class="btn btn-primary" type="reset" value="reset">
                                         <input type="hidden" name="service" value="updateProfile">
                                     </div>
                                 </form>
