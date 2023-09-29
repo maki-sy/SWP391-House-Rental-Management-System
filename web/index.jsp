@@ -167,6 +167,9 @@
                         <li class="nav-item">
                             <a class="nav-link " href="agents-grid.jsp">Landlords</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="PromotionManage">Promotion</a>
+                        </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -227,6 +230,9 @@
 
                         <li class="nav-item">
                             <a class="nav-link " href="agents-grid.jsp">Landlords</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="PromotionManage">Promotion</a>
                         </li>
 
                         <li class="nav-item dropdown">
