@@ -143,7 +143,7 @@
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
                                             <a href="AddPromotion?service=form"><button type="button" class="btn btn-primary">Add
-                                                Promotion Form</button></a>
+                                                    Promotion Form</button></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -160,7 +160,8 @@
                                             <th>Description</th>
                                             <th>Promotion start date</th>
                                             <th>Promotion end Date</th>
-                                            <th>Actions</th>
+                                            <th>Modifies</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -173,9 +174,10 @@
                                                 </td>
                                                 <td>${o.promotion_start_date}</td>
                                                 <td>${o.promotion_end_date}</td>
-                                                <td><a href="#">Edit</a>/
-                                                    <a href="RemovePromotion?service=promotion&id=${o.promotion_id}">Delete</a>
+                                                <td><a href="EditPromotion?service=form&id=${o.promotion_id}&now=edit">Edit</a>/
+                                                    <a href="EditPromotion?service=form&id=${o.promotion_id}&now=duration">Set Duration</a>
                                                 </td>
+                                                <td><a href="RemovePromotion?service=promotion&id=${o.promotion_id}">Delete</a></td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>

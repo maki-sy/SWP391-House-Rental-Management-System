@@ -68,7 +68,8 @@ public class AddPromotion extends HttpServlet {
                 try {//user enter text instead of number
                     discount = Integer.parseInt(temp_discount);
                 } catch (NumberFormatException e) {
-                    response.sendRedirect("AddPromotion.jsp");
+                    request.setAttribute("mess", "Discount must be an integer");
+                request.getRequestDispatcher("AddPromotionForm.jsp").forward(request, response);                 
                 }
                 if (promotion_start_date.after(promotion_end_date)) {    //start date occurs after end date
                     request.setAttribute("mess", "Start date must occurs before end date");
@@ -84,7 +85,7 @@ public class AddPromotion extends HttpServlet {
                         int a = Integer.parseInt(pro);
                         pservice.UpdatePostPromotionID(a, creId);
                     }
-                    response.sendRedirect("trang-chu");
+                    response.sendRedirect("PromotionManage");
                 }
             }
         }

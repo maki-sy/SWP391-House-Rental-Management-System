@@ -36,12 +36,13 @@ public class PostDAO extends DBContext {
                 String address = rs.getString(7);
                 String dess = rs.getString(8);
                 int landlord_id = rs.getInt(9);
-                String status = rs.getString(10);
-                int promotion_id = rs.getInt(11);
-                Date start = rs.getDate(12);
-                Date end = rs.getDate(13);
+                int location_id=rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
 
-                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, status, promotion_id, start, end);
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
                 post.add(po);
             }
         } catch (SQLException ex) {
@@ -84,12 +85,13 @@ public class PostDAO extends DBContext {
                 String address = rs.getString(7);
                 String dess = rs.getString(8);
                 int landlord_id = rs.getInt(9);
-                String status = rs.getString(10);
-                int promotion_id = rs.getInt(11);
-                Date start = rs.getDate(12);
-                Date end = rs.getDate(13);
+                int location_id=rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
 
-                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, status, promotion_id, start, end);
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
                 post.add(po);
             }
         } catch (SQLException ex) {
@@ -114,12 +116,13 @@ public class PostDAO extends DBContext {
                 String address = rs.getString(7);
                 String dess = rs.getString(8);
                 int landlord_id = rs.getInt(9);
-                String status = rs.getString(10);
-                int promotion_id = rs.getInt(11);
-                Date start = rs.getDate(12);
-                Date end = rs.getDate(13);
+                int location_id=rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
 
-                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, status, promotion_id, start, end);
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
                 post.add(po);
                 System.out.println("abcabc");
             }
@@ -156,5 +159,9 @@ public class PostDAO extends DBContext {
     public static void main(String[] args) {
         PostDAO p = new PostDAO();
         //p.UpdatePostPromotion_id(3, 3);
+//        List<PostRental> list=p.getAllPosts();
+//        for (PostRental postRental : list) {
+//            System.out.println(postRental.getId());
+//        }
     }
 }
