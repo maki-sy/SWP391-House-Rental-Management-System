@@ -1,6 +1,11 @@
 <!-- JSP Import -->
+<%@page import="model.Users" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="model.Orders" %>
+<%
+    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+%>  
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +43,7 @@
             loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); ArrayList<Orders>
             ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
         %>
+        <!-- End JSP Code -->
         <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
@@ -315,25 +321,25 @@
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
-                                                <a href="#!">
+                                                <a href="landlordServicesPage?service=pending-requests">
                                                     <div class="btn btn-primary"> + </div>
-                                                </a>
-                                                <a href="#!" class="pe-none"><button
+                                                    <button
                                                         type="button"
                                                         class="btn btn-secondary">Pending
-                                                        requests</button></a>
+                                                        requests</button>
+                                                </a>
                                             </div>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="#!">
+                                                <a href="landlordServicesPage?service=requests-processed">
                                                     <div class="btn btn-primary"> + </div>
-                                                </a>
-                                                <a href="#!" class="pe-none"><button
+                                                    <button
                                                         type="button"
                                                         class="btn btn-secondary">Requests
-                                                        processed</button></a>
+                                                        processed</button>
+                                                </a>
                                             </div>
 
                                         </li>
@@ -346,11 +352,10 @@
                                             <div class="contain">
                                                 <a href="#!">
                                                     <div class="btn btn-primary"> + </div>
-                                                </a>
-                                                <a href="#!" class="pe-none"><button
+                                                    <button
                                                         type="button"
-                                                        class="btn btn-secondary">Pending
-                                                        requests</button></a>
+                                                        class="btn btn-secondary">Published posts</button>
+                                                </a>
                                             </div>
                                         </li>
                                         <li class="list-group-item">
@@ -358,11 +363,10 @@
 
                                                 <a href="#!">
                                                     <div class="btn btn-primary"> + </div>
-                                                </a>
-                                                <a href="#!" class="pe-none"><button
+                                                    <button
                                                         type="button"
-                                                        class="btn btn-secondary">Requests
-                                                        processed</button></a>
+                                                        class="btn btn-secondary">Add new post</button>
+                                                </a>
                                             </div>
 
                                         </li>
@@ -376,11 +380,10 @@
                                             <div class="contain">
                                                 <a href="#!">
                                                     <div class="btn btn-primary"> + </div>
-                                                </a>
-                                                <a href="#!" class="pe-none"><button
+                                                    <button
                                                         type="button"
-                                                        class="btn btn-secondary">Pending
-                                                        requests</button></a>
+                                                        class="btn btn-secondary">Request deposit</button>
+                                                </a>
                                             </div>
                                         </li>
                                         <li class="list-group-item">
@@ -388,11 +391,10 @@
 
                                                 <a href="#!">
                                                     <div class="btn btn-primary"> + </div>
-                                                </a>
-                                                <a href="#!" class="pe-none"><button
+                                                    <button
                                                         type="button"
-                                                        class="btn btn-secondary">Requests
-                                                        processed</button></a>
+                                                        class="btn btn-secondary">Transaction history</button>
+                                                </a>
                                             </div>
 
                                         </li>
@@ -414,8 +416,8 @@
                                         <th class="col-lg-auto" scope="col">Status</th>
                                         <th class="col-lg-1" scope="col">View</th>
                                         <th class="col-lg-1" scope="col">Contact</th>
-                                        <th class="col-lg-1" scope="col">Accept</th>
-                                        <th class="col-lg-1" scope="col">Cancel</th>
+                                        <th class="col-lg-1" scope="col">Approve</th>
+                                        <th class="col-lg-1" scope="col">Reject</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -437,29 +439,44 @@
                                             <%=order.getStatus()%>
                                         </td>
                                         <td>
-                                            <div class="w-100 btn btn-sm btn-primary">
-                                                <ion-icon
-                                                    name="arrow-forward-circle-outline"></ion-icon>
-                                            </div>
+                                            <form action="landlordServicesPage" method="POST">
+                                                <input type="hidden" name="service" value="view-request-post">
+                                                <input type="hidden" name="post-id" value="<%=order.getPostId()%>">
+                                                <button type="submit" class="w-100 btn btn-sm btn-primary">
+                                                    <ion-icon
+                                                        name="arrow-forward-circle-outline"></ion-icon>
+                                                </button>
+                                            </form>
                                         </td>
                                         <td>
-                                            <div class="w-100 btn btn-sm btn-warning">
-                                                <ion-icon name="call-outline"></ion-icon>
-                                            </div>
+                                            <form action="landlordServicesPage" method="POST">
+                                                <input type="hidden" name="service" value="contact">
+                                                <input type="hidden" name="tenant-id" value="<%=order.getTenantId()%>">
+                                                <button type="submit"
+                                                        class="w-100 btn btn-sm btn-warning">
+                                                    <ion-icon name="call-outline"></ion-icon>
+                                                </button>
+                                            </form>
                                         </td>
                                         <td>
-                                            <div class="w-100 btn btn-sm btn-success">
-                                                <ion-icon
-                                                    name="checkbox-outline"></ion-icon>
-                                            </div>
+                                            <form action="landlordServicesPage" method="POST">
+                                                <input type="hidden" name="service" value="approve-request">
+                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
+                                                <button type="submit" class="w-100 btn btn-sm btn-success">
+                                                    <ion-icon
+                                                        name="checkbox-outline"></ion-icon>
+                                                </button>
+                                            </form>
                                         </td>
                                         <td>
-                                            <div class="w-100 btn btn-sm btn-danger">
-                                                <ion-icon name="trash-outline"></ion-icon>
-                                            </div>
+                                            <form action="landlordServicesPage" method="POST">
+                                                <input type="hidden" name="service" value="reject-request">
+                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
+                                                <button type="submit" class="w-100 btn btn-sm btn-danger">
+                                                    <ion-icon name="trash-outline"></ion-icon>
+                                                </button>
+                                            </form>
                                         </td>
-
-
                                     </tr>
                                     <%}%>
                                 </tbody>
