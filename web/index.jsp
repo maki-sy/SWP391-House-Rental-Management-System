@@ -259,7 +259,7 @@
 
                             <div class="dropdown-menu">
                                 <a class="dropdown-item " href="./profile-personal.jsp">Manage services</a>
-                                <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
+                                <a class="dropdown-item " href="Profile?service=displayProfile&id=<%=user.getId()%>&roleid=<%=user.getRoleID()%>">Manage account</a>
                                 <a class="dropdown-item " href="login?type=logout">Logout</a>
                             </div>
                         </li>
