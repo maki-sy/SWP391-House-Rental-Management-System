@@ -146,4 +146,20 @@ public class TenantDAO extends DBContext {
         }
         return modified;
     }
+    public int updateProfileByID(int tenant_id, String fname, String lname, String address, String phone) { 
+        int n = 0;
+        String sql = "UPDATE [Tenant] SET [first_name]=?,[last_name] = ?,[address]=? ,[phone] = ? WHERE [id]=?;";
+        try {
+            PreparedStatement pre = connect.prepareStatement(sql);
+            pre.setString(1, fname);
+            pre.setString(2, lname);
+            pre.setString(3, address);
+            pre.setString(4, phone);
+            pre.setInt(5, tenant_id);
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
 }

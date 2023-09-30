@@ -172,7 +172,7 @@
                 </form>
 
             </div>
-        </div><!-- End Property Search Section -->>
+        </div><!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
         <!-- Header cho khach -->
@@ -293,8 +293,8 @@
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
 
                             <div class="dropdown-menu">
-                                <a class="dropdown-item " href="./profile-personal.jsp">Manage services</a>
-                                <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
+                                <a class="dropdown-item " href="ManageServicesPage">Manage services</a>
+                                <a class="dropdown-item " href="Profile?service=displayProfile&id=<%=user.getId()%>&roleid=<%=user.getRoleID()%>">Manage account</a>
                                 <a class="dropdown-item " href="login?type=logout">Logout</a>
                             </div>
                         </li>
