@@ -12,7 +12,8 @@ public class Token {
 
     public enum TokenType {
         CONFIRMATION,
-        FORGOTPWD
+        FORGOTPWD,
+        CHANGEPWD
     }
     private int id;
     private int userID;

@@ -282,4 +282,36 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
+    
+    public boolean checkEmail(String email){
+        String SQL = "SELECT * FROM Users WHERE email = ?;";
+        try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setString(1, email);
+
+            ResultSet rs = preStmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("checkEmail(String email) reports " + ex.getMessage());
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public void updateUserPassword(Users user, byte[] password, byte[] salt) {
+        String SQL = "UPDATE Users set hashed_password = ?, salt = ? where id = ?";
+        try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setBytes(1, password);
+            preStmt.setBytes(2, salt);
+            preStmt.setInt(3, user.getId());
+
+            preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateUserPassword(Users user, byte[] password) reports " + ex.getMessage());
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
