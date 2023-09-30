@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import model.PostImage;
@@ -47,6 +48,23 @@ public class Post extends HttpServlet {
 //                System.out.println(image_url);
 //            }
             request.setAttribute("listOfPost", post);
+            ResultSet type = dao.getData("select distinct type from Post;");
+            ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
+            ResultSet priceFrom = dao.getData("select distinct price from Post;");
+            ResultSet priceTo = dao.getData("select distinct price from Post;");
+            ResultSet areaFrom = dao.getData("select distinct area from Post;");
+            ResultSet areaTo = dao.getData("select distinct area from Post;");
+            ResultSet address = dao.getData("select distinct address from Post;");
+            ResultSet location = dao.getData("select distinct location_name from Property_Location;");
+
+            request.setAttribute("type", type);
+            request.setAttribute("bedroom", bedrooms);
+            request.setAttribute("priceFrom", priceFrom);
+            request.setAttribute("priceTo", priceTo);
+            request.setAttribute("areaFrom", areaFrom);
+            request.setAttribute("areaTo", areaTo);
+            request.setAttribute("address", address);
+            request.setAttribute("location", location);
 //            request.setAttribute("PostImage", postimage);
             request.getRequestDispatcher("AllPost.jsp").forward(request, response);
         }

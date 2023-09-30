@@ -21,6 +21,7 @@ public class PostRental {
     private String address;
     private String desscription;
     private int landlord_id;
+    private int location_id;
     private String status;
     private int promotion;
     private Date post_start;
@@ -29,7 +30,7 @@ public class PostRental {
     public PostRental() {
     }
 
-    public PostRental(int id, String name, double price, int type, int area, int numOfBeds, String address, String desscription, int landlord_id, String status, int promotion, Date post_start, Date post_end) {
+    public PostRental(int id, String name, double price, int type, int area, int numOfBeds, String address, String desscription, int landlord_id, int location_id, String status, int promotion, Date post_start, Date post_end) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -39,12 +40,20 @@ public class PostRental {
         this.address = address;
         this.desscription = desscription;
         this.landlord_id = landlord_id;
+        this.location_id = location_id;
         this.status = status;
         this.promotion = promotion;
         this.post_start = post_start;
         this.post_end = post_end;
     }
 
+    public int getLocation_id() {
+        return location_id;
+    }
+
+    public void setLocation_id(int location_id) {
+        this.location_id = location_id;
+    }
     
 
     public int getId() {
@@ -127,8 +136,6 @@ public class PostRental {
         this.status = status;
     }
 
-    
-
     public int getPromotion() {
         return promotion;
     }
@@ -157,6 +164,5 @@ public class PostRental {
     public String toString() {
         return "Post{" + "id=" + id + ", name=" + name + ", price=" + price + ", type=" + type + ", area=" + area + ", numOfBeds=" + numOfBeds + ", address=" + address + ", desscription=" + desscription + ", landlord_id=" + landlord_id + ", status=" + status + ", promotion=" + promotion + ", post_start=" + post_start + ", post_end=" + post_end + '}';
     }
-    
-    
+
 }
