@@ -2,6 +2,7 @@
 <%@ page import="model.Users" %>
 <%
     Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+    DAO.PostDAO dao = new PostDAO();
 %>  
 <!-- End JSP Code -->
 
@@ -40,10 +41,14 @@
         * Author: BootstrapMade.com
         * License: https://bootstrapmade.com/license/
         ======================================================== -->
+        <%@page import="model.PostRental, model.PostImage, DAO.PostDAO" %>
+        <%@page import="java.util.List, java.sql.ResultSet"%>
+        <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
     </head>
 
     <body>
-        
+
         <!-- ======= Property Search Section ======= -->
         <div class="click-closed"></div>
         <!--/ Form Search Star /-->
@@ -53,7 +58,7 @@
             </div>
             <span class="close-box-collapse right-boxed bi bi-x"></span>
             <div class="box-collapse-wrap form">
-                <form action="search" method="POST" class="form-a">
+                <form action="search" method="GET" class="form-a">
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-group">
@@ -61,73 +66,102 @@
                                 <input name="txt" type="text" class="form-control form-control-lg form-control-a" placeholder="Keyword">
                             </div>
                         </div>
+                        <%
+                            ResultSet type = (ResultSet) request.getAttribute("type");
+                            ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
+                            ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
+                            ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
+                            ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
+                            ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
+                            ResultSet location = (ResultSet) request.getAttribute("location");
+                        %>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="Type">Type</label>
-                                <select class="form-control form-select form-control-a" id="Type">
+                                <select class="form-control form-select form-control-a" id="Type" name="type">
                                     <option>All Type</option>
-                                    <option>For Rent</option>
-                                    <option>For Sale</option>
-                                    <option>Open House</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="city">City</label>
-                                <select class="form-control form-select form-control-a" id="city">
-                                    <option>All City</option>
-                                    <option>Alabama</option>
-                                    <option>Arizona</option>
-                                    <option>California</option>
-                                    <option>Colorado</option>
+                                    <% while (type.next()) { %>
+                                    <%
+                                        int typeValue = type.getInt("type");
+                                        String displayValue = "";
+                                        if (typeValue == 1) {
+                                            displayValue = "Nhà Trọ";
+                                        } else if (typeValue == 2) {
+                                            displayValue = "Chung Cư";
+                                        }
+                                    %>
+                                    <option value="<%= typeValue %>"><%= displayValue %></option>
+                                    <% } %>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="bedrooms">Bedrooms</label>
-                                <select class="form-control form-select form-control-a" id="bedrooms">
+                                <select class="form-control form-select form-control-a" id="bedrooms" name="bed">
                                     <option>Any</option>
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
+                                    <% while (bedroom.next()) { %>
+                                    <option><%= bedroom.getString("NumOfBedrooms") %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="price">Price From</label>
+                                <select class="form-control form-select form-control-a" id="price" name="priceFrom">
+                                    <option>0</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="price">Price To</label>
+                                <select class="form-control form-select form-control-a" id="price" name="priceTo">
+                                    <option>Unlimite</option>
+                                    <option value="800">800$</option>
+                                    <option value="900">900$</option>
+                                    <option value="1000">1000$</option>
+                                    <option value="1200">1200$</option>
+                                    <option value="1500">1500$</option>
+                                    <option value="1800">1800$</option>
+                                    <option value="2000">2000$</option>
+                                    <option value="2100">2100$</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="areaFrom">Area From</label>
+                                <select class="form-control form-select form-control-a" id="areas" name="areaFrom">
+                                    <option>0</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="areaTo">Area To</label>
+                                <select class="form-control form-select form-control-a" id="areas" name="areaTo">
+                                    <option>Any</option>
+                                    <option value="10">10m2</option>
+                                    <option value="14">14m2</option>
+                                    <option value="15">15m2</option>
+                                    <option value="18">18m2</option>
+                                    <option value="20">20m2</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
-                                <label class="pb-2" for="bathrooms">Bathrooms</label>
-                                <select class="form-control form-select form-control-a" id="bathrooms">
+                                <label class="pb-2" for="location">Location</label>
+                                <select class="form-control form-select form-control-a" id="location" name="location">
                                     <option>Any</option>
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Min Price</label>
-                                <select class="form-control form-select form-control-a" id="price">
-                                    <option>Unlimite</option>
-                                    <option>$50,000</option>
-                                    <option>$100,000</option>
-                                    <option>$150,000</option>
-                                    <option>$200,000</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Max price</label>
-                                <select class="form-control form-select form-control-a" id="price">
-                                    <option>Unlimite</option>
-                                    <option>$50,000</option>
-                                    <option>$100,000</option>
-                                    <option>$150,000</option>
-                                    <option>$200,000</option>
+                                    <% while (location.next()) { %>
+                                    <option><%= location.getString("location_name")%></option>
+                                    <% } %>
                                 </select>
                             </div>
                         </div>
@@ -136,8 +170,9 @@
                         </div>
                     </div>
                 </form>
+
             </div>
-        </div><!-- End Property Search Section -->>
+        </div><!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
         <!-- Header cho khach -->
@@ -193,7 +228,15 @@
                         data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
                     <i class="bi bi-search"></i>
                 </button>
-              </ul>
+
+                <div class="dropdown-menu">
+                    <a class="dropdown-item " href="/ManageServicesPage">Manage services</a>
+                    <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
+                    <a class="dropdown-item " href="login?type=logout">Logout</a>
+                </div>
+                </li>
+
+                </ul>
             </div>
         </nav>
         <!-- Header cho nguoi dung da dang nhap -->
@@ -250,7 +293,7 @@
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
 
                             <div class="dropdown-menu">
-                                <a class="dropdown-item " href="./profile-personal.jsp">Manage services</a>
+                                <a class="dropdown-item " href="ManageServicesPage">Manage services</a>
                                 <a class="dropdown-item " href="Profile?service=displayProfile&id=<%=user.getId()%>&roleid=<%=user.getRoleID()%>">Manage account</a>
                                 <a class="dropdown-item " href="login?type=logout">Logout</a>
                             </div>
@@ -268,13 +311,21 @@
         <%}%>
         <!-- End Header/Navbar -->
 
+        <%
+        List<PostRental> highest = (List<PostRental>) request.getAttribute("highestPost");
+        %>
         <!-- ======= Intro Section ======= -->
         <div class="intro intro-carousel swiper position-relative">
 
             <div class="swiper-wrapper">
-
+                <%for(PostRental pr:highest){
+                int pID = pr.getId();
+                List<PostImage> image = dao.getPostImages(pID);
+                %>
+                <%for(PostImage po:image){%>
+                <%if(po.getImg_type().equals("thumbails")){%>
                 <div class="swiper-slide carousel-item-a intro-item bg-image"
-                     style="background-image: url(assets/img/slide-1.jpg)">
+                     style="background-image: url(<%=po.getImg_url()%>)">
                     <div class="overlay overlay-a"></div>
                     <div class="intro-content display-table">
                         <div class="table-cell">
@@ -282,15 +333,14 @@
                                 <div class="row">
                                     <div class="col-lg-8">
                                         <div class="intro-body">
-                                            <p class="intro-title-top">Doral, Florida
-                                                <br> 78345
+                                            <p class="intro-title-top"><%=pr.getName()%>
+                                                <br>
                                             </p>
                                             <h1 class="intro-title mb-4 ">
-                                                <span class="color-b">204 </span> Mount
-                                                <br> Olive Road Two
+                                                <br> <%=pr.getAddress()%>
                                             </h1>
                                             <p class="intro-subtitle intro-price">
-                                                <a href="#"><span class="price-a">rent | $ 12.000</span></a>
+                                                <a href="#"><span class="price-a">rent | $ <%=pr.getPrice()%></span></a>
                                             </p>
                                         </div>
                                     </div>
@@ -299,61 +349,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="swiper-slide carousel-item-a intro-item bg-image"
-                     style="background-image: url(assets/img/slide-2.jpg)">
-                    <div class="overlay overlay-a"></div>
-                    <div class="intro-content display-table">
-                        <div class="table-cell">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="intro-body">
-                                            <p class="intro-title-top">Doral, Florida
-                                                <br> 78345
-                                            </p>
-                                            <h1 class="intro-title mb-4">
-                                                <span class="color-b">204 </span> Rino
-                                                <br> Venda Road Five
-                                            </h1>
-                                            <p class="intro-subtitle intro-price">
-                                                <a href="#"><span class="price-a">rent | $ 12.000</span></a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <%break;}else{%>
+                <div class="img-box-a">
+                    <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
                 </div>
-                <div class="swiper-slide carousel-item-a intro-item bg-image"
-                     style="background-image: url(assets/img/slide-3.jpg)">
-                    <div class="overlay overlay-a"></div>
-                    <div class="intro-content display-table">
-                        <div class="table-cell">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="intro-body">
-                                            <p class="intro-title-top">Doral, Florida
-                                                <br> 78345
-                                            </p>
-                                            <h1 class="intro-title mb-4">
-                                                <span class="color-b">204 </span> Alira
-                                                <br> Roan Road One
-                                            </h1>
-                                            <p class="intro-subtitle intro-price">
-                                                <a href="#"><span class="price-a">rent | $ 12.000</span></a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%continue;}}%>
+                <%}%>
             </div>
             <div class="swiper-pagination"></div>
         </div><!-- End Intro Section -->
+
 
         <main id="main">
 
@@ -449,6 +454,10 @@
                 </div>
             </section><!-- End Services Section -->
 
+            <%
+            List<PostRental> list = (List<PostRental>) request.getAttribute("lastestPost");
+            
+            %>
             <!-- ======= Latest Properties Section ======= -->
             <section class="section-property section-t8">
                 <div class="container">
@@ -456,38 +465,48 @@
                         <div class="col-md-12">
                             <div class="title-wrap d-flex justify-content-between">
                                 <div class="title-box">
-                                    <h2 class="title-a">Latest Properties</h2>
+                                    <h2 class="title-a">Lastest Properties</h2>
                                 </div>
                                 <div class="title-link">
-                                    <a href="property-grid.jsp">All Property
+                                    <a href="Post">All Property
                                         <span class="bi bi-chevron-right"></span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div id="property-carousel" class="swiper">
                         <div class="swiper-wrapper">
-
+                            <%for(PostRental po:list){
+                            int postID = po.getId();
+                            List<PostImage> image_url = dao.getPostImages(postID);
+                            %>
                             <div class="carousel-item-b swiper-slide">
                                 <div class="card-box-a card-shadow">
+                                    <%for(PostImage p:image_url){%>
+                                    <%if(p.getImg_type().equals("thumbails")){%>
                                     <div class="img-box-a">
-                                        <img src="assets/img/property-6.jpg" alt="" class="img-a img-fluid">
+                                        <img src="<%=p.getImg_url()%>" alt="" class="img-a img-fluid">
                                     </div>
+                                    <%break;}else{%>
+                                    <div class="img-box-a">
+                                        <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
+                                    </div>
+                                    <%continue;}}%>
+
                                     <div class="card-overlay">
                                         <div class="card-overlay-a-content">
                                             <div class="card-header-a">
                                                 <h2 class="card-title-a">
-                                                    <a href="property-single.jsp">206 Mount
-                                                        <br /> Olive Road Two</a>
+                                                    <a href="housedetail?id=<%=po.getId()%>"><%=po.getName()%>
+                                                    </a>
                                                 </h2>
                                             </div>
                                             <div class="card-body-a">
                                                 <div class="price-box d-flex">
-                                                    <span class="price-a">rent | $ 12.000</span>
+                                                    <span class="price-a">rent | $ <%=po.getPrice()%></span>
                                                 </div>
-                                                <a href="#" class="link-a">Click here to view
+                                                <a href="housedetail?id=<%=po.getId()%>" class="link-a">Click here to view
                                                     <span class="bi bi-chevron-right"></span>
                                                 </a>
                                             </div>
@@ -495,21 +514,17 @@
                                                 <ul class="card-info d-flex justify-content-around">
                                                     <li>
                                                         <h4 class="card-info-title">Area</h4>
-                                                        <span>340m
+                                                        <span><%=po.getArea()%>m
                                                             <sup>2</sup>
                                                         </span>
                                                     </li>
                                                     <li>
                                                         <h4 class="card-info-title">Beds</h4>
-                                                        <span>2</span>
+                                                        <span><%=po.getNumOfBeds()%></span>
                                                     </li>
                                                     <li>
-                                                        <h4 class="card-info-title">Baths</h4>
-                                                        <span>4</span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Garages</h4>
-                                                        <span>1</span>
+                                                        <h4 class="card-info-title">Status</h4>
+                                                        <span><%=po.getStatus()%></span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -517,156 +532,14 @@
                                     </div>
                                 </div>
                             </div><!-- End carousel item -->
-
-                            <div class="carousel-item-b swiper-slide">
-                                <div class="card-box-a card-shadow">
-                                    <div class="img-box-a">
-                                        <img src="assets/img/property-3.jpg" alt="" class="img-a img-fluid">
-                                    </div>
-                                    <div class="card-overlay">
-                                        <div class="card-overlay-a-content">
-                                            <div class="card-header-a">
-                                                <h2 class="card-title-a">
-                                                    <a href="property-single.jsp">157 West
-                                                        <br /> Central Park</a>
-                                                </h2>
-                                            </div>
-                                            <div class="card-body-a">
-                                                <div class="price-box d-flex">
-                                                    <span class="price-a">rent | $ 12.000</span>
-                                                </div>
-                                                <a href="property-single.jsp" class="link-a">Click here to view
-                                                    <span class="bi bi-chevron-right"></span>
-                                                </a>
-                                            </div>
-                                            <div class="card-footer-a">
-                                                <ul class="card-info d-flex justify-content-around">
-                                                    <li>
-                                                        <h4 class="card-info-title">Area</h4>
-                                                        <span>340m
-                                                            <sup>2</sup>
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Beds</h4>
-                                                        <span>2</span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Baths</h4>
-                                                        <span>4</span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Garages</h4>
-                                                        <span>1</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
-
-                            <div class="carousel-item-b swiper-slide">
-                                <div class="card-box-a card-shadow">
-                                    <div class="img-box-a">
-                                        <img src="assets/img/property-7.jpg" alt="" class="img-a img-fluid">
-                                    </div>
-                                    <div class="card-overlay">
-                                        <div class="card-overlay-a-content">
-                                            <div class="card-header-a">
-                                                <h2 class="card-title-a">
-                                                    <a href="property-single.jsp">245 Azabu
-                                                        <br /> Nishi Park let</a>
-                                                </h2>
-                                            </div>
-                                            <div class="card-body-a">
-                                                <div class="price-box d-flex">
-                                                    <span class="price-a">rent | $ 12.000</span>
-                                                </div>
-                                                <a href="property-single.jsp" class="link-a">Click here to view
-                                                    <span class="bi bi-chevron-right"></span>
-                                                </a>
-                                            </div>
-                                            <div class="card-footer-a">
-                                                <ul class="card-info d-flex justify-content-around">
-                                                    <li>
-                                                        <h4 class="card-info-title">Area</h4>
-                                                        <span>340m
-                                                            <sup>2</sup>
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Beds</h4>
-                                                        <span>2</span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Baths</h4>
-                                                        <span>4</span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Garages</h4>
-                                                        <span>1</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
-
-                            <div class="carousel-item-b swiper-slide">
-                                <div class="card-box-a card-shadow">
-                                    <div class="img-box-a">
-                                        <img src="assets/img/property-10.jpg" alt="" class="img-a img-fluid">
-                                    </div>
-                                    <div class="card-overlay">
-                                        <div class="card-overlay-a-content">
-                                            <div class="card-header-a">
-                                                <h2 class="card-title-a">
-                                                    <a href="property-single.jsp">204 Montal
-                                                        <br /> South Bela Two</a>
-                                                </h2>
-                                            </div>
-                                            <div class="card-body-a">
-                                                <div class="price-box d-flex">
-                                                    <span class="price-a">rent | $ 12.000</span>
-                                                </div>
-                                                <a href="property-single.jsp" class="link-a">Click here to view
-                                                    <span class="bi bi-chevron-right"></span>
-                                                </a>
-                                            </div>
-                                            <div class="card-footer-a">
-                                                <ul class="card-info d-flex justify-content-around">
-                                                    <li>
-                                                        <h4 class="card-info-title">Area</h4>
-                                                        <span>340m
-                                                            <sup>2</sup>
-                                                        </span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Beds</h4>
-                                                        <span>2</span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Baths</h4>
-                                                        <span>4</span>
-                                                    </li>
-                                                    <li>
-                                                        <h4 class="card-info-title">Garages</h4>
-                                                        <span>1</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
+                            <%}%>
                         </div>
                     </div>
                     <div class="propery-carousel-pagination carousel-pagination"></div>
 
                 </div>
             </section><!-- End Latest Properties Section -->
+
 
             <!-- ======= Agents Section ======= -->
             <section class="section-agents section-t8">

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import DAO.PostDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.ResultSet;
+import java.util.List;
+import model.PostRental;
 
 /**
  *
@@ -31,6 +35,29 @@ public class HomePage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+        DAO.PostDAO dao = new PostDAO();
+        List<PostRental> list = dao.getLastestPost();
+        List<PostRental> highest = dao.getHighestHousePrice();
+        ResultSet type = dao.getData("select distinct type from Post;");
+        ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
+        ResultSet priceFrom = dao.getData("select distinct price from Post;");
+        ResultSet priceTo = dao.getData("select distinct price from Post;");
+        ResultSet areaFrom = dao.getData("select distinct area from Post;");
+        ResultSet areaTo = dao.getData("select distinct area from Post;");
+        ResultSet address = dao.getData("select distinct address from Post;");
+        ResultSet location = dao.getData("select distinct location_name from Property_Location;");
+
+        request.setAttribute("type", type);
+        request.setAttribute("bedroom", bedrooms);
+        request.setAttribute("priceFrom", priceFrom);
+        request.setAttribute("priceTo", priceTo);
+        request.setAttribute("areaFrom", areaFrom);
+        request.setAttribute("areaTo", areaTo);
+        request.setAttribute("address", address);
+        request.setAttribute("location", location);
+
+        request.setAttribute("lastestPost", list);
+        request.setAttribute("highestPost", highest);
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 

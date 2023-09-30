@@ -5,14 +5,12 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Landlord;
 import model.Users;
 
 @WebServlet(name = "ManageServicesPage", urlPatterns = {"/ManageServicesPage"})
@@ -24,20 +22,18 @@ public class ManageServicesPage extends HttpServlet {
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
         // 1 tenant 2 landlord 3 admin
-        switch (user.getRoleID()) {
+        if (user.getRoleID() == 1) {
             // go to Tenant services manager
-            case 1:
-                break;
-            // go to Landlord services manager
-            case 2:
-                response.sendRedirect("/landlordServices");
-                break;
-            // go to Admin services manager
-            default:
-                break;
+            response.sendRedirect("index.jsp");
+        } else if (user.getRoleID() == 2) {
+            String url = request.getContextPath() + "/landlordServicesPage";
+            response.sendRedirect(url);
+        } else if (user.getRoleID() == 3) {
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        } else {
+            // Default case: Redirect to index.jsp for unknown roles
+            response.sendRedirect("index.jsp");
         }
-        response.sendRedirect("index.jsp");
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

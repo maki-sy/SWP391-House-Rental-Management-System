@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ public class OrdersDAO extends DBContext {
         }
         return Orders;
     }
-    
-    public ArrayList<Orders> getOrdersByLandlordId(int targetLandlord){
+
+    public ArrayList<Orders> getOrdersByLandlordId(int targetLandlord) {
         ArrayList<Orders> Orders = new ArrayList<>();
         String sqlCommand = "SELECT * FROM Orders WHERE landlord_id =" + targetLandlord;
         ResultSet rs = getData(sqlCommand);
@@ -47,10 +48,10 @@ public class OrdersDAO extends DBContext {
         }
         return Orders;
     }
-    
-    public ArrayList<Orders> getOrdersByLandlordIdWithConditions(int targetLandlordId, String conditions){
+
+    public ArrayList<Orders> getOrdersByLandlordIdWithConditions(int targetLandlordId, String conditions) {
         ArrayList<Orders> Orders = new ArrayList<>();
-        String sqlCommand = "SELECT * FROM Orders WHERE landlord_id =" + targetLandlordId + "AND" + conditions;
+        String sqlCommand = "SELECT * FROM Orders WHERE landlord_id =" + targetLandlordId + " AND " + conditions;
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {
@@ -66,11 +67,26 @@ public class OrdersDAO extends DBContext {
         }
         return Orders;
     }
-    
+
+    public boolean updateStatus(String statusValue, int OrderId) {
+        int rowsUpdated = 0;
+        try {
+            String sqlCommand = "UPDATE Orders\n"
+                    + "SET status = ?\n"
+                    + "WHERE order_id = ?;";
+            PreparedStatement preparedStatement = connect.prepareStatement(sqlCommand);
+            preparedStatement.setString(1, statusValue);
+            preparedStatement.setInt(2, OrderId);
+            rowsUpdated = preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+        }
+        return rowsUpdated != 0;
+    }
+
     public static void main(String[] args) {
         OrdersDAO dao = new OrdersDAO();
         ArrayList<Orders> list = dao.getAllOrders();
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             System.out.println("NOTE NOTE NOTE" + list.get(i));
         }
     }

@@ -5,10 +5,11 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.PostRental, model.PostImage, DAO.PostDAO" %>
-<%@page import="java.util.List"%>
+
+<%@page import="java.util.List, java.sql.ResultSet"%>
+<%@ page import="model.Users" %>
 <%
-    String role = session.getAttribute("role") == null ? null : (String) session.getAttribute("role");
-    Object loggedUser = session.getAttribute("user") == null ? null : session.getAttribute("user");
+Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
     DAO.PostDAO dao = new PostDAO();
 %>
 
@@ -59,7 +60,7 @@
             </div>
             <span class="close-box-collapse right-boxed bi bi-x"></span>
             <div class="box-collapse-wrap form">
-                <form action="search" method="POST" class="form-a">
+                <form action="search" method="GET" class="form-a">
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-group">
@@ -67,25 +68,43 @@
                                 <input name="txt" type="text" class="form-control form-control-lg form-control-a" placeholder="Keyword">
                             </div>
                         </div>
+                        <%
+                            ResultSet type = (ResultSet) request.getAttribute("type");
+                            ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
+                            ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
+                            ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
+                            ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
+                            ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
+                            ResultSet location = (ResultSet) request.getAttribute("location");
+                        %>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="Type">Type</label>
-                                <select class="form-control form-select form-control-a" id="Type">
+                                <select class="form-control form-select form-control-a" id="Type" name="type">
                                     <option>All Type</option>
-                                    <option>For Rent</option>
-                                    <option>For Sale</option>
-                                    <option>Open House</option>
+                                    <% while (type.next()) { %>
+                                    <%
+                                        int typeValue = type.getInt("type");
+                                        String displayValue = "";
+                                        if (typeValue == 1) {
+                                            displayValue = "Nhà Trọ";
+                                        } else if (typeValue == 2) {
+                                            displayValue = "Chung Cư";
+                                        }
+                                    %>
+                                    <option value="<%= typeValue %>"><%= displayValue %></option>
+                                    <% } %>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="bedrooms">Bedrooms</label>
-                                <select class="form-control form-select form-control-a" id="bedrooms">
+                                <select class="form-control form-select form-control-a" id="bedrooms" name="bed">
                                     <option>Any</option>
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
+                                    <% while (bedroom.next()) { %>
+                                    <option><%= bedroom.getString("NumOfBedrooms") %></option>
+                                    <% } %>
                                 </select>
                             </div>
                         </div>
@@ -94,35 +113,57 @@
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="price">Price From</label>
-                                <select class="form-control form-select form-control-a" id="price">
-                                    <option>Unlimite</option>
-                                    <option>$50,000</option>
-                                    <option>$100,000</option>
-                                    <option>$150,000</option>
-                                    <option>$200,000</option>
+                                <select class="form-control form-select form-control-a" id="price" name="priceFrom">
+                                    <option>0</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
-                                <label class="pb-2" for="price">To Price</label>
-                                <select class="form-control form-select form-control-a" id="price">
+                                <label class="pb-2" for="price">Price To</label>
+                                <select class="form-control form-select form-control-a" id="price" name="priceTo">
                                     <option>Unlimite</option>
-                                    <option>$50,000</option>
-                                    <option>$100,000</option>
-                                    <option>$150,000</option>
-                                    <option>$200,000</option>
+                                    <option value="800">800$</option>
+                                    <option value="900">900$</option>
+                                    <option value="1000">1000$</option>
+                                    <option value="1200">1200$</option>
+                                    <option value="1500">1500$</option>
+                                    <option value="1800">1800$</option>
+                                    <option value="2000">2000$</option>
+                                    <option value="2100">2100$</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
-                                <label class="pb-2" for="bathrooms">Areas</label>
-                                <select class="form-control form-select form-control-a" id="bathrooms">
+                                <label class="pb-2" for="areaFrom">Area From</label>
+                                <select class="form-control form-select form-control-a" id="areas" name="areaFrom">
+                                    <option>0</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="areaTo">Area To</label>
+                                <select class="form-control form-select form-control-a" id="areas" name="areaTo">
                                     <option>Any</option>
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
+                                    <option value="10">10m2</option>
+                                    <option value="14">14m2</option>
+                                    <option value="15">15m2</option>
+                                    <option value="18">18m2</option>
+                                    <option value="20">20m2</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <div class="form-group mt-3">
+                                <label class="pb-2" for="location">Location</label>
+                                <select class="form-control form-select form-control-a" id="location" name="location">
+                                    <option>Any</option>
+                                    <% while (location.next()) { %>
+                                    <option><%= location.getString("location_name")%></option>
+                                    <% } %>
                                 </select>
                             </div>
                         </div>
@@ -136,7 +177,7 @@
 
         <!-- ======= Header/Navbar ======= -->
         <!-- Header cho khách (guest) -->
-        <% if(role == null) { %>
+        <% if(user == null) { %>
 
         <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">

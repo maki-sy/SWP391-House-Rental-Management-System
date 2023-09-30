@@ -5,6 +5,7 @@
 package controller;
 
 import DAO.PostDAO;
+import DAO.SearchDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import model.PostImage;
@@ -38,18 +40,37 @@ public class SearchController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            DAO.SearchDAO dao = new SearchDAO();
+            ResultSet type = dao.getData("select distinct type from Post;");
+            ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
+            ResultSet priceFrom = dao.getData("select distinct price from Post;");
+            ResultSet priceTo = dao.getData("select distinct price from Post;");
+            ResultSet areaFrom = dao.getData("select distinct area from Post;");
+            ResultSet areaTo = dao.getData("select distinct area from Post;");
+            ResultSet address = dao.getData("select distinct address from Post;");
+            ResultSet location = dao.getData("select distinct location_name from Property_Location;");
+
+            request.setAttribute("type", type);
+            request.setAttribute("bedroom", bedrooms);
+            request.setAttribute("priceFrom", priceFrom);
+            request.setAttribute("priceTo", priceTo);
+            request.setAttribute("areaFrom", areaFrom);
+            request.setAttribute("areaTo", areaTo);
+            request.setAttribute("address", address);
+            request.setAttribute("location", location);
+
             String search = request.getParameter("txt");
-            
-            DAO.PostDAO dao = new PostDAO();
-            List<PostRental> list = dao.searchPostByKeyword(search);
-            List<PostImage> postimage = new ArrayList<>();
-            for (PostRental postRental : list) {
-                int postID = postRental.getId();
-                List<PostImage> image_url = dao.getPostImages(postID);
-                postimage.addAll(image_url);
-            }
+            String roomType = request.getParameter("type");
+            String bedroom = request.getParameter("bed");
+            String priceF = request.getParameter("priceFrom");
+            String priceT = request.getParameter("priceTo");
+            String areaF = request.getParameter("areaFrom");
+            String areaT = request.getParameter("areaTo");
+            String locationn = request.getParameter("location");
+
+            List<PostRental> list = dao.searchPostByAttributes(search, roomType, bedroom, priceF, priceT, areaF, areaT, locationn);
+            System.out.println(list);
             request.setAttribute("listOfPost", list);
-            request.setAttribute("PostImage", postimage);
             request.getRequestDispatcher("AllPost.jsp").forward(request, response);
         }
     }
