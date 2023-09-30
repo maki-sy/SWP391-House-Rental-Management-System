@@ -325,8 +325,8 @@
                                                     <div class="btn btn-primary"> + </div>
                                                     <button
                                                         type="button"
-                                                        class="btn btn-secondary">Pending
-                                                        requests</button>
+                                                        class="btn btn-secondary">Pending requests
+                                                    </button>
                                                 </a>
                                             </div>
                                         </li>
@@ -337,8 +337,8 @@
                                                     <div class="btn btn-primary"> + </div>
                                                     <button
                                                         type="button"
-                                                        class="btn btn-secondary">Requests
-                                                        processed</button>
+                                                        class="btn btn-secondary">Requests processed
+                                                    </button>
                                                 </a>
                                             </div>
 
@@ -354,7 +354,8 @@
                                                     <div class="btn btn-primary"> + </div>
                                                     <button
                                                         type="button"
-                                                        class="btn btn-secondary">Published posts</button>
+                                                        class="btn btn-secondary">Published posts
+                                                    </button>
                                                 </a>
                                             </div>
                                         </li>
@@ -365,7 +366,8 @@
                                                     <div class="btn btn-primary"> + </div>
                                                     <button
                                                         type="button"
-                                                        class="btn btn-secondary">Add new post</button>
+                                                        class="btn btn-secondary">Add new post
+                                                    </button>
                                                 </a>
                                             </div>
 
@@ -382,7 +384,8 @@
                                                     <div class="btn btn-primary"> + </div>
                                                     <button
                                                         type="button"
-                                                        class="btn btn-secondary">Request deposit</button>
+                                                        class="btn btn-secondary">Request deposit
+                                                    </button>
                                                 </a>
                                             </div>
                                         </li>
@@ -393,7 +396,8 @@
                                                     <div class="btn btn-primary"> + </div>
                                                     <button
                                                         type="button"
-                                                        class="btn btn-secondary">Transaction history</button>
+                                                        class="btn btn-secondary">Transaction history
+                                                    </button>
                                                 </a>
                                             </div>
 
