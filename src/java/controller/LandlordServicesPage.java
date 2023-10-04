@@ -51,11 +51,11 @@ public class LandlordServicesPage extends HttpServlet {
             } else if (service.equals("approve-request")) {
                 int orderId = Integer.parseInt(request.getParameter("order-id"));
                 boolean isUpdated = handleService.isApproveStatusUpdated(orderId);
-                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                request.getRequestDispatcher("/landlordServicesPage?service=pending-requests").forward(request, response);
             } else if (service.equals("reject-request")) {
                 int orderId = Integer.parseInt(request.getParameter("order-id"));
                 boolean isUpdated = handleService.isRejectStatusUpdated(orderId);
-                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                request.getRequestDispatcher("/landlordServicesPage?service=pending-requests").forward(request, response);
             } else if (service.equals("published-posts")) {
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
                 // do  something
