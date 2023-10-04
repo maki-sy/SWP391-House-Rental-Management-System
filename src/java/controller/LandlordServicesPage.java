@@ -1,6 +1,5 @@
 package controller;
 
-import DAO.OrdersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -24,6 +23,10 @@ public class LandlordServicesPage extends HttpServlet {
             LandlordService handleService = new LandlordService();
             HttpSession session = request.getSession();
             Users user = (Users) session.getAttribute("user");
+            if(user == null || user.getRoleID() != 2) {
+                response.sendRedirect("trang-chu");
+                return;
+            }
             String service = request.getParameter("service");
 
             // xem order chua xu ly

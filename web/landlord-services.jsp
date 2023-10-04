@@ -144,9 +144,10 @@
         <!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
+        <%@include file="header.jsp" %>
         <!-- Header cho khach -->
-        <% if(role==null) { %>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <%-- if(role==null) { --%>
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -197,10 +198,10 @@
                 </button>
 
             </div>
-        </nav>
+        </nav>-->
         <!-- Header cho nguoi dung da dang nhap -->
-        <%} else {%>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <%--} else {--%>
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault"
@@ -272,8 +273,8 @@
                 </button>
 
             </div>
-        </nav>
-        <%}%>
+        </nav>-->
+        <%--}--%>
         <!-- End Header/Navbar -->
         <main id="main">
             <section class="section-news section-t3">
@@ -312,10 +313,7 @@
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button"
-                                                                                 class=" w-100 btn btn-dark "> Manage
-                                                    rental
-                                                    requests</button></a>
+                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark "> Manage rental requests</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
@@ -371,10 +369,7 @@
 
                                         </li>
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button"
-                                                                                 class=" w-100 btn btn-dark ">Manage my
-                                                    wallet
-                                                    points</button></a>
+                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Manage my wallet points</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
@@ -398,7 +393,22 @@
                                                     </button>
                                                 </a>
                                             </div>
-
+                                        </li>
+                                        
+                                        <li class="list-group-item text-center">
+                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Promotions</button></a>
+                                        </li>
+                                        
+                                        <li class="list-group-item">
+                                            <div class="contain">
+                                                <a href="PromotionManage">
+                                                    <div class="btn btn-primary"> + </div>
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-secondary">Manage Promotions
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </li>
 
                                     </ul>

@@ -23,8 +23,8 @@ public class ManageServicesPage extends HttpServlet {
         Users user = (Users) session.getAttribute("user");
         // 1 tenant 2 landlord 3 admin
         if (user.getRoleID() == 1) {
-            // go to Tenant services manager
-            response.sendRedirect("index.jsp");
+            // go to Tenant services manager. TODO
+            response.sendRedirect("trang-chu");
         } else if (user.getRoleID() == 2) {
             String url = request.getContextPath() + "/landlordServicesPage";
             response.sendRedirect(url);
@@ -32,7 +32,7 @@ public class ManageServicesPage extends HttpServlet {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         } else {
             // Default case: Redirect to index.jsp for unknown roles
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("trang-chu");
         }
     }
 

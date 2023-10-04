@@ -4,10 +4,8 @@
     Author     : Tuấn Anh
 --%>
 <%@page import="model.PostRental, model.PostImage, DAO.PostDAO" %>
-
 <%@page import="java.util.List, java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%@ page import="model.Users" %>
 <%
     Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
@@ -50,7 +48,10 @@
     </head>
 
     <body>
-
+        <!-- ======= Header/Navbar ======= -->
+        <%@include file="header.jsp" %>
+        <!-- ======= Header/Navbar ======= -->
+        
         <!-- ======= Property Search Section ======= -->
         <div class="click-closed"></div>
         <!--/ Form Search Star /-->
@@ -177,8 +178,8 @@
 
         <!-- ======= Header/Navbar ======= -->
         <!-- Header cho khách (guest) -->
-        <% if(user == null) { %>
-
+        <%-- if(user == null) { --%>
+<!--
         <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDefault"
@@ -226,9 +227,9 @@
                     <i class="bi bi-search"></i>
                 </button>
             </div>
-        </nav>
-        <%} else {%>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        </nav>-->
+        <%--} else {--%>
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -290,8 +291,8 @@
                 </button>
 
             </div>
-        </nav>
-        <%}%>
+        </nav>-->
+        <%--}--%>
         <!-- End Header/Navbar -->
         <%
                   List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");

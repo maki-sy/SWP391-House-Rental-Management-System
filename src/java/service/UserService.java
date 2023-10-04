@@ -246,45 +246,6 @@ public class UserService {
         return token;
     }
 
-//    /**
-//     * Login for tenant and landlord
-//     *
-//     * @param email
-//     * @param password raw password user inputted
-//     * @return Object represent Tenant or Landlord if login success, null if
-//     * unsuccess
-//     */
-//    public Object login(String email, String password, String role) {
-//        
-//        
-//        Tenant t = TENANT_DAO.getTenantByEmail(email);
-//        if (t != null) {
-//            byte[] salt = t.getSalt();
-//            byte[] correctPass = t.getHashedPassword();
-//            byte[] inputPass = hashingPassword(password, salt);
-//            boolean sucess = Arrays.equals(correctPass, inputPass);
-//            if (sucess) {
-//                return t;
-//            } else {
-//                return null;
-//            }
-//        }
-//
-//        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
-//        if (l != null) {
-//            byte[] salt = l.getSalt();
-//            byte[] correctPass = l.getHashedPassword();
-//            byte[] inputPass = hashingPassword(password, salt);
-//            boolean sucess = Arrays.equals(correctPass, inputPass);
-//            if (sucess) {
-//                return l;
-//            } else {
-//                return null;
-//            }
-//        }
-//
-//        return null; // NEED TO UPDATE ASAP
-//    }
     /**
      * Login for tenant and landlord
      *
@@ -440,29 +401,12 @@ public class UserService {
 
         changePasswordEmail(email, token.getToken());
     }
-
-    public static void main(String[] args) {
-//        UserService u = new UserService();
-//        // Generate token for email verification
-//        Token token = u.generateToken("TEN", "haquangthangtn@gmail.com", Token.TokenType.CONFIRMATION);
-//
-//        // Send an email with token to user's email to verify email address
-//        u.sendConfirmationEmail("haquangthangtn@gmail.com", token.getToken());
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS]");
-//        LocalDateTime test = LocalDateTime.parse("2023-09-24 19:55:44.02", formatter);
-//        System.out.println(test);
-        Token token = TOKEN_DAO.getToken("TEN1QPvZJFuZVWltaXwQCpmpNwB5bE");
-        String time = token.getExpireDate();
-//        String formatted = 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS]");
-
-        System.out.println(LocalDateTime.parse(time, formatter));
-//
-//        String dateTimeStr1 = "2023-09-24 19:55:44.020";
-//        String dateTimeStr2 = "2023-09-24 19:55:44.02";
-//
-//        LocalDateTime dateTime1 = LocalDateTime.parse(dateTimeStr1, formatter);
-//        LocalDateTime dateTime2 = LocalDateTime.parse(dateTimeStr2, formatter);
+    
+    /**
+     * 
+     * @param email 
+     */
+    public void forgotPassword(String email){
+        
     }
 }
