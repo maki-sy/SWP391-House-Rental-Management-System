@@ -300,11 +300,9 @@
                                          style="width: 150px;">
                                     <div class="mb-3"></div>
                                     <ul class="list-group text-start">
-                                        <li class="text-start list-group-item active list-group-item-action" aria-current="true">Manage pending requests</li>
+                                        <li class="text-start list-group-item active" aria-current="true">Manage requests processed</li>
                                         <li class="list-group-item"><span class="text-bg-primary">--View--</span><span> View detailed post information</span></li>
                                         <li class="list-group-item"><span class="text-bg-warning">--Contact--</span><span> Go to the customer's personal page</span></li>
-                                        <li class="list-group-item"><span class="text-bg-success">--Approve--</span><span> Customers can view your personal information</span></li>
-                                        <li class="list-group-item"><span class="text-bg-danger">--Reject--</span><span> Customers can't see your contact information</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -418,8 +416,7 @@
                                         <th class="col-lg-auto" scope="col">Status</th>
                                         <th class="col-lg-1" scope="col">View</th>
                                         <th class="col-lg-1" scope="col">Contact</th>
-                                        <th class="col-lg-1" scope="col">Approve</th>
-                                        <th class="col-lg-1" scope="col">Reject</th>
+                                     
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -460,25 +457,7 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="approve-request">
-                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
-                                                <button type="submit" class="w-100 btn btn-sm btn-success">
-                                                    <ion-icon
-                                                        name="checkbox-outline"></ion-icon>
-                                                </button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="reject-request">
-                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
-                                                <button type="submit" class="w-100 btn btn-sm btn-danger">
-                                                    <ion-icon name="trash-outline"></ion-icon>
-                                                </button>
-                                            </form>
-                                        </td>
+                                      
                                     </tr>
                                     <%}%>
                                 </tbody>
