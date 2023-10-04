@@ -7,7 +7,6 @@
         <link
             href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css'
             rel='stylesheet'>
-        <link href='' rel='stylesheet'>
         <script type='text/javascript'
         src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
         <style>
@@ -49,6 +48,18 @@
                 outline: 0;
                 box-shadow: 0 0 0 0px #28a745
             }
+            .main {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
         </style>
     </head>
     <body oncontextmenu='return false' class='snippet-body'>
@@ -59,19 +70,17 @@
                         <h2>Change your password in three easy steps. This will help you
                             to secure your password!</h2>
                         <ol class="list-unstyled">
-                            <li><span class="text-primary text-medium">1. </span>Enter
-                                your email address below.</li>
-                            <li><span class="text-primary text-medium">2. </span>Our
-                                system will send you an email to verify the request.</li>
+                            <li><span class="text-primary text-medium">1. </span>Enter your old password below.</li>
+                            <li><span class="text-primary text-medium">2. </span>Our system will send you an email to verify the request.</li>
                             <li><span class="text-primary text-medium">3. </span>Enter the new password on the next page</li>
                         </ol>
                     </div>
                     <form class="card mt-4" action="changePassword" method="POST">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="email-for-pass">Enter your email address</label> <input
-                                    class="form-control" type="text" name="email" id="email-for-pass" required=""><small
-                                    class="form-text text-muted">Enter the registered email address . Then we'll send an
+                                <label for="email-for-pass">Enter your password</label> <input
+                                    class="form-control" type="password" name="password" id="email-for-pass"><small
+                                    class="form-text text-muted">Enter the old password in the box below. If the password is correct, we will send an
                                     email to this address.</small>
                                 <!--<label for="role-for-pass">Choose the role that you registered using this email</label>
                                 <select name="role">
@@ -82,10 +91,10 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-success" type="submit">Get New
+                            <button class="btn btn-success" name="getNewPassword" type="submit">Get New
                                 Password</button>
-                            <button class="btn btn-danger" type="submit">Back to
-                                Login</button>
+                            <button class="btn btn-danger" name="backToHome" type="submit">Back to
+                                Home</button>
                         </div>
                     </form>
                 </div>

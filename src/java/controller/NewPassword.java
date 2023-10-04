@@ -52,23 +52,21 @@ public class NewPassword extends HttpServlet {
         String password = request.getParameter("password");
         String confPassword = request.getParameter("confPassword");
 
+        //password and confirm password does not match
         if (!password.equals(confPassword)) {
-            response.sendRedirect("login.jsp");
+            request.setAttribute("message", "Your confirm password does not match. Please try again.");
+            request.getRequestDispatcher("new-password.jsp").forward(request, response);
         } else {
-
+            //change the password and get value for variable "verified" based on the result
             UserService uService = new UserService();
             UserDAO dao = new UserDAO();
-
             String token = request.getParameter("token");
+            String verified = "";
 
-            boolean verified = uService.verifyChangePassword(password, token);
+            verified = uService.verifyChangePassword(password, token);
+            //set attribute for verified and forward to change-password-done
             request.setAttribute("verified", verified);
-            
-            if (verified == true) {
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+            request.getRequestDispatcher("change-password-done.jsp").forward(request, response);
         }
     }
 }
