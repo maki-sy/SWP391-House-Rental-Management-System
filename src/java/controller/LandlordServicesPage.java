@@ -1,6 +1,5 @@
 package controller;
 
-import DAO.OrdersDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,6 +22,10 @@ public class LandlordServicesPage extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             Users user = (Users) session.getAttribute("user");
+            if(user == null || user.getRoleID() != 2) {
+                response.sendRedirect("trang-chu");
+                return;
+            }
             String service = request.getParameter("service");
             if (service == null || service.equals("pending-requests") || service.equals("")) {
                 LandlordService handleService = new LandlordService();
@@ -53,16 +56,16 @@ public class LandlordServicesPage extends HttpServlet {
                 boolean isUpdated = handleService.isRejectStatusUpdated(orderId);
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
             } else if (service.equals("published-posts")) {
-                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
                 // do  something
             } else if (service.equals("remove-post")) {
-                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
                 // do  something
             } else if (service.equals("edit-post")) {
-                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
                 // do  something
             } else if (service.equals("add-new-post")) {
-                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
                 // do  something
             }
         }

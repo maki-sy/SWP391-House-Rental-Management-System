@@ -4,7 +4,6 @@
  */
 package controller;
 
-import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,17 +11,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Users;
-import service.UserService;
 
 /**
- * Servlet class to handle change password
  *
- * @author TungDT
+ * @author DTS
  */
-@WebServlet(name = "NewPassword", urlPatterns = {"/newPassword"})
-public class NewPassword extends HttpServlet {
+@WebServlet(name = "ForgotPassword", urlPatterns = {"/recover"})
+public class ForgotPassword extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -35,7 +30,7 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
 
     /**
@@ -49,27 +44,17 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String password = request.getParameter("password");
-        String confPassword = request.getParameter("confPassword");
-
-        if (!password.equals(confPassword)) {
-            response.sendRedirect("login.jsp");
-        } else {
-
-            UserService uService = new UserService();
-            UserDAO dao = new UserDAO();
-
-            String token = request.getParameter("token");
-
-            boolean verified = uService.verifyChangePassword(password, token);
-            request.setAttribute("verified", verified);
-            
-            if (verified == true) {
-//                request.getRequestDispatcher("index.jsp").forward(request, response);
-                response.sendRedirect("trang-chu");
-            } else {
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-        }
+        
     }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }
