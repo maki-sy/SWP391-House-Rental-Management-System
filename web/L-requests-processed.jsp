@@ -144,10 +144,9 @@
         <!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
-        <%@include file="header.jsp" %>
         <!-- Header cho khach -->
-        <%-- if(role==null) { --%>
-<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <% if(role==null) { %>
+        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -198,10 +197,10 @@
                 </button>
 
             </div>
-        </nav>-->
+        </nav>
         <!-- Header cho nguoi dung da dang nhap -->
-        <%--} else {--%>
-<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <%} else {%>
+        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault"
@@ -273,8 +272,8 @@
                 </button>
 
             </div>
-        </nav>-->
-        <%--}--%>
+        </nav>
+        <%}%>
         <!-- End Header/Navbar -->
         <main id="main">
             <section class="section-news section-t3">
@@ -301,11 +300,9 @@
                                          style="width: 150px;">
                                     <div class="mb-3"></div>
                                     <ul class="list-group text-start">
-                                        <li class="text-start list-group-item active list-group-item-action" aria-current="true">Manage pending requests</li>
+                                        <li class="text-start list-group-item active" aria-current="true">Manage requests processed</li>
                                         <li class="list-group-item"><span class="text-bg-primary">--View--</span><span> View detailed post information</span></li>
                                         <li class="list-group-item"><span class="text-bg-warning">--Contact--</span><span> Go to the customer's personal page</span></li>
-                                        <li class="list-group-item"><span class="text-bg-success">--Approve--</span><span> Customers can view your personal information</span></li>
-                                        <li class="list-group-item"><span class="text-bg-danger">--Reject--</span><span> Customers can't see your contact information</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -313,7 +310,10 @@
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark "> Manage rental requests</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark "> Manage
+                                                    rental
+                                                    requests</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
@@ -369,7 +369,10 @@
 
                                         </li>
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Manage my wallet points</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark ">Manage my
+                                                    wallet
+                                                    points</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
@@ -393,22 +396,7 @@
                                                     </button>
                                                 </a>
                                             </div>
-                                        </li>
-                                        
-                                        <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Promotions</button></a>
-                                        </li>
-                                        
-                                        <li class="list-group-item">
-                                            <div class="contain">
-                                                <a href="PromotionManage">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Manage Promotions
-                                                    </button>
-                                                </a>
-                                            </div>
+
                                         </li>
 
                                     </ul>
@@ -428,8 +416,7 @@
                                         <th class="col-lg-auto" scope="col">Status</th>
                                         <th class="col-lg-1" scope="col">View</th>
                                         <th class="col-lg-1" scope="col">Contact</th>
-                                        <th class="col-lg-1" scope="col">Approve</th>
-                                        <th class="col-lg-1" scope="col">Reject</th>
+                                     
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -470,25 +457,7 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="approve-request">
-                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
-                                                <button type="submit" class="w-100 btn btn-sm btn-success">
-                                                    <ion-icon
-                                                        name="checkbox-outline"></ion-icon>
-                                                </button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="reject-request">
-                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
-                                                <button type="submit" class="w-100 btn btn-sm btn-danger">
-                                                    <ion-icon name="trash-outline"></ion-icon>
-                                                </button>
-                                            </form>
-                                        </td>
+                                      
                                     </tr>
                                     <%}%>
                                 </tbody>
