@@ -4,22 +4,20 @@
  */
 package controller;
 
-import DAO.UserDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import service.UserService;
 
 /**
- * Servlet class to handle change password
  *
- * @author TungDT
+ * @author DTS
  */
-@WebServlet(name = "NewPassword", urlPatterns = {"/newPassword"})
-public class NewPassword extends HttpServlet {
+@WebServlet(name = "ForgotPassword", urlPatterns = {"/recover"})
+public class ForgotPassword extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -32,7 +30,7 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
 
     /**
@@ -46,24 +44,17 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String password = request.getParameter("password");
-        String confPassword = request.getParameter("confPassword");
-
-        //password and confirm password does not match
-        if (!password.equals(confPassword)) {
-            request.setAttribute("message", "Your confirm password does not match. Please try again.");
-            request.getRequestDispatcher("new-password.jsp").forward(request, response);
-        } else {
-            //change the password and get value for variable "verified" based on the result
-            UserService uService = new UserService();
-            UserDAO dao = new UserDAO();
-            String token = request.getParameter("token");
-            String verified = "";
-
-            verified = uService.verifyChangePassword(password, token);
-            //set attribute for verified and forward to change-password-done
-            request.setAttribute("verified", verified);
-            request.getRequestDispatcher("change-password-done.jsp").forward(request, response);
-        }
+        
     }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }

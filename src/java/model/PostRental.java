@@ -47,15 +47,6 @@ public class PostRental {
         this.post_end = post_end;
     }
 
-    public int getLocation_id() {
-        return location_id;
-    }
-
-    public void setLocation_id(int location_id) {
-        this.location_id = location_id;
-    }
-    
-
     public int getId() {
         return id;
     }
@@ -162,7 +153,7 @@ public class PostRental {
 
     @Override
     public String toString() {
-        return "Post{" + "id=" + id + ", name=" + name + ", price=" + price + ", type=" + type + ", area=" + area + ", numOfBeds=" + numOfBeds + ", address=" + address + ", desscription=" + desscription + ", landlord_id=" + landlord_id + ", status=" + status + ", promotion=" + promotion + ", post_start=" + post_start + ", post_end=" + post_end + '}';
+        return "PostRental{" + "id=" + id + ", name=" + name + ", price=" + price + ", type=" + type + ", area=" + area + ", numOfBeds=" + numOfBeds + ", address=" + address + ", desscription=" + desscription + ", landlord_id=" + landlord_id + ", location_id=" + location_id + ", status=" + status + ", promotion=" + promotion + ", post_start=" + post_start + ", post_end=" + post_end + '}';
     }
 
 }
