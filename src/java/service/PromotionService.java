@@ -6,6 +6,7 @@ package service;
 
 import DAO.PostDAO;
 import DAO.PromotionDAO;
+import java.sql.Date;
 import java.util.List;
 import model.PostRental;
 import model.Promotion;
@@ -50,5 +51,15 @@ public class PromotionService {
 
     public void DeletePromotion(int id) {
         PROMOTION_DAO.removePromotion(id);
+    }
+    public Promotion GetPromotionById(int id){
+        Promotion promotion =PROMOTION_DAO.GetPromotionByID(id);
+        return promotion;
+    }
+    public void UpdatePromotionDiscountDes(int discount,String des,int id){
+        PROMOTION_DAO.UpdatePromotionDiscountDes(discount, des, id);
+    }
+    public void UpdatePromotionDuration(Date start,Date end,int id){
+        PROMOTION_DAO.UpdatePromotionDuration(start, end, id);
     }
 }

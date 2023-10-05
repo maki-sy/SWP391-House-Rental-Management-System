@@ -91,8 +91,7 @@
                                 <input type="date" class="form-control" name="end_date" placeholder="Enter your end date"/>
                             </div>
                         </div>
-
-                        <button type="submit">SUBMIT</button>
+                            <button type="submit" style="color: red">SUBMIT</button>
 
                     </form>
                 </div><!--main-center"-->

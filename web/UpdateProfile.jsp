@@ -1,10 +1,18 @@
-<!DOCTYPE html>
+<%-- 
+    Document   : UpdateProfile
+    Created on : Sep 28, 2023, 9:24:24 PM
+    Author     : Sy
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="DAO.TenantDAO"%>
 <%@page import="DAO.LandlordDAO"%>
 <%@page import="model.Tenant"%>
 <%@page import="model.Landlord"%>
-<%@ page import="model.Users"%>
+<%@ page import="model.Users" %>
+<!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -39,17 +47,6 @@
     </head>
 
     <body>
-        <!-- ======= JSP ======= -->
-        <% 
-        Users user = session.getAttribute("user")==null ? null : (Users)session.getAttribute("user"); 
-        Tenant tenant=(Tenant)request.getAttribute("tn");
-        Landlord landlord=(Landlord)request.getAttribute("ll");
-//        Users account=(Users)loggedUser;
-        String role_name=(String)request.getAttribute("role_name");
-        %>
-
-
-        <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
         <div class="click-closed"></div>
@@ -149,10 +146,7 @@
         <!-- End Property Search Section -->>
 
         <!-- ======= Header/Navbar ======= -->
-        <%@include file="header.jsp" %>
-        <!-- Header cho khach -->
-        <%-- if(role_name==null) { --%>
-<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -161,7 +155,7 @@
                     <span></span>
                     <span></span>
                 </button>
-                <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
+                <a class="navbar-brand text-brand" href="index.jsp">Rental<span class="color-b">House</span></a>
 
                 <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
                     <ul class="navbar-nav">
@@ -170,76 +164,24 @@
                             <a class="nav-link active" href="trang-chu">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="property-grid.jsp">Houses</a>
+                            <a class="nav-link " href="property-grid.html">Houses</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
+                            <a class="nav-link " href="agents-grid.html">Landlords</a>
                         </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
+                                <a class="dropdown-item " href="property-single.html">House Detail</a>
+                                <a class="dropdown-item " href="agent-single.html">Landlord Detail</a>
                             </div>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link " href="contact.jsp">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="nav-item btn" style="padding: 0.35rem 1rem;">
-                    <a href="login?type=login">Login/Register</a>
-                </div>
-
-                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-
-            </div>
-        </nav>-->
-        <!-- Header cho nguoi dung da dang nhap -->
-        <%-- } else { --%>
-<!--//        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="property-grid.jsp">Houses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.jsp">Contact</a>
+                            <a class="nav-link " href="contact.html">Contact</a>
                         </li>
 
                         <li class="nav-item">
@@ -249,12 +191,11 @@
                         <li class="nav-item dropdown">
 
                             <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My
-                                profile</a>
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
 
                             <div class="dropdown-menu">
-                                <a class="dropdown-item " href="/ManageServicesPage">Manage services</a>
-                                <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
+                                <a class="dropdown-item " href="./profile-personal.html">Manage rental house</a>
+                                <a class="dropdown-item " href="./profile-personal.html">Manage account</a>
                                 <a class="dropdown-item " href="login?type=logout">Logout</a>
                             </div>
                         </li>
@@ -267,8 +208,8 @@
                 </button>
 
             </div>
-        </nav>-->
-        <%-- } --%>
+        </nav>
+
         <!-- End Header/Navbar -->
 
 
@@ -287,6 +228,13 @@
                             </nav>
                         </div>
                     </div>
+                    <%
+                        Tenant tenant=(Tenant)request.getAttribute("tn");
+                        Landlord landlord=(Landlord)request.getAttribute("ll");
+                        Object loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); ;
+                        Users account=(Users)loggedUser;
+                        String role_name=(String)request.getAttribute("role_name");
+                    %>
                     <%if(tenant!=null){%>
                     <div class="row">
                         <div class="col-lg-4">
@@ -295,152 +243,36 @@
                                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
                                     <h5 class="my-3"><%=tenant.getFirstName()%> &nbsp;<%=tenant.getLastName()%></h5>
-                                    <p class="text-muted mb-1"><%=user.getEmail()%></p>
+                                    <p class="text-muted mb-1"><%=account.getEmail()%></p>
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">
                                         <button type="button" class="btn btn-primary"
                                                 disabled><%=role_name%></button>
                                         <button type="button" class="btn btn-outline-primary ms-1"
-                                                disabled><%=user.getStatus()%></button>
+                                                disabled><%=account.getStatus()%></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
-
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=updateProfile&id=<%=tenant.getId()%>&roleid=<%=user.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
-                                                    public
-                                                    information</button></a>
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <!--                                        <a href="Profile?service=updateProfile&id=//account.getId()"><button type="button" class="btn btn-primary">Edit public
+                                                                                            information</button></a>-->
                                         </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="change-password.jsp"><button type="button"
-                                                                 class="btn btn-primary">Change
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <a href="#!"><button type="button" class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Top up your account</button></a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button"
-                                                                 class="btn btn-primary">Transaction history</button></a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Send Report</button></a>
-                                        </li>
-
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">First Name</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=tenant.getFirstName()%></p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Last Name</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=tenant.getLastName()%></p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Address</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=tenant.getAddress()%></p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Phone</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=tenant.getPhone()%></p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Civil ID</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=tenant.getCivilID()%></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <%}%>
-                    <%if(landlord!=null){%>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card mb-4">
-                                <div class="card-body text-center">
-                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
-                                         class="rounded-circle img-fluid" style="width: 150px;">
-                                    <h5 class="my-3"><%=landlord.getFirstName()%> &nbsp;<%=landlord.getLastName()%></h5>
-                                    <p class="text-muted mb-1"><%=user.getEmail()%></p>
-                                    <p class="text-muted mb-4">*******</p>
-                                    <div class="d-flex justify-content-center mb-2">
-                                        <button type="button" class="btn btn-primary"
-                                                disabled><%=role_name%></button>
-                                        <button type="button" class="btn btn-outline-primary ms-1"
-                                                disabled><%=user.getStatus()%></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-4 mb-lg-0">
-                                <div class="card-body p-0">
-                                    <ul class="list-group list-group-flush rounded-3">
-
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=updateProfile&id=<%=landlord.getId()%>&roleid=<%=user.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
-                                                    public
-                                                    information</button></a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button"
-                                                                 class="btn btn-primary">Change
-                                                    password</button></a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Top
-                                                    up your
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <a href="#!"><button type="button" class="btn btn-primary">Top up your
                                                     account</button></a>
                                         </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button"
-                                                                 class="btn btn-primary">Transaction
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <a href="#!"><button type="button" class="btn btn-primary">Transaction
                                                     history</button></a>
                                         </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
+                                        <li class="list-group-item justify-content-between align-items-center">
                                             <a href="#!"><button type="button" class="btn btn-primary">Send
                                                     Report</button></a>
                                         </li>
@@ -452,54 +284,149 @@
                         </div>
                         <div class="col-lg-8">
                             <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">First Name</p>
+                                <form action="Profile" method="post">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <input type="hidden" name="tnid" value="<%=tenant.getId()%>">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">First Name</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="fname" value="<%=tenant.getFirstName()%>" pattern="^[a-zA-Z ]*$" required></p>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=landlord.getFirstName()%></p>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Last Name</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="lname" value="<%=tenant.getLastName()%>" pattern="^[a-zA-Z ]*$" required></p>
+                                            </div>
                                         </div>
+                                        <hr>
+
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Address</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=tenant.getAddress()%>"></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Phone</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="phone" value="<%=tenant.getPhone()%>" maxlength="10" pattern="[0-9]{10}" required></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <input class="btn btn-primary" type="submit" value="update" name="submit">
+                                        <input class="btn btn-primary" type="reset" value="reset">
+                                        <input type="hidden" name="service" value="updateProfile">
                                     </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Last Name</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=landlord.getLastName()%></p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Address</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=landlord.getAddress()%></p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Phone</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=landlord.getPhone()%></p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <p class="mb-0">Civil ID</p>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <p class="text-muted mb-0"><%=landlord.getCivilID()%></p>
-                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <%}%>
+                    <%if(landlord!=null){%>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body text-center">
+                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
+                                         class="rounded-circle img-fluid" style="width: 150px;">
+                                    <h5 class="my-3"><%=landlord.getFirstName()%> &nbsp;<%=landlord.getLastName()%></h5>
+                                    <p class="text-muted mb-1"><%=account.getEmail()%></p>
+                                    <p class="text-muted mb-4">*******</p>
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <button type="button" class="btn btn-primary"
+                                                disabled><%=role_name%></button>
+                                        <button type="button" class="btn btn-outline-primary ms-1"
+                                                disabled><%=account.getStatus()%></button>
                                     </div>
                                 </div>
                             </div>
-                            
+                            <div class="card mb-4 mb-lg-0">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush rounded-3">
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <!--                                        <a href="Profile?service=updateProfile&id=//account.getId()"><button type="button" class="btn btn-primary">Edit public
+                                                                                            information</button></a>-->
+                                        </li>
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <a href="#!"><button type="button" class="btn btn-primary">Change
+                                                    password</button></a>
+                                        </li>
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <a href="#!"><button type="button" class="btn btn-primary">Top up your
+                                                    account</button></a>
+                                        </li>
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <a href="#!"><button type="button" class="btn btn-primary">Transaction
+                                                    history</button></a>
+                                        </li>
+                                        <li class="list-group-item justify-content-between align-items-center">
+                                            <a href="#!"><button type="button" class="btn btn-primary">Send
+                                                    Report</button></a>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="card mb-4">
+                                <form action="Profile" method="post">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <input type="hidden" name="llid" value="<%=landlord.getId()%>">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">First Name</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="fname" value="<%=landlord.getFirstName()%>" pattern="^[a-zA-Z]*$" required></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Last Name</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="lname" value="<%=landlord.getLastName()%>" pattern="^[a-zA-Z]*$" required></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Address</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=landlord.getAddress()%>"></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Phone</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="text-muted mb-0"><input type="text" name="phone" value="<%=landlord.getPhone()%>" maxlength="10" pattern="[0-9]{10}" required></p>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary"><input type="submit" value="update" name="submit"></button>
+                                        <button type="button" class="btn btn-primary"><input type="reset" value="reset"></button>
+                                        <input type="hidden" name="service" value="updateProfile">
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <%}%>
@@ -518,8 +445,7 @@
                             </div>
                             <div class="w-body-a">
                                 <p class="w-text-a color-text-a">
-                                    Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut
-                                    aliquip exea
+                                    Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exea
                                     commodo consequat duis
                                     sed aute irure.
                                 </p>
@@ -560,8 +486,7 @@
                                             <i class="bi bi-chevron-right"></i> <a href="#">Affiliate</a>
                                         </li>
                                         <li class="item-list-a">
-                                            <i class="bi bi-chevron-right"></i> <a href="#">Privacy
-                                                Policy</a>
+                                            <i class="bi bi-chevron-right"></i> <a href="#">Privacy Policy</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -655,10 +580,10 @@
                         </div>
                         <div class="credits">
                             <!--
-All the links in the footer should remain intact.
-You can delete the links only if you purchased the pro version.
-Licensing information: https://bootstrapmade.com/license/
-Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=EstateAgency
+                All the links in the footer should remain intact.
+                You can delete the links only if you purchased the pro version.
+                Licensing information: https://bootstrapmade.com/license/
+                Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=EstateAgency
                             -->
                             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                         </div>

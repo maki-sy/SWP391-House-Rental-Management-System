@@ -3,6 +3,12 @@
     Created on : Sep 27, 2023, 6:34:07 PM
     Author     : Administrator
 --%>
+<!-- ======= JSP ======= -->
+<%@ page import="model.Users" %>
+<%
+    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+%>  
+<!-- End JSP Code -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -40,7 +46,11 @@
       ======================================================== -->
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <!--Header-->
+        <%@include file="header.jsp" %>
+        <!--End header-->
+        
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -103,7 +113,7 @@
                 </button>
 
             </div>
-        </nav>
+        </nav>-->
         <br>
         <main id="main">
             <section class="section-news section-t3">
@@ -143,7 +153,7 @@
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
                                             <a href="AddPromotion?service=form"><button type="button" class="btn btn-primary">Add
-                                                Promotion Form</button></a>
+                                                    Promotion Form</button></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -160,7 +170,8 @@
                                             <th>Description</th>
                                             <th>Promotion start date</th>
                                             <th>Promotion end Date</th>
-                                            <th>Actions</th>
+                                            <th>Modifies</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -173,9 +184,10 @@
                                                 </td>
                                                 <td>${o.promotion_start_date}</td>
                                                 <td>${o.promotion_end_date}</td>
-                                                <td><a href="#">Edit</a>/
-                                                    <a href="RemovePromotion?service=promotion&id=${o.promotion_id}">Delete</a>
+                                                <td><a href="EditPromotion?service=form&id=${o.promotion_id}&now=edit">Edit</a>/
+                                                    <a href="EditPromotion?service=form&id=${o.promotion_id}&now=duration">Set Duration</a>
                                                 </td>
+                                                <td><a href="RemovePromotion?service=promotion&id=${o.promotion_id}">Delete</a></td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>

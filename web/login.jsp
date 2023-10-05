@@ -215,15 +215,15 @@
                                 <form class="p-3 mt-3 login-form" action="login" method="POST">
                                     <div class="form-field d-flex align-items-center">
                                         <span class="far fa-user"></span>
-                                        <input type="email" name="email" id="email" placeholder="Email">
+                                        <input type="email" name="email" id="email" placeholder="Email" required>
                                     </div>
                                     <div class="form-field d-flex align-items-center">
                                         <span class="fas fa-key"></span>
-                                        <input type="password" name="password" id="pwd" placeholder="Password">
+                                        <input type="password" name="password" id="pwd" placeholder="Password" required>
                                     </div>
                                     <!-- Them phan chon role -->
                                     <div class="role form-group">
-                                        <select class="form-field d-flex align-items-center form-control" id="role" name="role">
+                                        <select class="form-field d-flex align-items-center form-control" id="role" name="role" required>
                                             <span class="far fa-user"></span>
                                             <option value="" disabled selected>Select role</option>
                                             <option value="1">Tenant</option>
@@ -249,31 +249,31 @@
                             <form class="p-3 mt-3 register-form" method="POST" action="login">
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
-                                    <input type="text" name="first-name" id="first-name" placeholder="First name">
+                                    <input type="text" name="first-name" id="first-name" placeholder="First name" required>
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
-                                    <input type="text" name="last-name" id="last-name" placeholder="Last name">
+                                    <input type="text" name="last-name" id="last-name" placeholder="Last name" required>
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
-                                    <input type="text" name="email" id="email" placeholder="Email">
+                                    <input type="text" name="email" id="email" placeholder="Email" required>
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="fas fa-key"></span>
-                                    <input type="number" name="phone-number" id="phone-number" placeholder="Phone number">
+                                    <input type="number" name="phone-number" id="phone-number" placeholder="Phone number" required>
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
-                                    <input type="password" name="password" id="password" placeholder="Password">
+                                    <input type="password" name="password" id="password" placeholder="Password" required>
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
-                                    <input type="password" name="re-password" id="re-password" placeholder="Re-Password">
+                                    <input type="password" name="re-password" id="re-password" placeholder="Re-Password" required>
                                 </div>
                                 <!-- Them phan chon role -->
                                 <div class="role form-group">
-                                    <select class="form-field d-flex align-items-center form-control" id="role" name="role">
+                                    <select class="form-field d-flex align-items-center form-control" id="role" name="role" required>
                                         <span class="far fa-user"></span>
                                         <option value="" disabled selected>Select the role you are interested in...
                                         </option>

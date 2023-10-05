@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -110,13 +111,66 @@ public class PromotionDAO extends DBContext {
         return list;
     }
 
+    public Promotion GetPromotionByID(int id) {
+        String sql = "SELECT * FROM Promotions WHERE promotion_id=" + id;
+        ResultSet rs = getData(sql);
+        Promotion pro = new Promotion();
+        try {
+            while (rs.next()) {
+                pro.setPromotion_id(rs.getInt(1));
+                pro.setDiscount(rs.getInt(2));
+                pro.setDescriptions(rs.getString(3));
+                pro.setPromotion_start_date(rs.getDate(4));
+                pro.setPromotion_end_date(rs.getDate(5));
+            }
+        } catch (SQLException ex) {
+            System.err.println("getPromotionById() reports: " + ex.getMessage());
+            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pro;
+    }
+
+    public void UpdatePromotionDiscountDes(int discount, String des, int id) {
+        try {
+            String sql = "UPDATE Promotions SET discount = ?,descriptions=? WHERE promotion_id=?";
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, discount);
+            stm.setString(2, des);
+            stm.setInt(3, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("UpdatePromotionDiscountDes() reports: " + ex.getMessage());
+            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void UpdatePromotionDuration(Date start, Date end, int id) {
+        try {
+            String sql = "UPDATE Promotions SET promotion_start_date = ?,promotion_end_date = ? WHERE promotion_id=?";
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setDate(1, start);
+            stm.setDate(2, end);
+            stm.setInt(3, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("UpdatePromotionDuration() reports: " + ex.getMessage());
+            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static void main(String[] args) {
         PromotionDAO d = new PromotionDAO();
- //       d.removePromotion(10); ok
+        //       d.removePromotion(10); ok
 //        List<Promotion> list = d.getAllPromotion();
 //        for (Promotion promotion : list) {
 //            System.out.println(promotion.getPromotion_id());
 //        }
+//        Promotion pro = d.GetPromotionByID(4);
+//        System.out.println(pro.getPromotion_id());
+//        d.UpdatePromotionDiscountDes(40, "ok", 4);
+//        long miliSeconds = System.currentTimeMillis();
+//        Date date1 = new Date(miliSeconds);
+//        d.UpdatePromotionDuration(date1, date1, 4);
     }
 
 }

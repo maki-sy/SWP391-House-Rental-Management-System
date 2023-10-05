@@ -17,12 +17,13 @@ import java.util.logging.Logger;
  * @author DTS
  */
 public class DBContext {
+
     protected Connection connect = null;
-    private static final String DB_URL = "jdbc:sqlserver://localhost\\SWP391-House-Rental:1433;databaseName=SWP391Pro";
+    private static final String DB_URL = "jdbc:sqlserver://localhost\\SWP391-House-Rental:1433;databaseName=SWP391";
     private static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static final String DB_USR = "sa";
     private static final String DB_PWD = "123456";
-    
+
     public DBContext() {
         try {
             Class.forName(DB_DRIVER);
@@ -32,16 +33,17 @@ public class DBContext {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Execute SQL Statement and get back the data
+     *
      * @param sqlStatement SQL Statement to be executed
      * @return ResultSet object contains data
      */
     public ResultSet getData(String sqlStatement) {
         ResultSet rs = null;
         Statement statement;
-        
+
         try {
             statement = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = statement.executeQuery(sqlStatement);

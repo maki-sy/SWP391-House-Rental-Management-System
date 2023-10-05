@@ -198,6 +198,14 @@ public class UserService {
         // Send confirmation email to user
         sendEmail(receivedEmail, subject, content);
     }
+    
+    private void changePasswordEmail(String receivedEmail, String token) {
+        String subject = "Verifying change password request";
+        String content = "Hi " + receivedEmail + ", you received this email because you've requested to change your password. To verify the request, click on the following link : <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/changePassword?token=" + token + "\">CHANGE YOUR PASSWORD HERE</a>";
+
+        // Send confirmation email to user
+        sendEmail(receivedEmail, subject, content);
+    }
 
     /**
      * Generate token string, used in forgot password or confirmation email
@@ -238,45 +246,6 @@ public class UserService {
         return token;
     }
 
-//    /**
-//     * Login for tenant and landlord
-//     *
-//     * @param email
-//     * @param password raw password user inputted
-//     * @return Object represent Tenant or Landlord if login success, null if
-//     * unsuccess
-//     */
-//    public Object login(String email, String password, String role) {
-//        
-//        
-//        Tenant t = TENANT_DAO.getTenantByEmail(email);
-//        if (t != null) {
-//            byte[] salt = t.getSalt();
-//            byte[] correctPass = t.getHashedPassword();
-//            byte[] inputPass = hashingPassword(password, salt);
-//            boolean sucess = Arrays.equals(correctPass, inputPass);
-//            if (sucess) {
-//                return t;
-//            } else {
-//                return null;
-//            }
-//        }
-//
-//        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
-//        if (l != null) {
-//            byte[] salt = l.getSalt();
-//            byte[] correctPass = l.getHashedPassword();
-//            byte[] inputPass = hashingPassword(password, salt);
-//            boolean sucess = Arrays.equals(correctPass, inputPass);
-//            if (sucess) {
-//                return l;
-//            } else {
-//                return null;
-//            }
-//        }
-//
-//        return null; // NEED TO UPDATE ASAP
-//    }
     /**
      * Login for tenant and landlord
      *
@@ -383,6 +352,34 @@ public class UserService {
             return false;
         }
     }
+    
+    public boolean verifyChangePassword(String password, String tokenStr) {
+        Token token = TOKEN_DAO.getToken(tokenStr);
+        if (token == null) { // invalid token: token does not exist in the DB
+            System.out.println("Token does not exist in the DB");
+            return false;
+        } else {
+
+            // Check for expire time of token
+            boolean expired = isTokenExpire(token);
+            if (expired) { // If token already expired
+                System.out.println("Token expired");
+                return false;
+            } else {
+
+                // Get User object corresponding to token
+                Users user = USER_DAO.getUserByID(token.getUserID());
+                if (user == null) {
+                    return false;
+                } else {
+                    byte[] salt = generateSalt();
+                    byte[] hashed_password = hashingPassword(password, salt);
+                    USER_DAO.updateUserPassword(user, hashed_password, salt);
+                    return true;
+                }
+            }
+        }
+    }
 
     /**
      * Check whether passed token is still valid in time
@@ -398,29 +395,18 @@ public class UserService {
 
         return tokenTime.isBefore(now);
     }
+    
+    public void changePassword(int user_id, String email) {
+        Token token = generateUserToken(user_id, email, Token.TokenType.CHANGEPWD);
 
-    public static void main(String[] args) {
-//        UserService u = new UserService();
-//        // Generate token for email verification
-//        Token token = u.generateToken("TEN", "haquangthangtn@gmail.com", Token.TokenType.CONFIRMATION);
-//
-//        // Send an email with token to user's email to verify email address
-//        u.sendConfirmationEmail("haquangthangtn@gmail.com", token.getToken());
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS]");
-//        LocalDateTime test = LocalDateTime.parse("2023-09-24 19:55:44.02", formatter);
-//        System.out.println(test);
-        Token token = TOKEN_DAO.getToken("TEN1QPvZJFuZVWltaXwQCpmpNwB5bE");
-        String time = token.getExpireDate();
-//        String formatted = 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS]");
-
-        System.out.println(LocalDateTime.parse(time, formatter));
-//
-//        String dateTimeStr1 = "2023-09-24 19:55:44.020";
-//        String dateTimeStr2 = "2023-09-24 19:55:44.02";
-//
-//        LocalDateTime dateTime1 = LocalDateTime.parse(dateTimeStr1, formatter);
-//        LocalDateTime dateTime2 = LocalDateTime.parse(dateTimeStr2, formatter);
+        changePasswordEmail(email, token.getToken());
+    }
+    
+    /**
+     * 
+     * @param email 
+     */
+    public void forgotPassword(String email){
+        
     }
 }

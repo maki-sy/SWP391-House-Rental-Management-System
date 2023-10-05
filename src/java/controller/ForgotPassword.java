@@ -5,38 +5,20 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.Users;
 
-@WebServlet(name = "ManageServicesPage", urlPatterns = {"/ManageServicesPage"})
-public class ManageServicesPage extends HttpServlet {
+/**
+ *
+ * @author DTS
+ */
+@WebServlet(name = "ForgotPassword", urlPatterns = {"/recover"})
+public class ForgotPassword extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Users user = (Users) session.getAttribute("user");
-        // 1 tenant 2 landlord 3 admin
-        if (user.getRoleID() == 1) {
-            // go to Tenant services manager. TODO
-            response.sendRedirect("trang-chu");
-        } else if (user.getRoleID() == 2) {
-            String url = request.getContextPath() + "/landlordServicesPage";
-            response.sendRedirect(url);
-        } else if (user.getRoleID() == 3) {
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
-        } else {
-            // Default case: Redirect to index.jsp for unknown roles
-            response.sendRedirect("trang-chu");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -48,7 +30,7 @@ public class ManageServicesPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**
@@ -62,7 +44,7 @@ public class ManageServicesPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**
