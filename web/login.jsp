@@ -234,7 +234,7 @@
                                     <button class="btn mt-3">Login</button>
                                 </form>
                                 <div class="text-center fs-6">
-                                    <a href="#">Forget password?</a>
+                                    <a href="recover?service=forgotForm">Forget password?</a>
                                 </div>
                             </div>
                         </div>

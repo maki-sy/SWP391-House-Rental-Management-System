@@ -277,9 +277,9 @@ public class UserDAO extends DBContext {
     }
 
     /**
-     * 
+     * Get verified account corresponding to email
      * @param email
-     * @return 
+     * @return Users object that verified and corresponding to email. Or null if there is no user.
      */
     public Users getVerifiedAccount(String email) {
         String SQL = "SELECT * FROM Users WHERE email = ? AND status != ?;";
@@ -290,13 +290,16 @@ public class UserDAO extends DBContext {
 
             ResultSet rs = preStmt.executeQuery();
 
-            int id = rs.getInt(1);
-            byte[] hashedPwd = rs.getBytes(3);
-            byte[] salt = rs.getBytes(4);
-            int roleID = rs.getInt(5);
-            Users.Status status = Users.Status.valueOf(rs.getString(6));
-
-            user = new Users(id, email, hashedPwd, salt, roleID, status);
+            if(rs.next()){
+                int id = rs.getInt(1);
+                byte[] hashedPwd = rs.getBytes(3);
+                byte[] salt = rs.getBytes(4);
+                int roleID = rs.getInt(5);
+                Users.Status status = Users.Status.valueOf(rs.getString(6));
+                
+                user = new Users(id, email, hashedPwd, salt, roleID, status);
+            }            
+            
         } catch (Exception ex) {
             System.out.println("getVerifiedAccount() reports " + ex.getMessage());
         }
