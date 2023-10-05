@@ -33,6 +33,12 @@
 
         <!-- Template Main CSS File -->
         <link href="assets/css/style.css" rel="stylesheet">
+        <style>
+            .intro-title a {
+                color: white; /* Thay đổi màu chữ thành đỏ (#ff0000) */
+                text-decoration: none; /* Loại bỏ gạch chân dưới văn bản */
+            }
+        </style>
 
         <!-- =======================================================
         * Template Name: EstateAgency
@@ -333,10 +339,11 @@
                                 <div class="row">
                                     <div class="col-lg-8">
                                         <div class="intro-body">
-                                            <p class="intro-title-top"><%=pr.getName()%>
+                                            <h1 class="intro-title mb-4">
+                                                <a href="housedetail?id=<%=pr.getId()%>"><%=pr.getName()%></a>
                                                 <br>
-                                            </p>
-                                            <h1 class="intro-title mb-4 ">
+                                            </h1>
+                                            <h1 class="intro-title mb-4" style="font-size: 50px;">
                                                 <br> <%=pr.getAddress()%>
                                             </h1>
                                             <p class="intro-subtitle intro-price">
