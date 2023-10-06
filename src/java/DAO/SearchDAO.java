@@ -74,10 +74,10 @@ public class SearchDAO extends DBContext {
             sqlCommand += " AND a.price <= ?";
         }
 
-        if (!"Any".equals(areaFrom) && isInteger(areaFrom)) {
+        if (!"Any".equals(areaFrom)) {
             sqlCommand += " AND a.area >= ?";
         }
-        if (!"Any".equals(areaTo) && isInteger(areaTo)) {
+        if (!"Any".equals(areaTo)) {
             sqlCommand += " AND a.area <= ?";
         }
         if (!"Any".equals(location)) {
