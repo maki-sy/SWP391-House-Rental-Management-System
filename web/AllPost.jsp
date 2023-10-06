@@ -307,7 +307,7 @@
                         <div class="col-md-12 col-lg-8">
                             <div class="title-single-box">
                                 <h1 class="title-single">Our Amazing Properties</h1>
-                                <span class="color-text-a">Grid Properties</span>
+                                <span class="color-text-a">Houses Properties</span>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-4">
@@ -370,7 +370,7 @@
                                     <div class="card-overlay-a-content">
                                         <div class="card-header-a">
                                             <h2 class="card-title-a">
-                                                <a href="#"><%=p.getName()%>
+                                                <a href="housedetail?id=<%=p.getId()%>"><%=p.getName()%>
                                                 </a>
                                             </h2>
                                         </div>
