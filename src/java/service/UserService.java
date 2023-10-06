@@ -394,11 +394,11 @@ public class UserService {
         return tokenTime.isBefore(now);
     }
 
-    public boolean checkPassword(Users user, String inputPassword, byte[] hashedPassword) {
+    public boolean checkPassword(Users user, String inputPassword) {
         byte[] salt = user.getSalt();
         byte[] hashedInputPassword = hashingPassword(inputPassword, salt);
 
-        boolean check = Arrays.equals(hashedInputPassword, hashedPassword);
+        boolean check = Arrays.equals(hashedInputPassword, user.getHashedPassword());
 
         return check;
     }

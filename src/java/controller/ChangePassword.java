@@ -67,7 +67,7 @@ public class ChangePassword extends HttpServlet {
             int user_id = user.getId();
 
             //check if user input correct old password
-            boolean check = uService.checkPassword(user, password, user.getHashedPassword());
+            boolean check = uService.checkPassword(user, password);
             request.setAttribute("check", check);
 
             //if the password is correct then send an email with the link to the page that allow to change password

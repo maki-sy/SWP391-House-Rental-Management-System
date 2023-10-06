@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label for="email-for-pass">Enter your password</label> <input
                                     class="form-control" type="password" name="password" id="email-for-pass"><small
-                                    class="form-text text-muted">Enter the old password in the box below. If the password is correct, we will send an
+                                    class="form-text text-muted">Enter the old password in the box. If the password is correct, we will send an
                                     email to this address.</small>
                                 <!--<label for="role-for-pass">Choose the role that you registered using this email</label>
                                 <select name="role">
