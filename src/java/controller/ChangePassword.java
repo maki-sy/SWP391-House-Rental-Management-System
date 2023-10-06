@@ -38,7 +38,7 @@ public class ChangePassword extends HttpServlet {
             throws ServletException, IOException {
         String token = request.getParameter("token");
         request.setAttribute("token", token);
-        
+
         request.getRequestDispatcher("new-password.jsp").forward(request, response);
     }
 
@@ -53,35 +53,32 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        String email = request.getParameter("email");
-//        
-//        HttpSession session = request.getSession();
-//        UserService uService = new UserService();
-//        UserDAO dao = new UserDAO();
-//        
-//        Users user = (Users) session.getAttribute("user");
-//        int user_id = user.getId();
-//        
-//        int check = dao.checkEmail(email);
-//        if (check > 0){
-//            uService.changePassword(user_id, email);
-//        }
+        String getNewPassword = request.getParameter("getNewPassword");
+        String backToHome = request.getParameter("backToHome");
 
-        String email = request.getParameter("email");
+        if (getNewPassword != null) {
+            // getNewPassword was clicked
+            String password = request.getParameter("password");
 
-        HttpSession session = request.getSession();
-        UserService uService = new UserService();
-        UserDAO dao = new UserDAO();
+            HttpSession session = request.getSession();
+            UserService uService = new UserService();
 
-        Users user = (Users) session.getAttribute("user");
-        int user_id = user.getId();
+            Users user = (Users) session.getAttribute("user");
+            int user_id = user.getId();
 
-        boolean check = dao.checkEmail(email);
-        if (check == true) {
-            uService.changePassword(user_id, email);
-        } else {
-            // uService.changePassword(user_id, email);
+            //check if user input correct old password
+            boolean check = uService.checkPassword(user, password);
+            request.setAttribute("check", check);
+
+            //if the password is correct then send an email with the link to the page that allow to change password
+            if (check) {
+                uService.changePassword(user_id, user.getEmail());
+            }
+            //forward to confirm-change-password.jsp with the attribute check
+            request.getRequestDispatcher("confirm-change-password.jsp").forward(request, response);
+        } else if (backToHome != null) {
+            // backToHome was clicked
+            response.sendRedirect("trang-chu");
         }
-
     }
 }

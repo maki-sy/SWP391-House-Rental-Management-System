@@ -25,7 +25,7 @@
     </head>
     <body oncontextmenu='return false' class='snippet-body bg-info'>
         <%
-        String token = request.getParameter("token") == null ? null : request.getParameter("token");
+            String token = request.getParameter("token") == null ? "" : request.getParameter("token");
         %>  
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
@@ -44,20 +44,23 @@
                             </div>
                             <div class="pt-3 pb-3">
                                 <form class="form-horizontal" action="newPassword" method="POST">
-                                    <!-- Password Input -->
+                                    <!-- User Name Input -->
                                     <div class="form-group row justify-content-center px-3">
                                         <div class="col-9 px-0">
-                                            <input type="password" name="password" placeholder="&#xf084; &nbsp; New Password"
+                                            <input type="password" name="password" required placeholder="&#xf084; &nbsp; New Password"
                                                    class="form-control border-info placeicon">
                                         </div>
                                     </div>
-                                    <!-- RE-Password Input -->
+                                    <!-- Password Input -->
                                     <div class="form-group row justify-content-center px-3">
                                         <div class="col-9 px-0">
-                                            <input type="password" name="confPassword"
-                                                   placeholder="&#xf084; &nbsp; Confirm New Password"
+                                            <input type="password" name="confPassword" required	placeholder="&#xf084; &nbsp; Confirm New Password"
                                                    class="form-control border-info placeicon">
                                         </div>
+                                    </div>
+
+                                    <div class="text-center text-danger">
+                                        <p>${message}</p>
                                     </div>
                                     <input type="hidden" name="token" value="<%=token%>">  
 
@@ -76,21 +79,6 @@
                                 <!-- Horizontal Line -->
                                 <div class="px-4 pt-5">
                                     <hr>
-                                </div>
-                                <!-- Register Now -->
-                                <div class="pt-2">
-                                    <div class="row justify-content-center">
-                                        <h5>
-                                            Don't have an Account?<span><a href="#"
-                                                                           class="text-danger"> Register Now!</a></span>
-                                        </h5>
-                                    </div>
-                                    <div
-                                        class="row justify-content-center align-items-center pt-4 pb-5">
-                                        <div class="col-4">
-
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

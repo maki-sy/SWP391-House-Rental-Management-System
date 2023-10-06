@@ -353,32 +353,30 @@ public class UserService {
         }
     }
 
-    public boolean verifyChangePassword(String password, String tokenStr) {
+    public String verifyChangePassword(String password, String tokenStr) {
         Token token = TOKEN_DAO.getToken(tokenStr);
         if (token == null) { // invalid token: token does not exist in the DB
             System.out.println("Token does not exist in the DB");
-            return false;
+            return "invalidToken";
         } else {
 
             // Check for expire time of token
             boolean expired = isTokenExpire(token);
             if (expired) { // If token already expired
                 System.out.println("Token expired");
-                return false;
+                return "tokenExpired";
             } else {
 
                 // Get User object corresponding to token
                 Users user = USER_DAO.getUserByID(token.getUserID());
-                if (user == null) {
-                    return false;
-                } else {
-                    byte[] salt = generateSalt();
-                    byte[] hashed_password = hashingPassword(password, salt);
-                    USER_DAO.updateUserPassword(user, hashed_password, salt);
-                    return true;
-                }
+
+                byte[] salt = generateSalt();
+                byte[] hashed_password = hashingPassword(password, salt);
+                USER_DAO.updateUserPassword(user, hashed_password, salt);
+                return "success";
             }
         }
+
     }
 
     /**
@@ -394,6 +392,15 @@ public class UserService {
         LocalDateTime now = LocalDateTime.now();
 
         return tokenTime.isBefore(now);
+    }
+
+    public boolean checkPassword(Users user, String inputPassword) {
+        byte[] salt = user.getSalt();
+        byte[] hashedInputPassword = hashingPassword(inputPassword, salt);
+
+        boolean check = Arrays.equals(hashedInputPassword, user.getHashedPassword());
+
+        return check;
     }
 
     public void changePassword(int user_id, String email) {
