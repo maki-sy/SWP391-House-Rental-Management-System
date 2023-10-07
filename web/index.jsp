@@ -33,6 +33,12 @@
 
         <!-- Template Main CSS File -->
         <link href="assets/css/style.css" rel="stylesheet">
+        <style>
+            .intro-title a {
+                color: white; /* Thay đổi màu chữ thành đỏ (#ff0000) */
+                text-decoration: none; /* Loại bỏ gạch chân dưới văn bản */
+            }
+        </style>
 
         <!-- =======================================================
         * Template Name: EstateAgency
@@ -175,9 +181,12 @@
         </div><!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
+        
+        <%@include file="header.jsp" %>
+        <%--<jsp:include page="header.jsp"></jsp:include>--%>
         <!-- Header cho khach -->
-        <% if(user == null) { %>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <%-- if(user == null) { --%>
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -229,19 +238,11 @@
                     <i class="bi bi-search"></i>
                 </button>
 
-                <div class="dropdown-menu">
-                    <a class="dropdown-item " href="/ManageServicesPage">Manage services</a>
-                    <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
-                    <a class="dropdown-item " href="login?type=logout">Logout</a>
-                </div>
-                </li>
-
-                </ul>
             </div>
-        </nav>
+        </nav>-->
         <!-- Header cho nguoi dung da dang nhap -->
-        <%} else {%>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <%-- } else { --%>
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
 
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
@@ -294,7 +295,7 @@
 
                             <div class="dropdown-menu">
                                 <a class="dropdown-item " href="ManageServicesPage">Manage services</a>
-                                <a class="dropdown-item " href="Profile?service=displayProfile&id=<%=user.getId()%>&roleid=<%=user.getRoleID()%>">Manage account</a>
+                                <a class="dropdown-item " href="Profile?service=displayProfile&id=<%--=user.getId()--%>&roleid=<%--=user.getRoleID()--%>">Manage account</a>
                                 <a class="dropdown-item " href="login?type=logout">Logout</a>
                             </div>
                         </li>
@@ -307,8 +308,8 @@
                 </button>
 
             </div>
-        </nav>
-        <%}%>
+        </nav>-->
+        <%-- } --%>
         <!-- End Header/Navbar -->
 
         <%
@@ -333,10 +334,11 @@
                                 <div class="row">
                                     <div class="col-lg-8">
                                         <div class="intro-body">
-                                            <p class="intro-title-top"><%=pr.getName()%>
+                                            <h1 class="intro-title mb-4">
+                                                <a href="housedetail?id=<%=pr.getId()%>"><%=pr.getName()%></a>
                                                 <br>
-                                            </p>
-                                            <h1 class="intro-title mb-4 ">
+                                            </h1>
+                                            <h1 class="intro-title mb-4" style="font-size: 50px;">
                                                 <br> <%=pr.getAddress()%>
                                             </h1>
                                             <p class="intro-subtitle intro-price">

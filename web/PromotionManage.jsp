@@ -3,6 +3,12 @@
     Created on : Sep 27, 2023, 6:34:07 PM
     Author     : Administrator
 --%>
+<!-- ======= JSP ======= -->
+<%@ page import="model.Users" %>
+<%
+    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+%>  
+<!-- End JSP Code -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -40,7 +46,11 @@
       ======================================================== -->
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <!--Header-->
+        <%@include file="header.jsp" %>
+        <!--End header-->
+        
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -103,7 +113,7 @@
                 </button>
 
             </div>
-        </nav>
+        </nav>-->
         <br>
         <main id="main">
             <section class="section-news section-t3">

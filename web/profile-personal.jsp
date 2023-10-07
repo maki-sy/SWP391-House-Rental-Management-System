@@ -41,10 +41,10 @@
     <body>
         <!-- ======= JSP ======= -->
         <% 
-        Object loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); 
+        Users user = session.getAttribute("user")==null ? null : (Users)session.getAttribute("user"); 
         Tenant tenant=(Tenant)request.getAttribute("tn");
         Landlord landlord=(Landlord)request.getAttribute("ll");
-        Users account=(Users)loggedUser;
+//        Users account=(Users)loggedUser;
         String role_name=(String)request.getAttribute("role_name");
         %>
 
@@ -149,9 +149,10 @@
         <!-- End Property Search Section -->>
 
         <!-- ======= Header/Navbar ======= -->
+        <%@include file="header.jsp" %>
         <!-- Header cho khach -->
-        <% if(role_name==null) { %>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <%-- if(role_name==null) { --%>
+<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -200,10 +201,10 @@
                 </button>
 
             </div>
-        </nav>
+        </nav>-->
         <!-- Header cho nguoi dung da dang nhap -->
-        <%} else {%>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        <%-- } else { --%>
+<!--//        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
             <div class="container">
                 <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
@@ -266,8 +267,8 @@
                 </button>
 
             </div>
-        </nav>
-        <%}%>
+        </nav>-->
+        <%-- } --%>
         <!-- End Header/Navbar -->
 
 
@@ -294,13 +295,13 @@
                                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
                                     <h5 class="my-3"><%=tenant.getFirstName()%> &nbsp;<%=tenant.getLastName()%></h5>
-                                    <p class="text-muted mb-1"><%=account.getEmail()%></p>
+                                    <p class="text-muted mb-1"><%=user.getEmail()%></p>
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">
                                         <button type="button" class="btn btn-primary"
                                                 disabled><%=role_name%></button>
                                         <button type="button" class="btn btn-outline-primary ms-1"
-                                                disabled><%=account.getStatus()%></button>
+                                                disabled><%=user.getStatus()%></button>
                                     </div>
                                 </div>
                             </div>
@@ -310,7 +311,7 @@
 
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=updateProfile&id=<%=tenant.getId()%>&roleid=<%=account.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
+                                            <a href="Profile?service=updateProfile&id=<%=tenant.getId()%>&roleid=<%=user.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
                                                     public
                                                     information</button></a>
                                         </li>
@@ -322,20 +323,16 @@
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Top
-                                                    up your
-                                                    account</button></a>
+                                            <a href="#!"><button type="button" class="btn btn-primary">Top up your account</button></a>
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
                                             <a href="#!"><button type="button"
-                                                                 class="btn btn-primary">Transaction
-                                                    history</button></a>
+                                                                 class="btn btn-primary">Transaction history</button></a>
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Send
-                                                    Report</button></a>
+                                            <a href="#!"><button type="button" class="btn btn-primary">Send Report</button></a>
                                         </li>
 
 
@@ -404,13 +401,13 @@
                                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
                                     <h5 class="my-3"><%=landlord.getFirstName()%> &nbsp;<%=landlord.getLastName()%></h5>
-                                    <p class="text-muted mb-1"><%=account.getEmail()%></p>
+                                    <p class="text-muted mb-1"><%=user.getEmail()%></p>
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">
                                         <button type="button" class="btn btn-primary"
                                                 disabled><%=role_name%></button>
                                         <button type="button" class="btn btn-outline-primary ms-1"
-                                                disabled><%=account.getStatus()%></button>
+                                                disabled><%=user.getStatus()%></button>
                                     </div>
                                 </div>
                             </div>
@@ -420,13 +417,13 @@
 
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=updateProfile&id=<%=landlord.getId()%>&roleid=<%=account.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
+                                            <a href="Profile?service=updateProfile&id=<%=landlord.getId()%>&roleid=<%=user.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
                                                     public
                                                     information</button></a>
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button"
+                                            <a href="change-password.jsp"><button type="button"
                                                                  class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>

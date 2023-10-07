@@ -59,7 +59,7 @@ public class SearchController extends HttpServlet {
             request.setAttribute("address", address);
             request.setAttribute("location", location);
 
-            String search = request.getParameter("txt");
+            String search = request.getParameter("txt").trim();
             String roomType = request.getParameter("type");
             String bedroom = request.getParameter("bed");
             String priceF = request.getParameter("priceFrom");

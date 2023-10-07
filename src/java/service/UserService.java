@@ -198,7 +198,7 @@ public class UserService {
         // Send confirmation email to user
         sendEmail(receivedEmail, subject, content);
     }
-    
+
     private void changePasswordEmail(String receivedEmail, String token) {
         String subject = "Verifying change password request";
         String content = "Hi " + receivedEmail + ", you received this email because you've requested to change your password. To verify the request, click on the following link : <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/changePassword?token=" + token + "\">CHANGE YOUR PASSWORD HERE</a>";
@@ -246,45 +246,6 @@ public class UserService {
         return token;
     }
 
-//    /**
-//     * Login for tenant and landlord
-//     *
-//     * @param email
-//     * @param password raw password user inputted
-//     * @return Object represent Tenant or Landlord if login success, null if
-//     * unsuccess
-//     */
-//    public Object login(String email, String password, String role) {
-//        
-//        
-//        Tenant t = TENANT_DAO.getTenantByEmail(email);
-//        if (t != null) {
-//            byte[] salt = t.getSalt();
-//            byte[] correctPass = t.getHashedPassword();
-//            byte[] inputPass = hashingPassword(password, salt);
-//            boolean sucess = Arrays.equals(correctPass, inputPass);
-//            if (sucess) {
-//                return t;
-//            } else {
-//                return null;
-//            }
-//        }
-//
-//        Landlord l = LANDLORD_DAO.getLandlordByEmail(email);
-//        if (l != null) {
-//            byte[] salt = l.getSalt();
-//            byte[] correctPass = l.getHashedPassword();
-//            byte[] inputPass = hashingPassword(password, salt);
-//            boolean sucess = Arrays.equals(correctPass, inputPass);
-//            if (sucess) {
-//                return l;
-//            } else {
-//                return null;
-//            }
-//        }
-//
-//        return null; // NEED TO UPDATE ASAP
-//    }
     /**
      * Login for tenant and landlord
      *
@@ -391,33 +352,31 @@ public class UserService {
             return false;
         }
     }
-    
-    public boolean verifyChangePassword(String password, String tokenStr) {
+
+    public String verifyChangePassword(String password, String tokenStr) {
         Token token = TOKEN_DAO.getToken(tokenStr);
         if (token == null) { // invalid token: token does not exist in the DB
             System.out.println("Token does not exist in the DB");
-            return false;
+            return "invalidToken";
         } else {
 
             // Check for expire time of token
             boolean expired = isTokenExpire(token);
             if (expired) { // If token already expired
                 System.out.println("Token expired");
-                return false;
+                return "tokenExpired";
             } else {
 
                 // Get User object corresponding to token
                 Users user = USER_DAO.getUserByID(token.getUserID());
-                if (user == null) {
-                    return false;
-                } else {
-                    byte[] salt = generateSalt();
-                    byte[] hashed_password = hashingPassword(password, salt);
-                    USER_DAO.updateUserPassword(user, hashed_password, salt);
-                    return true;
-                }
+
+                byte[] salt = generateSalt();
+                byte[] hashed_password = hashingPassword(password, salt);
+                USER_DAO.updateUserPassword(user, hashed_password, salt);
+                return "success";
             }
         }
+
     }
 
     /**
@@ -427,42 +386,82 @@ public class UserService {
      * @return true if token has been expired, false otherwise
      */
     private boolean isTokenExpire(Token token) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS]");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS][S]");
         System.out.println("Time: " + token.getExpireDate());
         LocalDateTime tokenTime = LocalDateTime.parse(token.getExpireDate(), formatter);
         LocalDateTime now = LocalDateTime.now();
 
         return tokenTime.isBefore(now);
     }
-    
+
+    public boolean checkPassword(Users user, String inputPassword) {
+        byte[] salt = user.getSalt();
+        byte[] hashedInputPassword = hashingPassword(inputPassword, salt);
+
+        boolean check = Arrays.equals(hashedInputPassword, user.getHashedPassword());
+
+        return check;
+    }
+
     public void changePassword(int user_id, String email) {
         Token token = generateUserToken(user_id, email, Token.TokenType.CHANGEPWD);
-
         changePasswordEmail(email, token.getToken());
     }
 
-    public static void main(String[] args) {
-//        UserService u = new UserService();
-//        // Generate token for email verification
-//        Token token = u.generateToken("TEN", "haquangthangtn@gmail.com", Token.TokenType.CONFIRMATION);
-//
-//        // Send an email with token to user's email to verify email address
-//        u.sendConfirmationEmail("haquangthangtn@gmail.com", token.getToken());
+    /**
+     * Send forgot password email to email address. If the email address does
+     * not exist in the DB, or the account has not been activated, the email
+     * will not be sent
+     *
+     * @param email
+     */
+    public void sendForgotPwdEmail(String email) {
+        Users user = USER_DAO.getVerifiedAccount(email);
+        if (user == null) {
+            System.out.println("Email does not exist, or this account has not been activated");
+        } else {
+            Token token = generateUserToken(user.getId(), email, Token.TokenType.FORGOTPWD);
+            String mailSubject = "Account recovery for House Rental Management";
+            String content = "You've requested to reset your password, please click on this link to reset your password <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/recover?service=resetPwd&token=" + token.getToken() + "\">RESET YOUR PASSWORD HERE</a>";
+            sendEmail(email, mailSubject, content);
+        }
+    }
 
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS]");
-//        LocalDateTime test = LocalDateTime.parse("2023-09-24 19:55:44.02", formatter);
-//        System.out.println(test);
-        Token token = TOKEN_DAO.getToken("TEN1QPvZJFuZVWltaXwQCpmpNwB5bE");
-        String time = token.getExpireDate();
-//        String formatted = 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS]");
+    /**
+     * Check for valid token. A valid token is a token that is in the DB, not
+     * expired, and its type corresponding to token's string matches with type
+     *
+     * @param token token string
+     * @param type type of token
+     * @return true if exist Token object in DB with token's string = token, and
+     * token's type = type. False otherwise
+     */
+    public boolean checkValidToken(String token, Token.TokenType type) {
+        Token tokenObj = TOKEN_DAO.getToken(token);
+        if (tokenObj == null) { // if this token does not exist
+            System.out.println("This token does not exist");
+            return false;
+        } else {
+            return (!isTokenExpire(tokenObj) && (tokenObj.getType() == type));
+        }
+    }
 
-        System.out.println(LocalDateTime.parse(time, formatter));
-//
-//        String dateTimeStr1 = "2023-09-24 19:55:44.020";
-//        String dateTimeStr2 = "2023-09-24 19:55:44.02";
-//
-//        LocalDateTime dateTime1 = LocalDateTime.parse(dateTimeStr1, formatter);
-//        LocalDateTime dateTime2 = LocalDateTime.parse(dateTimeStr2, formatter);
+    /**
+     * Reset user password corresponding to token in the DB
+     *
+     * @param token
+     * @param usrPassword
+     */
+    public void resetUserPassword(String token, String usrPassword) {
+        Token tokenObj = TOKEN_DAO.getToken(token);
+        Users user = USER_DAO.getUserByID(tokenObj.getUserID());
+        
+        byte[] salt = generateSalt();
+        byte[] hashedPwd = hashingPassword(usrPassword, salt);
+        
+        user.setSalt(salt);
+        user.setHashedPassword(hashedPwd);
+        
+        USER_DAO.updateUser(user);
     }
 }
