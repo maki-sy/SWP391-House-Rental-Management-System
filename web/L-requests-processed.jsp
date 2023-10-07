@@ -416,7 +416,7 @@
                                         <th class="col-lg-auto" scope="col">Status</th>
                                         <th class="col-lg-1" scope="col">View</th>
                                         <th class="col-lg-1" scope="col">Contact</th>
-                                     
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -442,8 +442,7 @@
                                                 <input type="hidden" name="service" value="view-request-post">
                                                 <input type="hidden" name="post-id" value="<%=order.getPostId()%>">
                                                 <button type="submit" class="w-100 btn btn-sm btn-primary">
-                                                    <ion-icon
-                                                        name="arrow-forward-circle-outline"></ion-icon>
+                                                    <ion-icon name="eye-outline"></ion-icon>
                                                 </button>
                                             </form>
                                         </td>
@@ -457,7 +456,7 @@
                                                 </button>
                                             </form>
                                         </td>
-                                      
+
                                     </tr>
                                     <%}%>
                                 </tbody>
@@ -641,7 +640,7 @@
                         <div id="preloader"></div>
                         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
                                 class="bi bi-arrow-up-short"></i></a>
-
+                                
                         <!-- Vendor JS Files -->
                         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
                         <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>

@@ -445,8 +445,7 @@
                                                 <input type="hidden" name="service" value="view-request-post">
                                                 <input type="hidden" name="post-id" value="<%=order.getPostId()%>">
                                                 <button type="submit" class="w-100 btn btn-sm btn-primary">
-                                                    <ion-icon
-                                                        name="arrow-forward-circle-outline"></ion-icon>
+                                                    <ion-icon name="eye-outline"></ion-icon>
                                                 </button>
                                             </form>
                                         </td>
@@ -461,9 +460,7 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="approve-request">
-                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
+                                            <a href="javascript:void(0);" onclick="confirmApprove(<%=order.getOrderId()%>)">
                                                 <button type="submit" class="w-100 btn btn-sm btn-success">
                                                     <ion-icon
                                                         name="checkbox-outline"></ion-icon>
@@ -471,13 +468,11 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="reject-request">
-                                                <input type="hidden" name="order-id" value="<%=order.getOrderId()%>">
+                                            <a href="javascript:void(0);" onclick="confirmReject(<%=order.getOrderId()%>)">
                                                 <button type="submit" class="w-100 btn btn-sm btn-danger">
                                                     <ion-icon name="trash-outline"></ion-icon>
                                                 </button>
-                                            </form>
+                                            </a>
                                         </td>
                                     </tr>
                                     <%}%>
@@ -663,6 +658,9 @@
                         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
                                 class="bi bi-arrow-up-short"></i></a>
 
+                        <!-- Handle Javascript -->  
+                        <script src="assets/js/pending_requests.js"></script>
+                                
                         <!-- Vendor JS Files -->
                         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
                         <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
