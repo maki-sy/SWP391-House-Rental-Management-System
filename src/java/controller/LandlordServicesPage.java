@@ -69,7 +69,7 @@ public class LandlordServicesPage extends HttpServlet {
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
                 // do  something
             } else if (service.equals("add-new-post")) {
-                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                request.getRequestDispatcher("L-add-new-post.jsp").forward(request, response);
                 // do  something
             }
         }
