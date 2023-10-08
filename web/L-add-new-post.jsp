@@ -403,19 +403,8 @@
                                                             <option selected disabled>Choose the type of
                                                                 rental house
                                                             </option>
-                                                            <option value="1">Duplex</option>
-                                                            <option value="2">Triplex</option>
-                                                            <option value="3">Victorian house</option>
-                                                            <option value="4">Single-family home</option>
-                                                            <option value="5">Townhouse</option>
-                                                            <option value="6">Condominium</option>
-                                                            <option value="7">Apartment</option>
-                                                            <option value="8">Studio apartment</option>
-                                                            <option value="9">Loft</option>
-                                                            <option value="10">Manufactured home</option>
-                                                            <option value="11">Tiny house </option>
-                                                            <option value="12">Cottage </option>
-                                                            <option value="13">Bungalow </option>
+                                                            <option value="1">Motel</option>
+                                                            <option value="2">Apartment</option>
                                                         </select>
                                                         <select required name="location_id" class="mb-3 form-select"
                                                             aria-label="Default select example">

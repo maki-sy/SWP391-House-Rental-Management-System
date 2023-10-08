@@ -3,12 +3,15 @@ package service;
 import DAO.LandlordDAO;
 import DAO.OrdersDAO;
 import DAO.PostDAO;
+import DAO.TransactionDAO;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import model.Orders;
 import model.PostRental;
+import model.Transaction;
 
 public class LandlordService {
 
@@ -92,8 +95,27 @@ public class LandlordService {
         return false;
     }
 
+    public boolean isInsertedTransactionSuccess(int payerId, int postId, String postStatus) {
+        TransactionDAO transactionDAO = new TransactionDAO();
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String transactionDate = dateFormat.format(currentDate);
+        double amount = 0D;
+        int receiverId = 1;
+        String type = "DEPOSIT";
+        if (postStatus.equals("basic")) {
+            amount = 13;
+        } else if (postStatus.equals("standard")) {
+            amount = 32;
+        } else {
+          amount = 48;
+        }
+        int rowInserted = transactionDAO.addTransaction(amount, payerId, 
+                receiverId, type, transactionDate, postId);
+        return false;
+    }
+
     public static void main(String[] args) {
         LandlordService n = new LandlordService();
-        n.isMoneyDedutedByUserId(1, "basic");
     }
 }

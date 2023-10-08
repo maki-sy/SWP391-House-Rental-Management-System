@@ -106,6 +106,7 @@ public class LandlordServicesPage extends HttpServlet {
                 handleService.isUpdatePostStatusByPostIdSuccess(postId, status);
                 handleService.isMoneyDedutedByUserId(user.getId(), status);
                 handleService.isUpdatedPostDate(postId, status);
+                handleService.isInsertedTransactionSuccess(user.getId(), postId, status);
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
             }
         }
