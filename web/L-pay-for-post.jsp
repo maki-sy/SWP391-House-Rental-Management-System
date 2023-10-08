@@ -31,7 +31,23 @@
 
                     <!-- Template Main CSS File -->
                     <link href="assets/css/style.css" rel="stylesheet">
+                    <style>
+                        .card::after {
+                            position: absolute;
+                            z-index: -1;
+                            opacity: 0;
+                            -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+                            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+                        }
 
+                        .card:hover {
+                            transform: scale(1.02, 1.02);
+                            -webkit-transform: scale(1.02, 1.02);
+                            backface-visibility: hidden;
+                            will-change: transform;
+                            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .75) !important;
+                        }
+                    </style>
 
                 </head>
 
@@ -41,6 +57,8 @@
                         Object loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user");
                         ArrayList<Orders>
                         ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
+                            Integer balance = (Integer)request.getAttribute("accountBalance");
+                            Integer postId = (Integer)request.getAttribute("postId");
                             %>
                             <!-- End JSP Code -->
 
@@ -176,52 +194,37 @@
                                                             <div class="mb-3"></div>
                                                             <ul class="list-group text-start">
                                                                 <li class="text-start list-group-item active list-group-item-action"
-                                                                    aria-current="true">Add new post</li>
-                                                                <li class="list-group-item"><span
-                                                                        class="text-bg-warning">--Post
-                                                                        title--</span><span>
-                                                                        The title is placed at the top of the
-                                                                        article</span></li>
-                                                                <li class="list-group-item"><span
-                                                                        class="text-bg-warning">--Rental
-                                                                        price--</span><span>
-                                                                        The original rental price of the house has not
-                                                                        yet been discounted</span></li>
-                                                                <li class="list-group-item"><span
-                                                                        class="text-bg-warning">--House
-                                                                        area--</span><span>
-                                                                        Area of the house</span></li>
-                                                                <li class="list-group-item"><span
-                                                                        class="text-bg-warning">--Number of
-                                                                        bedrooms--</span><span>
-                                                                        Total number of bedrooms in the house</span>
+                                                                    aria-current="true">Choose preferential packages
+                                                                </li>
+                                                                <li class="list-group-item text-bg-warning">
+                                                                    <ion-icon name="card-outline"></ion-icon>
+                                                                    <span>Account balance: </span>
+                                                                    <span>
+                                                                        $ <%=balance%>
+                                                                    </span>
                                                                 </li>
                                                                 <li class="list-group-item"><span
-                                                                        class="text-bg-warning">--Address of
-                                                                        the house--</span><span>
-                                                                        Detailed address of the house such as house
-                                                                        number, lane number, lane name, ward name</span>
-                                                                </li>
+                                                                        class="text-bg-warning">--Basic--</span><span>
+                                                                        The premium plan combines post
+                                                                        editing capabilities, information
+                                                                        security, and paid post cost savings to give you
+                                                                        flexibility, reliability, and
+                                                                        efficiency.</span></li>
                                                                 <li class="list-group-item"><span
-                                                                        class="text-bg-warning">--Upload
-                                                                        photo--</span><span>
-                                                                        You can absolutely upload multiple photos at the
-                                                                        same time</span></li>
+                                                                        class="text-bg-warning">--Standard--</span><span>
+                                                                        The standard package with post
+                                                                        editing capabilities for paid posts
+                                                                        gives you the flexibility to update information
+                                                                        and create continuous appeal for your
+                                                                        posts.</span></li>
                                                                 <li class="list-group-item"><span
-                                                                        class="text-bg-warning">--Detailed
-                                                                        description--</span><span>
-                                                                        Describe all the details of the house
-                                                                        attractively to attract tenants</span></li>
-                                                                <li class="list-group-item"><span
-                                                                        class="text-bg-danger">--Save as
-                                                                        draft--</span><span>
-                                                                        Save it as a draft and you can publish it
-                                                                        later</span></li>
-                                                                <li class="list-group-item"><span
-                                                                        class="text-bg-danger">--Proceed
-                                                                        with payment--</span><span>
-                                                                        Select payments and post to the community</span>
-                                                                </li>
+                                                                        class="text-bg-warning">--Premium--</span><span>
+                                                                        The premium plan combines post
+                                                                        editing capabilities, information
+                                                                        security, and paid post cost savings to give you
+                                                                        flexibility, reliability, and
+                                                                        efficiency.</span></li>
+
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -349,164 +352,150 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="card col-lg-8">
-                                                    <form action="landlordServicesPage" method="POST">
-                                                        <input type="hidden" name="service" value="submit-add-new-post">
-                                                        <div class="mb-3"></div>
-                                                        <div class="mb-3">
-                                                            <label for="Post-title" class="form-label">Post
-                                                                title</label>
-                                                            <textarea required name="name" class="form-control"
-                                                                id="Post-title" rows="1"></textarea>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="Rental-price" class="form-label">Rental
-                                                                price</label>
-                                                            <textarea required name="price" class="form-control"
-                                                                id="Rental-price" rows="1"></textarea>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="House-area" class="form-label">House
-                                                                area</label>
-                                                            <textarea required name="area" class="form-control"
-                                                                id="House-area" rows="1"></textarea>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="Number-bedrooms" class="form-label">Number of
-                                                                bedrooms</label>
-                                                            <textarea required name="NumOfBedrooms" class="form-control"
-                                                                id="Number-bedrooms" rows="1"></textarea>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="address" class="form-label">Address
-                                                                of the
-                                                                house</label>
-                                                            <textarea required name="address" class="form-control"
-                                                                id="address" rows="1"></textarea>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="formFileMultiple" class="form-label">Upload
-                                                                multiple photos</label>
-                                                            <input name="file" class="form-control" type="file"
-                                                                id="formFileMultiple" multiple>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="Detailed-description"
-                                                                class="form-label">Detailed
-                                                                description</label>
-                                                            <textarea required name="description" class="form-control"
-                                                                id="Detailed-description" rows="12"></textarea>
-                                                        </div>
+                                                <div class=" col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-12 mb-4">
+                                                            <div class="card h-100 shadow-lg">
+                                                                <div class="card-body">
+                                                                    <div class="text-center p-3">
+                                                                        <h5 class="card-title">Basic</h5>
+                                                                        <small>You are a minimalist?</small>
+                                                                        <br><br>
+                                                                        <span class="h2">$13</span>/month
+                                                                        <br><br>
+                                                                    </div>
 
-                                                        <select required name="type" class="mb-3 form-select"
-                                                            aria-label="Default select example">
-                                                            <option selected disabled>Choose the type of
-                                                                rental house
-                                                            </option>
-                                                            <option value="1">Duplex</option>
-                                                            <option value="2">Triplex</option>
-                                                            <option value="3">Victorian house</option>
-                                                            <option value="4">Single-family home</option>
-                                                            <option value="5">Townhouse</option>
-                                                            <option value="6">Condominium</option>
-                                                            <option value="7">Apartment</option>
-                                                            <option value="8">Studio apartment</option>
-                                                            <option value="9">Loft</option>
-                                                            <option value="10">Manufactured home</option>
-                                                            <option value="11">Tiny house </option>
-                                                            <option value="12">Cottage </option>
-                                                            <option value="13">Bungalow </option>
-                                                        </select>
-                                                        <select required name="location_id" class="mb-3 form-select"
-                                                            aria-label="Default select example">
-                                                            <option selected disabled>Select province/city
-                                                            </option>
-                                                            <option value="1">Hanoi</option>
-                                                            <option value="2">Haiphong</option>
-                                                            <option value="3">Da Nang</option>
-                                                            <option value="4">Ho Chi Minh City</option>
-                                                            <option value="5">Can Tho</option>
-                                                            <option value="6">An Giang</option>
-                                                            <option value="7">Bac Giang</option>
-                                                            <option value="8">Bac Kan</option>
-                                                            <option value="9">Bac Ninh</option>
-                                                            <option value="10">Ba Ria - Vung Tau</option>
-                                                            <option value="11">Ben Tre</option>
-                                                            <option value="12">Binh Dinh</option>
-                                                            <option value="13">Binh Duong</option>
-                                                            <option value="14">Binh Phuoc</option>
-                                                            <option value="15">Binh Thuan</option>
-                                                            <option value="16">Ca Mau</option>
-                                                            <option value="17">Cao Bang</option>
-                                                            <option value="18">Dak Lak</option>
-                                                            <option value="19">Dak Nong</option>
-                                                            <option value="20">Dien Bien</option>
-                                                            <option value="21">Dong Nai</option>
-                                                            <option value="22">Dong Thap</option>
-                                                            <option value="23">Gia Lai</option>
-                                                            <option value="24">Ha Giang</option>
-                                                            <option value="25">Ha Nam</option>
-                                                            <option value="26">Ha Tinh</option>
-                                                            <option value="27">Hai Duong</option>
-                                                            <option value="28">Hoa Binh</option>
-                                                            <option value="29">Hung Yen</option>
-                                                            <option value="30">Khanh Hoa</option>
-                                                            <option value="31">Kien Giang</option>
-                                                            <option value="32">Kon Tum</option>
-                                                            <option value="33">Lai Chau</option>
-                                                            <option value="34">Lam Dong</option>
-                                                            <option value="35">Lang Son</option>
-                                                            <option value="36">Lao Cai</option>
-                                                            <option value="37">Long An</option>
-                                                            <option value="38">Nam Dinh</option>
-                                                            <option value="39">Nghe An</option>
-                                                            <option value="40">Ninh Binh</option>
-                                                            <option value="41">Ninh Thuan</option>
-                                                            <option value="42">Phu Tho</option>
-                                                            <option value="43">Phu Yen</option>
-                                                            <option value="44">Quang Binh</option>
-                                                            <option value="45">Quang Nam</option>
-                                                            <option value="46">Quang Ngai</option>
-                                                            <option value="47">Quang Ninh</option>
-                                                            <option value="48">Quang Tri</option>
-                                                            <option value="49">Soc Trang</option>
-                                                            <option value="50">Son La</option>
-                                                            <option value="51">Tay Ninh</option>
-                                                            <option value="52">Thai Binh</option>
-                                                            <option value="53">Thai Nguyen</option>
-                                                            <option value="54">Thanh Hoa</option>
-                                                            <option value="55">Thua Thien Hue</option>
-                                                            <option value="56">Tien Giang</option>
-                                                            <option value="57">Tra Vinh</option>
-                                                            <option value="58">Tuyen Quang</option>
-                                                            <option value="59">Vinh Long</option>
-                                                            <option value="60">Vinh Phuc</option>
-                                                            <option value="61">Yen Bai</option>
-                                                            <option value="62">Bac Long Vi Island</option>
-                                                            <option value="63">Phu Quy Islands</option>
-                                                        </select>
-                                                        <div class="form-check mb-3">
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="typeOfAction" id="inlineRadio1" value="draft">
-                                                                <label class="form-check-label" for="inlineRadio1">Save
-                                                                    as draft</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="typeOfAction" id="inlineRadio2"
-                                                                    value="upload">
-                                                                <label class="form-check-label"
-                                                                    for="inlineRadio2">Proceed with
-                                                                    payment</label>
+                                                                </div>
+                                                                <ul class="list-group list-group-flush">
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> Personal information security</li>
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> N/A</li>
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> N/A</li>
+
+                                                                </ul>
+                                                                <div class="card-body text-center">
+                                                                    <a href="javascript:void(0);"
+                                                                        onclick="confirmBasic(<%=balance%>, <%=postId%>)">
+                                                                        <button class="btn btn-outline-primary btn-lg"
+                                                                            style="border-radius:30px">Select</button>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <button type="submit" class="btn btn-warning w-100">Submit
-                                                                now</button>
-                                                        </div>
+                                                        <div class="col-lg-4 col-md-12 mb-4">
+                                                            <div class="card h-100 shadow-lg">
+                                                                <div class="card-body">
+                                                                    <div class="text-center p-3">
+                                                                        <h5 class="card-title">Standard</h5>
+                                                                        <small>Edit as you like!</small>
+                                                                        <br><br>
+                                                                        <span class="h2">$32</span>/ 3 months
+                                                                        <br><br>
+                                                                    </div>
 
-                                                    </form>
+                                                                </div>
+                                                                <ul class="list-group list-group-flush">
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> Personal information security</li>
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> Edit the article after posting</li>
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> Save up to 20% costs</li>
+                                                                </ul>
+                                                                <div class="card-body text-center">
+                                                                    <a href="javascript:void(0);"
+                                                                        onclick="confirmStandard(<%=balance%>, <%=postId%>)">
+                                                                        <button class="btn btn-outline-primary btn-lg"
+                                                                            style="border-radius:30px">Select</button>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-12 mb-4">
+                                                            <div class="card h-100 shadow-lg">
+                                                                <div class="card-body">
+                                                                    <div class="text-center p-3">
+                                                                        <h5 class="card-title">Premium</h5>
+                                                                        <small>Are you a smart consumer?</small>
+                                                                        <br><br>
+                                                                        <span class="h2">$48</span>/ 6 months
+                                                                        <br><br>
+                                                                    </div>
+
+                                                                </div>
+                                                                <ul class="list-group list-group-flush">
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> Personal information security</li>
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> Edit the article after posting</li>
+                                                                    <li class="list-group-item"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-check" viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                                                        </svg> Save up to 40% costs</li>
+                                                                </ul>
+                                                                <div class="card-body text-center">
+                                                                    <a href="javascript:void(0);"
+                                                                        onclick="confirmPremium(<%=balance%>, <%=postId%>)">
+                                                                        <button class="btn btn-outline-primary btn-lg"
+                                                                            style="border-radius:30px">Select</button>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="balanceProblem alert alert-danger text-center"
+                                                        style="display: none" role="alert">
+                                                        Your account balance is currently insufficient, please choose
+                                                        another package, or contact us to add more points.
+                                                    </div>
+                                                    <a href="#!"><button type="button"
+                                                            class="w-100 btn btn-warning">Cancel and pay
+                                                            later</button></a>
                                                 </div>
                                     </section>
                                 </main>
@@ -689,9 +678,10 @@
                                         class="bi bi-arrow-up-short"></i></a>
 
                                 <!-- Handle Javascript -->
-                                <script src="assets/js/pending_requests.js"></script>
+                                <script src="assets/js/pay_for_post.js"></script>
 
                                 <!-- Vendor JS Files -->
+
                                 <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
                                 <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
                                 <script src="assets/vendor/php-email-form/validate.js"></script>
