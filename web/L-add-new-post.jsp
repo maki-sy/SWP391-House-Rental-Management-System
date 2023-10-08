@@ -2,9 +2,7 @@
 <%@page import="model.Users" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="model.Orders" %>
-<%
-    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
-%>  
+<% Users user=session.getAttribute("user")==null ? null : (Users)session.getAttribute("user"); %>
 
 
 <!DOCTYPE html>
@@ -39,11 +37,11 @@
 
     <body>
         <!-- ======= JSP ======= -->
-        <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role"); Object
-            loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); ArrayList<Orders>
+        <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role");
+            Object loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user");
+            ArrayList<Orders>
             ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
         %>
-        <!-- End JSP Code -->
         <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
@@ -60,7 +58,8 @@
                         <div class="col-md-12 mb-2">
                             <div class="form-group">
                                 <label class="pb-2" for="Type">Keyword</label>
-                                <input type="text" class="form-control form-control-lg form-control-a"
+                                <input type="text"
+                                       class="form-control form-control-lg form-control-a"
                                        placeholder="Keyword">
                             </div>
                         </div>
@@ -90,7 +89,8 @@
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="bedrooms">Bedrooms</label>
-                                <select class="form-control form-select form-control-a" id="bedrooms">
+                                <select class="form-control form-select form-control-a"
+                                        id="bedrooms">
                                     <option>Any</option>
                                     <option>01</option>
                                     <option>02</option>
@@ -102,7 +102,8 @@
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="bathrooms">Bathrooms</label>
-                                <select class="form-control form-select form-control-a" id="bathrooms">
+                                <select class="form-control form-select form-control-a"
+                                        id="bathrooms">
                                     <option>Any</option>
                                     <option>01</option>
                                     <option>02</option>
@@ -145,137 +146,9 @@
 
         <!-- ======= Header/Navbar ======= -->
         <%@include file="header.jsp" %>
-        <!-- Header cho khach -->
-        <%-- if(role==null) { --%>
-        <!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-                    <div class="container">
-                        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
-                        <a class="navbar-brand text-brand" href="trang-chu">Rental<span
-                                class="color-b">House</span></a>
-        
-                        <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                            <ul class="navbar-nav">
-        
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="trang-chu">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " href="property-grid.jsp">Houses</a>
-                                </li>
-        
-                                <li class="nav-item">
-                                    <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                                </li>
-        
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                                       role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                       aria-expanded="false">Pages</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                                        <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
-                                    </div>
-                                </li>
-        
-                                <li class="nav-item">
-                                    <a class="nav-link " href="contact.jsp">Contact</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="nav-item btn" style="padding: 0.35rem 1rem;">
-                            <a href="login?type=login">Login/Register</a>
-                        </div>
-        
-                        <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                                data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                            <i class="bi bi-search"></i>
-                        </button>
-        
-                    </div>
-                </nav>-->
-        <!-- Header cho nguoi dung da dang nhap -->
-        <%--} else {--%>
-        <!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-                    <div class="container">
-                        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarDefault" aria-controls="navbarDefault"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
-                        <a class="navbar-brand text-brand" href="trang-chu">Rental<span
-                                class="color-b">House</span></a>
-        
-                        <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                            <ul class="navbar-nav">
-        
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="trang-chu">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " href="property-grid.jsp">Houses</a>
-                                </li>
-        
-                                <li class="nav-item">
-                                    <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                                </li>
-        
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                                       role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                       aria-expanded="false">Pages</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item " href="property-single.jsp">House
-                                            Detail</a>
-                                        <a class="dropdown-item " href="agent-single.jsp">Landlord
-                                            Detail</a>
-                                    </div>
-                                </li>
-        
-                                <li class="nav-item">
-                                    <a class="nav-link " href="contact.jsp">Contact</a>
-                                </li>
-        
-                                <li class="nav-item">
-                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                                         class="rounded-circle" style="width: 3rem; margin-left: 6rem"
-                                         alt="Avatar" />
-                                </li>
-                                <li class="nav-item dropdown">
-        
-                                    <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown"
-                                       role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                       aria-expanded="false">My
-                                        profile</a>
-        
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item " href="/ManageServicesPage">Manage
-                                            services</a>
-                                        <a class="dropdown-item " href="./profile-personal.jsp">Manage
-                                            account</a>
-                                        <a class="dropdown-item " href="login?type=logout">Logout</a>
-                                    </div>
-                                </li>
-        
-                            </ul>
-                        </div>
-                        <button type="button"
-                                class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                                data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                            <i class="bi bi-search"></i>
-                        </button>
-        
-                    </div>
-                </nav>-->
-        <%--}--%>
+
         <!-- End Header/Navbar -->
+
         <main id="main">
             <section class="section-news section-t3">
                 <div class="container py-5">
@@ -283,10 +156,12 @@
                         <div class="col">
                             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                                 <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#">User</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">User
-                                        Profile</li>
+                                    <li class="breadcrumb-item"><a href="#">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="#">Manage services</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Add
+                                        new post</li>
                                 </ol>
                             </nav>
                         </div>
@@ -296,16 +171,57 @@
                         <div class="col-lg-4">
                             <div class="card mb-4">
                                 <div class="card-body text-center">
-                                    <img src="./assets/img/setting.png"
-                                         alt="avatar" class="img-fluid"
-                                         style="width: 150px;">
+                                    <img src="./assets/img/setting.png" alt="avatar"
+                                         class="img-fluid" style="width: 150px;">
                                     <div class="mb-3"></div>
                                     <ul class="list-group text-start">
-                                        <li class="text-start list-group-item active list-group-item-action" aria-current="true">Manage pending requests</li>
-                                        <li class="list-group-item"><span class="text-bg-primary">--View--</span><span> View detailed post information</span></li>
-                                        <li class="list-group-item"><span class="text-bg-warning">--Contact--</span><span> Go to the customer's personal page</span></li>
-                                        <li class="list-group-item"><span class="text-bg-success">--Approve--</span><span> Customers can view your personal information</span></li>
-                                        <li class="list-group-item"><span class="text-bg-danger">--Reject--</span><span> Customers can't see your contact information</span></li>
+                                        <li class="text-start list-group-item active list-group-item-action"
+                                            aria-current="true">Add new post</li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Post
+                                                title--</span><span>
+                                                The title is placed at the top of the
+                                                article</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Rental
+                                                price--</span><span>
+                                                The original rental price of the house has not
+                                                yet been discounted</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--House
+                                                area--</span><span>
+                                                Area of the house</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Number of
+                                                bedrooms--</span><span>
+                                                Total number of bedrooms in the house</span>
+                                        </li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Address of
+                                                the house--</span><span>
+                                                Detailed address of the house such as house
+                                                number, lane number, lane name, ward name</span>
+                                        </li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Upload
+                                                photo--</span><span>
+                                                You can absolutely upload multiple photos at the
+                                                same time</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Detailed
+                                                description--</span><span>
+                                                Describe all the details of the house
+                                                attractively to attract tenants</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-danger">--Save as
+                                                draft--</span><span>
+                                                Save it as a draft and you can publish it
+                                                later</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-danger">--Proceed
+                                                with payment--</span><span>
+                                                Select payments and post to the community</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -313,15 +229,20 @@
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark "> Manage rental requests</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark ">
+                                                    Manage rental
+                                                    requests</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
-                                                <a href="landlordServicesPage?service=pending-requests">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Pending requests
+                                                <a
+                                                    href="landlordServicesPage?service=pending-requests">
+                                                    <div class="btn btn-primary"> +
+                                                    </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Pending
+                                                        requests
                                                     </button>
                                                 </a>
                                             </div>
@@ -329,11 +250,13 @@
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="landlordServicesPage?service=requests-processed">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Requests processed
+                                                <a
+                                                    href="landlordServicesPage?service=requests-processed">
+                                                    <div class="btn btn-primary"> +
+                                                    </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Requests
+                                                        processed
                                                     </button>
                                                 </a>
                                             </div>
@@ -341,16 +264,18 @@
                                         </li>
                                         <li class="list-group-item text-center">
                                             <a class="pe-none" href="#!"><button type="button"
-                                                                                 class=" w-100 btn btn-dark "> Manage My
+                                                                                 class=" w-100 btn btn-dark ">
+                                                    Manage My
                                                     Post</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
                                                 <a href="#!">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Published posts
+                                                    <div class="btn btn-primary"> +
+                                                    </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Published
+                                                        posts
                                                     </button>
                                                 </a>
                                             </div>
@@ -358,26 +283,31 @@
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="landlordServicesPage?service=add-new-post">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Add new post
+                                                <a
+                                                    href="landlordServicesPage?service=add-new-post">
+                                                    <div class="btn btn-primary"> +
+                                                    </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Add new post
                                                     </button>
                                                 </a>
                                             </div>
 
                                         </li>
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Manage my wallet points</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark ">Manage
+                                                    my
+                                                    wallet points</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
                                                 <a href="#!">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Request deposit
+                                                    <div class="btn btn-primary"> +
+                                                    </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Request
+                                                        deposit
                                                     </button>
                                                 </a>
                                             </div>
@@ -386,26 +316,29 @@
                                             <div class="contain">
 
                                                 <a href="#!">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Transaction history
+                                                    <div class="btn btn-primary"> +
+                                                    </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Transaction
+                                                        history
                                                     </button>
                                                 </a>
                                             </div>
                                         </li>
 
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Promotions</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark ">Promotions</button></a>
                                         </li>
 
                                         <li class="list-group-item">
                                             <div class="contain">
                                                 <a href="PromotionManage">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Manage Promotions
+                                                    <div class="btn btn-primary"> +
+                                                    </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Manage
+                                                        Promotions
                                                     </button>
                                                 </a>
                                             </div>
@@ -417,82 +350,156 @@
                         </div>
 
                         <div class="card col-lg-8">
+                            <form action="landlordServicesPage" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="service" value="submit-add-new-post">
+                                <div class="mb-3"></div>
+                                <div class="mb-3">
+                                    <label for="Post-title" class="form-label">Post
+                                        title</label>
+                                    <textarea required name="name" class="form-control"
+                                              id="Post-title" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Rental-price" class="form-label">Rental
+                                        price</label>
+                                    <textarea required name="price" class="form-control"
+                                              id="Rental-price" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="House-area" class="form-label">House
+                                        area</label>
+                                    <textarea required name="area" class="form-control"
+                                              id="House-area" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Number-bedrooms" class="form-label">Number of
+                                        bedrooms</label>
+                                    <textarea required name="NumOfBedrooms" class="form-control"
+                                              id="Number-bedrooms" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address
+                                        of the
+                                        house</label>
+                                    <textarea required name="address" class="form-control"
+                                              id="address" rows="1"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                   
+                                        <label for="formFileMultiple" class="form-label">Upload
+                                            multiple photos</label>
+                                        <input name="media" class="form-control" type="file"
+                                               id="formFileMultiple" multiple>
+                                
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Detailed-description"
+                                           class="form-label">Detailed
+                                        description</label>
+                                    <textarea required name="description" class="form-control"
+                                              id="Detailed-description" rows="12"></textarea>
+                                </div>
 
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="col-lg-1" scope="col">#</th>
-                                        <th class="col-lg-auto" scope="col">Order ID</th>
-                                        <th class="col-lg-auto" scope="col">Tenant ID</th>
-                                        <th class="col-lg-auto" scope="col">Post ID</th>
-                                        <th class="col-lg-auto" scope="col">Status</th>
-                                        <th class="col-lg-1" scope="col">View</th>
-                                        <th class="col-lg-1" scope="col">Contact</th>
-                                        <th class="col-lg-1" scope="col">Approve</th>
-                                        <th class="col-lg-1" scope="col">Reject</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%int count=0; for(Orders order : ordersList) {%>
-                                    <tr>
-                                        <th scope="row">
-                                            <%=++count%>
-                                        </th>
-                                        <td>
-                                            <%=order.getOrderId()%>
-                                        </td>
-                                        <td>
-                                            <%=order.getTenantId()%>
-                                        </td>
-                                        <td>
-                                            <%=order.getPostId()%>
-                                        </td>
-                                        <td>
-                                            <%=order.getStatus()%>
-                                        </td>
-                                        <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="view-request-post">
-                                                <input type="hidden" name="post-id" value="<%=order.getPostId()%>">
-                                                <button type="submit" class="w-100 btn btn-sm btn-primary">
-                                                    <ion-icon name="eye-outline"></ion-icon>
-                                                </button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="contact">
-                                                <input type="hidden" name="tenant-id" value="<%=order.getTenantId()%>">
-                                                <button type="submit"
-                                                        class="w-100 btn btn-sm btn-warning">
-                                                    <ion-icon name="call-outline"></ion-icon>
-                                                </button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:void(0);" onclick="confirmApprove(<%=order.getOrderId()%>)">
-                                                <button type="submit" class="w-100 btn btn-sm btn-success">
-                                                    <ion-icon
-                                                        name="checkbox-outline"></ion-icon>
-                                                </button>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:void(0);" onclick="confirmReject(<%=order.getOrderId()%>)">
-                                                <button type="submit" class="w-100 btn btn-sm btn-danger">
-                                                    <ion-icon name="trash-outline"></ion-icon>
-                                                </button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <%}%>
-                                </tbody>
-                            </table>
+                                <select required name="type" class="mb-3 form-select"
+                                        aria-label="Default select example">
+                                    <option selected disabled>Choose the type of
+                                        rental house
+                                    </option>
+                                    <option value="1">Motel</option>
+                                    <option value="2">Apartment</option>
+                                </select>
+                                <select required name="location_id" class="mb-3 form-select"
+                                        aria-label="Default select example">
+                                    <option selected disabled>Select province/city
+                                    </option>
+                                    <option value="1">Hanoi</option>
+                                    <option value="2">Haiphong</option>
+                                    <option value="3">Da Nang</option>
+                                    <option value="4">Ho Chi Minh City</option>
+                                    <option value="5">Can Tho</option>
+                                    <option value="6">An Giang</option>
+                                    <option value="7">Bac Giang</option>
+                                    <option value="8">Bac Kan</option>
+                                    <option value="9">Bac Ninh</option>
+                                    <option value="10">Ba Ria - Vung Tau</option>
+                                    <option value="11">Ben Tre</option>
+                                    <option value="12">Binh Dinh</option>
+                                    <option value="13">Binh Duong</option>
+                                    <option value="14">Binh Phuoc</option>
+                                    <option value="15">Binh Thuan</option>
+                                    <option value="16">Ca Mau</option>
+                                    <option value="17">Cao Bang</option>
+                                    <option value="18">Dak Lak</option>
+                                    <option value="19">Dak Nong</option>
+                                    <option value="20">Dien Bien</option>
+                                    <option value="21">Dong Nai</option>
+                                    <option value="22">Dong Thap</option>
+                                    <option value="23">Gia Lai</option>
+                                    <option value="24">Ha Giang</option>
+                                    <option value="25">Ha Nam</option>
+                                    <option value="26">Ha Tinh</option>
+                                    <option value="27">Hai Duong</option>
+                                    <option value="28">Hoa Binh</option>
+                                    <option value="29">Hung Yen</option>
+                                    <option value="30">Khanh Hoa</option>
+                                    <option value="31">Kien Giang</option>
+                                    <option value="32">Kon Tum</option>
+                                    <option value="33">Lai Chau</option>
+                                    <option value="34">Lam Dong</option>
+                                    <option value="35">Lang Son</option>
+                                    <option value="36">Lao Cai</option>
+                                    <option value="37">Long An</option>
+                                    <option value="38">Nam Dinh</option>
+                                    <option value="39">Nghe An</option>
+                                    <option value="40">Ninh Binh</option>
+                                    <option value="41">Ninh Thuan</option>
+                                    <option value="42">Phu Tho</option>
+                                    <option value="43">Phu Yen</option>
+                                    <option value="44">Quang Binh</option>
+                                    <option value="45">Quang Nam</option>
+                                    <option value="46">Quang Ngai</option>
+                                    <option value="47">Quang Ninh</option>
+                                    <option value="48">Quang Tri</option>
+                                    <option value="49">Soc Trang</option>
+                                    <option value="50">Son La</option>
+                                    <option value="51">Tay Ninh</option>
+                                    <option value="52">Thai Binh</option>
+                                    <option value="53">Thai Nguyen</option>
+                                    <option value="54">Thanh Hoa</option>
+                                    <option value="55">Thua Thien Hue</option>
+                                    <option value="56">Tien Giang</option>
+                                    <option value="57">Tra Vinh</option>
+                                    <option value="58">Tuyen Quang</option>
+                                    <option value="59">Vinh Long</option>
+                                    <option value="60">Vinh Phuc</option>
+                                    <option value="61">Yen Bai</option>
+                                    <option value="62">Bac Long Vi Island</option>
+                                    <option value="63">Phu Quy Islands</option>
+                                </select>
+                                <div class="form-check mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                               name="typeOfAction" id="inlineRadio1" value="draft">
+                                        <label class="form-check-label" for="inlineRadio1">Save
+                                            as draft</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                               name="typeOfAction" id="inlineRadio2"
+                                               value="upload">
+                                        <label class="form-check-label"
+                                               for="inlineRadio2">Proceed with
+                                            payment</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-warning w-100">Submit
+                                        now</button>
+                                </div>
+
+                            </form>
                         </div>
                         </section>
-                        <!-- code here -->
-
-
                         </main>
 
                         <!-- ======= Footer ======= -->
@@ -506,7 +513,8 @@
                                             </div>
                                             <div class="w-body-a">
                                                 <p class="w-text-a color-text-a">
-                                                    Enim minim veniam quis nostrud exercitation ullamco laboris
+                                                    Enim minim veniam quis nostrud exercitation
+                                                    ullamco laboris
                                                     nisi ut
                                                     aliquip exea
                                                     commodo consequat duis
@@ -520,7 +528,8 @@
                                                         contact@example.com
                                                     </li>
                                                     <li class="color-a">
-                                                        <span class="color-text-a">Email .</span> +54 356 945234
+                                                        <span class="color-text-a">Email .</span>
+                                                        +54 356 945234
                                                     </li>
                                                 </ul>
                                             </div>
@@ -567,7 +576,8 @@
                                     <div class="col-sm-12 col-md-4 section-md-t3">
                                         <div class="widget-a">
                                             <div class="w-header-a">
-                                                <h3 class="w-title-a text-brand">International sites</h3>
+                                                <h3 class="w-title-a text-brand">International sites
+                                                </h3>
                                             </div>
                                             <div class="w-body-a">
                                                 <ul class="list-unstyled">
@@ -652,7 +662,8 @@
                                         <div class="copyright-footer">
                                             <p class="copyright color-text-a">
                                                 &copy; Copyright
-                                                <span class="color-a">EstateAgency</span> All Rights Reserved.
+                                                <span class="color-a">EstateAgency</span> All Rights
+                                                Reserved.
                                             </p>
                                         </div>
                                         <div class="credits">
@@ -668,7 +679,7 @@
                         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
                                 class="bi bi-arrow-up-short"></i></a>
 
-                        <!-- Handle Javascript -->  
+                        <!-- Handle Javascript -->
                         <script src="assets/js/pending_requests.js"></script>
 
                         <!-- Vendor JS Files -->
