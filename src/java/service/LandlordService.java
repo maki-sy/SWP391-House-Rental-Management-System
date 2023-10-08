@@ -3,15 +3,15 @@ package service;
 import DAO.LandlordDAO;
 import DAO.OrdersDAO;
 import DAO.PostDAO;
+import DAO.PostImageDAO;
 import DAO.TransactionDAO;
+import jakarta.servlet.http.Part;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import model.Orders;
 import model.PostRental;
-import model.Transaction;
 
 public class LandlordService {
 
@@ -108,12 +108,36 @@ public class LandlordService {
         } else if (postStatus.equals("standard")) {
             amount = 32;
         } else {
-          amount = 48;
+            amount = 48;
         }
-        int rowInserted = transactionDAO.addTransaction(amount, payerId, 
+        int rowInserted = transactionDAO.addTransaction(amount, payerId,
                 receiverId, type, transactionDate, postId);
         return false;
     }
+
+    public String getFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        String[] tokens = contentDisposition.split(";");
+        for (String token : tokens) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return "unknown.jpg";
+    }
+    
+      public String getFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf(".");
+        if (lastDotIndex != -1) {
+            return fileName.substring(lastDotIndex + 1);
+        }
+        return "";
+    }
+      
+       public int addPostImage(int postId, String imgUrl, String imgType){
+           DAO.PostImageDAO postImageDAO = new PostImageDAO();
+           return postImageDAO.addPostImage(postId, imgUrl, imgType);
+      }
 
     public static void main(String[] args) {
         LandlordService n = new LandlordService();
