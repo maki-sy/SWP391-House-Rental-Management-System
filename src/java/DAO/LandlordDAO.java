@@ -113,8 +113,9 @@ public class LandlordDAO extends DBContext {
 
     /**
      * Update landlord which has id in the DB = landlord.id
+     *
      * @param landlord
-     * @return 
+     * @return
      */
     public int updateLandlordByID(Landlord landlord) {
         String sqlCommand = "UPDATE [Landlord]\n"
@@ -143,7 +144,8 @@ public class LandlordDAO extends DBContext {
         }
         return modified;
     }
-    public int updateProfileByID(int landlord_id, String fname, String lname, String address, String phone) { 
+
+    public int updateProfileByID(int landlord_id, String fname, String lname, String address, String phone) {
         int n = 0;
         String sql = "UPDATE [Landlord] SET [first_name]=?,[last_name] = ?,[address]=? ,[phone] = ? WHERE [id]=?;";
         try {
