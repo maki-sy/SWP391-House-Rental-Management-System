@@ -13,12 +13,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Transaction;
 
-
 /**
  *
- * @author Admin
+ * @author DTS
  */
 public class TransactionDAO extends DBContext {
+
     /**
      * Get all Transaction object in the DB
      *
@@ -31,7 +31,37 @@ public class TransactionDAO extends DBContext {
         try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
             ResultSet rs = preStmt.executeQuery();
 
-            int id = rs.getInt(1);
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                double amount = rs.getDouble(2);
+                int sender = rs.getInt(3);
+                int receiver = rs.getInt(4);
+                Transaction.Type type = Transaction.Type.valueOf(rs.getString(5));
+                String date = rs.getString(6);
+                int postID = rs.getInt(7);
+
+                transactions.add(new Transaction(id, amount, sender, receiver, type, date, postID));
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("getAllTransactions() reports " + ex.getMessage());
+            Logger.getLogger(TransactionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return transactions;
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public Transaction getTransactionByID(int id) {
+        Transaction transaction = null;
+        String SQL = "SELECT * FROM Transactions WHERE id = ?;";
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setInt(1, id);
+            ResultSet rs = preStmt.executeQuery();
+
             double amount = rs.getDouble(2);
             int sender = rs.getInt(3);
             int receiver = rs.getInt(4);
@@ -39,12 +69,12 @@ public class TransactionDAO extends DBContext {
             String date = rs.getString(6);
             int postID = rs.getInt(7);
 
-            transactions.add(new Transaction(id, amount, sender, receiver, type, date, postID));
+            transaction = new Transaction(id, amount, sender, receiver, type, date, postID);
         } catch (SQLException ex) {
-            System.out.println("getAllTransactions() reports " + ex.getMessage());
+            System.out.println("getTransactionByID() reports " + ex.getMessage());
             Logger.getLogger(TransactionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return transactions;
+        return transaction;
     }
     
     public int addTransaction(double amount, int payerId, int receiverId, 
@@ -72,4 +102,17 @@ public class TransactionDAO extends DBContext {
         }
         return 0;
     }
+            
+//
+//    public int removeTransaction(int id) {
+//
+//    }
+//
+//    public int updateTransaction(Transaction transaction) {
+//
+//    }
+//
+//    public List<Transaction> getTransactionsByType(Transaction.Type type) {
+//
+//    }
 }
