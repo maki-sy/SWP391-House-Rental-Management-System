@@ -294,7 +294,7 @@
                                 <div class="card-body text-center">
                                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
-                                    <h5 class="my-3"><%=tenant.getFirstName()%> &nbsp;<%=tenant.getLastName()%></h5>
+                                    <h5 class="my-3"><%=tenant.getFirstName()%>&nbsp;<%=tenant.getLastName()%></h5>
                                     <p class="text-muted mb-1"><%=user.getEmail()%></p>
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">
@@ -400,7 +400,7 @@
                                 <div class="card-body text-center">
                                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
-                                    <h5 class="my-3"><%=landlord.getFirstName()%> &nbsp;<%=landlord.getLastName()%></h5>
+                                    <h5 class="my-3"><%=landlord.getFirstName()%>&nbsp;<%=landlord.getLastName()%></h5>
                                     <p class="text-muted mb-1"><%=user.getEmail()%></p>
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">

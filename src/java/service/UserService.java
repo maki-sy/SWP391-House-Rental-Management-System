@@ -188,7 +188,7 @@ public class UserService {
      * registration
      *
      * @param receivedEmail
-     * @param token formatted token string (token with format: The first 3
+     * @param token token string
      * @param role A String describe role user register for
      */
     private void sendConfirmationEmail(String receivedEmail, String token, String role) {
@@ -267,6 +267,28 @@ public class UserService {
             System.out.println("Account " + email + " has not been activated");
             return null;
         }
+
+        byte[] salt = user.getSalt();
+        byte[] correctPass = user.getHashedPassword();
+        byte[] inputPass = hashingPassword(password, salt);
+        boolean sucess = Arrays.equals(correctPass, inputPass);
+
+        if (sucess) {
+            return user;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Login for Tenant, Landlord and Admin (currently not in used)
+     *
+     * @param email
+     * @param password
+     * @return
+     */
+    public Users login(String email, String password) {
+        Users user = USER_DAO.getVerifiedAccount(email);
 
         byte[] salt = user.getSalt();
         byte[] correctPass = user.getHashedPassword();
@@ -480,7 +502,7 @@ public class UserService {
         if (l != null) {
             return l.getFirstName() + " " + l.getLastName();
         }
-        
+
         return null;
     }
 }

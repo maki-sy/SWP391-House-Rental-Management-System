@@ -10,6 +10,11 @@
 <%@page import="model.Tenant"%>
 <%@page import="model.Landlord"%>
 <%@ page import="model.Users" %>
+
+<%
+    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+%> 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -146,69 +151,7 @@
         <!-- End Property Search Section -->>
 
         <!-- ======= Header/Navbar ======= -->
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="index.jsp">Rental<span class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="property-grid.html">Houses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.html">Landlords</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.html">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.html">Landlord Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.html">Contact</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                                 style="width: 3rem; margin-left: 6rem" alt="Avatar" />
-                        </li>
-                        <li class="nav-item dropdown">
-
-                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
-
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="./profile-personal.html">Manage rental house</a>
-                                <a class="dropdown-item " href="./profile-personal.html">Manage account</a>
-                                <a class="dropdown-item " href="login?type=logout">Logout</a>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-
-            </div>
-        </nav>
+        <%@include file="header.jsp" %>
 
         <!-- End Header/Navbar -->
 
@@ -242,7 +185,7 @@
                                 <div class="card-body text-center">
                                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
-                                    <h5 class="my-3"><%=tenant.getFirstName()%> &nbsp;<%=tenant.getLastName()%></h5>
+                                    <h5 class="my-3"><%=tenant.getFirstName()%>&nbsp;<%=tenant.getLastName()%></h5>
                                     <p class="text-muted mb-1"><%=account.getEmail()%></p>
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">
@@ -340,7 +283,7 @@
                                 <div class="card-body text-center">
                                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
-                                    <h5 class="my-3"><%=landlord.getFirstName()%> &nbsp;<%=landlord.getLastName()%></h5>
+                                    <h5 class="my-3"><%=landlord.getFirstName()%>&nbsp;<%=landlord.getLastName()%></h5>
                                     <p class="text-muted mb-1"><%=account.getEmail()%></p>
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">
@@ -421,8 +364,8 @@
                                                 <p class="text-muted mb-0"><input type="text" name="phone" value="<%=landlord.getPhone()%>" maxlength="10" pattern="[0-9]{10}" required></p>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-primary"><input type="submit" value="update" name="submit"></button>
-                                        <button type="button" class="btn btn-primary"><input type="reset" value="reset"></button>
+                                        <input class="btn btn-primary" type="submit" value="update" name="submit">
+                                        <input class="btn btn-primary" type="reset" value="reset">
                                         <input type="hidden" name="service" value="updateProfile">
                                     </div>
                                 </form>
