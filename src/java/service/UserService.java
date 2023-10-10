@@ -289,12 +289,13 @@ public class UserService {
      */
     public Users login(String email, String password) {
         Users user = USER_DAO.getVerifiedAccount(email);
-
-        byte[] salt = user.getSalt();
-        byte[] correctPass = user.getHashedPassword();
-        byte[] inputPass = hashingPassword(password, salt);
-        boolean sucess = Arrays.equals(correctPass, inputPass);
-
+        boolean sucess = false;
+        if (user != null) {
+            byte[] salt = user.getSalt();
+            byte[] correctPass = user.getHashedPassword();
+            byte[] inputPass = hashingPassword(password, salt);
+            sucess = Arrays.equals(correctPass, inputPass);
+        }
         if (sucess) {
             return user;
         } else {
