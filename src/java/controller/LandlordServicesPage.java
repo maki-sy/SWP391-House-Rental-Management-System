@@ -62,17 +62,41 @@ public class LandlordServicesPage extends HttpServlet {
             } else if (service.equals("approve-request")) {
                 int orderId = Integer.parseInt(request.getParameter("order-id"));
                 boolean isUpdated = handleService.isApproveStatusUpdated(orderId);
-                request.getRequestDispatcher("/landlordServicesPage?service=pending-requests").forward(request, response);
+                ArrayList<Orders> ordersList = handleService.getOrdersProcessing(user.getId());
+                request.setAttribute("ordersList", ordersList);
+                request.setAttribute("mess", "Approve successfully! Now customers can contact you :)");
+                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+
             } else if (service.equals("reject-request")) {
                 int orderId = Integer.parseInt(request.getParameter("order-id"));
                 boolean isUpdated = handleService.isRejectStatusUpdated(orderId);
-                request.getRequestDispatcher("/landlordServicesPage?service=pending-requests").forward(request, response);
+                ArrayList<Orders> ordersList = handleService.getOrdersProcessing(user.getId());
+                request.setAttribute("ordersList", ordersList);
+                request.setAttribute("mess", "Reject successfully! Now customers cant bother you :)");
+                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+
             } else if (service.equals("published-posts")) {
-                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
-                // do  something
-            } else if (service.equals("remove-post")) {
-                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
-                // do  something
+                ArrayList<PostRental> postList = handleService.getPublishedPostsByUserId(user.getId());
+                request.setAttribute("postList", postList);
+                request.getRequestDispatcher("L-published-posts.jsp").forward(request, response);
+            } else if (service.equals("move-post-to-draft")) {
+                int postId = Integer.parseInt(request.getParameter("post-id"));
+                boolean isSuccess = handleService.isMovePostToDraftSuccessByPostId(postId);
+                ArrayList<PostRental> postList = handleService.getPublishedPostsByUserId(user.getId());
+                request.setAttribute("postList", postList);
+                request.setAttribute("mess", "Successfully converted the post to a draft :)");
+                request.getRequestDispatcher("L-published-posts.jsp").forward(request, response);
+            } else if (service.equals("edit-posts")) {
+                ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
+                request.setAttribute("postList", postList);
+                request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
+            } else if (service.equals("delete-post")) {
+                int postId = Integer.parseInt(request.getParameter("post-id"));
+                boolean isSuccess = handleService.isDeletedPostSuccessByPostId(postId);
+                request.setAttribute("mess", "Post deleted successfully :)");
+                ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
+                request.setAttribute("postList", postList);
+                request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
             } else if (service.equals("edit-post")) {
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
                 // do  something
@@ -95,15 +119,20 @@ public class LandlordServicesPage extends HttpServlet {
                         address, description, user.getId(), location_id);
                 if (isInsertSuccess) {
                     PostRental post = handleService.getLastestPostByUserId(user.getId());
+                    boolean isThumbnail = true;
                     // luu hinh anh
                     String uploadDirectory = "C:\\swp-img";
                     for (Part filePart : request.getParts()) {
                         String fileName = handleService.getFileName(filePart);
                         if (!fileName.equals("unknown.jpg")) {
-                            Path filePath = Paths.get(uploadDirectory, fileName);
-                            String imageFormat = handleService.getFileExtension(fileName);
+                            String imageType = handleService.getFileExtension(fileName);
                             String imageUrl = uploadDirectory + "\\" + fileName;
-                            handleService.addPostImage(post.getId(), imageUrl, imageFormat);
+                            if (isThumbnail) {
+                                imageType = "thumbnail";
+                                isThumbnail = false;
+                            }
+                            Path filePath = Paths.get(uploadDirectory, fileName);
+                            handleService.addPostImage(post.getId(), imageUrl, imageType);
                             try ( InputStream fileContent = filePart.getInputStream()) {
                                 Files.copy(fileContent, filePath, StandardCopyOption.REPLACE_EXISTING);
                             }
@@ -119,21 +148,23 @@ public class LandlordServicesPage extends HttpServlet {
                         // them vao draft thanh cong -> tien hanh thanh toan
                     } else if (isInsertSuccess && typeOfAction.equals("draft")) {
                         // them vao draft thanh cong
-                        request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                        ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
+                        request.setAttribute("postList", postList);
+                        request.setAttribute("mess", "Draft post added successfully :)");
+                        request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
                     }
-                } else {
-                    request.getRequestDispatcher("L-add-new-post.jsp").forward(request, response);
-                    // them that bai
                 }
-            } // Xu ly thanh toan hoan tat
-            else if (service.equals("done-add-new-post")) {
+            } else if (service.equals("done-add-new-post")) {
                 String status = (String) request.getParameter("status");
                 int postId = Integer.parseInt(request.getParameter("postId"));
                 handleService.isUpdatePostStatusByPostIdSuccess(postId, status);
                 handleService.isMoneyDedutedByUserId(user.getId(), status);
                 handleService.isUpdatedPostDate(postId, status);
                 handleService.isInsertedTransactionSuccess(user.getId(), postId, status);
-                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+                // Xu ly thanh toan thanh cong
+                ArrayList<PostRental> postList = handleService.getPublishedPostsByUserId(user.getId());
+                request.setAttribute("postList", postList);
+                request.getRequestDispatcher("/housedetail?id=" + postId).forward(request, response);
             }
         }
     }
