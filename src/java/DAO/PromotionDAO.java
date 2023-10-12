@@ -157,6 +157,31 @@ public class PromotionDAO extends DBContext {
             Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public List<Promotion> GetPromotionByLandlordId(int id) {
+        List<Promotion> list = new ArrayList<>();
+        String sql = "SELECT landlord_id, a.promotion_id, discount, descriptions, promotion_start_date, promotion_end_date\n"
+                + "FROM Post a\n"
+                + "JOIN Promotions b ON a.promotion_id = b.promotion_id\n"
+                + "WHERE landlord_id = \n" + id
+                + "GROUP BY landlord_id, a.promotion_id, discount, descriptions, promotion_start_date, promotion_end_date;";
+        try {
+            PreparedStatement stm = connect.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Promotion pro = new Promotion();
+                pro.setPromotion_id(rs.getInt("promotion_id"));
+                pro.setDiscount(rs.getInt("discount"));
+                pro.setDescriptions(rs.getString("descriptions"));
+                pro.setPromotion_start_date(rs.getDate("promotion_start_date"));
+                pro.setPromotion_end_date(rs.getDate("promotion_end_date"));
+                list.add(pro);
+            }
+        } catch (SQLException ex) {
+            System.err.println("GetPromotionByLandlordId() reports: " + ex.getMessage());
+            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
         PromotionDAO d = new PromotionDAO();

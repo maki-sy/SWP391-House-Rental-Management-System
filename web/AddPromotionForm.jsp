@@ -91,8 +91,9 @@
                                 <input type="date" class="form-control" name="end_date" placeholder="Enter your end date"/>
                             </div>
                         </div>
-                            <button type="submit" style="color: red">SUBMIT</button>
-
+                        <button type="submit" style="color: red">SUBMIT</button>
+                        <button type="reset" style="color: red">RESET</button>
+                        <a href="PromotionManage"><button type="button" class="float-right" style="color: red">CANCEL</button>
                     </form>
                 </div><!--main-center"-->
             </div><!--main-->

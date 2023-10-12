@@ -20,12 +20,6 @@ public class PromotionService {
     private static final PromotionDAO PROMOTION_DAO = new PromotionDAO();
     private static final PostDAO POST_DAO = new PostDAO();
 
-    public List<PostRental> GetPostByLandlordID(int id) {
-        List<PostRental> listp = POST_DAO.getAllPosts();
-        //chua co get post by landlord id
-        return listp;
-    }
-
     public List<PostRental> GetPost() {
         List<PostRental> listp = POST_DAO.getAllPosts();
         return listp;
@@ -61,5 +55,13 @@ public class PromotionService {
     }
     public void UpdatePromotionDuration(Date start,Date end,int id){
         PROMOTION_DAO.UpdatePromotionDuration(start, end, id);
+    }
+    public List<Promotion> GetPromotionByLandlordId(int id){
+        List<Promotion> list =PROMOTION_DAO.GetPromotionByLandlordId(id);
+        return list;
+    }
+    public List<PostRental> GetPostByLandlordId(int id){
+        List<PostRental> list=POST_DAO.getPostDetailsbyLandlordId(id);
+        return list;
     }
 }

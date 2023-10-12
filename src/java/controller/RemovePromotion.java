@@ -48,6 +48,7 @@ public class RemovePromotion extends HttpServlet {
 //        th2:xoa promotion cua 1 bai 
 //        lay post_id update 
 //        post promotion_id = null
+//delay
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
