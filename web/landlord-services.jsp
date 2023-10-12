@@ -256,7 +256,7 @@
                                                                     </div>
 
                                                                 </li>
-                                                                 <li class="list-group-item">
+                                                                <li class="list-group-item">
                                                                     <div class="contain">
                                                                         <a
                                                                             href="landlordServicesPage?service=edit-posts">
@@ -586,10 +586,10 @@
 
                                 <!-- Handle Javascript -->
                                 <script>
-                                    var mess = '<%= request.getAttribute("mess") %>'
+                                    var mess = '<%= request.getAttribute("mess") %>';
                                     if (mess !== 'null' && mess !== null) {
                                         setTimeout(function () {
-                                            alert(mess)
+                                            alert(mess);
                                         }, 500);
                                     }
                                 </script>

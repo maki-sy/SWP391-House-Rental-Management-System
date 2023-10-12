@@ -455,13 +455,32 @@ public class UserService {
     public void resetUserPassword(String token, String usrPassword) {
         Token tokenObj = TOKEN_DAO.getToken(token);
         Users user = USER_DAO.getUserByID(tokenObj.getUserID());
-        
+
         byte[] salt = generateSalt();
         byte[] hashedPwd = hashingPassword(usrPassword, salt);
-        
+
         user.setSalt(salt);
         user.setHashedPassword(hashedPwd);
-        
+
         USER_DAO.updateUser(user);
+    }
+
+    /**
+     * Get User's name = first name + last name
+     *
+     * @param userID
+     * @return User's name or null if there is no user with corresponding id
+     */
+    public String getUserName(int userID) {
+        Tenant t = TENANT_DAO.getTenantByUserID(userID);
+        if (t != null) {
+            return t.getFirstName() + " " + t.getLastName();
+        }
+        Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
+        if (l != null) {
+            return l.getFirstName() + " " + l.getLastName();
+        }
+        
+        return null;
     }
 }

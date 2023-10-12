@@ -4,136 +4,145 @@
 --use master;
 
 CREATE TABLE Users(
-id int IDENTITY NOT NULL,
-email varchar(100) NULL,
-hashed_password varbinary(80) NULL, 
-salt varbinary(50) NULL,
-role_id int NULL,
-status nvarchar(20) NULL, 
+	id int IDENTITY NOT NULL,
+	email varchar(100) NULL,
+	hashed_password varbinary(80) NULL, 
+	salt varbinary(50) NULL,
+	role_id int NULL,
+	status nvarchar(20) NULL, 
 );
 CREATE TABLE Landlord (
-id int NOT NULL, 
-first_name nvarchar(20) NULL,
-last_name nvarchar(20) NULL,
-address nvarchar(255) NULL, 
-phone varchar(15) NULL, 
-civil_id nvarchar(200) NULL, 
-account_points int NULL, 
+	id int NOT NULL, 
+	first_name nvarchar(20) NULL,
+	last_name nvarchar(20) NULL,
+	address nvarchar(255) NULL, 
+	phone varchar(15) NULL, 
+	civil_id varchar(50) NULL, 
+	account_points int NULL, 
 );
+
 CREATE TABLE Tenant (
-id int NOT NULL, 
-first_name nvarchar(20) NULL,
-last_name nvarchar(20) NULL,
-address nvarchar(255) NULL, 
-phone varchar(15) NULL, 
-civil_id nvarchar(200) NULL, 
+	id int NOT NULL, 
+	first_name nvarchar(20) NULL,
+	last_name nvarchar(20) NULL,
+	address nvarchar(255) NULL, 
+	phone varchar(15) NULL, 
+	civil_id varchar(50) NULL, 
 );
+
 CREATE TABLE Admin (
-id int NOT NULL, 
-first_name nvarchar(20) NULL,
-last_name nvarchar(20) NULL,
-Phone nvarchar(15) null,
+	id int NOT NULL, 
+	first_name nvarchar(20) NULL,
+	last_name nvarchar(20) NULL,
+	Phone nvarchar(15) null,
 );
+
 CREATE TABLE [Orders] (
-order_id int IDENTITY NOT NULL, 
-tenant_id int NULL, 
-landlord_id int NULL,
-post_id int NULL, 
-status nvarchar(50) NULL, 
+	order_id int IDENTITY NOT NULL, 
+	tenant_id int NULL, 
+	landlord_id int NULL, -- ??? Liệu có cần khi đã có post_id?
+	post_id int NULL, 
+	status nvarchar(50) NULL, 
 );
 
 CREATE TABLE Post_Image(
-id int IDENTITY NOT NULL,
-post_id int NULL,
-img_url nvarchar(50) NULL,
-img_type nvarchar(20) NULL,
+	id int IDENTITY NOT NULL,
+	post_id int NULL,
+	img_url nvarchar(50) NULL,
+	img_type nvarchar(20) NULL,
 );
-CREATE TABLE Post (
-id int IDENTITY NOT NULL, 
-name nvarchar(255) NULL, 
-price int NULL, 
-type int NULL, 
-area int NULL, 
-NumOfBedrooms int NULL, 
-address nvarchar(255) NULL, 
-description nvarchar(2000) NULL, 
-landlord_id int NULL, 
-location_id int NULL,
-status nvarchar(20) NULL, 
-promotion_id int NULL, 
-post_start_date date NULL, 
-post_end_date date NULL, 
-);
-CREATE TABLE Property_Location (
-id int IDENTITY NOT NULL, 
-location_name nvarchar(50) NULL, 
-);
-CREATE TABLE Property_type (
-type_id int IDENTITY NOT NULL, 
-type_name nvarchar(50) NULL, 
-);
-CREATE TABLE Promotions(
-promotion_id int IDENTITY NOT NULL, 
-discount int null,
-descriptions nvarchar(255) null,
-promotion_start_date date null,
-promotion_end_date date null,
-);
-CREATE TABLE Report (
-[report_id] int IDENTITY NOT NULL, 
-reporter_id int NULL, 
-property_id int NULL, 
-reported_id int NULL, 
-categories nvarchar(100) NULL, 
-description text NULL, 
-status nvarchar(20) NULL, 
 
+CREATE TABLE Post (
+	id int IDENTITY NOT NULL, 
+	name nvarchar(255) NULL, 
+	price int NULL, 
+	type int NULL, 
+	area int NULL, 
+	NumOfBedrooms int NULL, 
+	address nvarchar(255) NULL, 
+	description nvarchar(2000) NULL, 
+	landlord_id int NULL, 
+	location_id int NULL,
+	status nvarchar(20) NULL, 
+	promotion_id int NULL, 
+	post_start_date date NULL, 
+	post_end_date date NULL, 
+);
+
+CREATE TABLE Property_Location (
+	id int IDENTITY NOT NULL, 
+	location_name nvarchar(50) NULL, 
+);
+
+CREATE TABLE Property_type (
+	type_id int IDENTITY NOT NULL, 
+	type_name nvarchar(50) NULL, 
+);
+
+CREATE TABLE Promotions(
+	promotion_id int IDENTITY NOT NULL, 
+	discount int null,
+	descriptions nvarchar(255) null,
+	promotion_start_date date null,
+	promotion_end_date date null,
+);
+
+CREATE TABLE Report (
+	[report_id] int IDENTITY NOT NULL, 
+	reporter_id int NULL, 
+	property_id int NULL, 
+	reported_id int NULL, 
+	categories nvarchar(100) NULL, -- ?? nếu là title thì còn được, chứ tick thì phải có bảng khác ref chứ
+	description text NULL, 
+	status nvarchar(20) NULL, 
 );
 
 CREATE TABLE Review (
-review_id int IDENTITY NOT NULL, 
-user_id int NULL, 
-property_id int NULL, 
-rating smallint NULL, 
-review nvarchar(300) NULL, 
-
+	review_id int IDENTITY NOT NULL, 
+	user_id int NULL, 
+	property_id int NULL, 
+	rating smallint NULL, 
+	review nvarchar(300) NULL, 
 );
 
 CREATE TABLE Transactions (
-transaction_id int IDENTITY NOT NULL, 
-amount decimal(19, 0) NULL, 
-payer_id int NULL, 
-type nvarchar(20) NULL, --Recharge=Nạp tiền/Transfer=Chuyển tiền
-transaction_date date NULL, 
-post_id int NULL, 
+	transaction_id int IDENTITY NOT NULL, 
+	amount decimal(19, 0) NOT NULL, 
+	payer_id int NOT NULL, -- rất vấn đề chỗ này, vì chỉ thể hiện người bị ảnh hưởng bởi giao dịch, không có người thực hiện giao dịch
+	receiver_id INT NOT NULL,
+	type VARCHAR(20) NULL, --Recharge=Nạp tiền/Transfer=Chuyển tiền
+	transaction_date date NOT NULL, 
+	post_id int NULL, 
 );
 
 CREATE TABLE Wishlist (
-id int IDENTITY NOT NULL, 
-user_id int NULL, 
-property_id int NULL, 
+	id int IDENTITY NOT NULL, 
+	user_id int NULL, 
+	property_id int NULL, 
 );
 
 CREATE TABLE User_banned(
-id int NOT NULL,
-email varchar(100) NULL,
-ban_start_date date NULL,
-ban_end_date date null,
+	id int NOT NULL,
+	email varchar(100) NULL,
+	ban_start_date DATETIME NULL,
+	ban_end_date DATETIME null,
+	status VARCHAR(20)
 );
 
 CREATE TABLE Token(
-id int IDENTITY NOT NULL,
-user_id INT NOT NULL,
-email varchar(100) NULL,
-token varchar(255) NULL,
-expired_date DATETIME NULL,
-type varchar(50) NULL,
+	id int IDENTITY NOT NULL,
+	user_id INT NOT NULL,
+	email varchar(100) NULL, -- thực ra cột này bị thừa
+	token varchar(255) NULL,
+	expired_date DATETIME NULL,
+	type varchar(50) NULL,
 );
 
 CREATE TABLE User_role(
-id int IDENTITY NOT NULL,
-role_name varchar(20) NOT NULL,
+	id int IDENTITY NOT NULL,
+	role_name varchar(20) NOT NULL,
 );
+
 alter table Property_location add constraint PK_Location
 PRIMARY KEY (id);
 alter table Users add constraint PK_Users
@@ -179,6 +188,7 @@ ALTER TABLE Orders ADD CONSTRAINT FK_Orders_Landlord FOREIGN KEY (landlord_id) R
 ALTER TABLE Orders ADD CONSTRAINT FK_Orders_Tenant FOREIGN KEY (tenant_id) REFERENCES Users(id);
 ALTER TABLE Transactions ADD CONSTRAINT FK_Transaction_Landlord FOREIGN KEY (payer_id) REFERENCES Users(id);
 ALTER TABLE Transactions ADD CONSTRAINT FK_Transaction_Post FOREIGN KEY (post_id) REFERENCES Post (id);
+ALTER TABLE Transactions ADD CONSTRAINT FK_Transaction_Admin FOREIGN KEY (receiver_id) REFERENCES Users(id);
 ALTER TABLE Review ADD CONSTRAINT FK_Review_Post FOREIGN KEY (property_id) REFERENCES Post (id);
 ALTER TABLE Review ADD CONSTRAINT FK_Review_Tenant FOREIGN KEY (user_id) REFERENCES Users (id);
 ALTER TABLE Report ADD CONSTRAINT FK_Report_Tenant1 FOREIGN KEY (reporter_id) REFERENCES Users (id);
@@ -216,24 +226,24 @@ ALTER TABLE Post ADD CONSTRAINT FK_Post_Location FOREIGN KEY(location_id) REFERE
 --insert Admin values
 --('thanghqhe176429@fpt.edu.vn',CAST(123456 as varbinary(80)),CAST(123456 as varbinary(50)),0);
 --select * from admin;
---insert Property_Location values
---('Cay xang 39'),
---('Tay Ho'),
---('Landmark 69'),
---('Dong Da');
---insert Property_type values
---('Nha Tro'),
---('Chung cu');
-select*from Property_type;
+insert Property_Location values
+('Cay xang 39'),
+('Tay Ho'),
+('Landmark 69'),
+('Dong Da');
+insert Property_type values
+('Nha Tro'),
+('Chung cu');
+--select*from Property_type;
 insert User_role values
 ('Tenant'),
 ('Landlord'),
 ('Admin');
 select*from User_role;
---insert Promotions values
---(20, '20% discount for the first 3 months of rent','06/21/2023','07/21/2023'),
---(10, '10% discount for the first month of rent','06/21/2023','07/21/2023'),
---(50, '50% for the first month if the length of contract is more than 3 months','06/21/2023','07/21/2023')
+insert Promotions values
+(20, '20% discount for the first 3 months of rent','06/21/2023','07/21/2023'),
+(10, '10% discount for the first month of rent','06/21/2023','07/21/2023'),
+(50, '50% for the first month if the length of contract is more than 3 months','06/21/2023','07/21/2023')
 select* from Promotions;
 --insert Users values
 
