@@ -9,6 +9,7 @@ import DAO.OrdersDAO;
 import DAO.PostDAO;
 import DAO.UserDAO;
 import java.util.ArrayList;
+import java.util.List;
 import model.Landlord;
 import model.Orders;
 import model.PostRental;
@@ -19,15 +20,30 @@ import model.Users;
  * @author Sy
  */
 public class OrderService {
-    public void addOrder(Orders order){
-        OrdersDAO dao= new OrdersDAO();
+
+    public void addOrder(Orders order) {
+        OrdersDAO dao = new OrdersDAO();
         dao.addOrder(order);
     }
-    public ArrayList<Orders>getOrdersOfTenant(int tenantID){
-        OrdersDAO dao= new OrdersDAO();
+
+    public ArrayList<Orders> getOrdersOfTenant(int tenantID) {
+        OrdersDAO dao = new OrdersDAO();
         return dao.getOrdersByTenantId(tenantID);
     }
-    public Landlord getLandlordByPostID(int postID){
+
+    public boolean isSpamOrders(Orders order, int tenantID) {
+        List<Orders> list = getOrdersOfTenant(tenantID);
+        for (Orders ord : list) {
+            if(ord.getTenantId()==order.getTenantId()&&ord.getPostId()==order.getPostId()){
+                if(!"Rejected".equals(ord.getStatus())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Landlord getLandlordByPostID(int postID) {
         PostDAO pdao = new PostDAO();
         PostRental post = pdao.getPostDetailsbyID(postID).get(0);
         int landlordID = post.getLandlord_id();
@@ -35,12 +51,13 @@ public class OrderService {
         Landlord landlord = ldao.getLandlordByUserID(landlordID);
         return landlord;
     }
-    public String getEmailFromLandlordByPostID(int postID){
+
+    public String getEmailFromLandlordByPostID(int postID) {
         PostDAO pdao = new PostDAO();
         PostRental post = pdao.getPostDetailsbyID(postID).get(0);
         int landlordID = post.getLandlord_id();
         UserDAO udao = new UserDAO();
-        Users user = udao.getUserByID(landlordID);    
+        Users user = udao.getUserByID(landlordID);
         String landlord_email = user.getEmail();
         return landlord_email;
     }

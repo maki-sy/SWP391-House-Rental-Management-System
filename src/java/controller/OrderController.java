@@ -38,12 +38,12 @@ public class OrderController extends HttpServlet {
             if (session.getAttribute("user") != null);
             {
                 Users user = (Users) session.getAttribute("user");
-                //int user_id = user.getId();
+                int user_id = user.getId();
                 int role_id = user.getRoleID();
                 String service = request.getParameter("service");
                 if (service.equals("createOrder")) {
                     int postid = Integer.parseInt(request.getParameter("postid"));
-                    PostService Pservice = new PostService();                  
+                    PostService Pservice = new PostService();
                     int landlordid = Pservice.getLandlordIDbyPostID(postid);
                     Users tenant = (Users) session.getAttribute("user");
                     int tenantid = tenant.getId();
@@ -52,8 +52,11 @@ public class OrderController extends HttpServlet {
                     String formatDateTime = now.format(formatter);
                     String status = "Processing";
                     Orders order = new Orders(0, tenantid, landlordid, postid, formatDateTime, status);
-                    Oservice.addOrder(order);
-                    response.sendRedirect("housedetail?id="+postid);
+                    boolean isSpam = Oservice.isSpamOrders(order, user_id);
+                    if (!isSpam) {
+                        Oservice.addOrder(order);
+                    }
+                    response.sendRedirect("housedetail?id=" + postid);
                 }
                 if (service.equals("viewOrder")) {
                     if (role_id == 1) {
@@ -67,7 +70,7 @@ public class OrderController extends HttpServlet {
 //                        request.setAttribute("LandlordOrders", LandlordOrders);
 //                        request.getRequestDispatcher("view-order.jsp").forward(request, response);
 //                    }
-                    
+
                 }
 
             }
