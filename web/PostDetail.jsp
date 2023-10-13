@@ -280,8 +280,8 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
 
                             <div class="dropdown-menu">
                                 <a class="dropdown-item " href="./profile-personal.html">Manage rental house</a>
-                                <a class="dropdown-item " href="./profile-personal.html">Manage account</a>
-                                <a class="dropdown-item " href="#!">Logout</a>
+                                <a class="dropdown-item " href="Profile?service=displayProfile&id=<%=user.getId()%>&roleid=<%=user.getRoleID()%>">Manage account</a>
+                                <a class="dropdown-item " href="login?type=logout">Logout</a>
                             </div>
                         </li>
 
@@ -369,43 +369,72 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="property-summary">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="title-box-d section-t4">
-                                                    <h3 class="title-d">Quick Summary</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="summary-list">
-                                            <ul class="list">
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Property ID:</strong>
-                                                    <span><%=pr.getId()%></span>
-                                                </li>
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Location:</strong>
-                                                    <span><%=pr.getAddress()%></span>
-                                                </li>
+                                    <% if(user!=null){ %>
+                                    <!--<a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
+                                    <button class="btn btn-primary" onclick="openForm()">Order</button>
 
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Status:</strong>
-                                                    <span><%=pr.getStatus()%></span>
-                                                </li>
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Area:</strong>
-                                                    <span><%=pr.getArea()%>m
-                                                        <sup>2</sup>
-                                                    </span>
-                                                </li>
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Beds:</strong>
-                                                    <span><%=pr.getNumOfBeds()%></span>
-                                                </li>
-
-                                            </ul>
+                                    <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+                                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                                            <form action="order">
+                                                <h1>Order</h1>
+                                                <input type="hidden" name="postid" value="<%=postID%>">
+                                                <button class="btn btn-primary" type="submit" onclick="closeForm()">Send Order</button>
+                                                <input type="hidden" name="service" value="createOrder">
+                                                <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
+                                            </form>
                                         </div>
                                     </div>
+
+                                    <%} else {%>
+                                    <a href="login"><button type="button" class="btn btn-primary">Create an Order</button>
+                                        <%}%>
+                                        <script>
+                                            function openForm() {
+                                                document.getElementById("myForm").style.display = "block";
+                                            }
+
+// Function to close the form
+                                            function closeForm() {
+                                                document.getElementById("myForm").style.display = "none";
+                                            }
+                                        </script>
+                                        <div class="property-summary">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="title-box-d section-t4">
+                                                        <h3 class="title-d">Quick Summary</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="summary-list">
+                                                <ul class="list">
+                                                    <li class="d-flex justify-content-between">
+                                                        <strong>Property ID:</strong>
+                                                        <span><%=pr.getId()%></span>
+                                                    </li>
+                                                    <li class="d-flex justify-content-between">
+                                                        <strong>Location:</strong>
+                                                        <span><%=pr.getAddress()%></span>
+                                                    </li>
+
+                                                    <li class="d-flex justify-content-between">
+                                                        <strong>Status:</strong>
+                                                        <span><%=pr.getStatus()%></span>
+                                                    </li>
+                                                    <li class="d-flex justify-content-between">
+                                                        <strong>Area:</strong>
+                                                        <span><%=pr.getArea()%>m
+                                                            <sup>2</sup>
+                                                        </span>
+                                                    </li>
+                                                    <li class="d-flex justify-content-between">
+                                                        <strong>Beds:</strong>
+                                                        <span><%=pr.getNumOfBeds()%></span>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
                                 </div>
                                 <div class="col-md-7 col-lg-7 section-md-t3">
                                     <div class="row">

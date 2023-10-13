@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Landlord;
 import model.Tenant;
 import model.Users;
@@ -39,19 +40,21 @@ public class Profile extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             TenantDAO daotn = new TenantDAO();
             LandlordDAO daoll = new LandlordDAO();
+            HttpSession session= request.getSession();
             String service = request.getParameter("service");
             if (service.equals("displayProfile")) {
-                String id = request.getParameter("id");
-                int role_id = Integer.parseInt(request.getParameter("roleid"));
+                Users user = (Users)session.getAttribute("user");
+                int id = user.getId();
+                int role_id = user.getRoleID();
                 switch (role_id) {
                     case 1: {
-                        Tenant tn = daotn.getTenantByUserID(Integer.parseInt(id));
+                        Tenant tn = daotn.getTenantByUserID(id);
                         request.setAttribute("tn", tn);
                         request.setAttribute("role_name", "Tenant");
                         break;
                     }
                     case 2: {
-                        Landlord ll = daoll.getLandlordByUserID(Integer.parseInt(id));
+                        Landlord ll = daoll.getLandlordByUserID(id);
                         request.setAttribute("ll", ll);
                         request.setAttribute("role_name", "Landlord");
                         break;

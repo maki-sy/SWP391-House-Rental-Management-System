@@ -59,7 +59,7 @@
 
                 <div class="dropdown-menu">
                     <a class="dropdown-item " href="ManageServicesPage">Manage services</a>
-                    <a class="dropdown-item " href="Profile?service=displayProfile&id=<%= user.getId() %>&roleid=<%= user.getRoleID() %>">Manage account</a>
+                    <a class="dropdown-item " href="Profile?service=displayProfile">Manage account</a>
                     <a class="dropdown-item " href="login?type=logout">Logout</a>
                 </div>
             </li>

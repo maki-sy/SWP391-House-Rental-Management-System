@@ -480,7 +480,17 @@ public class UserService {
         if (l != null) {
             return l.getFirstName() + " " + l.getLastName();
         }
-        
+
         return null;
+    }
+
+    public Users getUserByEmail(String email) {
+        UserDAO userdao = new UserDAO();
+        List<Users> list = userdao.getUsersByEmail(email);
+        if (list.isEmpty()) {
+            return null;
+        }
+        Users user = userdao.getUsersByEmail(email).get(0);
+        return user;
     }
 }
