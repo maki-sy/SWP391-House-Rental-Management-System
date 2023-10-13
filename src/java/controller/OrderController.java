@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import model.Orders;
 import model.Users;
+import service.OrderService;
 import service.PostService;
 
 /**
@@ -33,6 +34,7 @@ public class OrderController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
+            OrderService Oservice = new OrderService();
             if (session.getAttribute("user") != null);
             {
                 Users user = (Users) session.getAttribute("user");
@@ -41,8 +43,7 @@ public class OrderController extends HttpServlet {
                 String service = request.getParameter("service");
                 if (service.equals("createOrder")) {
                     int postid = Integer.parseInt(request.getParameter("postid"));
-                    PostService Pservice = new PostService();
-                    OrdersDAO daoOrder = new OrdersDAO();
+                    PostService Pservice = new PostService();                  
                     int landlordid = Pservice.getLandlordIDbyPostID(postid);
                     Users tenant = (Users) session.getAttribute("user");
                     int tenantid = tenant.getId();
@@ -51,13 +52,12 @@ public class OrderController extends HttpServlet {
                     String formatDateTime = now.format(formatter);
                     String status = "Processing";
                     Orders order = new Orders(0, tenantid, landlordid, postid, formatDateTime, status);
-                    daoOrder.addOrder(order);
+                    Oservice.addOrder(order);
                     response.sendRedirect("trang-chu");
                 }
                 if (service.equals("viewOrder")) {
-                    OrdersDAO Odao = new OrdersDAO();
                     if (role_id == 1) {
-                        List<Orders> TenantOrders = Odao.getOrdersByTenantId(user.getId());
+                        List<Orders> TenantOrders = Oservice.getOrdersOfTenant(user.getId());
                         request.setAttribute("TenantOrders", TenantOrders);
                         //response.sendRedirect("trang-chu");
                         request.getRequestDispatcher("view-order.jsp").forward(request, response);

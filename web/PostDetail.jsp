@@ -370,13 +370,13 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                         </div>
                                     </div>
                                     <% if(user!=null){ %>
-                                    <!--<a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
+     <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
                                     <button class="btn btn-primary" onclick="openForm()">Order</button>
 
                                     <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
                                         <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                            <form action="order">
-                                                <h1>Order</h1>
+                                            <form action="order" style="display: flex; flex-direction: column; align-items: center;">
+                                                <h1 style="text-align: center">Order</h1>
                                                 <input type="hidden" name="postid" value="<%=postID%>">
                                                 <button class="btn btn-primary" type="submit" onclick="closeForm()">Send Order</button>
                                                 <input type="hidden" name="service" value="createOrder">

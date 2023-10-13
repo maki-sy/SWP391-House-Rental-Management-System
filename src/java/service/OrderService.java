@@ -1,0 +1,47 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package service;
+
+import DAO.LandlordDAO;
+import DAO.OrdersDAO;
+import DAO.PostDAO;
+import DAO.UserDAO;
+import java.util.ArrayList;
+import model.Landlord;
+import model.Orders;
+import model.PostRental;
+import model.Users;
+
+/**
+ *
+ * @author Sy
+ */
+public class OrderService {
+    public void addOrder(Orders order){
+        OrdersDAO dao= new OrdersDAO();
+        dao.addOrder(order);
+    }
+    public ArrayList<Orders>getOrdersOfTenant(int tenantID){
+        OrdersDAO dao= new OrdersDAO();
+        return dao.getOrdersByTenantId(tenantID);
+    }
+    public Landlord getLandlordByPostID(int postID){
+        PostDAO pdao = new PostDAO();
+        PostRental post = pdao.getPostDetailsbyID(postID).get(0);
+        int landlordID = post.getLandlord_id();
+        LandlordDAO ldao = new LandlordDAO();
+        Landlord landlord = ldao.getLandlordByUserID(landlordID);
+        return landlord;
+    }
+    public String getEmailFromLandlordByPostID(int postID){
+        PostDAO pdao = new PostDAO();
+        PostRental post = pdao.getPostDetailsbyID(postID).get(0);
+        int landlordID = post.getLandlord_id();
+        UserDAO udao = new UserDAO();
+        Users user = udao.getUserByID(landlordID);    
+        String landlord_email = user.getEmail();
+        return landlord_email;
+    }
+}

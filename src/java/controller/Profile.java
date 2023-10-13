@@ -106,7 +106,8 @@ public class Profile extends HttpServlet {
                     if (llid != null) {
                         System.out.println(daoll.updateProfileByID(Integer.parseInt(llid), fname, lname, address, phone));
                     }
-                    response.sendRedirect("trang-chu");
+                  //  response.sendRedirect("trang-chu");
+                  request.getRequestDispatcher("Profile?service=displayProfile").forward(request, response);
                 }
             }
         }

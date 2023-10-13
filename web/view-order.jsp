@@ -8,6 +8,7 @@
 <%@page import="model.Orders, DAO.OrdersDAO" %>
 <%@page import="java.util.List, java.sql.ResultSet"%>
 <%@ page import="model.Users" %>
+<%@ page import="service.OrderService" %>
 <%@page import="model.PostRental, model.Landlord, model.PostImage, DAO.PostDAO, DAO.LandlordDAO"%>
 <!DOCTYPE html>
 <html>
@@ -16,14 +17,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="assets/css/order-style.css">
-
+    
+    <a class="btn btn-primary" href="Profile?service=displayProfile">Back</a>    
+    
     <%
-        Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
-        int roleID = user.getRoleID();
-        PostDAO Pdao = new PostDAO();
-        LandlordDAO LDao = new LandlordDAO();
-        if(roleID==1){
-            List<Orders> listOfOrders = (List<Orders>)request.getAttribute("TenantOrders");
+            Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+            int roleID = user.getRoleID();
+            PostDAO Pdao = new PostDAO();
+            LandlordDAO LDao = new LandlordDAO();
+            OrderService service = new OrderService();
+            if(roleID==1){
+                List<Orders> listOfOrders = (List<Orders>)request.getAttribute("TenantOrders");
     %>
     <section class="ftco-section">
         <div class="container">
@@ -59,7 +63,7 @@
                 String postName = post.getName();
                 Landlord landlord = LDao.getLandlordByUserID(landlordID);
                 String landlordName = landlord.getFirstName()+ " "+landlord.getLastName();
-                String landlordEmail = user.getEmail();
+                String landlordEmail = service.getEmailFromLandlordByPostID(postID);
                                 %>
                                 <tr class="alert" role="alert">
 
@@ -93,10 +97,10 @@
 }
 }
                                 %>
-                                
 
-                                
-                                </tbody>
+
+
+                            </tbody>
                         </table>
                     </div>
                 </div>
