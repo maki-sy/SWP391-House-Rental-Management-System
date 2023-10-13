@@ -53,7 +53,7 @@ public class OrderController extends HttpServlet {
                     String status = "Processing";
                     Orders order = new Orders(0, tenantid, landlordid, postid, formatDateTime, status);
                     Oservice.addOrder(order);
-                    response.sendRedirect("trang-chu");
+                    response.sendRedirect("housedetail?id="+postid);
                 }
                 if (service.equals("viewOrder")) {
                     if (role_id == 1) {

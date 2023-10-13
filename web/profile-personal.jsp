@@ -189,7 +189,7 @@
 
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=updateProfile&id=<%=tenant.getId()%>&roleid=<%=user.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
+                                            <a href="Profile?service=updateProfile"><button type="button" class="btn btn-primary">Edit
                                                     public
                                                     information</button></a>
                                         </li>

@@ -40,12 +40,12 @@ public class Profile extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             TenantDAO daotn = new TenantDAO();
             LandlordDAO daoll = new LandlordDAO();
-            HttpSession session= request.getSession();
+            HttpSession session = request.getSession();
             String service = request.getParameter("service");
+            Users user = (Users) session.getAttribute("user");
+            int id = user.getId();
+            int role_id = user.getRoleID();
             if (service.equals("displayProfile")) {
-                Users user = (Users)session.getAttribute("user");
-                int id = user.getId();
-                int role_id = user.getRoleID();
                 switch (role_id) {
                     case 1: {
                         Tenant tn = daotn.getTenantByUserID(id);
@@ -72,9 +72,6 @@ public class Profile extends HttpServlet {
                 String submit = request.getParameter("submit");
 
                 if (submit == null) {
-                    int id = Integer.parseInt(request.getParameter("id"));
-
-                    int role_id = Integer.parseInt(request.getParameter("roleid"));
                     switch (role_id) {
                         case 1:
                             request.setAttribute("role_name", "Tenant");
@@ -106,8 +103,8 @@ public class Profile extends HttpServlet {
                     if (llid != null) {
                         System.out.println(daoll.updateProfileByID(Integer.parseInt(llid), fname, lname, address, phone));
                     }
-                  //  response.sendRedirect("trang-chu");
-                  request.getRequestDispatcher("Profile?service=displayProfile").forward(request, response);
+                    //  response.sendRedirect("trang-chu");
+                    request.getRequestDispatcher("Profile?service=displayProfile").forward(request, response);
                 }
             }
         }
