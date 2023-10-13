@@ -19,22 +19,22 @@
                     <a class="nav-link " href="Post">Houses</a>
 
                 </li>
-<!--
-                <li class="nav-item">
-                    <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                </li>-->
-<!--                <li class="nav-item">
-                    <a class="nav-link " href="PromotionManage">Promotion</a>
-                </li>-->
+                <!--
+                                <li class="nav-item">
+                                    <a class="nav-link " href="agents-grid.jsp">Landlords</a>
+                                </li>-->
+                <!--                <li class="nav-item">
+                                    <a class="nav-link " href="PromotionManage">Promotion</a>
+                                </li>-->
 
-<!--                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">Pages</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                        <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
-                    </div>
-                </li>-->
+                <!--                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                       aria-haspopup="true" aria-expanded="false">Pages</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item " href="property-single.jsp">House Detail</a>
+                                        <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
+                                    </div>
+                                </li>-->
 
                 <li class="nav-item">
                     <a class="nav-link " href="contact.jsp">Contact</a>
@@ -46,7 +46,7 @@
             <a href="login?type=login">Login/Register</a>
         </div>
         <% } else { %>
-        
+
         <ul class="navbar-nav" style="padding: 0.35rem 2rem;">
             <li class="nav-item">
                 <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
@@ -64,13 +64,14 @@
                 </div>
             </li>
         </ul>
-        
         <% } %>
 
-        <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+        <button style="margin-right: 50px" type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
                 data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
             <i class="bi bi-search"></i>
         </button>
-
+        <% if(user != null) { %>
+        <a href="${pageContext.request.contextPath}/ReportCenter"><button type="button" class="btn btn-primary">Send Report</button></a>
+        <% } %>
     </div>
 </nav>
