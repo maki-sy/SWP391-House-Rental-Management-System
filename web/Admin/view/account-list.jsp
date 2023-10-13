@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>AdminLTE 3 | Projects</title>
-
+<%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation, model.Users" %>
+<%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -24,10 +25,10 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="../../index3.html" class="nav-link">Home</a>
+                        <a href="trang-chu" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">Contact</a>
+                        <a href="contact.jsp" class="nav-link">Contact</a>
                     </li>
                 </ul>
 
@@ -157,7 +158,7 @@
             <!-- Main Sidebar Container -->
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
-                <a href="../../index3.html" class="brand-link">
+                <a href="admin-dashboard" class="brand-link">
                     <img src="assets/img/admin-page-logo.png" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">Admin Page</span>
                 </a>
@@ -167,10 +168,10 @@
                     <!-- Sidebar user (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="https://ben.com.vn/tin-tuc/wp-content/uploads/2021/12/anh-che-cho-hai-huoc-cho-dien-thoai-4.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block">Alexander Pierce</a>
+                            <a href="#" class="d-block">Admin</a>
                         </div>
                     </div>
                     <nav class="mt-2">
@@ -178,14 +179,14 @@
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="#" class="nav-link active">
+                                <a href="admin-dashboard?service=manageAccount" class="nav-link active">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Account
 
                                     </p>
                                 </a>
-                                <a href="#" class="nav-link">
+                                <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
@@ -244,55 +245,41 @@
                             <table class="table table-striped projects">
                                 <thead>
                                     <tr>
-                                        <th style="width: 3%">
+                                        <th style="width: 25%">
                                             ID
                                         </th>
-                                        <th style="width: 15%">
+                                        <th style="width: 25%">
                                             Account Email
                                         </th>
-                                        <th style="width: 10%">
-                                            Full Name
+                                        <th style="width: 25%">
+                                            Role ID
                                         </th>
-                                        <th style="width: 20%">
-                                            Address
-                                        </th>
-                                        <th style="width: 10%">
-                                            Phone
-                                        </th>
-                                        <th style="width: 8%">
-                                            Role
-                                        </th>
-                                        <th style="width: 5%" class="text-center">
+                                        <th style="width: 25%"  class="text-center" >
                                             Status
                                         </th>
-                                        <th style="width: 15%">
-                                        </th>
+
                                     </tr>
                                 </thead>
+                                <%
+                                List<Users> list = (List<Users>) request.getAttribute("listOfUsers");
+                                %>
+                                <%for(Users us:list){%>
                                 <tbody>
                                     <tr>
                                         <td>
-                                            #
+                                            <%=us.getId()%>
                                         </td>
                                         <td>
                                             <a>
-                                                TungDTHE176669@fpt.edu.vn
+                                                <%=us.getEmail()%>
                                             </a>
                                         </td>
                                         <td>
-                                            Thanh Tung
+                                            <%=us.getRoleID()%>
                                         </td>
-                                        <td>
-                                            Yen Lap, Vinh Tuong, Vinh Phuc
-                                        </td>
-                                        <td>
-                                            0362939668
-                                        </td>
-                                        <td>
-                                            Tenant
-                                        </td>
+
                                         <td class="project-state">
-                                            <span class="badge badge-success">Verified</span>
+                                            <span class="badge badge-success"><%=us.getStatus()%></span>
                                         </td>
                                         <td class="project-actions text-right">
                                             <a class="btn btn-info btn-sm" href="#">
@@ -308,6 +295,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
+                                <%}%>
                             </table>
                         </div>
                         <!-- /.card-body -->

@@ -10,6 +10,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.PostRental;
+import model.Users;
+import service.AdminService;
 
 /**
  *
@@ -29,7 +33,20 @@ public class AdminHomepage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Admin/view/admin-index.jsp").forward(request, response);
+        String ser = request.getParameter("service");
+        AdminService service = new AdminService();
+        if (ser == null) {
+            request.getRequestDispatcher("Admin/view/admin-view.jsp").forward(request, response);
+        }
+        if (ser.equals("managePost")) {
+            List<PostRental> list = service.getAllPost();
+            request.setAttribute("listOfPost", list);
+            request.getRequestDispatcher("Admin/view/post-list.jsp").forward(request, response);
+        } else if (ser.equals("manageAccount")) {
+            List<Users> list = service.getAllUsers();
+            request.setAttribute("listOfUsers", list);
+            request.getRequestDispatcher("Admin/view/account-list.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -43,7 +60,7 @@ public class AdminHomepage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
 }

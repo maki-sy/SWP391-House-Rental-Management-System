@@ -23,7 +23,7 @@ public class PostDAO extends DBContext {
 
     public List<PostRental> getAllPosts() {
         List<PostRental> post = new ArrayList<>();
-        String sqlCommand = "SELECT * FROM POST;";
+        String sqlCommand = "SELECT * FROM POST";
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {
@@ -51,10 +51,41 @@ public class PostDAO extends DBContext {
 
         return post;
     }
+    public ArrayList<PostRental> getPublishedPosts() {
+        ArrayList<PostRental> postList = new ArrayList<>();
+        String sqlCommand = "SELECT *\n"
+                + "  FROM [SWP391].[dbo].[Post]\n"
+                + "  WHERE status != 'draft' AND status != 'deleted'\n"
+                + "  ORDER BY [status]";
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                postList.add(po);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return postList;
+    }
 
     public List<PostRental> getLastestPost() {
         List<PostRental> post = new ArrayList<>();
-        String sqlCommand = "SELECT TOP 4 * FROM Post where status = 'Not Occupied' ORDER BY post_start_date DESC;";
+        String sqlCommand = "SELECT TOP 4 * FROM Post where status = 'basic' ORDER BY post_start_date DESC;";
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {
@@ -132,8 +163,8 @@ public class PostDAO extends DBContext {
         return post;
     }
 
-    public List<PostRental> getPostDetailsbyID(int pid) {
-        List<PostRental> post = new ArrayList<>();
+    public PostRental getPostDetailsbyID(int pid) {
+        PostRental post = new PostRental();
         String sqlCommand = "SELECT * FROM POST where id = " + pid;
         ResultSet rs = getData(sqlCommand);
         try {
@@ -153,8 +184,8 @@ public class PostDAO extends DBContext {
                 Date start = rs.getDate(13);
                 Date end = rs.getDate(14);
 
-                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
-                post.add(po);
+                post = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -178,7 +209,7 @@ public class PostDAO extends DBContext {
                 String address = rs.getString(7);
                 String dess = rs.getString(8);
                 int landlord_id = rs.getInt(9);
-                int location_id = rs.getInt(10);
+                int location_id=rs.getInt(10);
                 String status = rs.getString(11);
                 int promotion_id = rs.getInt(12);
                 Date start = rs.getDate(13);
@@ -217,7 +248,6 @@ public class PostDAO extends DBContext {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     public boolean insertPost(String name, int price, int type,
             int area, int NumOfBedrooms, String address, String description,
             int landrlod_id, int location_id) {
@@ -317,8 +347,5 @@ public class PostDAO extends DBContext {
         return false;
     }
 
-    public static void main(String[] args) {
-        PostDAO dao = new PostDAO();
-        System.out.println(dao.getLastestPostByUserId(1));
-    }
+
 }

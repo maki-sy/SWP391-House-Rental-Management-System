@@ -13,8 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import model.PostRental;
+import model.PropertyLocation;
+import model.PropertyType;
+import service.SearchService;
 
 /**
  *
@@ -39,16 +43,17 @@ public class PostDetail extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             int pid = Integer.parseInt(request.getParameter("id"));
             DAO.PostDAO dao = new PostDAO();
-            List<PostRental> list = dao.getPostDetailsbyID(pid);
+            PostRental post = dao.getPostDetailsbyID(pid);
+            SearchService handle = new SearchService();
+            ArrayList<PropertyType> type = handle.getAllType();
 
-            ResultSet type = dao.getData("select distinct type from Post;");
             ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
             ResultSet priceFrom = dao.getData("select distinct price from Post;");
             ResultSet priceTo = dao.getData("select distinct price from Post;");
             ResultSet areaFrom = dao.getData("select distinct area from Post;");
             ResultSet areaTo = dao.getData("select distinct area from Post;");
             ResultSet address = dao.getData("select distinct address from Post;");
-            ResultSet location = dao.getData("select distinct location_name from Property_Location;");
+            ArrayList<PropertyLocation> location = handle.getAllLocation();
 
             request.setAttribute("type", type);
             request.setAttribute("bedroom", bedrooms);
@@ -59,7 +64,7 @@ public class PostDetail extends HttpServlet {
             request.setAttribute("address", address);
             request.setAttribute("location", location);
 
-            request.setAttribute("PostDetail", list);
+            request.setAttribute("PostDetail", post);
             request.getRequestDispatcher("PostDetail.jsp").forward(request, response);
         }
     }

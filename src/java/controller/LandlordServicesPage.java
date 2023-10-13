@@ -95,15 +95,23 @@ public class LandlordServicesPage extends HttpServlet {
                         address, description, user.getId(), location_id);
                 if (isInsertSuccess) {
                     PostRental post = handleService.getLastestPostByUserId(user.getId());
+                    boolean isThumbnail = true;
                     // luu hinh anh
-                    String uploadDirectory = "C:\\swp-img";
+                    String uploadDirectory = "C:\\ProgramData";
+                    String rootDirectory = "./../../../../../../ProgramData/";
                     for (Part filePart : request.getParts()) {
                         String fileName = handleService.getFileName(filePart);
                         if (!fileName.equals("unknown.jpg")) {
+                            String imageType;
+                            String imageUrl = rootDirectory + fileName;
+                            if (isThumbnail) {
+                                imageType = "thumbails";
+                                isThumbnail = false;
+                            } else {
+                                imageType = "main";
+                            }
                             Path filePath = Paths.get(uploadDirectory, fileName);
-                            String imageFormat = handleService.getFileExtension(fileName);
-                            String imageUrl = uploadDirectory + "\\" + fileName;
-                            handleService.addPostImage(post.getId(), imageUrl, imageFormat);
+                            handleService.addPostImage(post.getId(), imageUrl, imageType);
                             try ( InputStream fileContent = filePart.getInputStream()) {
                                 Files.copy(fileContent, filePath, StandardCopyOption.REPLACE_EXISTING);
                             }

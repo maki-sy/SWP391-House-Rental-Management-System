@@ -3,8 +3,8 @@
     Created on : Sep 22, 2023, 11:23:35 PM
     Author     : Tuấn Anh
 --%>
-<%@page import="model.PostRental, model.PostImage, DAO.PostDAO" %>
-<%@page import="java.util.List, java.sql.ResultSet"%>
+<%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
+<%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.Users" %>
 <%
@@ -51,7 +51,7 @@
         <!-- ======= Header/Navbar ======= -->
         <%@include file="header.jsp" %>
         <!-- ======= Header/Navbar ======= -->
-        
+
         <!-- ======= Property Search Section ======= -->
         <div class="click-closed"></div>
         <!--/ Form Search Star /-->
@@ -70,30 +70,21 @@
                             </div>
                         </div>
                         <%
-                            ResultSet type = (ResultSet) request.getAttribute("type");
+                            ArrayList<PropertyType> type = (ArrayList<PropertyType>) request.getAttribute("type");
                             ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
                             ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
                             ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
                             ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
                             ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
-                            ResultSet location = (ResultSet) request.getAttribute("location");
+                            ArrayList<PropertyLocation> location = (ArrayList<PropertyLocation>) request.getAttribute("location");
                         %>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="Type">Type</label>
                                 <select class="form-control form-select form-control-a" id="Type" name="type">
                                     <option>All Type</option>
-                                    <% while (type.next()) { %>
-                                    <%
-                                        int typeValue = type.getInt("type");
-                                        String displayValue = "";
-                                        if (typeValue == 1) {
-                                            displayValue = "Nhà Trọ";
-                                        } else if (typeValue == 2) {
-                                            displayValue = "Chung Cư";
-                                        }
-                                    %>
-                                    <option value="<%= typeValue %>"><%= displayValue %></option>
+                                    <%for(PropertyType tp:type){%>
+                                    <option value="<%=tp.getTypeId()%>"><%=tp.getTypeName()%></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -162,8 +153,8 @@
                                 <label class="pb-2" for="location">Location</label>
                                 <select class="form-control form-select form-control-a" id="location" name="location">
                                     <option>Any</option>
-                                    <% while (location.next()) { %>
-                                    <option><%= location.getString("location_name")%></option>
+                                    <%for(PropertyLocation pl:location){ %>
+                                    <option value="<%=pl.getId()%>"><%=pl.getLocation_name()%></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -176,126 +167,11 @@
             </div>
         </div><!-- End Property Search Section -->>
 
-        <!-- ======= Header/Navbar ======= -->
-        <!-- Header cho khách (guest) -->
-        <%-- if(user == null) { --%>
-<!--
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDefault"
-                        aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="index.html">Rental<span class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active " href="Post">Houses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.html">Landlords</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.html">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.html">Landlord Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.html">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="nav-item btn" style="padding: 0.35rem 1rem;">
-                    <a href="login">Login/Register</a>
-                </div>
-
-                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse"
-                        data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
-        </nav>-->
-        <%--} else {--%>
-<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="index.html">Rental<span class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="Post">Houses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.html">Landlords</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.html">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.html">Landlord Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.html">Contact</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                                 style="width: 3rem; margin-left: 6rem" alt="Avatar" />
-                        </li>
-                        <li class="nav-item dropdown">
-
-                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
-
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="./profile-personal.html">Manage rental house</a>
-                                <a class="dropdown-item " href="./profile-personal.html">Manage account</a>
-                                <a class="dropdown-item " href="login?type=logout">Logout</a>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-
-            </div>
-        </nav>-->
-        <%--}--%>
+        
         <!-- End Header/Navbar -->
         <%
                   List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");
+                  ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
                   
         %>
         <main id="main">
@@ -343,42 +219,29 @@
                                               </div>-->
 
                         </div>
-                        <%for(PostRental p:list){
-                        int postID = p.getId();
-                        List<PostImage> image_url = dao.getPostImages(postID);
-                          
+                        <%
+                           
+                            for(int i = 0; i < list.size(); i++){
                         %>  
                         <div class="col-md-4">
                             <div class="card-box-a card-shadow">
-                                <%if(image_url.size() == 0){%>
                                 <div class="img-box-a">
-                                    <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
-                                </div>
-                                <%}%>
-                                <%for(PostImage po:image_url){%>
-                                <%if(po.getImg_type().equals("thumbails")){%>
-                                <div class="img-box-a">
-                                    <img src="<%=po.getImg_url()%>" alt="" class="img-a img-fluid img-thumbnail"
+                                    <img src="<%=thumbnailList.get(i)%>" alt="" class="img-a img-fluid img-thumbnail"
                                          style ="overflow-clip-margin: content-box; overflow: clip;">
                                 </div>
-                                <%break;}else{%>
-                                <div class="img-box-a">
-                                    <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
-                                </div>
-                                <%continue;}}%>
                                 <div class="card-overlay">
                                     <div class="card-overlay-a-content">
                                         <div class="card-header-a">
                                             <h2 class="card-title-a">
-                                                <a href="housedetail?id=<%=p.getId()%>"><%=p.getName()%>
+                                                <a href="housedetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getName()%>
                                                 </a>
                                             </h2>
                                         </div>
                                         <div class="card-body-a">
                                             <div class="price-box d-flex">
-                                                <span class="price-a">rent | $ <%=p.getPrice()%></span>
+                                                <span class="price-a">rent | $ <%=list.get(i).getPrice()%></span>
                                             </div>
-                                            <a href="housedetail?id=<%=p.getId()%>" class="link-a">Click here to view
+                                            <a href="housedetail?id=<%=list.get(i).getId()%>" class="link-a">Click here to view
                                                 <span class="bi bi-chevron-right"></span>
                                             </a>
                                         </div>
@@ -386,17 +249,17 @@
                                             <ul class="card-info d-flex justify-content-around">
                                                 <li>
                                                     <h4 class="card-info-title">Area</h4>
-                                                    <span><%=p.getArea()%>m
+                                                    <span><%=list.get(i).getArea()%>m
                                                         <sup>2</sup>
                                                     </span>
                                                 </li>
                                                 <li>
                                                     <h4 class="card-info-title">Beds</h4>
-                                                    <span><%=p.getNumOfBeds()%></span>
+                                                    <span><%=list.get(i).getNumOfBeds()%></span>
                                                 </li>
                                                 <li>
                                                     <h4 class="card-info-title">Status</h4>
-                                                    <span><%=p.getStatus()%></span>
+                                                    <span><%=list.get(i).getStatus()%></span>
                                                 </li>
                                             </ul>
                                         </div>

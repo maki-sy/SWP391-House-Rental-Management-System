@@ -1,12 +1,8 @@
-<%@ page import="model.Users" %>
-<%
-    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
-%> 
-
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
+        <%@page contentType="text/html" pageEncoding="UTF-8"%>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -142,7 +138,123 @@
 
         <!-- ======= Header/Navbar ======= -->
         <!-- Header cho khach -->
-        <%@include file="header.jsp" %>
+        <% if(role==null) { %>
+        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+            <div class="container">
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
+
+                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="trang-chu">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="Post">Houses</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">Pages</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item " href="Post">House Detail</a>
+                                <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active " href="contact.jsp">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nav-item btn" style="padding: 0.35rem 1rem;">
+                    <a href="login?type=login">Login/Register</a>
+                </div>
+
+                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+                    <i class="bi bi-search"></i>
+                </button>
+
+            </div>
+        </nav>
+        <!-- Header cho nguoi dung da dang nhap -->
+        <%} else {%>
+        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+            <div class="container">
+                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
+
+                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="trang-chu">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="Post">Houses</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item " href="property-single.jsp">House Detail</a>
+                                <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " href="contact.jsp">Contact</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
+                                 style="width: 3rem; margin-left: 6rem" alt="Avatar" />
+                        </li>
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
+
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item " href="/ManageServicesPage">Manage services</a>
+                                <a class="dropdown-item " href="./profile-personal.jsp">Manage account</a>
+                                <a class="dropdown-item " href="login?type=logout">Logout</a>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+                    <i class="bi bi-search"></i>
+                </button>
+
+            </div>
+        </nav>
+        <%}%>
         <!-- End Header/Navbar -->
 
         <main id="main">
@@ -154,12 +266,7 @@
                         <div class="col-md-12 col-lg-8">
                             <div class="title-single-box">
                                 <h1 class="title-single">Contact US</h1>
-                                <span class="color-text-a">Aut voluptas consequatur unde sed omnis ex placeat quis eos. Aut natus
-                                    officia
-                                    corrupti qui autem fugit consectetur quo. Et ipsum eveniet laboriosam voluptas beatae possimus
-                                    qui
-                                    ducimus. Et voluptatem deleniti. Voluptatum voluptatibus amet. Et esse sed omnis inventore hic
-                                    culpa.</span>
+                                <span class="color-text-a">Hệ thống cho thuê trọ uy tín nhất Việt Nam</span>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-4">
@@ -186,8 +293,10 @@
                             <div class="contact-map box">
                                 <div id="map" class="contact-map">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1422937950147!2d-73.98731968482413!3d40.75889497932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes+Square!5e0!3m2!1ses-419!2sve!4v1510329142834"
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14899.039341096059!2d105.53571425!3d21.0022621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135abc60e7d3f19%3A0x2be9d7d0b5abcbf4!2zVHLGsOG7nW5nIMSQ4bqhaSBI4buNYyBGUFQ!5e0!3m2!1svi!2s!4v1696817823484!5m2!1svi!2s"
+
                                         width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+
                                 </div>
                             </div>
                         </div>

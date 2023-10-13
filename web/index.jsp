@@ -47,8 +47,8 @@
         * Author: BootstrapMade.com
         * License: https://bootstrapmade.com/license/
         ======================================================== -->
-        <%@page import="model.PostRental, model.PostImage, DAO.PostDAO" %>
-        <%@page import="java.util.List, java.sql.ResultSet"%>
+        <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
+        <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
         <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
     </head>
@@ -73,30 +73,21 @@
                             </div>
                         </div>
                         <%
-                            ResultSet type = (ResultSet) request.getAttribute("type");
+                            ArrayList<PropertyType> type = (ArrayList<PropertyType>) request.getAttribute("type");
                             ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
                             ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
                             ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
                             ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
                             ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
-                            ResultSet location = (ResultSet) request.getAttribute("location");
+                            ArrayList<PropertyLocation> location = (ArrayList<PropertyLocation>) request.getAttribute("location");
                         %>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="Type">Type</label>
                                 <select class="form-control form-select form-control-a" id="Type" name="type">
                                     <option>All Type</option>
-                                    <% while (type.next()) { %>
-                                    <%
-                                        int typeValue = type.getInt("type");
-                                        String displayValue = "";
-                                        if (typeValue == 1) {
-                                            displayValue = "Nhà Trọ";
-                                        } else if (typeValue == 2) {
-                                            displayValue = "Chung Cư";
-                                        }
-                                    %>
-                                    <option value="<%= typeValue %>"><%= displayValue %></option>
+                                    <%for(PropertyType tp:type){%>
+                                    <option value="<%=tp.getTypeId()%>"><%=tp.getTypeName()%></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -165,8 +156,8 @@
                                 <label class="pb-2" for="location">Location</label>
                                 <select class="form-control form-select form-control-a" id="location" name="location">
                                     <option>Any</option>
-                                    <% while (location.next()) { %>
-                                    <option><%= location.getString("location_name")%></option>
+                                    <%for(PropertyLocation pl:location){ %>
+                                    <option value="<%=pl.getId()%>"><%=pl.getLocation_name()%></option>
                                     <% } %>
                                 </select>
                             </div>

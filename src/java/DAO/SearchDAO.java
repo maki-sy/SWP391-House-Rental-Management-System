@@ -81,7 +81,7 @@ public class SearchDAO extends DBContext {
             sqlCommand += " AND a.area <= ?";
         }
         if (!"Any".equals(location)) {
-            sqlCommand += " AND b.location_name = ?";
+            sqlCommand += " AND b.id = ?";
         }
 
         try ( PreparedStatement preparedStatement = connect.prepareStatement(sqlCommand)) {

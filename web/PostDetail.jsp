@@ -4,12 +4,11 @@
     Author     : Tuấn Anh
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.PostRental, model.PostImage, DAO.PostDAO" %>
-
-<%@page import="java.util.List, java.sql.ResultSet"%>
+<%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
+<%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
 <%@ page import="model.Users" %>
 <%
-    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
     DAO.PostDAO dao = new PostDAO();
 %>
 
@@ -69,30 +68,21 @@
                             </div>
                         </div>
                         <%
-                            ResultSet type = (ResultSet) request.getAttribute("type");
+                            ArrayList<PropertyType> type = (ArrayList<PropertyType>) request.getAttribute("type");
                             ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
                             ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
                             ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
                             ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
                             ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
-                            ResultSet location = (ResultSet) request.getAttribute("location");
+                            ArrayList<PropertyLocation> location = (ArrayList<PropertyLocation>) request.getAttribute("location");
                         %>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="Type">Type</label>
                                 <select class="form-control form-select form-control-a" id="Type" name="type">
                                     <option>All Type</option>
-                                    <% while (type.next()) { %>
-                                    <%
-                                        int typeValue = type.getInt("type");
-                                        String displayValue = "";
-                                        if (typeValue == 1) {
-                                            displayValue = "Nhà Trọ";
-                                        } else if (typeValue == 2) {
-                                            displayValue = "Chung Cư";
-                                        }
-                                    %>
-                                    <option value="<%= typeValue %>"><%= displayValue %></option>
+                                    <%for(PropertyType tp:type){%>
+                                    <option value="<%=tp.getTypeId()%>"><%=tp.getTypeName()%></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -161,8 +151,8 @@
                                 <label class="pb-2" for="location">Location</label>
                                 <select class="form-control form-select form-control-a" id="location" name="location">
                                     <option>Any</option>
-                                    <% while (location.next()) { %>
-                                    <option><%= location.getString("location_name")%></option>
+                                    <%for(PropertyLocation pl:location){ %>
+                                    <option value="<%=pl.getId()%>"><%=pl.getLocation_name()%></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -176,26 +166,24 @@
         </div><!-- End Property Search Section -->>
 
         <!-- ======= Header/Navbar ======= -->
+        <!-- Header cho khách (guest) -->
         <%@include file="header.jsp" %>
         <!-- End Header/Navbar -->
         <%
-                  List<PostRental> list = (List<PostRental>) request.getAttribute("PostDetail");
+                  PostRental post = (PostRental) request.getAttribute("PostDetail");
+                  int postID = post.getId();
+                  List<PostImage> image_url = dao.getPostImages(postID);
                   
         %>
         <main id="main">
-            <%for(PostRental pr:list){
-            int postID = pr.getId();
-            List<PostImage> image_url = dao.getPostImages(postID);
-            %>
-
             <!-- ======= Intro Single ======= -->
             <section class="intro-single">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 col-lg-8">
                             <div class="title-single-box">
-                                <h1 class="title-single"><%=pr.getName()%></h1>
-                                <span class="color-text-a"><%=pr.getAddress()%></span>
+                                <h1 class="title-single"><%=post.getName()%></h1>
+                                <span class="color-text-a"><%=post.getAddress()%></span>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-4">
@@ -208,7 +196,7 @@
                                         <a href="property-grid.html">Properties</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">
-                                        <%=pr.getName()%>
+                                        <%=post.getName()%>
                                     </li>
                                 </ol>
                             </nav>
@@ -247,7 +235,7 @@
                                                 <span class="bi bi-cash">$</span>
                                             </div>
                                             <div class="card-title-c align-self-center">
-                                                <h5 class="title-c"><%=pr.getPrice()%></h5>
+                                                <h5 class="title-c"><%=post.getPrice()%></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -262,27 +250,23 @@
                                         <div class="summary-list">
                                             <ul class="list">
                                                 <li class="d-flex justify-content-between">
-                                                    <strong>Property ID:</strong>
-                                                    <span><%=pr.getId()%></span>
-                                                </li>
-                                                <li class="d-flex justify-content-between">
                                                     <strong>Location:</strong>
-                                                    <span><%=pr.getAddress()%></span>
+                                                    <span><%=post.getAddress()%></span>
                                                 </li>
 
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Status:</strong>
-                                                    <span><%=pr.getStatus()%></span>
+                                                    <span><%=post.getStatus()%></span>
                                                 </li>
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Area:</strong>
-                                                    <span><%=pr.getArea()%>m
+                                                    <span><%=post.getArea()%>m
                                                         <sup>2</sup>
                                                     </span>
                                                 </li>
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Beds:</strong>
-                                                    <span><%=pr.getNumOfBeds()%></span>
+                                                    <span><%=post.getNumOfBeds()%></span>
                                                 </li>
 
                                             </ul>
@@ -299,7 +283,7 @@
                                     </div>
                                     <div class="property-description">
                                         <p class="description color-text-a">
-                                            <%=pr.getDesscription()%>
+                                            <%=post.getDesscription()%>
                                         </p>
                                         <p class="description color-text-a no-margin">
                                             Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget
@@ -334,7 +318,6 @@
                     </div>
                 </div>
             </section><!-- End Property Single-->
-            <%}%>
         </main><!-- End #main -->
 
         <!-- ======= Footer ======= -->
