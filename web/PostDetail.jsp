@@ -253,11 +253,6 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                                     <strong>Location:</strong>
                                                     <span><%=post.getAddress()%></span>
                                                 </li>
-
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Status:</strong>
-                                                    <span><%=post.getStatus()%></span>
-                                                </li>
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Area:</strong>
                                                     <span><%=post.getArea()%>m
@@ -284,11 +279,6 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                     <div class="property-description">
                                         <p class="description color-text-a">
                                             <%=post.getDesscription()%>
-                                        </p>
-                                        <p class="description color-text-a no-margin">
-                                            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget
-                                            malesuada. Quisque velit nisi,
-                                            pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.
                                         </p>
                                     </div>
                                     <!--                      <div class="row section-t3">

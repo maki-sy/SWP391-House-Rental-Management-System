@@ -6,6 +6,8 @@
         <title>AdminLTE 3 | Projects</title>
         <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
+        <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -305,9 +307,8 @@
                                                 </i>
                                                 Edit
                                             </a>
-                                            <a class="btn btn-danger btn-sm text-center" href="#">
-                                                <i class="fas fa-trash">
-                                                </i>
+                                            <a class="btn btn-danger btn-sm text-center" href="javascript:void(0);" onclick="confirmDelete(<%=pr.getId()%>);">
+                                                <i class="fas fa-trash"></i>
                                                 Delete
                                             </a>
                                         </td>
@@ -341,6 +342,14 @@
         <!-- ./wrapper -->
 
         <!-- jQuery -->
+        <script>
+            function confirmDelete(postId) {
+                var confirmation = confirm("Bạn có chắc chắn muốn xóa bài viết này?");
+                if (confirmation) {
+                    window.location.href = "admin-dashboard?service=deletePost&id=" + postId;
+                }
+            }
+        </script>
         <script src="assets/vendor/jquery/jquery.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

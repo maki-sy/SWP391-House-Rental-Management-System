@@ -46,6 +46,10 @@ public class AdminHomepage extends HttpServlet {
             List<Users> list = service.getAllUsers();
             request.setAttribute("listOfUsers", list);
             request.getRequestDispatcher("Admin/view/account-list.jsp").forward(request, response);
+        } else if (ser.equals("deletePost")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            service.updatePostStatus(id);
+            request.getRequestDispatcher("admin-dashboard?service=managePost").forward(request, response);
         }
     }
 

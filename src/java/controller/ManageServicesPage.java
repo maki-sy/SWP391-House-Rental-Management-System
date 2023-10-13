@@ -32,7 +32,7 @@ public class ManageServicesPage extends HttpServlet {
             String url = request.getContextPath() + "/landlordServicesPage";
             response.sendRedirect(url);
         } else if (user.getRoleID() == 3) {
-            
+            response.sendRedirect("trang-chu");
         } else {
             // Default case: Redirect to index.jsp for unknown roles
             response.sendRedirect("trang-chu");

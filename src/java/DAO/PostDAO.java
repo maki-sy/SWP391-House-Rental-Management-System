@@ -51,6 +51,18 @@ public class PostDAO extends DBContext {
 
         return post;
     }
+
+    public void updatePostByAdmin(int id) {
+        try {
+            String sql = "UPDATE post SET status = 'deleted' WHERE id = ?";
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public ArrayList<PostRental> getPublishedPosts() {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
@@ -185,7 +197,7 @@ public class PostDAO extends DBContext {
                 Date end = rs.getDate(14);
 
                 post = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -209,7 +221,7 @@ public class PostDAO extends DBContext {
                 String address = rs.getString(7);
                 String dess = rs.getString(8);
                 int landlord_id = rs.getInt(9);
-                int location_id=rs.getInt(10);
+                int location_id = rs.getInt(10);
                 String status = rs.getString(11);
                 int promotion_id = rs.getInt(12);
                 Date start = rs.getDate(13);
@@ -248,6 +260,7 @@ public class PostDAO extends DBContext {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public boolean insertPost(String name, int price, int type,
             int area, int NumOfBedrooms, String address, String description,
             int landrlod_id, int location_id) {
@@ -346,6 +359,5 @@ public class PostDAO extends DBContext {
         }
         return false;
     }
-
 
 }

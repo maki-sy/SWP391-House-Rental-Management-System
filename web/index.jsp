@@ -172,134 +172,134 @@
         </div><!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
-        
+
         <%@include file="header.jsp" %>
         <%--<jsp:include page="header.jsp"></jsp:include>--%>
         <!-- Header cho khach -->
         <%-- if(user == null) { --%>
-<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="Post">Houses</a>
-
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="PromotionManage">Promotion</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.jsp">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="nav-item btn" style="padding: 0.35rem 1rem;">
-                    <a href="login?type=login">Login/Register</a>
-                </div>
-
-                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-
-            </div>
-        </nav>-->
+        <!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+                    <div class="container">
+                        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
+        
+                        <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
+                            <ul class="navbar-nav">
+        
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="trang-chu">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="Post">Houses</a>
+        
+                                </li>
+        
+                                <li class="nav-item">
+                                    <a class="nav-link " href="agents-grid.jsp">Landlords</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="PromotionManage">Promotion</a>
+                                </li>
+        
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                       aria-haspopup="true" aria-expanded="false">Pages</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item " href="property-single.jsp">House Detail</a>
+                                        <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
+                                    </div>
+                                </li>
+        
+                                <li class="nav-item">
+                                    <a class="nav-link " href="contact.jsp">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="nav-item btn" style="padding: 0.35rem 1rem;">
+                            <a href="login?type=login">Login/Register</a>
+                        </div>
+        
+                        <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+                                data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+                            <i class="bi bi-search"></i>
+                        </button>
+        
+                    </div>
+                </nav>-->
         <!-- Header cho nguoi dung da dang nhap -->
         <%-- } else { --%>
-<!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="Post">Houses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="PromotionManage">Promotion</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.jsp">Contact</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
-                                 style="width: 3rem; margin-left: 6rem" alt="Avatar" />
-                        </li>
-                        <li class="nav-item dropdown">
-
-                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
-
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="ManageServicesPage">Manage services</a>
-                                <a class="dropdown-item " href="Profile?service=displayProfile&id=<%--=user.getId()--%>&roleid=<%--=user.getRoleID()--%>">Manage account</a>
-                                <a class="dropdown-item " href="login?type=logout">Logout</a>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-
-            </div>
-        </nav>-->
+        <!--        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+        
+                    <div class="container">
+                        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <a class="navbar-brand text-brand" href="trang-chu">Rental<span class="color-b">House</span></a>
+        
+                        <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
+                            <ul class="navbar-nav">
+        
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="trang-chu">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="Post">Houses</a>
+                                </li>
+        
+                                <li class="nav-item">
+                                    <a class="nav-link " href="agents-grid.jsp">Landlords</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="PromotionManage">Promotion</a>
+                                </li>
+        
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item " href="property-single.jsp">House Detail</a>
+                                        <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
+                                    </div>
+                                </li>
+        
+                                <li class="nav-item">
+                                    <a class="nav-link " href="contact.jsp">Contact</a>
+                                </li>
+        
+                                <li class="nav-item">
+                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
+                                         style="width: 3rem; margin-left: 6rem" alt="Avatar" />
+                                </li>
+                                <li class="nav-item dropdown">
+        
+                                    <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
+                                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
+        
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item " href="ManageServicesPage">Manage services</a>
+                                        <a class="dropdown-item " href="Profile?service=displayProfile&id=<%--=user.getId()--%>&roleid=<%--=user.getRoleID()--%>">Manage account</a>
+                                        <a class="dropdown-item " href="login?type=logout">Logout</a>
+                                    </div>
+                                </li>
+        
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
+                                data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+                            <i class="bi bi-search"></i>
+                        </button>
+        
+                    </div>
+                </nav>-->
         <%-- } --%>
         <!-- End Header/Navbar -->
 
@@ -380,10 +380,7 @@
                                 </div>
                                 <div class="card-body-c">
                                     <p class="content-c">
-                                        Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Praesent sapien
-                                        massa,
-                                        convallis a pellentesque
-                                        nec, egestas non nisi.
+                                        Hệ thống chúng tôi kết nối người thuê nhà với các lựa chọn trọ đa dạng và thuận tiện. Tạo cuộc sống trọn vẹn cho bạn.
                                     </p>
                                 </div>
                                 <div class="card-footer-c">
@@ -405,10 +402,7 @@
                                 </div>
                                 <div class="card-body-c">
                                     <p class="content-c">
-                                        Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere blandit. Mauris
-                                        blandit
-                                        aliquet elit, eget tincidunt
-                                        nibh pulvinar a.
+                                        Chúng tôi cung cấp các dịch vụ thuê nhà linh hoạt để đáp ứng nhu cầu của bạn.
                                     </p>
                                 </div>
                                 <div class="card-footer-c">
@@ -430,10 +424,7 @@
                                 </div>
                                 <div class="card-body-c">
                                     <p class="content-c">
-                                        Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Praesent sapien
-                                        massa,
-                                        convallis a pellentesque
-                                        nec, egestas non nisi.
+                                        Kết nối chủ nhà và người thuê một cách hiệu quả. Đảm bảo giao dịch cho thuê suôn sẻ.
                                     </p>
                                 </div>
                                 <div class="card-footer-c">
@@ -534,195 +525,7 @@
             </section><!-- End Latest Properties Section -->
 
 
-            <!-- ======= Agents Section ======= -->
-            <section class="section-agents section-t8">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="title-wrap d-flex justify-content-between">
-                                <div class="title-box">
-                                    <h2 class="title-a">Best Agents</h2>
-                                </div>
-                                <div class="title-link">
-                                    <a href="agents-grid.jsp">All Agents
-                                        <span class="bi bi-chevron-right"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card-box-d">
-                                <div class="card-img-d">
-                                    <img src="assets/img/agent-4.jpg" alt="" class="img-d img-fluid">
-                                </div>
-                                <div class="card-overlay card-overlay-hover">
-                                    <div class="card-header-d">
-                                        <div class="card-title-d align-self-center">
-                                            <h3 class="title-d">
-                                                <a href="agent-single.jsp" class="link-two">Margaret Sotillo
-                                                    <br> Escala</a>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                    <div class="card-body-d">
-                                        <p class="content-d color-text-a">
-                                            Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                                        </p>
-                                        <div class="info-agents color-a">
-                                            <p>
-                                                <strong>Phone: </strong> +54 356 945234
-                                            </p>
-                                            <p>
-                                                <strong>Email: </strong> agents@example.com
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer-d">
-                                        <div class="socials-footer d-flex justify-content-center">
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-facebook" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-twitter" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-instagram" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-box-d">
-                                <div class="card-img-d">
-                                    <img src="assets/img/agent-1.jpg" alt="" class="img-d img-fluid">
-                                </div>
-                                <div class="card-overlay card-overlay-hover">
-                                    <div class="card-header-d">
-                                        <div class="card-title-d align-self-center">
-                                            <h3 class="title-d">
-                                                <a href="agent-single.jsp" class="link-two">Stiven Spilver
-                                                    <br> Darw</a>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                    <div class="card-body-d">
-                                        <p class="content-d color-text-a">
-                                            Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                                        </p>
-                                        <div class="info-agents color-a">
-                                            <p>
-                                                <strong>Phone: </strong> +54 356 945234
-                                            </p>
-                                            <p>
-                                                <strong>Email: </strong> agents@example.com
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer-d">
-                                        <div class="socials-footer d-flex justify-content-center">
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-facebook" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-twitter" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-instagram" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card-box-d">
-                                <div class="card-img-d">
-                                    <img src="assets/img/agent-5.jpg" alt="" class="img-d img-fluid">
-                                </div>
-                                <div class="card-overlay card-overlay-hover">
-                                    <div class="card-header-d">
-                                        <div class="card-title-d align-self-center">
-                                            <h3 class="title-d">
-                                                <a href="agent-single.jsp" class="link-two">Emma Toledo
-                                                    <br> Cascada</a>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                    <div class="card-body-d">
-                                        <p class="content-d color-text-a">
-                                            Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                                        </p>
-                                        <div class="info-agents color-a">
-                                            <p>
-                                                <strong>Phone: </strong> +54 356 945234
-                                            </p>
-                                            <p>
-                                                <strong>Email: </strong> agents@example.com
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer-d">
-                                        <div class="socials-footer d-flex justify-content-center">
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-facebook" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-twitter" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-instagram" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#" class="link-one">
-                                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section><!-- End Agents Section -->
+            
 
             <!-- ======= Latest News Section ======= -->
             <section class="section-news section-t8">
@@ -855,7 +658,7 @@
                         <div class="col-md-12">
                             <div class="title-wrap d-flex justify-content-between">
                                 <div class="title-box">
-                                    <h2 class="title-a">Testimonials</h2>
+                                    <h2 class="title-a">Comment</h2>
                                 </div>
                             </div>
                         </div>
@@ -869,7 +672,7 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
                                             <div class="testimonial-img">
-                                                <img src="assets/img/testimonial-1.jpg" alt="" class="img-fluid">
+                                                <img src="https://binhminhdigital.com/StoreData/PageData/2372/nhung-loi-co-ban-khi-chup-anh-phong-canh%20(5).jpg" alt="" class="img-fluid">
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-6">
@@ -878,49 +681,24 @@
                                             </div>
                                             <div class="testimonials-content">
                                                 <p class="testimonial-text">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam
-                                                    praesentium
-                                                    debitis hic ber quibusdam
-                                                    voluptatibus officia expedita corpori.
+                                                    "Hệ thống cho thuê trọ là người bạn đồng hành tin cậy khi bạn tìm kiếm ngôi nhà trọ lý tưởng. Với sự đa dạng và thuận tiện, bạn có thể tìm được căn nhà trọ hoàn hảo cho nhu cầu của mình. Hãy khám phá ngay!"
+
+
+
+
+
                                                 </p>
                                             </div>
                                             <div class="testimonial-author-box">
-                                                <img src="assets/img/mini-testimonial-1.jpg" alt="" class="testimonial-avatar">
-                                                <h5 class="testimonial-author">Albert & Erika</h5>
+                                                <img src="https://cdn4.iconfinder.com/data/icons/diversity-v2-0-volume-03/64/superhero-deadpool-comics-512.png" alt="" class="testimonial-avatar">
+                                                <h5 class="testimonial-author">Tuấn Anh</h5>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div><!-- End carousel item -->
 
-                            <div class="carousel-item-a swiper-slide">
-                                <div class="testimonials-box">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="testimonial-img">
-                                                <img src="assets/img/testimonial-2.jpg" alt="" class="img-fluid">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="testimonial-ico">
-                                                <i class="bi bi-chat-quote-fill"></i>
-                                            </div>
-                                            <div class="testimonials-content">
-                                                <p class="testimonial-text">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam
-                                                    praesentium
-                                                    debitis hic ber quibusdam
-                                                    voluptatibus officia expedita corpori.
-                                                </p>
-                                            </div>
-                                            <div class="testimonial-author-box">
-                                                <img src="assets/img/mini-testimonial-2.jpg" alt="" class="testimonial-avatar">
-                                                <h5 class="testimonial-author">Pablo & Emma</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
+                           
 
                         </div>
                     </div>

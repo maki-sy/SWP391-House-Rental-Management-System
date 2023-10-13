@@ -49,7 +49,7 @@
         
         <ul class="navbar-nav" style="padding: 0.35rem 2rem;">
             <li class="nav-item">
-                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
+                <img src="https://yt3.googleusercontent.com/g3j3iOUOPhNxBCNAArBqiYGzHzCBIzr_Al8mdvtBJeZMGFDblnU5rlVUt6GY01AUwm7Cp70J=s900-c-k-c0x00ffffff-no-rj" class="rounded-circle"
                      style="width: 3rem; margin-left: 6rem" alt="Avatar" />
             </li>
             <li class="nav-item dropdown">

@@ -15,15 +15,22 @@ import model.Users;
  *
  * @author Tuấn Anh
  */
-public class AdminService extends DBContext{
-    public List<PostRental> getAllPost(){
+public class AdminService extends DBContext {
+
+    public List<PostRental> getAllPost() {
         DAO.PostDAO dao = new PostDAO();
         List<PostRental> list = dao.getAllPosts();
         return list;
     }
-    public List<Users> getAllUsers(){
+
+    public List<Users> getAllUsers() {
         DAO.UserDAO dao = new UserDAO();
         List<Users> list = dao.getAllUsers();
         return list;
+    }
+
+    public void updatePostStatus(int id) {
+        DAO.PostDAO dao = new PostDAO();
+        dao.updatePostByAdmin(id);
     }
 }

@@ -56,7 +56,7 @@ public class SearchDAO extends DBContext {
         String sqlCommand = "SELECT a.*"
                 + "FROM Post a "
                 + "JOIN Property_Location b ON a.location_id = b.id "
-                + "WHERE 1=1";
+                + "WHERE 1=1 and status != 'draft'";
 
         if (!keyword.isEmpty()) {
             sqlCommand += " AND a.name LIKE ?";
