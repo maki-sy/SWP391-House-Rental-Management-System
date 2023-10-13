@@ -280,7 +280,7 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
 
                             <div class="dropdown-menu">
                                 <a class="dropdown-item " href="./profile-personal.html">Manage rental house</a>
-                                <a class="dropdown-item " href="Profile?service=displayProfile&id=<%=user.getId()%>&roleid=<%=user.getRoleID()%>">Manage account</a>
+                                <a class="dropdown-item " href="Profile?service=displayProfile">Manage account</a>
                                 <a class="dropdown-item " href="login?type=logout">Logout</a>
                             </div>
                         </li>
