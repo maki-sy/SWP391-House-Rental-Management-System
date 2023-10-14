@@ -4,6 +4,7 @@
  */
 package service;
 
+import DAO.AdminDAO;
 import DAO.LandlordDAO;
 import DAO.TenantDAO;
 import DAO.TokenDAO;
@@ -33,6 +34,7 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import model.Admin;
 import model.Landlord;
 import model.Tenant;
 import model.Token;
@@ -48,6 +50,7 @@ public class UserService {
     private static final LandlordDAO LANDLORD_DAO = new LandlordDAO();
     private static final TokenDAO TOKEN_DAO = new TokenDAO();
     private static final UserDAO USER_DAO = new UserDAO();
+    private static final AdminDAO ADMIN_DAO = new AdminDAO();
 
     /**
      *
@@ -502,6 +505,10 @@ public class UserService {
         Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
         if (l != null) {
             return l.getFirstName() + " " + l.getLastName();
+        }
+        Admin a = ADMIN_DAO.getAdminByID(userID);
+        if(a != null){
+            return a.getFirstName() + " " + a.getLastName();
         }
 
         return null;

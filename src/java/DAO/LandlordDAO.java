@@ -79,10 +79,9 @@ public class LandlordDAO extends DBContext {
     }
 
     /**
-     *
+     * Get landlord by user's id
      * @param userID
-     * @param email
-     * @return
+     * @return Landlord object corresponding to user's id, or null if there is no landlord
      */
     public Landlord getLandlordByUserID(int userID) {
         String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
@@ -162,7 +161,7 @@ public class LandlordDAO extends DBContext {
         return n;
     }
 
-     public boolean UpdateAccountPoints(int userId, int accountPoints) {
+    public boolean UpdateAccountPoints(int userId, int accountPoints) {
         try {
             String sql = "UPDATE Landlord SET account_points=? WHERE id=?";
             PreparedStatement stm = connect.prepareStatement(sql);

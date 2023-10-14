@@ -295,15 +295,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for(Transaction t : transactions) { %>
+                                    <%  int i = 0;
+                                        for(Transaction t : transactions) { 
+                                        i++;
+                                    %>
                                     <tr>
-                                        <td><%= t.getId() %></td>
+                                        <td><%= i %></td>
                                         <td><%= t.getPointAmount() %></td>
                                         <td><%= uService.getUserName(t.getSenderID()) %></td>
                                         <td><%= uService.getUserName(t.getReceiverID()) %></td>
                                         <td><%= t.getType().name() %></td>
                                         <td><%= t.getTransactionDate() %></td>
+                                        <% if(t.getPostID() == -1) { %>
+                                        <td>N/A</td>
+                                        <% } else { %>
                                         <td><%= t.getPostID() %></td>
+                                        <% } %>
                                     </tr>
                                     <% } %>
                                 </tbody>

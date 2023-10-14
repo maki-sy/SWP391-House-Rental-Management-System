@@ -10,10 +10,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import model.Landlord;
 import model.Orders;
 import model.PostRental;
 
 public class LandlordService {
+
+    private final static LandlordDAO LANDLORD_DAO = new LandlordDAO();
 
     public boolean isApproveStatusUpdated(int OrderId) {
         OrdersDAO ordersDAO = new OrdersDAO();
@@ -125,19 +128,47 @@ public class LandlordService {
         }
         return "unknown.jpg";
     }
-    
-      public String getFileExtension(String fileName) {
+
+    public String getFileExtension(String fileName) {
         int lastDotIndex = fileName.lastIndexOf(".");
         if (lastDotIndex != -1) {
             return fileName.substring(lastDotIndex + 1);
         }
         return "";
     }
-      
-       public int addPostImage(int postId, String imgUrl, String imgType){
-           DAO.PostImageDAO postImageDAO = new PostImageDAO();
-           return postImageDAO.addPostImage(postId, imgUrl, imgType);
-      }
+
+    public int addPostImage(int postId, String imgUrl, String imgType) {
+        DAO.PostImageDAO postImageDAO = new PostImageDAO();
+        return postImageDAO.addPostImage(postId, imgUrl, imgType);
+    }
+
+    /**
+     * Add point to landlord account. If the landlordID does not exists, this
+     * function will throw exception
+     *
+     * @param landlordID user's id of landlord account
+     * @param amount amount of point to add. The amount must be an integer
+     * greater than 0
+     * @throws Exception
+     */
+    public void addPoint(int landlordID, int amount) throws Exception, IllegalArgumentException {
+        Landlord landlord = LANDLORD_DAO.getLandlordByUserID(landlordID);
+        if (landlord == null) {
+            throw new Exception("Cannot add point to landlord id " + landlordID + ", there is no landlord.");
+        }
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount of point must be greater than 0");
+        }
+        int point = landlord.getPoint();
+        point += amount;
+        landlord.setPoint(point);
+        LANDLORD_DAO.updateLandlordByID(landlord);
+    }
+    
+//    public String getLandlordName(){
+//        
+//    }
 
     public static void main(String[] args) {
         LandlordService n = new LandlordService();

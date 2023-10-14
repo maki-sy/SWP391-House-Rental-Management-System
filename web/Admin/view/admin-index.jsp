@@ -833,6 +833,13 @@
                                     <p>Informational</p>
                                 </a>
                             </li>
+                            
+                            <li class="nav-item">
+                                <a href="admin-login?service=logout" class="nav-link">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    <p class="text">Logout</p>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- /.sidebar-menu -->
