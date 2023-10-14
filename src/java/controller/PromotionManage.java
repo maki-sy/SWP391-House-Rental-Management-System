@@ -11,8 +11,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Promotion;
+import model.Users;
 import service.PromotionService;
 
 /**
@@ -36,7 +38,9 @@ public class PromotionManage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        List<Promotion> listPromotion = pservice.getAllPromotion();
+        HttpSession session=request.getSession();
+        Users user = (Users) session.getAttribute("user");
+        List<Promotion> listPromotion = pservice.GetPromotionByLandlordId(user.getId());
         request.setAttribute("listPromotion", listPromotion);
         request.getRequestDispatcher("PromotionManage.jsp").forward(request, response);
     }
