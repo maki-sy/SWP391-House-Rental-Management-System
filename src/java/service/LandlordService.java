@@ -89,7 +89,7 @@ public class LandlordService {
     public boolean isInsertedTransactionSuccess(int payerId, int postId, String postStatus) {
         TransactionDAO transactionDAO = new TransactionDAO();
         Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String transactionDate = dateFormat.format(currentDate);
         double amount;
         int receiverId = 1;
@@ -151,5 +151,6 @@ public class LandlordService {
 
     public static void main(String[] args) {
         LandlordService n = new LandlordService();
+        System.out.println(n.addPostImage(78, "abc", "thumbnails"));
     }
 }

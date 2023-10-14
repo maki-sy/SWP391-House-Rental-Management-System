@@ -187,6 +187,7 @@
                                     </ul>
                                 </div>
                             </div>
+                            <!-- SIDE BAR HERE -->
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
@@ -228,7 +229,8 @@
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
-                                                <a href="#!">
+                                                <a
+                                                    href="landlordServicesPage?service=published-posts">
                                                     <div class="btn btn-primary"> + </div>
                                                     <button type="button"
                                                             class="btn btn-secondary">Published
@@ -249,6 +251,18 @@
                                                 </a>
                                             </div>
 
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="contain">
+                                                <a
+                                                    href="landlordServicesPage?service=edit-posts">
+                                                    <div class="btn btn-primary"> + </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Edit
+                                                        posts and drafts
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </li>
                                         <li class="list-group-item text-center">
                                             <a class="pe-none" href="#!"><button type="button"
@@ -299,6 +313,7 @@
                                     </ul>
                                 </div>
                             </div>
+                            <!-- END SIDE BAR -->
                         </div>
 
                         <div class="card col-lg-8">
@@ -350,7 +365,7 @@
                                                        value="<%=post.getId()%>">
                                                 <button type="submit"
                                                         class="w-100 btn btn-sm btn-warning">
-                                                   <ion-icon name="create-outline"></ion-icon>
+                                                    <ion-icon name="create-outline"></ion-icon>
                                                 </button>
                                             </form>
                                         </td>

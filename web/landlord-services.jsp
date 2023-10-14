@@ -43,7 +43,6 @@
                         ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
                             %>
                             <!-- End JSP Code -->
-                            <!-- End JSP Code -->
 
                             <!-- ======= Property Search Section ======= -->
                             <div class="click-closed"></div>
@@ -192,6 +191,9 @@
                                                             </ul>
                                                         </div>
                                                     </div>
+
+
+                                                    <!-- SIDE BAR HERE -->
                                                     <div class="card mb-4 mb-lg-0">
                                                         <div class="card-body p-0">
                                                             <ul class="list-group list-group-flush rounded-3">
@@ -317,8 +319,10 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                <!-- END SIDE BAR -->
 
+                                                </div>
+                                                <!-- Main content here -->
                                                 <div class="card col-lg-8">
 
                                                     <table class="table table-hover">
