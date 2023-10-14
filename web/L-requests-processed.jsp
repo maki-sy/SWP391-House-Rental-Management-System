@@ -44,7 +44,6 @@
             ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
         %>
         <!-- End JSP Code -->
-        <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
         <div class="click-closed"></div>
@@ -144,136 +143,7 @@
         <!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
-        <!-- Header cho khach -->
-        <% if(role==null) { %>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="trang-chu">Rental<span
-                        class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="property-grid.jsp">Houses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                               role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                                <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.jsp">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="nav-item btn" style="padding: 0.35rem 1rem;">
-                    <a href="login?type=login">Login/Register</a>
-                </div>
-
-                <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-
-            </div>
-        </nav>
-        <!-- Header cho nguoi dung da dang nhap -->
-        <%} else {%>
-        <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
-            <div class="container">
-                <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarDefault" aria-controls="navbarDefault"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <a class="navbar-brand text-brand" href="trang-chu">Rental<span
-                        class="color-b">House</span></a>
-
-                <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
-                    <ul class="navbar-nav">
-
-                        <li class="nav-item">
-                            <a class="nav-link active" href="trang-chu">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="property-grid.jsp">Houses</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                               role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false">Pages</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="property-single.jsp">House
-                                    Detail</a>
-                                <a class="dropdown-item " href="agent-single.jsp">Landlord
-                                    Detail</a>
-                            </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="contact.jsp">Contact</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                                 class="rounded-circle" style="width: 3rem; margin-left: 6rem"
-                                 alt="Avatar" />
-                        </li>
-                        <li class="nav-item dropdown">
-
-                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown"
-                               role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false">My
-                                profile</a>
-
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item " href="/ManageServicesPage">Manage
-                                    services</a>
-                                <a class="dropdown-item " href="./profile-personal.jsp">Manage
-                                    account</a>
-                                <a class="dropdown-item " href="login?type=logout">Logout</a>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-                <button type="button"
-                        class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse"
-                        data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
-                    <i class="bi bi-search"></i>
-                </button>
-
-            </div>
-        </nav>
-        <%}%>
+        <%@include file="header.jsp" %>
         <!-- End Header/Navbar -->
         <main id="main">
             <section class="section-news section-t3">
@@ -306,22 +176,23 @@
                                     </ul>
                                 </div>
                             </div>
+                            <!-- SIDE BAR HERE -->
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
                                         <li class="list-group-item text-center">
                                             <a class="pe-none" href="#!"><button type="button"
-                                                                                 class=" w-100 btn btn-dark "> Manage
-                                                    rental
+                                                                                 class=" w-100 btn btn-dark "> Manage rental
                                                     requests</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
-                                                <a href="landlordServicesPage?service=pending-requests">
+                                                <a
+                                                    href="landlordServicesPage?service=pending-requests">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Pending requests
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Pending
+                                                        requests
                                                     </button>
                                                 </a>
                                             </div>
@@ -329,11 +200,12 @@
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="landlordServicesPage?service=requests-processed">
+                                                <a
+                                                    href="landlordServicesPage?service=requests-processed">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Requests processed
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Requests
+                                                        processed
                                                     </button>
                                                 </a>
                                             </div>
@@ -346,11 +218,12 @@
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
-                                                <a href="#!">
+                                                <a
+                                                    href="landlordServicesPage?service=published-posts">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Published posts
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Published
+                                                        posts
                                                     </button>
                                                 </a>
                                             </div>
@@ -358,29 +231,40 @@
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="#!">
+                                                <a
+                                                    href="landlordServicesPage?service=add-new-post">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Add new post
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Add new post
                                                     </button>
                                                 </a>
                                             </div>
 
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="contain">
+                                                <a
+                                                    href="landlordServicesPage?service=edit-posts">
+                                                    <div class="btn btn-primary"> + </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Edit
+                                                        posts and drafts
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </li>
                                         <li class="list-group-item text-center">
                                             <a class="pe-none" href="#!"><button type="button"
                                                                                  class=" w-100 btn btn-dark ">Manage my
-                                                    wallet
-                                                    points</button></a>
+                                                    wallet points</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
                                                 <a href="#!">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Request deposit
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Request
+                                                        deposit
                                                     </button>
                                                 </a>
                                             </div>
@@ -390,18 +274,35 @@
 
                                                 <a href="#!">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Transaction history
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Transaction
+                                                        history
                                                     </button>
                                                 </a>
                                             </div>
+                                        </li>
 
+                                        <li class="list-group-item text-center">
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark ">Promotions</button></a>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="contain">
+                                                <a href="PromotionManage">
+                                                    <div class="btn btn-primary"> + </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Manage
+                                                        Promotions
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </li>
 
                                     </ul>
                                 </div>
                             </div>
+                            <!-- END SIDE BAR -->
                         </div>
 
                         <div class="card col-lg-8">
@@ -640,7 +541,7 @@
                         <div id="preloader"></div>
                         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
                                 class="bi bi-arrow-up-short"></i></a>
-                                
+
                         <!-- Vendor JS Files -->
                         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
                         <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
