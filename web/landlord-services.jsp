@@ -2,9 +2,7 @@
 <%@page import="model.Users" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="model.Orders" %>
-<%
-    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
-%>  
+<% Users user=session.getAttribute("user")==null ? null : (Users)session.getAttribute("user"); %>
 
 
 <!DOCTYPE html>
@@ -39,11 +37,11 @@
 
     <body>
         <!-- ======= JSP ======= -->
-        <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role"); Object
-            loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); ArrayList<Orders>
+        <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role");
+            Object loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user");
+            ArrayList<Orders>
             ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
         %>
-        <!-- End JSP Code -->
         <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
@@ -178,19 +176,25 @@
                                     </ul>
                                 </div>
                             </div>
+
+
+                            <!-- SIDE BAR HERE -->
                             <div class="card mb-4 mb-lg-0">
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark "> Manage rental requests</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark "> Manage rental
+                                                    requests</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
-                                                <a href="landlordServicesPage?service=pending-requests">
+                                                <a
+                                                    href="landlordServicesPage?service=pending-requests">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Pending requests
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Pending
+                                                        requests
                                                     </button>
                                                 </a>
                                             </div>
@@ -198,11 +202,12 @@
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="landlordServicesPage?service=requests-processed">
+                                                <a
+                                                    href="landlordServicesPage?service=requests-processed">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Requests processed
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Requests
+                                                        processed
                                                     </button>
                                                 </a>
                                             </div>
@@ -215,11 +220,12 @@
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
-                                                <a href="#!">
+                                                <a
+                                                    href="landlordServicesPage?service=published-posts">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Published posts
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Published
+                                                        posts
                                                     </button>
                                                 </a>
                                             </div>
@@ -227,26 +233,40 @@
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="landlordServicesPage?service=add-new-post">
+                                                <a
+                                                    href="landlordServicesPage?service=add-new-post">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Add new post
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Add new post
                                                     </button>
                                                 </a>
                                             </div>
 
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="contain">
+                                                <a
+                                                    href="landlordServicesPage?service=edit-posts">
+                                                    <div class="btn btn-primary"> + </div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Edit
+                                                        posts and drafts
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </li>
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Manage my wallet points</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark ">Manage my
+                                                    wallet points</button></a>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="contain">
                                                 <a href="#!">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Request deposit
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Request
+                                                        deposit
                                                     </button>
                                                 </a>
                                             </div>
@@ -254,27 +274,27 @@
                                         <li class="list-group-item">
                                             <div class="contain">
 
-                                                <a href="transaction">
+                                                <a href="landlordServicesPage?service=transaction-history">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Transaction history
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Transaction history
                                                     </button>
                                                 </a>
                                             </div>
                                         </li>
 
                                         <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Promotions</button></a>
+                                            <a class="pe-none" href="#!"><button type="button"
+                                                                                 class=" w-100 btn btn-dark ">Promotions</button></a>
                                         </li>
 
                                         <li class="list-group-item">
                                             <div class="contain">
                                                 <a href="PromotionManage">
                                                     <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Manage Promotions
+                                                    <button type="button"
+                                                            class="btn btn-secondary">Manage
+                                                        Promotions
                                                     </button>
                                                 </a>
                                             </div>
@@ -283,8 +303,10 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                            <!-- END SIDE BAR -->
 
+                        </div>
+                        <!-- Main content here -->
                         <div class="card col-lg-8">
 
                             <table class="table table-hover">
@@ -320,36 +342,49 @@
                                             <%=order.getStatus()%>
                                         </td>
                                         <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="view-request-post">
-                                                <input type="hidden" name="post-id" value="<%=order.getPostId()%>">
-                                                <button type="submit" class="w-100 btn btn-sm btn-primary">
+                                            <form action="landlordServicesPage"
+                                                  method="POST">
+                                                <input type="hidden" name="service"
+                                                       value="view-request-post">
+                                                <input type="hidden" name="post-id"
+                                                       value="<%=order.getPostId()%>">
+                                                <button type="submit"
+                                                        class="w-100 btn btn-sm btn-primary">
                                                     <ion-icon name="eye-outline"></ion-icon>
                                                 </button>
                                             </form>
                                         </td>
                                         <td>
-                                            <form action="landlordServicesPage" method="POST">
-                                                <input type="hidden" name="service" value="contact">
-                                                <input type="hidden" name="tenant-id" value="<%=order.getTenantId()%>">
+                                            <form action="landlordServicesPage"
+                                                  method="POST">
+                                                <input type="hidden" name="service"
+                                                       value="contact">
+                                                <input type="hidden" name="tenant-id"
+                                                       value="<%=order.getTenantId()%>">
                                                 <button type="submit"
                                                         class="w-100 btn btn-sm btn-warning">
-                                                    <ion-icon name="call-outline"></ion-icon>
+                                                    <ion-icon
+                                                        name="call-outline"></ion-icon>
                                                 </button>
                                             </form>
                                         </td>
                                         <td>
-                                            <a href="javascript:void(0);" onclick="confirmApprove(<%=order.getOrderId()%>)">
-                                                <button type="submit" class="w-100 btn btn-sm btn-success">
+                                            <a href="javascript:void(0);"
+                                               onclick="confirmApprove(<%=order.getOrderId()%>)">
+                                                <button type="submit"
+                                                        class="w-100 btn btn-sm btn-success">
                                                     <ion-icon
                                                         name="checkbox-outline"></ion-icon>
                                                 </button>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="javascript:void(0);" onclick="confirmReject(<%=order.getOrderId()%>)">
-                                                <button type="submit" class="w-100 btn btn-sm btn-danger">
-                                                    <ion-icon name="trash-outline"></ion-icon>
+                                            <a href="javascript:void(0);"
+                                               onclick="confirmReject(<%=order.getOrderId()%>)">
+                                                <button type="submit"
+                                                        class="w-100 btn btn-sm btn-danger">
+                                                    <ion-icon
+                                                        name="trash-outline"></ion-icon>
                                                 </button>
                                             </a>
                                         </td>
@@ -358,202 +393,212 @@
                                 </tbody>
                             </table>
                         </div>
-                        </section>
-                        <!-- code here -->
+                    </div>
+                </div>
+            </section>
+            <!-- code here -->
+        </main>
 
-
-                        </main>
-
-                        <!-- ======= Footer ======= -->
-                        <section class="section-footer">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-4">
-                                        <div class="widget-a">
-                                            <div class="w-header-a">
-                                                <h3 class="w-title-a text-brand">EstateAgency</h3>
-                                            </div>
-                                            <div class="w-body-a">
-                                                <p class="w-text-a color-text-a">
-                                                    Enim minim veniam quis nostrud exercitation ullamco laboris
-                                                    nisi ut
-                                                    aliquip exea
-                                                    commodo consequat duis
-                                                    sed aute irure.
-                                                </p>
-                                            </div>
-                                            <div class="w-footer-a">
-                                                <ul class="list-unstyled">
-                                                    <li class="color-a">
-                                                        <span class="color-text-a">Phone .</span>
-                                                        contact@example.com
-                                                    </li>
-                                                    <li class="color-a">
-                                                        <span class="color-text-a">Email .</span> +54 356 945234
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4 section-md-t3">
-                                        <div class="widget-a">
-                                            <div class="w-header-a">
-                                                <h3 class="w-title-a text-brand">The Company</h3>
-                                            </div>
-                                            <div class="w-body-a">
-                                                <div class="w-body-a">
-                                                    <ul class="list-unstyled">
-                                                        <li class="item-list-a">
-                                                            <i class="bi bi-chevron-right"></i> <a href="#">Site
-                                                                Map</a>
-                                                        </li>
-                                                        <li class="item-list-a">
-                                                            <i class="bi bi-chevron-right"></i> <a
-                                                                href="#">Legal</a>
-                                                        </li>
-                                                        <li class="item-list-a">
-                                                            <i class="bi bi-chevron-right"></i> <a
-                                                                href="#">Agent Admin</a>
-                                                        </li>
-                                                        <li class="item-list-a">
-                                                            <i class="bi bi-chevron-right"></i> <a
-                                                                href="#">Careers</a>
-                                                        </li>
-                                                        <li class="item-list-a">
-                                                            <i class="bi bi-chevron-right"></i> <a
-                                                                href="#">Affiliate</a>
-                                                        </li>
-                                                        <li class="item-list-a">
-                                                            <i class="bi bi-chevron-right"></i> <a
-                                                                href="#">Privacy
-                                                                Policy</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4 section-md-t3">
-                                        <div class="widget-a">
-                                            <div class="w-header-a">
-                                                <h3 class="w-title-a text-brand">International sites</h3>
-                                            </div>
-                                            <div class="w-body-a">
-                                                <ul class="list-unstyled">
-                                                    <li class="item-list-a">
-                                                        <i class="bi bi-chevron-right"></i> <a
-                                                            href="#">Venezuela</a>
-                                                    </li>
-                                                    <li class="item-list-a">
-                                                        <i class="bi bi-chevron-right"></i> <a
-                                                            href="#">China</a>
-                                                    </li>
-                                                    <li class="item-list-a">
-                                                        <i class="bi bi-chevron-right"></i> <a href="#">Hong
-                                                            Kong</a>
-                                                    </li>
-                                                    <li class="item-list-a">
-                                                        <i class="bi bi-chevron-right"></i> <a
-                                                            href="#">Argentina</a>
-                                                    </li>
-                                                    <li class="item-list-a">
-                                                        <i class="bi bi-chevron-right"></i> <a
-                                                            href="#">Singapore</a>
-                                                    </li>
-                                                    <li class="item-list-a">
-                                                        <i class="bi bi-chevron-right"></i> <a
-                                                            href="#">Philippines</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+        <!-- ======= Footer ======= -->
+        <section class="section-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <div class="widget-a">
+                            <div class="w-header-a">
+                                <h3 class="w-title-a text-brand">EstateAgency</h3>
+                            </div>
+                            <div class="w-body-a">
+                                <p class="w-text-a color-text-a">
+                                    Enim minim veniam quis nostrud exercitation ullamco laboris
+                                    nisi ut
+                                    aliquip exea
+                                    commodo consequat duis
+                                    sed aute irure.
+                                </p>
+                            </div>
+                            <div class="w-footer-a">
+                                <ul class="list-unstyled">
+                                    <li class="color-a">
+                                        <span class="color-text-a">Phone .</span>
+                                        contact@example.com
+                                    </li>
+                                    <li class="color-a">
+                                        <span class="color-text-a">Email .</span> +54 356 945234
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 section-md-t3">
+                        <div class="widget-a">
+                            <div class="w-header-a">
+                                <h3 class="w-title-a text-brand">The Company</h3>
+                            </div>
+                            <div class="w-body-a">
+                                <div class="w-body-a">
+                                    <ul class="list-unstyled">
+                                        <li class="item-list-a">
+                                            <i class="bi bi-chevron-right"></i> <a href="#">Site
+                                                Map</a>
+                                        </li>
+                                        <li class="item-list-a">
+                                            <i class="bi bi-chevron-right"></i> <a
+                                                href="#">Legal</a>
+                                        </li>
+                                        <li class="item-list-a">
+                                            <i class="bi bi-chevron-right"></i> <a
+                                                href="#">Agent Admin</a>
+                                        </li>
+                                        <li class="item-list-a">
+                                            <i class="bi bi-chevron-right"></i> <a
+                                                href="#">Careers</a>
+                                        </li>
+                                        <li class="item-list-a">
+                                            <i class="bi bi-chevron-right"></i> <a
+                                                href="#">Affiliate</a>
+                                        </li>
+                                        <li class="item-list-a">
+                                            <i class="bi bi-chevron-right"></i> <a
+                                                href="#">Privacy
+                                                Policy</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                        </section>
-                        <footer>
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <nav class="nav-footer">
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item">
-                                                    <a href="#">Home</a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#">About</a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#">Property</a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#">Blog</a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#">Contact</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                        <div class="socials-a">
-                                            <ul class="list-inline">
-                                                <li class="list-inline-item">
-                                                    <a href="#">
-                                                        <i class="bi bi-facebook" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#">
-                                                        <i class="bi bi-twitter" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#">
-                                                        <i class="bi bi-instagram" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="#">
-                                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="copyright-footer">
-                                            <p class="copyright color-text-a">
-                                                &copy; Copyright
-                                                <span class="color-a">EstateAgency</span> All Rights Reserved.
-                                            </p>
-                                        </div>
-                                        <div class="credits">
-
-                                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 section-md-t3">
+                        <div class="widget-a">
+                            <div class="w-header-a">
+                                <h3 class="w-title-a text-brand">International sites</h3>
                             </div>
-                        </footer><!-- End  Footer -->
+                            <div class="w-body-a">
+                                <ul class="list-unstyled">
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a
+                                            href="#">Venezuela</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a
+                                            href="#">China</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a href="#">Hong
+                                            Kong</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a
+                                            href="#">Argentina</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a
+                                            href="#">Singapore</a>
+                                    </li>
+                                    <li class="item-list-a">
+                                        <i class="bi bi-chevron-right"></i> <a
+                                            href="#">Philippines</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav class="nav-footer">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a href="#">Home</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">About</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">Property</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">Blog</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">Contact</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="socials-a">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a href="#">
+                                        <i class="bi bi-facebook" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">
+                                        <i class="bi bi-twitter" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">
+                                        <i class="bi bi-instagram" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#">
+                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="copyright-footer">
+                            <p class="copyright color-text-a">
+                                &copy; Copyright
+                                <span class="color-a">EstateAgency</span> All Rights Reserved.
+                            </p>
+                        </div>
+                        <div class="credits">
 
-                        <div id="preloader"></div>
-                        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-                                class="bi bi-arrow-up-short"></i></a>
+                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End  Footer -->
 
-                        <!-- Handle Javascript -->  
-                        <script src="assets/js/pending_requests.js"></script>
+        <div id="preloader"></div>
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                class="bi bi-arrow-up-short"></i></a>
 
-                        <!-- Vendor JS Files -->
-                        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-                        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-                        <script src="assets/vendor/php-email-form/validate.js"></script>
+        <!-- Handle Javascript -->
+        <script>
+            var mess = '<%= request.getAttribute("mess") %>';
+            if (mess !== 'null' && mess !== null) {
+                setTimeout(function () {
+                    alert(mess);
+                }, 500);
+            }
+        </script>
+        <script src="assets/js/pending_requests.js"></script>
 
-                        <!-- Template Main JS File -->
-                        <script src="assets/js/main.js"></script>
+        <!-- Vendor JS Files -->
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
 
-                        <!-- Icon -->
-                        <script type="module"
-                        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-                        <script nomodule
-                        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <!-- Template Main JS File -->
+        <script src="assets/js/main.js"></script>
 
-                        </body>
+        <!-- Icon -->
+        <script type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-                        </html>
+    </body>
+
+</html>

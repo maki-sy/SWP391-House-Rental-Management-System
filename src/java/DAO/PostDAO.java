@@ -284,6 +284,70 @@ public class PostDAO extends DBContext {
         return null;
     }
 
+    public ArrayList<PostRental> getPublishedPostsByUserId(int userId) {
+        ArrayList<PostRental> postList = new ArrayList<>();
+        String sqlCommand = "SELECT *\n"
+                + "  FROM [SWP391].[dbo].[Post]\n"
+                + "  WHERE [landlord_id] = " + userId + " AND status != 'draft' AND status != 'deleted'\n"
+                + "  ORDER BY [status]";
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                postList.add(po);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return postList;
+    }
+
+    public ArrayList<PostRental> getEditablePostsByUserId(int userId) {
+        ArrayList<PostRental> postList = new ArrayList<>();
+        String sqlCommand = "SELECT *\n"
+                + "  FROM [SWP391].[dbo].[Post]\n"
+                 + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
+                + "  ORDER BY [status]";
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                postList.add(po);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return postList;
+    }
+
     public boolean UpdatePostStatus(int post_id, String status) {
         try {
             String sql = "UPDATE Post SET status=? WHERE id=?";
