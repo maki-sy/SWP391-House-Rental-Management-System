@@ -380,8 +380,36 @@ public class PostDAO extends DBContext {
         }
         return false;
     }
-    
+    public List<PostRental> getPostDetailsbyLandlordId(int pid) {
+        List<PostRental> post = new ArrayList<>();
+        String sqlCommand = "SELECT * FROM POST where landlord_id = " + pid;
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id=rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
 
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                post.add(po);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return post;
+    }
 
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
