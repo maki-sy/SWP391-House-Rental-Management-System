@@ -315,7 +315,7 @@
                 List<PostImage> image = dao.getPostImages(pID);
                 %>
                 <%for(PostImage po:image){%>
-                <%if(po.getImg_type().equals("thumbails")){%>
+                <%if(po.getImg_type().equals("thumbnails")){%>
                 <div class="swiper-slide carousel-item-a intro-item bg-image"
                      style="background-image: url(<%=po.getImg_url()%>)">
                     <div class="overlay overlay-a"></div>
@@ -468,7 +468,7 @@
                             <div class="carousel-item-b swiper-slide">
                                 <div class="card-box-a card-shadow">
                                     <%for(PostImage p:image_url){%>
-                                    <%if(p.getImg_type().equals("thumbails")){%>
+                                    <%if(p.getImg_type().equals("thumbnails")){%>
                                     <div class="img-box-a">
                                         <img src="<%=p.getImg_url()%>" alt="" class="img-a img-fluid">
                                     </div>

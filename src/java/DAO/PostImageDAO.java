@@ -28,7 +28,7 @@ public class PostImageDAO extends DBContext {
     public String getImageThumbailsByPostID(int postID) {
         String url ="";
         try {
-            String sql = "select img_url from Post_Image where img_type = 'thumbails' and post_id =" + postID;
+            String sql = "select img_url from Post_Image where img_type = 'thumbnails' and post_id =" + postID;
             PreparedStatement stm = connect.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
