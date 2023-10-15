@@ -4,8 +4,6 @@
  */
 package controller;
 
-import DAO.ReportDAO;
-import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,9 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import model.Report;
 import model.Users;
+import service.ReportService;
+import service.UserService;
 
 /**
  *
@@ -39,8 +38,8 @@ public class ReportCenter extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            ReportDAO Rdao = new ReportDAO();
-            UserDAO Udao = new UserDAO();
+            ReportService reportservice = new ReportService();
+            UserService userservice = new UserService();
 
             String reporter_email = request.getParameter("reporter_email");
             String categories = request.getParameter("categories");
@@ -52,7 +51,7 @@ public class ReportCenter extends HttpServlet {
             String description = request.getParameter("description");
             String status = "Sent";
 
-            Users reporter = Udao.getUsersByEmail(reporter_email).get(0);
+            Users reporter = userservice.getUserByEmail(reporter_email);
             int reporter_id = reporter.getId();
             //DEBUG
 //            out.println("cate="+categories);
@@ -60,18 +59,23 @@ public class ReportCenter extends HttpServlet {
             //DEBUG
             Integer reported_id = null;
             Integer post_id = null;
-            
+
             if ("User Complaint".equals(categories)) {
-                List<Users> reported = Udao.getUsersByEmail(reported_email);
-                if(reported.size()!=0)
-                reported_id = reported.get(0).getId();
-               // out.println("reported="+reported_id);
+                Users reported = userservice.getUserByEmail(reported_email);
+                if (reported != null) {
+                    reported_id = reported.getId();
+                }
+                // out.println("reported="+reported_id);
             }
-            
+
             if ("Fraudulent Post".equals(categories)) {
                 String id = post_link.replaceAll(".*id=", "");
-                post_id = Integer.parseInt(id);
-               // out.print("postid="+post_id);
+                try {
+                    post_id = Integer.parseInt(id);
+                } catch (NumberFormatException e) {
+                    post_id = null;
+                }
+                // out.print("postid="+post_id);
             }
 
             String submit = request.getParameter("Submit");
@@ -79,10 +83,10 @@ public class ReportCenter extends HttpServlet {
 //                out.println("reported="+reported_id);
 //                out.println("postid="+post_id);
                 Report rp = new Report(0, reporter_id, post_id, reported_id, formatDateTime, categories, description, status);
-                Rdao.addReport(rp);
+                reportservice.addReport(rp);
                 response.sendRedirect("trang-chu");
             }
-            
+
         }
     }
 

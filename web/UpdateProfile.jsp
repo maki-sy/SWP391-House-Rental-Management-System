@@ -200,8 +200,8 @@
                                 <div class="card-body p-0">
                                     <ul class="list-group list-group-flush rounded-3">
                                         <li class="list-group-item justify-content-between align-items-center">
-                                            <!--                                        <a href="Profile?service=updateProfile&id=//account.getId()"><button type="button" class="btn btn-primary">Edit public
-                                                                                            information</button></a>-->
+                                            <a href="Profile?service=updateProfile"><button type="button" class="btn btn-primary">Edit public
+                                                    information</button></a>
                                         </li>
                                         <li class="list-group-item justify-content-between align-items-center">
                                             <a href="#!"><button type="button" class="btn btn-primary">Change
@@ -216,11 +216,8 @@
                                                     history</button></a>
                                         </li>
                                         <li class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Send
-                                                    Report</button></a>
+                                            <a href="order?service=viewOrder"><button type="button" class="btn btn-primary">My Order</button></a>
                                         </li>
-
-
                                     </ul>
                                 </div>
                             </div>
@@ -266,7 +263,7 @@
                                                 <p class="text-muted mb-0"><input type="text" name="phone" value="<%=tenant.getPhone()%>" maxlength="10" pattern="[0-9]{10}" required></p>
                                             </div>
                                         </div>
-                                        
+
                                         <input class="btn btn-primary" type="submit" value="update" name="submit">
                                         <input class="btn btn-primary" type="reset" value="reset">
                                         <input type="hidden" name="service" value="updateProfile">
