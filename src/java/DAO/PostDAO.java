@@ -66,7 +66,7 @@ public class PostDAO extends DBContext {
     public ArrayList<PostRental> getPublishedPosts() {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
-                + "  FROM [SWP391].[dbo].[Post]\n"
+                + "  FROM Post\n"
                 + "  WHERE status != 'draft' AND status != 'deleted'\n"
                 + "  ORDER BY [status]";
         ResultSet rs = getData(sqlCommand);
@@ -330,7 +330,7 @@ public class PostDAO extends DBContext {
     public ArrayList<PostRental> getPublishedPostsByUserId(int userId) {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
-                + "  FROM [SWP391].[dbo].[Post]\n"
+                + "  FROM [Post]\n"
                 + "  WHERE [landlord_id] = " + userId + " AND status != 'draft' AND status != 'deleted'\n"
                 + "  ORDER BY [status]";
         ResultSet rs = getData(sqlCommand);
@@ -362,7 +362,7 @@ public class PostDAO extends DBContext {
     public ArrayList<PostRental> getEditablePostsByUserId(int userId) {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
-                + "  FROM [SWP391].[dbo].[Post]\n"
+                + "  FROM [Post]\n"
                  + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
                 + "  ORDER BY [status]";
         ResultSet rs = getData(sqlCommand);
