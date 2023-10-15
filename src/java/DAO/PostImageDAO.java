@@ -25,8 +25,9 @@ public class PostImageDAO extends DBContext {
         }
         return 0;
     }
+
     public String getImageThumbailsByPostID(int postID) {
-        String url ="";
+        String url = "";
         try {
             String sql = "select img_url from Post_Image where img_type = 'thumbnails' and post_id =" + postID;
             PreparedStatement stm = connect.prepareStatement(sql);
@@ -38,6 +39,22 @@ public class PostImageDAO extends DBContext {
             Logger.getLogger(PostImageDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return url;
+    }
+
+    public int deletePostImageByPostId(int postId) {
+        String sql = "DELETE FROM [dbo].[Post_Image]\n"
+                + "      WHERE [Post_Image].post_id = ?";
+        try ( PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
+            preparedStatement.setInt(1, postId);
+            return preparedStatement.executeUpdate();
+        } catch (SQLException ex) {
+        }
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        PostImageDAO PostImageDAO = new PostImageDAO();
+        System.out.println(PostImageDAO.addPostImage(1, "C:\\swp-img", "thumbnail"));
     }
 
 }

@@ -10,57 +10,53 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import model.Landlord;
 import model.Orders;
 import model.PostRental;
 
 public class LandlordService {
 
+    private final DAO.PostDAO postDAO = new PostDAO();
+    private final OrdersDAO ordersDAO = new OrdersDAO();
+    private final LandlordDAO landlordDAO = new LandlordDAO();
+    private final DAO.PostImageDAO postImageDAO = new PostImageDAO();
+
     public boolean isApproveStatusUpdated(int OrderId) {
-        OrdersDAO ordersDAO = new OrdersDAO();
         return ordersDAO.updateStatus("approved", OrderId);
     }
 
     public boolean isRejectStatusUpdated(int OrderId) {
-        OrdersDAO ordersDAO = new OrdersDAO();
         return ordersDAO.updateStatus("rejected", OrderId);
     }
 
     public ArrayList<Orders> getOrdersProcessing(int landlordId) {
-        OrdersDAO ordersDAO = new OrdersDAO();
-        ArrayList<Orders> result = ordersDAO.getOrdersByLandlordIdWithConditions(landlordId, "status = 'processing'");
-        return result;
+        return ordersDAO.getOrdersByLandlordIdWithConditions(landlordId, "status = 'processing'");
     }
 
     public ArrayList<Orders> getOrdersNotProcessing(int landlordId) {
-        OrdersDAO ordersDAO = new OrdersDAO();
         return ordersDAO.getOrdersByLandlordIdWithConditions(landlordId, "status != 'processing'");
     }
 
     public boolean isInsertSuccess(String name, int price, int type,
             int area, int NumOfBedrooms, String address, String description,
             int landrlod_id, int location_id) {
-        PostDAO postDAO = new PostDAO();
         return postDAO.insertPost(name, price, type, area, NumOfBedrooms, address,
                 description, landrlod_id, location_id);
     }
 
     public PostRental getLastestPostByUserId(int userId) {
-        PostDAO postDAO = new PostDAO();
         return postDAO.getLastestPostByUserId(userId);
     }
 
     public int getAccountPointsByUserId(int userId) {
-        LandlordDAO landlordDAO = new LandlordDAO();
         return landlordDAO.getLandlordByUserID(userId).getPoint();
     }
 
     public boolean isUpdatePostStatusByPostIdSuccess(int postId, String status) {
-        PostDAO postDAO = new PostDAO();
         return postDAO.UpdatePostStatus(postId, status);
     }
 
     public boolean isMoneyDedutedByUserId(int userId, String postStatus) {
-        LandlordDAO landlordDAO = new LandlordDAO();
         int currentPoint = landlordDAO.getLandlordByUserID(userId).getPoint();
         if (postStatus.equals("basic")) {
             currentPoint -= 13;
@@ -77,7 +73,6 @@ public class LandlordService {
     public boolean isUpdatedPostDate(int postId, String postStatus) {
         LocalDate currentDate = LocalDate.now();
         Date dateStart = java.sql.Date.valueOf(currentDate);
-        DAO.PostDAO postDAO = new PostDAO();
         Date dateEnd;
         if (postStatus.equals("basic")) {
             LocalDate oneMonthLater = currentDate.plusMonths(1);
@@ -89,20 +84,17 @@ public class LandlordService {
             LocalDate sixMonthLater = currentDate.plusMonths(6);
             dateEnd = java.sql.Date.valueOf(sixMonthLater);
         }
-        postDAO.UpdatePostDate(postId, dateStart, dateEnd);
-        System.out.println("Ngày hiện tại: " + dateStart);
-        System.out.println("Ngày cách 1 tháng: " + dateEnd);
-        return false;
+        return postDAO.UpdatePostDate(postId, dateStart, dateEnd);
     }
 
     public boolean isInsertedTransactionSuccess(int payerId, int postId, String postStatus) {
         TransactionDAO transactionDAO = new TransactionDAO();
         Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String transactionDate = dateFormat.format(currentDate);
-        double amount = 0D;
+        double amount;
         int receiverId = 1;
-        String type = "DEPOSIT";
+        String type = "PAY";
         if (postStatus.equals("basic")) {
             amount = 13;
         } else if (postStatus.equals("standard")) {
@@ -112,7 +104,7 @@ public class LandlordService {
         }
         int rowInserted = transactionDAO.addTransaction(amount, payerId,
                 receiverId, type, transactionDate, postId);
-        return false;
+        return (rowInserted > 0);
     }
 
     public String getFileName(Part part) {
@@ -125,21 +117,66 @@ public class LandlordService {
         }
         return "unknown.jpg";
     }
-    
-      public String getFileExtension(String fileName) {
+
+    public String getFileExtension(String fileName) {
         int lastDotIndex = fileName.lastIndexOf(".");
         if (lastDotIndex != -1) {
             return fileName.substring(lastDotIndex + 1);
         }
         return "";
     }
-      
-       public int addPostImage(int postId, String imgUrl, String imgType){
-           DAO.PostImageDAO postImageDAO = new PostImageDAO();
-           return postImageDAO.addPostImage(postId, imgUrl, imgType);
-      }
+
+    public int addPostImage(int postId, String imgUrl, String imgType) {
+        DAO.PostImageDAO postImageDAO = new PostImageDAO();
+        return postImageDAO.addPostImage(postId, imgUrl, imgType);
+    }
+
+    /**
+     * Add point to landlord account. If the landlordID does not exists, this
+     * function will throw exception
+     *
+     * @param landlordID user's id of landlord account
+     * @param amount amount of point to add. The amount must be an integer
+     * greater than 0
+     * @throws Exception
+     */
+    public void addPoint(int landlordID, int amount) throws Exception, IllegalArgumentException {
+        Landlord landlord = landlordDAO.getLandlordByUserID(landlordID);
+        if (landlord == null) {
+            throw new Exception("Cannot add point to landlord id " + landlordID + ", there is no landlord.");
+        }
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount of point must be greater than 0");
+        }
+        int point = landlord.getPoint();
+        point += amount;
+        landlord.setPoint(point);
+        landlordDAO.updateLandlordByID(landlord);
+    }
+    
+    public ArrayList<PostRental> getPublishedPostsByUserId(int userId) {
+        return postDAO.getPublishedPostsByUserId(userId);
+    }
+
+    public ArrayList<PostRental> getEditablePostsByUserId(int userId) {
+        return postDAO.getEditablePostsByUserId(userId);
+    }
+
+    public boolean isMovePostToDraftSuccessByPostId(int postId) {
+        boolean isDateUpdated = postDAO.UpdatePostDate(postId, null, null);
+        boolean isStatusUpdated = postDAO.UpdatePostStatus(postId, "draft");
+        return isDateUpdated && isStatusUpdated;
+    }
+    
+     public boolean isDeletedPostSuccessByPostId(int postId) {
+        boolean isImageDeleted =  (postImageDAO.deletePostImageByPostId(postId)>0);
+        boolean isStatusUpdated = postDAO.UpdatePostStatus(postId, "deleted");
+        return isImageDeleted && isStatusUpdated;
+    }
 
     public static void main(String[] args) {
         LandlordService n = new LandlordService();
+        System.out.println(n.addPostImage(78, "abc", "thumbnails"));
     }
 }

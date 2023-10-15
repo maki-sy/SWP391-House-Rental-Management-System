@@ -386,27 +386,13 @@
     </head>
     <body class="bg-purple">
         <div class="stars">
-            <!-- <div class="custom-navbar">
-                <div class="brand-logo">
-                    <img src="http://salehriaz.com/404Page/img/logo.svg" width="80px">
-                </div>
-                <div class="navbar-links">
-                    <ul>
-                      <li><a href="http://salehriaz.com/404Page/404.html" target="_blank">Home</a></li>
-                      <li><a href="http://salehriaz.com/404Page/404.html" target="_blank">About</a></li>
-                      <li><a href="http://salehriaz.com/404Page/404.html" target="_blank">Features</a></li>
-                      <li><a href="http://salehriaz.com/404Page/404.html" class="btn-request" target="_blank">Request A Demo</a></li>
-                    </ul>
-                </div>
-            </div> -->
-
             <!-- ============== -->
             <%@include file="header.jsp" %>
             <!-- ======================= -->
             <div class="central-body">
                 <img class="image-404" src="http://salehriaz.com/404Page/img/404.svg" width="300px">
                 <p>${msg}</p>
-                <a href="http://salehriaz.com/404Page/404.html" class="btn-go-home" target="_blank">GO BACK HOME</a>
+                <a href="trang-chu" class="btn-go-home"">GO BACK HOME</a>
             </div>
             <div class="objects">
                 <img class="object_rocket" src="http://salehriaz.com/404Page/img/rocket.svg" width="40px">

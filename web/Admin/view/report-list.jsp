@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>AdminLTE 3 | Projects</title>
-        <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
+        <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation, model.Report" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
         <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -188,13 +188,13 @@
 
                                     </p>
                                 </a>
-                                <a href="admin-dashboard?service=managePost" class="nav-link active">
+                                <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
-                                <a href="admin-dashboard?service=manageReport" class="nav-link">
+                                <a href="admin-dashboard?service=manageReport" class="nav-link active">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
@@ -214,7 +214,7 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Posts</h1>
+                                <h1>Reports</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -232,7 +232,7 @@
                     <!-- Default box -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">View Posts list</h3>
+                            <h3 class="card-title">View Reports list</h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -244,29 +244,26 @@
                             </div>
                         </div>
                         <%
-                            List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");
+                            List<Report> list = (List<Report>) request.getAttribute("listOfReport");
                         %>
                         <div class="card-body p-0">
                             <table class="table table-striped projects">
                                 <thead>
                                     <tr>
                                         <th class="col-lg-1 text-justify">
-                                            ID
+                                            Report ID
                                         </th>
                                         <th class="col-lg-1">
-                                            Name
+                                            Reporter ID
                                         </th>
                                         <th class="col-lg-1">
-                                            Price
+                                            Report Date
                                         </th>
                                         <th class="col-lg-1">
-                                            Area
+                                            Categories
                                         </th>
                                         <th class="col-lg-1">
-                                            Number Of Beds
-                                        </th>
-                                        <th class="col-lg-1 text-center" >
-                                            Address
+                                            Description
                                         </th>
                                         <th class="col-lg-1 text-center">
                                             Status
@@ -275,31 +272,28 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <%for(PostRental pr:list){%>
+                                <%for(Report rp:list){%>
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <%=pr.getId()%>
+                                            <%=rp.getReport_id()%>
                                         </td>
                                         <td>
                                             <a>
-                                                <%=pr.getName()%>
+                                                <%=rp.getReporter_id()%>
                                             </a>
                                         </td>
                                         <td>
-                                            <%=pr.getPrice()%>  $
+                                            <%=rp.getReport_date()%>
                                         </td>
                                         <td>
-                                            <%=pr.getArea()%>  m2
+                                            <%=rp.getCategories()%>
                                         </td>
                                         <td>
-                                            <%=pr.getNumOfBeds()%>
-                                        </td>
-                                        <td>
-                                            <%=pr.getAddress()%>
+                                            <%=rp.getDescription()%>
                                         </td>
                                         <td class="project-state">
-                                            <span class="badge badge-success"><%=pr.getStatus()%></span>
+                                            <span class="badge badge-success"><%=rp.getStatus()%></span>
                                         </td>
                                         <td class="project-actions text-right">
                                             <a class="btn btn-info btn-sm text-center" href="#">
@@ -307,7 +301,7 @@
                                                 </i>
                                                 Edit
                                             </a>
-                                            <a class="btn btn-danger btn-sm text-center" href="javascript:void(0);" onclick="confirmDelete(<%=pr.getId()%>);">
+                                            <a class="btn btn-danger btn-sm text-center" href="">
                                                 <i class="fas fa-trash"></i>
                                                 Delete
                                             </a>
@@ -342,14 +336,7 @@
         <!-- ./wrapper -->
 
         <!-- jQuery -->
-        <script>
-            function confirmDelete(postId) {
-                var confirmation = confirm("Bạn có chắc chắn muốn xóa bài viết này?");
-                if (confirmation) {
-                    window.location.href = "admin-dashboard?service=deletePost&id=" + postId;
-                }
-            }
-        </script>
+
         <script src="assets/vendor/jquery/jquery.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

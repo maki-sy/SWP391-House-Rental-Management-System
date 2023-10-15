@@ -161,6 +161,10 @@
                         </div>
                         <div class="col-lg-8">
                             <div class="card mb-4">
+                                <c:if test="${empty listPromotion}">
+                                    <h1>There are no promotions</h1>
+                                </c:if>
+                                <c:if test="${not empty listPromotion}">
                                 <h1>Promotion Manage</h1>
                                 <table class="table table-striped table-hover">
                                     <thead>
@@ -192,6 +196,7 @@
                                         </c:forEach>
                                     </tbody>
                                 </table> 
+                                </c:if>
                             </div>
                         </div>
                     </div>

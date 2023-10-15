@@ -6,9 +6,11 @@ package service;
 
 import DAO.DBContext;
 import DAO.PostDAO;
+import DAO.ReportDAO;
 import DAO.UserDAO;
 import java.util.List;
 import model.PostRental;
+import model.Report;
 import model.Users;
 
 /**
@@ -32,5 +34,10 @@ public class AdminService extends DBContext {
     public void updatePostStatus(int id) {
         DAO.PostDAO dao = new PostDAO();
         dao.updatePostByAdmin(id);
+    }
+    public List<Report> getAllReports(){
+        DAO.ReportDAO dao = new ReportDAO();
+        List<Report> list = dao.getAllReports();
+        return list;
     }
 }

@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.time.LocalDate;
 import model.Promotion;
 import service.PromotionService;
 
@@ -37,17 +38,19 @@ public class EditPromotion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String service = request.getParameter("service");
-        String now=request.getParameter("now");
+        String now = request.getParameter("now");
         int promotion_id = Integer.parseInt(request.getParameter("id"));
+        Promotion promo = pservice.GetPromotionById(promotion_id);
+        request.setAttribute("now", now);
+        request.setAttribute("promo", promo);
         if (service == null) {
             response.sendRedirect("trang-chu");
         }
         if (service.equals("form")) {
             //lay thong tin promotion
-            Promotion promo = pservice.GetPromotionById(promotion_id);
             //gui vao file
-            request.setAttribute("now", now);
-            request.setAttribute("promo", promo);
+            //request.setAttribute("now", now);
+            //request.setAttribute("promo", promo);
             request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
         } else if (service.equals("edit")) {
             String des = request.getParameter("desciptions");
@@ -57,15 +60,26 @@ public class EditPromotion extends HttpServlet {
                 discount = Integer.parseInt(temp_discount);
             } catch (NumberFormatException ex) {
                 request.setAttribute("mess", "Wrong discount");
-                request.getRequestDispatcher("PromotionManage").forward(request, response);
+                //request.setAttribute("now", now);
+                //request.setAttribute("promo", promo);
+                request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
             }
             pservice.UpdatePromotionDiscountDes(discount, des, promotion_id);
             response.sendRedirect("PromotionManage");
         } else if (service.equals("duration")) {
             Date promotion_start_date = Date.valueOf(request.getParameter("start_date"));
             Date promotion_end_date = Date.valueOf(request.getParameter("end_date"));
-            pservice.UpdatePromotionDuration(promotion_start_date, promotion_end_date, promotion_id);
-            response.sendRedirect("PromotionManage");
+            Date local = Date.valueOf(LocalDate.now());
+            if (promotion_start_date.after(promotion_end_date)) {    //start date occurs after end date
+                request.setAttribute("mess", "Start date must occurs before end date");
+                request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
+            } else if (local.after(promotion_end_date)) {    //end date occurs before local date
+                request.setAttribute("mess", "Local date must occurs before end date");
+                request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
+            } else {
+                pservice.UpdatePromotionDuration(promotion_start_date, promotion_end_date, promotion_id);
+                response.sendRedirect("PromotionManage");
+            }
         }
     }
 

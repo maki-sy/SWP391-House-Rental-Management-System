@@ -43,6 +43,7 @@ public class Login extends HttpServlet {
         if (type.equals("login")) {
             Object loggedAccount = session.getAttribute("user");
             if (loggedAccount != null) {
+//                System.out.println("Nguoi dung da login, chuyen huong ve trang-chu");
                 response.sendRedirect("trang-chu");
                 return;
             }

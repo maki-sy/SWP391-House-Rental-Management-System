@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 import model.PostRental;
 import model.Promotion;
+import model.Users;
 import service.PromotionService;
 
 /**
@@ -44,8 +45,9 @@ public class AddPromotion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String service = request.getParameter("service");
-//         HttpSession session = request.getSession();
-        List<PostRental> listp = pservice.GetPost();
+         HttpSession session = request.getSession();
+         Users user = (Users) session.getAttribute("user");
+        List<PostRental> listp = pservice.GetPostByLandlordId(user.getId());
         request.setAttribute("listp", listp);
         if (service == null) {
             service = "form";

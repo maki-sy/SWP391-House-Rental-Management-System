@@ -35,10 +35,10 @@ public class TransactionController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        Users user = (Users) session.getAttribute("user");
 
-        if (session.getAttribute("user") != null) {
-            Users usr = (Users) session.getAttribute("user");
-            if (usr.getRoleID() != 2) {
+        if (user != null) {
+            if (user.getRoleID() != 2) {
                 request.setAttribute("msg", "Are you lost the way? You don't have permission to access this page");
                 request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
                 return;
@@ -55,9 +55,9 @@ public class TransactionController extends HttpServlet {
         }
 
         switch (service) {
-            case "history": // view all transaction history
+            case "history": // view all transaction history related to this landlord account
                 TransactionService tService = new TransactionService();
-                List<Transaction> transactions = tService.getAllTransactions();
+                List<Transaction> transactions = tService.getTransactionsPersonID(user.getId());
                 request.setAttribute("transactions", transactions);
                 request.getRequestDispatcher("Landlord/view/transaction-history.jsp").forward(request, response);
                 return;

@@ -50,6 +50,7 @@
                 <div class="main-center">
                     <c:if test="${now == 'edit'}"> 
                         <form class="" method="post" action="EditPromotion?service=edit&id=${promo.promotion_id}">
+                            <input type="hidden" name="now" value="${now}">                            
                             <div class="form-group">
                                 <label >Edit Promotion form</label>
                                 <p class="text-danger">${mess}</p>
@@ -69,34 +70,37 @@
                                     </div>
                                 </div>
                                 <button type="submit" style="color: red">SUBMIT</button>
-                        </form>
-                    </c:if>
-                    <c:if test="${now == 'duration'}"> 
-                        <form class="" method="post" action="EditPromotion?service=duration&id=${promo.promotion_id}">
-                            <div class="form-group">
-                                <label >Edit Promotion form</label>
-                                <p class="text-danger">${mess}</p>
-                                <div class="form-group">
-                                    <label >Promotion start date</label>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                        <input type="date" class="form-control" name="start_date" value="${promo.promotion_start_date}"/>
-                                    </div>
-                                </div>
+                                <a href="PromotionManage"><button type="button" class="float-right" style="color: red">CANCEL</button>
+                                    </form>
+                                </c:if>
+                                <c:if test="${now == 'duration'}"> 
+                                    <form class="" method="post" action="EditPromotion?service=duration&id=${promo.promotion_id}">
+                                        <input type="hidden" name="now" value="${now}">  
+                                        <div class="form-group">
+                                            <label >Edit Promotion form</label>
+                                            <p class="text-danger">${mess}</p>
+                                            <div class="form-group">
+                                                <label >Promotion start date</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                                    <input type="date" class="form-control" name="start_date" value="${promo.promotion_start_date}"/>
+                                                </div>
+                                            </div>
 
-                                <div class="form-group">
-                                    <label >Promotion end date</label>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                        <input type="date" class="form-control" name="end_date" value="${promo.promotion_end_date}"/>
-                                    </div>
-                                </div>
-                                <button type="submit" style="color: red">SUBMIT</button>
-                        </form>
-                    </c:if>
-                    
-                </div><!--main-center"-->
-            </div><!--main-->
-        </div><!--container-->
-    </body>
-</html>
+                                            <div class="form-group">
+                                                <label >Promotion end date</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                                    <input type="date" class="form-control" name="end_date" value="${promo.promotion_end_date}"/>
+                                                </div>
+                                            </div>
+                                            <button type="submit" style="color: red">SUBMIT</button>
+                                            <a href="PromotionManage"><button type="button" class="float-right" style="color: red">CANCEL</button>
+                                                </form>
+                                            </c:if>
+
+                                    </div><!--main-center"-->
+                                    </div><!--main-->
+                                    </div><!--container-->
+                                    </body>
+                                    </html>

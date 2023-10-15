@@ -11,8 +11,8 @@ package model;
 public class Transaction {
 
     public enum Type {
-        DEPOSIT,
-        PAY
+        DEPOSIT, // Admin nap tien
+        PAY // Landlord pay for post
     }
     private int id;
     private double pointAmount;

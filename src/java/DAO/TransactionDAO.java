@@ -51,6 +51,7 @@ public class TransactionDAO extends DBContext {
     }
 
     /**
+     * Get transactions by TransactionID
      *
      * @param id
      * @return
@@ -76,8 +77,49 @@ public class TransactionDAO extends DBContext {
         }
         return transaction;
     }
-    
-    public int addTransaction(double amount, int payerId, int receiverId, 
+
+    /**
+     * Get all transactions related to person has ID (both sender's id and
+     * receives id).Note that in case of Post's id == null in the database
+     * (because JDBC getInt() does not return Integer but int), postID = -1
+     * instead
+     *
+     * @param id
+     * @return
+     */
+    public List<Transaction> getTransactionPersonID(int id) {
+        List<Transaction> transactions = new ArrayList<>();
+
+        String SQL = "SELECT * FROM [Transactions] WHERE payer_id = ? OR receiver_id = ?;";
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setInt(1, id);
+            preStmt.setInt(2, id);
+
+            ResultSet rs = preStmt.executeQuery();
+
+            while (rs.next()) {
+                double amount = rs.getDouble(2);
+                int payerID = rs.getInt(3);
+                int receiverID = rs.getInt(4);
+                Transaction.Type type = Transaction.Type.valueOf(rs.getString(5));
+                String date = rs.getString(6);
+
+                // Check for null of int
+                int post = rs.getInt(7);
+                post = rs.wasNull() ? -1 : post;
+
+                Transaction t = new Transaction(id, amount, payerID, receiverID, type, date, post);
+                transactions.add(t);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getTransactionPersonID() reports " + ex.getMessage());
+            Logger.getLogger(TransactionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return transactions;
+    }
+
+    public int addTransaction(double amount, int payerId, int receiverId,
             String type, String transactionDate, int postId) {
         String sql = "INSERT INTO [dbo].[Transactions]\n"
                 + "           ([amount]\n"
@@ -102,7 +144,33 @@ public class TransactionDAO extends DBContext {
         }
         return 0;
     }
-            
+
+    public int addTransaction(Transaction transaction) {
+        int added = 0;
+        String SQL = "INSERT INTO [Transactions]\n"
+                + "           ([amount]\n"
+                + "           ,[payer_id]\n"
+                + "           ,[receiver_id]\n"
+                + "           ,[type]\n"
+                + "           ,[transaction_date]\n"
+                + "           ,[post_id])\n"
+                + "     VALUES (?,?,?,?,?,?);";
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setDouble(1, transaction.getPointAmount());
+            preStmt.setInt(2, transaction.getSenderID());
+            preStmt.setInt(3, transaction.getReceiverID());
+            preStmt.setString(4, transaction.getType().name());
+            preStmt.setString(5, transaction.getTransactionDate());
+            preStmt.setInt(6, transaction.getPostID());
+
+            added = preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("addTransaction() reports " + ex.getMessage());
+            Logger.getLogger(TransactionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return added;
+    }
+
 //
 //    public int removeTransaction(int id) {
 //

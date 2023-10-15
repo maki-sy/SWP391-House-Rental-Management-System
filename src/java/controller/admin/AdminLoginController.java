@@ -34,6 +34,7 @@ public class AdminLoginController extends HttpServlet {
             throws ServletException, IOException {
         // TODO: Check HttpSession for logged in user, if user already logged in, redirect to admin dashboard
         String service = request.getParameter("service");
+        HttpSession session = request.getSession();
         if (service == null) {
             service = "login";
         }
@@ -41,6 +42,10 @@ public class AdminLoginController extends HttpServlet {
         switch (service) {
             case "login":
                 request.getRequestDispatcher("admin-login.jsp").forward(request, response);
+                return;
+            case "logout":
+                session.invalidate();
+                response.sendRedirect("admin-login?service=login");
                 return;
         }
     }
