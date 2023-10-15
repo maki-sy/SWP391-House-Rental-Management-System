@@ -14,13 +14,14 @@ import model.PostRental;
  * @author Sy
  */
 public class PostService {
-    public int getLandlordIDbyPostID(int postID){
-        PostDAO pdao=new PostDAO();
-        List<PostRental> post=new ArrayList<>();
-        int rs=-1;
-        post=pdao.getPostDetailsbyID(postID);
-        if(!post.isEmpty()){
-            rs=post.get(0).getLandlord_id();
+
+    public int getLandlordIDbyPostID(int postID) {
+        PostDAO pdao = new PostDAO();
+        PostRental post = null;
+        int rs = -1;
+        post = pdao.getPostDetailsbyID(postID);
+        if (post != null) {
+            rs = post.getLandlord_id();
         }
         return rs;
     }

@@ -4,6 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>AdminLTE 3 | Projects</title>
+        <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
+        <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
+        <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -24,10 +27,10 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="../../index3.html" class="nav-link">Home</a>
+                        <a href="trang-chu" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">Contact</a>
+                        <a href="contact.jsp" class="nav-link">Contact</a>
                     </li>
                 </ul>
 
@@ -157,7 +160,7 @@
             <!-- Main Sidebar Container -->
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
-                <a href="../../index3.html" class="brand-link">
+                <a href="admin-dashboard" class="brand-link">
                     <img src="assets/img/admin-page-logo.png" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">Admin Page</span>
                 </a>
@@ -167,10 +170,10 @@
                     <!-- Sidebar user (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="https://ben.com.vn/tin-tuc/wp-content/uploads/2021/12/anh-che-cho-hai-huoc-cho-dien-thoai-4.jpg" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block">Alexander Pierce</a>
+                            <a href="#" class="d-block">Admin</a>
                         </div>
                     </div>
                     <nav class="mt-2">
@@ -178,20 +181,20 @@
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="#" class="nav-link active">
+                                <a href="admin-dashboard?service=manageAccount" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Account
 
                                     </p>
                                 </a>
-                                <a href="#" class="nav-link">
+                                <a href="admin-dashboard?service=managePost" class="nav-link active">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
-                                <a href="#" class="nav-link">
+                                <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
@@ -211,7 +214,7 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Accounts</h1>
+                                <h1>Posts</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
@@ -229,7 +232,7 @@
                     <!-- Default box -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">View account list</h3>
+                            <h3 class="card-title">View Posts list</h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -240,74 +243,78 @@
                                 </button>
                             </div>
                         </div>
+                        <%
+                            List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");
+                        %>
                         <div class="card-body p-0">
                             <table class="table table-striped projects">
                                 <thead>
                                     <tr>
-                                        <th style="width: 3%">
+                                        <th class="col-lg-1 text-justify">
                                             ID
                                         </th>
-                                        <th style="width: 15%">
-                                            Account Email
+                                        <th class="col-lg-1">
+                                            Name
                                         </th>
-                                        <th style="width: 10%">
-                                            Full Name
+                                        <th class="col-lg-1">
+                                            Price
                                         </th>
-                                        <th style="width: 20%">
+                                        <th class="col-lg-1">
+                                            Area
+                                        </th>
+                                        <th class="col-lg-1">
+                                            Number Of Beds
+                                        </th>
+                                        <th class="col-lg-1 text-center" >
                                             Address
                                         </th>
-                                        <th style="width: 10%">
-                                            Phone
-                                        </th>
-                                        <th style="width: 8%">
-                                            Role
-                                        </th>
-                                        <th style="width: 5%" class="text-center">
+                                        <th class="col-lg-1 text-center">
                                             Status
                                         </th>
-                                        <th style="width: 15%">
+                                        <th class="col-lg-2 text-center" > Tool
                                         </th>
                                     </tr>
                                 </thead>
+                                <%for(PostRental pr:list){%>
                                 <tbody>
                                     <tr>
                                         <td>
-                                            #
+                                            <%=pr.getId()%>
                                         </td>
                                         <td>
                                             <a>
-                                                TungDTHE176669@fpt.edu.vn
+                                                <%=pr.getName()%>
                                             </a>
                                         </td>
                                         <td>
-                                            Thanh Tung
+                                            <%=pr.getPrice()%>  $
                                         </td>
                                         <td>
-                                            Yen Lap, Vinh Tuong, Vinh Phuc
+                                            <%=pr.getArea()%>  m2
                                         </td>
                                         <td>
-                                            0362939668
+                                            <%=pr.getNumOfBeds()%>
                                         </td>
                                         <td>
-                                            Tenant
+                                            <%=pr.getAddress()%>
                                         </td>
                                         <td class="project-state">
-                                            <span class="badge badge-success">Verified</span>
+                                            <span class="badge badge-success"><%=pr.getStatus()%></span>
                                         </td>
                                         <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm" href="#">
+                                            <a class="btn btn-info btn-sm text-center" href="#">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
                                                 Edit
                                             </a>
-                                            <a class="btn btn-danger btn-sm" href="#">
-                                                <i class="fas fa-trash">
-                                                </i>
+                                            <a class="btn btn-danger btn-sm text-center" href="javascript:void(0);" onclick="confirmDelete(<%=pr.getId()%>);">
+                                                <i class="fas fa-trash"></i>
                                                 Delete
                                             </a>
                                         </td>
                                     </tr>
                                 </tbody>
+                                <%}%>
                             </table>
                         </div>
                         <!-- /.card-body -->
@@ -335,6 +342,14 @@
         <!-- ./wrapper -->
 
         <!-- jQuery -->
+        <script>
+            function confirmDelete(postId) {
+                var confirmation = confirm("Bạn có chắc chắn muốn xóa bài viết này?");
+                if (confirmation) {
+                    window.location.href = "admin-dashboard?service=deletePost&id=" + postId;
+                }
+            }
+        </script>
         <script src="assets/vendor/jquery/jquery.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
