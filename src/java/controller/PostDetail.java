@@ -18,6 +18,7 @@ import java.util.List;
 import model.PostRental;
 import model.PropertyLocation;
 import model.PropertyType;
+import service.PostService;
 import service.SearchService;
 
 /**
@@ -42,17 +43,22 @@ public class PostDetail extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int pid = Integer.parseInt(request.getParameter("id"));
-            DAO.PostDAO dao = new PostDAO();
-            PostRental post = dao.getPostDetailsbyID(pid);
+            PostService post = new PostService();
             SearchService handle = new SearchService();
-            ArrayList<PropertyType> type = handle.getAllType();
+            PostRental po = post.getPostDetailsbyID(pid);
+            ArrayList<String> thumbnailList = new ArrayList<>();
+            List<String> url = post.getPostImagesUrlByPostId(pid);
 
-            ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
-            ResultSet priceFrom = dao.getData("select distinct price from Post;");
-            ResultSet priceTo = dao.getData("select distinct price from Post;");
-            ResultSet areaFrom = dao.getData("select distinct area from Post;");
-            ResultSet areaTo = dao.getData("select distinct area from Post;");
-            ResultSet address = dao.getData("select distinct address from Post;");
+            request.setAttribute("PostDetail", po);
+            request.setAttribute("thumbnailList", url);
+
+            ArrayList<PropertyType> type = handle.getAllType();
+            ResultSet bedrooms = post.getData("select distinct NumOfBedrooms from Post;");
+            ResultSet priceFrom = post.getData("select distinct price from Post;");
+            ResultSet priceTo = post.getData("select distinct price from Post;");
+            ResultSet areaFrom = post.getData("select distinct area from Post;");
+            ResultSet areaTo = post.getData("select distinct area from Post;");
+            ResultSet address = post.getData("select distinct address from Post;");
             ArrayList<PropertyLocation> location = handle.getAllLocation();
 
             request.setAttribute("type", type);
@@ -64,7 +70,6 @@ public class PostDetail extends HttpServlet {
             request.setAttribute("address", address);
             request.setAttribute("location", location);
 
-            request.setAttribute("PostDetail", post);
             request.getRequestDispatcher("PostDetail.jsp").forward(request, response);
         }
     }

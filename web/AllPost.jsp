@@ -9,7 +9,6 @@
 <%@ page import="model.Users" %>
 <%
     Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
-    DAO.PostDAO dao = new PostDAO();
 %>  
 <!DOCTYPE html>
 <html lang="en">
@@ -167,7 +166,7 @@
             </div>
         </div><!-- End Property Search Section -->>
 
-        
+
         <!-- End Header/Navbar -->
         <%
                   List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");
@@ -185,6 +184,9 @@
                                 <h1 class="title-single">Our Amazing Properties</h1>
                                 <span class="color-text-a">Houses Properties</span>
                             </div>
+                        </div>
+                        <div class="col-md-12 col-lg-8">
+                            <h1 class="color-text-a">Result: <%=list.size()%></h1>
                         </div>
                         <div class="col-md-12 col-lg-4">
                             <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
@@ -219,55 +221,56 @@
                                               </div>-->
 
                         </div>
-                        <%
-                           
-                            for(int i = 0; i < list.size(); i++){
-                        %>  
-                        <div class="col-md-4">
-                            <div class="card-box-a card-shadow">
-                                <div class="img-box-a">
-                                    <img src="<%=thumbnailList.get(i)%>" alt="" class="img-a img-fluid img-thumbnail"
-                                         style ="overflow-clip-margin: content-box; overflow: clip;">
-                                </div>
-                                <div class="card-overlay">
-                                    <div class="card-overlay-a-content">
-                                        <div class="card-header-a">
-                                            <h2 class="card-title-a">
-                                                <a href="housedetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getName()%>
-                                                </a>
-                                            </h2>
-                                        </div>
-                                        <div class="card-body-a">
-                                            <div class="price-box d-flex">
-                                                <span class="price-a">rent | $ <%=list.get(i).getPrice()%></span>
+                        <div class="row">
+                            <%
+                                for(int i = 0; i < list.size(); i++){
+                            %>  
+                            <div class="col-md-4">
+                                <div class="card-box-a card-shadow  h-100">
+                                    <div class="img-box-a">
+                                        <img src="<%=thumbnailList.get(i)%>" alt="" class="img-a img-fluid img-thumbnail"
+                                             style ="overflow-clip-margin: content-box; overflow: clip;">
+                                    </div>
+                                    <div class="card-overlay ">
+                                        <div class="card-overlay-a-content">
+                                            <div class="card-header-a">
+                                                <h2 class="card-title-a">
+                                                    <a href="housedetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getName()%>
+                                                    </a>
+                                                </h2>
                                             </div>
-                                            <a href="housedetail?id=<%=list.get(i).getId()%>" class="link-a">Click here to view
-                                                <span class="bi bi-chevron-right"></span>
-                                            </a>
-                                        </div>
-                                        <div class="card-footer-a">
-                                            <ul class="card-info d-flex justify-content-around">
-                                                <li>
-                                                    <h4 class="card-info-title">Area</h4>
-                                                    <span><%=list.get(i).getArea()%>m
-                                                        <sup>2</sup>
-                                                    </span>
-                                                </li>
-                                                <li>
-                                                    <h4 class="card-info-title">Beds</h4>
-                                                    <span><%=list.get(i).getNumOfBeds()%></span>
-                                                </li>
-                                                <li>
-                                                    <h4 class="card-info-title">Status</h4>
-                                                    <span><%=list.get(i).getStatus()%></span>
-                                                </li>
-                                            </ul>
+                                            <div class="card-body-a ">
+                                                <div class="price-box d-flex" >
+                                                    <span class="price-a">rent | $ <%=list.get(i).getPrice()%></span>
+                                                </div>
+                                                <a href="housedetail?id=<%=list.get(i).getId()%>" class="link-a">Click here to view
+                                                    <span class="bi bi-chevron-right"></span>
+                                                </a>
+                                            </div>
+                                            <div class="card-footer-a">
+                                                <ul class="card-info d-flex justify-content-around">
+                                                    <li>
+                                                        <h4 class="card-info-title">Area</h4>
+                                                        <span><%=list.get(i).getArea()%>m
+                                                            <sup>2</sup>
+                                                        </span>
+                                                    </li>
+                                                    <li>
+                                                        <h4 class="card-info-title">Beds</h4>
+                                                        <span><%=list.get(i).getNumOfBeds()%></span>
+                                                    </li>
+                                                    <li>
+                                                        <h4 class="card-info-title">Status</h4>
+                                                        <span><%=list.get(i).getStatus()%></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <%}%>
                         </div>
-                        <%}%>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">

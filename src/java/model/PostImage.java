@@ -9,10 +9,19 @@ package model;
  * @author Tuấn Anh
  */
 public class PostImage {
+    private int id;
     private int post_id;
     private String img_url;
     private String img_type;
 
+    public PostImage(int id, int post_id, String img_url, String img_type) {
+        this.id = id;
+        this.post_id = post_id;
+        this.img_url = img_url;
+        this.img_type = img_type;
+    }
+
+    
     public PostImage(int post_id, String img_url, String img_type) {
         this.post_id = post_id;
         this.img_url = img_url;

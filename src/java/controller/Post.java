@@ -19,6 +19,7 @@ import model.PostImage;
 import model.PostRental;
 import model.PropertyLocation;
 import model.PropertyType;
+import service.PostService;
 import service.SearchService;
 
 /**
@@ -42,28 +43,28 @@ public class Post extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            DAO.PostDAO dao = new DAO.PostDAO();
-            List<PostRental> post = dao.getPublishedPosts();
+            PostService po = new PostService();
+            SearchService handle = new SearchService();
+            List<PostRental> post = po.getPublishedPosts();
             request.setAttribute("listOfPost", post);
-            PostImageDAO postImageDAO = new PostImageDAO();
             ArrayList<String> thumbnailList = new ArrayList<>();
-            for(int i = 0;  i < post.size(); i++) {
-                String url = postImageDAO.getImageThumbailsByPostID(post.get(i).getId());
+            for (int i = 0; i < post.size(); i++) {
+                String url = po.getImageThumbailsByPostID(post.get(i).getId());
                 thumbnailList.add(url);
             }
-            SearchService handle = new SearchService();
+
             ArrayList<PropertyType> type = handle.getAllType();
 
-            ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
-            ResultSet priceFrom = dao.getData("select distinct price from Post;");
-            ResultSet priceTo = dao.getData("select distinct price from Post;");
-            ResultSet areaFrom = dao.getData("select distinct area from Post;");
-            ResultSet areaTo = dao.getData("select distinct area from Post;");
-            ResultSet address = dao.getData("select distinct address from Post;");
+            ResultSet bedrooms = po.getData("select distinct NumOfBedrooms from Post;");
+            ResultSet priceFrom = po.getData("select distinct price from Post;");
+            ResultSet priceTo = po.getData("select distinct price from Post;");
+            ResultSet areaFrom = po.getData("select distinct area from Post;");
+            ResultSet areaTo = po.getData("select distinct area from Post;");
+            ResultSet address = po.getData("select distinct address from Post;");
             ArrayList<PropertyLocation> location = handle.getAllLocation();
 
-             request.setAttribute("thumbnailList", thumbnailList);
-            
+            request.setAttribute("thumbnailList", thumbnailList);
+
             request.setAttribute("type", type);
             request.setAttribute("bedroom", bedrooms);
             request.setAttribute("priceFrom", priceFrom);

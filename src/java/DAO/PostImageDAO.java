@@ -3,8 +3,10 @@ package DAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.PostImage;
 
 public class PostImageDAO extends DBContext {
 
@@ -27,10 +29,10 @@ public class PostImageDAO extends DBContext {
     }
 
     public String getImageThumbailsByPostID(int postID) {
-        String url = "";
-        try {
-            String sql = "select img_url from Post_Image where img_type = 'thumbnails' and post_id =" + postID;
-            PreparedStatement stm = connect.prepareStatement(sql);
+        String url = null;
+        String sql = "select img_url from Post_Image where img_type = 'thumbnails' and post_id = ?";
+        try ( PreparedStatement stm = connect.prepareStatement(sql)) {
+            stm.setInt(1, postID);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 url = rs.getString(1);
@@ -39,6 +41,29 @@ public class PostImageDAO extends DBContext {
             Logger.getLogger(PostImageDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return url;
+    }
+
+    public ArrayList<PostImage> getImageThumbails() {
+        ArrayList<PostImage> list = new ArrayList<>();
+        String sqlCommand = "SELECT [id]\n"
+                + "      ,[post_id]\n"
+                + "      ,[img_url]\n"
+                + "      ,[img_type]\n"
+                + "  FROM [dbo].[Post_Image]";
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                int post_id = rs.getInt(2);
+                String img_url = rs.getString(3);
+                String img_type = rs.getString(4);
+                PostImage po = new PostImage(id, post_id, img_url, img_type);
+                list.add(po);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public int deletePostImageByPostId(int postId) {

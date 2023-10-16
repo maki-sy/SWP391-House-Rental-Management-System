@@ -9,7 +9,6 @@
 <%@ page import="model.Users" %>
 <%
 Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
-    DAO.PostDAO dao = new PostDAO();
 %>
 
 <!DOCTYPE html>
@@ -171,8 +170,7 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
         <!-- End Header/Navbar -->
         <%
                   PostRental post = (PostRental) request.getAttribute("PostDetail");
-                  int postID = post.getId();
-                  List<PostImage> image_url = dao.getPostImages(postID); 
+                  ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
         %>
         <main id="main">
             <!-- ======= Intro Single ======= -->
@@ -211,12 +209,11 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                         <div class="col-lg-8">
                             <div id="property-single-carousel" class="swiper">
                                 <div class="swiper-wrapper">
-                                    <%for(PostImage po:image_url){%>
-                                    <%if(po.getImg_type().equals("main")){%>
+                                    <%for(String imageUrl : thumbnailList){%>
                                     <div class="carousel-item-b swiper-slide">
-                                        <img src="<%=po.getImg_url()%>" alt="" class="img-fluid">
+                                        <img src="<%=imageUrl%>" alt="" class="img-fluid">
                                     </div>
-                                    <%}}%>
+                                    <%}%>
                                 </div>
                             </div>
                             <div class="property-single-carousel-pagination carousel-pagination"></div>
@@ -260,7 +257,7 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                         </div>
                                         <div class="summary-list">
                                             <ul class="list">
-                                                
+
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Location:</strong>
                                                     <span><%=post.getAddress()%></span>
@@ -305,7 +302,7 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                 <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">
                                     <h1 style="text-align: center">Order</h1>
                                     <p>Content of Orders.........</p>
-                                    <input type="hidden" name="postid" value="<%=postID%>">
+                                    <input type="hidden" name="postid" value="<%=post.getId()%>">
                                     <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
                                     <input type="hidden" name="service" value="createOrder">
                                     <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
