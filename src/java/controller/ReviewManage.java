@@ -4,7 +4,6 @@
  */
 package controller;
 
-import DAO.PostDAO;
 import DAO.ReviewDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,21 +12,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import model.PostRental;
-import model.PropertyLocation;
-import model.PropertyType;
-import model.Tenant;
-import service.SearchService;
+import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.LocalDate;
+import model.Review;
+import model.Users;
+import service.ReviewService;
 
 /**
  *
- * @author Tuấn Anh
+ * @author Administrator
  */
-@WebServlet(name = "PostDetail", urlPatterns = {"/housedetail"})
-public class PostDetail extends HttpServlet {
+@WebServlet(name = "ReviewManage", urlPatterns = {"/ReviewManage"})
+public class ReviewManage extends HttpServlet {
+
+    ReviewService Rservice = new ReviewService();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,36 +40,30 @@ public class PostDetail extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            int pid = Integer.parseInt(request.getParameter("id"));
-            DAO.PostDAO dao = new PostDAO();
-            ReviewDAO rdao=new ReviewDAO();
-            PostRental post = dao.getPostDetailsbyID(pid);
-            SearchService handle = new SearchService();
-            ArrayList<PropertyType> type = handle.getAllType();
-            List<Tenant> listr = rdao.getReviewByPostId(pid);
+        HttpSession session = request.getSession();
+        String temp_star = request.getParameter("rate");
+        int star = 0;
+        if (temp_star == null) {
+            star = 0;
+        } else {
+            star = Integer.parseInt(temp_star);
+        }
+        int pid = Integer.parseInt(request.getParameter("id"));
+        String comment = request.getParameter("comment");
+        Users user = (Users) session.getAttribute("user");
+        int uid = user.getId();
+        Date local = Date.valueOf(LocalDate.now());
+        if (Rservice.checkWord(comment)) {//contain bad word
+            //send back with note
+            request.setAttribute("mess", "This message was blocked because a bad word was found. "
+                    + "If you believe this word should not be blocked, please message support.");
+            request.getRequestDispatcher("housedetail?id=" + pid).forward(request, response);
+        } else {
+            Review re = new Review(-1, uid, pid, local, star, comment);
+            Rservice.addReview(re);
 
-            ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
-            ResultSet priceFrom = dao.getData("select distinct price from Post;");
-            ResultSet priceTo = dao.getData("select distinct price from Post;");
-            ResultSet areaFrom = dao.getData("select distinct area from Post;");
-            ResultSet areaTo = dao.getData("select distinct area from Post;");
-            ResultSet address = dao.getData("select distinct address from Post;");
-            ArrayList<PropertyLocation> location = handle.getAllLocation();
-
-            request.setAttribute("type", type);
-            request.setAttribute("bedroom", bedrooms);
-            request.setAttribute("priceFrom", priceFrom);
-            request.setAttribute("priceTo", priceTo);
-            request.setAttribute("areaFrom", areaFrom);
-            request.setAttribute("areaTo", areaTo);
-            request.setAttribute("address", address);
-            request.setAttribute("location", location);
-
-            request.setAttribute("PostDetail", post);
-            request.setAttribute("listr", listr);
-            request.getRequestDispatcher("PostDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("housedetail?id=" + pid).forward(request, response);
+//            response.sendRedirect("trang-chu");
         }
     }
 

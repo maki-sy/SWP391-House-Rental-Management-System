@@ -47,29 +47,32 @@ public class EditPromotion extends HttpServlet {
             response.sendRedirect("trang-chu");
         }
         if (service.equals("form")) {
-            //lay thong tin promotion
-            //gui vao file
-            //request.setAttribute("now", now);
-            //request.setAttribute("promo", promo);
             request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
         } else if (service.equals("edit")) {
             String des = request.getParameter("desciptions");
             String temp_discount = request.getParameter("discount");
             int discount = 0;
-            try {
+            if (pservice.validateDiscount(temp_discount)) {//valiadte ok
                 discount = Integer.parseInt(temp_discount);
-            } catch (NumberFormatException ex) {
+                pservice.UpdatePromotionDiscountDes(discount, des, promotion_id);
+                request.getRequestDispatcher("PromotionManage").forward(request, response);
+            } else {
                 request.setAttribute("mess", "Wrong discount");
-                //request.setAttribute("now", now);
-                //request.setAttribute("promo", promo);
                 request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
+
             }
-            pservice.UpdatePromotionDiscountDes(discount, des, promotion_id);
-            response.sendRedirect("PromotionManage");
+
         } else if (service.equals("duration")) {
-            Date promotion_start_date = Date.valueOf(request.getParameter("start_date"));
-            Date promotion_end_date = Date.valueOf(request.getParameter("end_date"));
+            Date promotion_start_date = null;
+            Date promotion_end_date = null;
             Date local = Date.valueOf(LocalDate.now());
+            try {
+                promotion_start_date = Date.valueOf(request.getParameter("start_date"));
+                promotion_end_date = Date.valueOf(request.getParameter("end_date"));
+            } catch (Exception ex) {
+                request.setAttribute("mess", "Wrong date format");
+                    request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
+            }
             if (promotion_start_date.after(promotion_end_date)) {    //start date occurs after end date
                 request.setAttribute("mess", "Start date must occurs before end date");
                 request.getRequestDispatcher("EditPromotion.jsp").forward(request, response);
