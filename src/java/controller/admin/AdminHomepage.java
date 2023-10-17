@@ -38,8 +38,7 @@ public class AdminHomepage extends HttpServlet {
         AdminService service = new AdminService();
         if (ser == null) {
             request.getRequestDispatcher("Admin/view/admin-view.jsp").forward(request, response);
-        }
-        if (ser.equals("managePost")) {
+        } else if (ser.equals("managePost")) {
             List<PostRental> list = service.getAllPost();
             request.setAttribute("listOfPost", list);
             request.getRequestDispatcher("Admin/view/post-list.jsp").forward(request, response);

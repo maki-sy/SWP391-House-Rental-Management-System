@@ -80,8 +80,10 @@ public class LandlordDAO extends DBContext {
 
     /**
      * Get landlord by user's id
+     *
      * @param userID
-     * @return Landlord object corresponding to user's id, or null if there is no landlord
+     * @return Landlord object corresponding to user's id, or null if there is
+     * no landlord
      */
     public Landlord getLandlordByUserID(int userID) {
         String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
@@ -173,6 +175,31 @@ public class LandlordDAO extends DBContext {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    public void updateLandlordInfo(int userid, String fname, String lname, String civilid, String address, String phone) {
+        String SQL = "UPDATE [dbo].[Landlord]\n"
+                + "   SET [first_name] = ?\n"
+                + "      ,[last_name] = ?\n"
+                + "      ,[address] = ?\n"
+                + "      ,[phone] = ?\n"
+                + "      ,[civil_id] = ?\n"
+                + " WHERE id = ?;";
+
+        try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setString(1, fname);
+            preStmt.setString(2, lname);
+            preStmt.setString(3, address);
+            preStmt.setString(4, phone);
+            preStmt.setString(5, civilid);
+            preStmt.setInt(6, userid);
+
+            preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateLandlordInfo(int userid, String fname, String lname, String civilid, String address, String phone) reports " + ex.getMessage());
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

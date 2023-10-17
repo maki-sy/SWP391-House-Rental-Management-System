@@ -45,5 +45,49 @@ public class AdminDAO extends DBContext {
         }
 
         return admin;
+
+    }
+
+    public int addAdmin(Admin admin) {
+        int added = 0;
+        String sqlCommand = "INSERT INTO [Admin] ([id],[first_name],[last_name],[Phone]\n"
+                + "     VALUES (?,?,?,?)";
+
+        try {
+            PreparedStatement preStatement = connect.prepareStatement(sqlCommand);
+
+            preStatement.setInt(1, admin.getId());
+            preStatement.setString(2, admin.getFirstName());
+            preStatement.setString(3, admin.getLastName());
+            preStatement.setString(4, admin.getPhone());
+
+            added = preStatement.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("addLandlord() reports: " + ex.getMessage());
+            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return added;
+    }
+
+    public void updateAdminInfo(int userid, String fname, String lname, String phone) {
+        String SQL = "UPDATE [dbo].[Admin]\n"
+                + "   SET [first_name] = ?\n"
+                + "      ,[last_name] = ?\n"
+                + "      ,[Phone] = ?\n"
+                + " WHERE id = ?;";
+
+        try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setString(1, fname);
+            preStmt.setString(2, lname);
+            preStmt.setString(3, phone);
+            preStmt.setInt(4, userid);
+
+            preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateAdminInfo(int userid, String fname, String lname, String phone) reports " + ex.getMessage());
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

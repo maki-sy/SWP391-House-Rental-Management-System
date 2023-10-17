@@ -40,4 +40,5 @@ public class AdminService extends DBContext {
         List<Report> list = dao.getAllReports();
         return list;
     }
+    
 }

@@ -507,8 +507,90 @@ public class UserService {
             return l.getFirstName() + " " + l.getLastName();
         }
         Admin a = ADMIN_DAO.getAdminByID(userID);
-        if(a != null){
+        if (a != null) {
             return a.getFirstName() + " " + a.getLastName();
+        }
+
+        return null;
+    }
+
+    public String getFirstName(int userID) {
+        Tenant t = TENANT_DAO.getTenantByUserID(userID);
+        if (t != null) {
+            return t.getFirstName();
+        }
+        Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
+        if (l != null) {
+            return l.getFirstName();
+        }
+        Admin a = ADMIN_DAO.getAdminByID(userID);
+        if (a != null) {
+            return a.getFirstName();
+        }
+
+        return null;
+    }
+
+    public String getLastName(int userID) {
+        Tenant t = TENANT_DAO.getTenantByUserID(userID);
+        if (t != null) {
+            return t.getLastName();
+        }
+        Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
+        if (l != null) {
+            return l.getLastName();
+        }
+        Admin a = ADMIN_DAO.getAdminByID(userID);
+        if (a != null) {
+            return a.getLastName();
+        }
+
+        return null;
+    }
+
+    public String getAddress(int userID) {
+        Tenant t = TENANT_DAO.getTenantByUserID(userID);
+        if (t != null) {
+            return t.getAddress();
+        }
+        Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
+        if (l != null) {
+            return l.getAddress();
+        }
+        Admin a = ADMIN_DAO.getAdminByID(userID);
+        if (a != null) {
+            return ""; //Admin do not need address
+        }
+
+        return null;
+    }
+
+    public String getPhone(int userID) {
+        Tenant t = TENANT_DAO.getTenantByUserID(userID);
+        if (t != null) {
+            return t.getPhone();
+        }
+        Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
+        if (l != null) {
+            return l.getPhone();
+        }
+        Admin a = ADMIN_DAO.getAdminByID(userID);
+        if (a != null) {
+            return a.getPhone();
+        }
+
+        return null;
+    }
+
+    public String getCivilID(int userID) {
+        Tenant t = TENANT_DAO.getTenantByUserID(userID);
+        if (t != null) {
+            return t.getCivilID();
+        }
+
+        Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
+        if (l != null) {
+            return l.getCivilID();
         }
 
         return null;
@@ -522,5 +604,14 @@ public class UserService {
         }
         Users user = userdao.getUsersByEmail(email).get(0);
         return user;
+    }
+
+    public void addUser(String email, String fname, String lname, String phone, String password) {
+        byte[] salt = generateSalt();
+        byte[] hashedPwd = hashingPassword(password, salt);
+        Users user = new Users(email, hashedPwd, salt, 3, Users.Status.VER);
+        int userID = USER_DAO.addUser(user);
+        Admin admin = new Admin(userID, fname, lname, phone);
+        ADMIN_DAO.addAdmin(admin);
     }
 }
