@@ -47,10 +47,11 @@ public class Post extends HttpServlet {
             request.setAttribute("listOfPost", post);
             PostImageDAO postImageDAO = new PostImageDAO();
             ArrayList<String> thumbnailList = new ArrayList<>();
-            for(int i = 0;  i < post.size(); i++) {
+            for (int i = 0; i < post.size(); i++) {
                 String url = postImageDAO.getImageThumbailsByPostID(post.get(i).getId());
                 thumbnailList.add(url);
             }
+            request.setAttribute("thumbnailList", thumbnailList);
             SearchService handle = new SearchService();
             ArrayList<PropertyType> type = handle.getAllType();
 
@@ -62,8 +63,8 @@ public class Post extends HttpServlet {
             ResultSet address = dao.getData("select distinct address from Post;");
             ArrayList<PropertyLocation> location = handle.getAllLocation();
 
-             request.setAttribute("thumbnailList", thumbnailList);
             
+
             request.setAttribute("type", type);
             request.setAttribute("bedroom", bedrooms);
             request.setAttribute("priceFrom", priceFrom);
