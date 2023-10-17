@@ -56,7 +56,7 @@ public class SearchDAO extends DBContext {
         String sqlCommand = "SELECT a.*"
                 + "FROM Post a "
                 + "JOIN Property_Location b ON a.location_id = b.id "
-                + "WHERE 1=1";
+                + "WHERE 1=1 and status != 'draft' and status != 'deleted'";
 
         if (!keyword.isEmpty()) {
             sqlCommand += " AND a.name LIKE ?";
@@ -81,7 +81,7 @@ public class SearchDAO extends DBContext {
             sqlCommand += " AND a.area <= ?";
         }
         if (!"Any".equals(location)) {
-            sqlCommand += " AND b.location_name = ?";
+            sqlCommand += " AND b.id = ?";
         }
 
         try ( PreparedStatement preparedStatement = connect.prepareStatement(sqlCommand)) {

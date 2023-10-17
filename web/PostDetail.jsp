@@ -4,12 +4,11 @@
     Author     : Tuấn Anh
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.PostRental, model.PostImage, DAO.PostDAO" %>
-
-<%@page import="java.util.List, java.sql.ResultSet"%>
+<%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
+<%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
 <%@ page import="model.Users" %>
 <%
-    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
     DAO.PostDAO dao = new PostDAO();
 %>
 
@@ -69,30 +68,21 @@
                             </div>
                         </div>
                         <%
-                            ResultSet type = (ResultSet) request.getAttribute("type");
+                            ArrayList<PropertyType> type = (ArrayList<PropertyType>) request.getAttribute("type");
                             ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
                             ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
                             ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
                             ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
                             ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
-                            ResultSet location = (ResultSet) request.getAttribute("location");
+                            ArrayList<PropertyLocation> location = (ArrayList<PropertyLocation>) request.getAttribute("location");
                         %>
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="Type">Type</label>
                                 <select class="form-control form-select form-control-a" id="Type" name="type">
                                     <option>All Type</option>
-                                    <% while (type.next()) { %>
-                                    <%
-                                        int typeValue = type.getInt("type");
-                                        String displayValue = "";
-                                        if (typeValue == 1) {
-                                            displayValue = "Nhà Trọ";
-                                        } else if (typeValue == 2) {
-                                            displayValue = "Chung Cư";
-                                        }
-                                    %>
-                                    <option value="<%= typeValue %>"><%= displayValue %></option>
+                                    <%for(PropertyType tp:type){%>
+                                    <option value="<%=tp.getTypeId()%>"><%=tp.getTypeName()%></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -161,8 +151,8 @@
                                 <label class="pb-2" for="location">Location</label>
                                 <select class="form-control form-select form-control-a" id="location" name="location">
                                     <option>Any</option>
-                                    <% while (location.next()) { %>
-                                    <option><%= location.getString("location_name")%></option>
+                                    <%for(PropertyLocation pl:location){ %>
+                                    <option value="<%=pl.getId()%>"><%=pl.getLocation_name()%></option>
                                     <% } %>
                                 </select>
                             </div>
@@ -176,26 +166,23 @@
         </div><!-- End Property Search Section -->>
 
         <!-- ======= Header/Navbar ======= -->
+        <!-- Header cho khách (guest) -->
         <%@include file="header.jsp" %>
         <!-- End Header/Navbar -->
         <%
-                  List<PostRental> list = (List<PostRental>) request.getAttribute("PostDetail");
-                  
+                  PostRental post = (PostRental) request.getAttribute("PostDetail");
+                  int postID = post.getId();
+                  List<PostImage> image_url = dao.getPostImages(postID); 
         %>
         <main id="main">
-            <%for(PostRental pr:list){
-            int postID = pr.getId();
-            List<PostImage> image_url = dao.getPostImages(postID);
-            %>
-
             <!-- ======= Intro Single ======= -->
             <section class="intro-single">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 col-lg-8">
                             <div class="title-single-box">
-                                <h1 class="title-single"><%=pr.getName()%></h1>
-                                <span class="color-text-a"><%=pr.getAddress()%></span>
+                                <h1 class="title-single"><%=post.getName()%></h1>
+                                <span class="color-text-a"><%=post.getAddress()%></span>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-4">
@@ -208,7 +195,7 @@
                                         <a href="property-grid.html">Properties</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">
-                                        <%=pr.getName()%>
+                                        <%=post.getName()%>
                                     </li>
                                 </ol>
                             </nav>
@@ -236,9 +223,9 @@
                         </div>
                     </div>
 
+
                     <div class="row">
                         <div class="col-sm-12">
-
                             <div class="row justify-content-between">
                                 <div class="col-md-5 col-lg-4">
                                     <div class="property-price d-flex justify-content-center foo">
@@ -247,10 +234,22 @@
                                                 <span class="bi bi-cash">$</span>
                                             </div>
                                             <div class="card-title-c align-self-center">
-                                                <h5 class="title-c"><%=pr.getPrice()%></h5>
+                                                <h5 class="title-c"><%=post.getPrice()%></h5>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <script>
+                                        function openForm() {
+                                            document.getElementById("myForm").style.display = "block";
+                                        }
+                                        function closeForm() {
+                                            document.getElementById("myForm").style.display = "none";
+                                        }
+                                        function submitOrder() {
+                                            alert("Order has been successfully submitted to the landlord.");
+                                        }
+                                    </script>
                                     <div class="property-summary">
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -261,28 +260,20 @@
                                         </div>
                                         <div class="summary-list">
                                             <ul class="list">
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Property ID:</strong>
-                                                    <span><%=pr.getId()%></span>
-                                                </li>
+                                                
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Location:</strong>
-                                                    <span><%=pr.getAddress()%></span>
-                                                </li>
-
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Status:</strong>
-                                                    <span><%=pr.getStatus()%></span>
+                                                    <span><%=post.getAddress()%></span>
                                                 </li>
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Area:</strong>
-                                                    <span><%=pr.getArea()%>m
+                                                    <span><%=post.getArea()%>m
                                                         <sup>2</sup>
                                                     </span>
                                                 </li>
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Beds:</strong>
-                                                    <span><%=pr.getNumOfBeds()%></span>
+                                                    <span><%=post.getNumOfBeds()%></span>
                                                 </li>
 
                                             </ul>
@@ -299,42 +290,36 @@
                                     </div>
                                     <div class="property-description">
                                         <p class="description color-text-a">
-                                            <%=pr.getDesscription()%>
-                                        </p>
-                                        <p class="description color-text-a no-margin">
-                                            Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget
-                                            malesuada. Quisque velit nisi,
-                                            pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.
+                                            <%=post.getDesscription()%>
                                         </p>
                                     </div>
-                                    <!--                      <div class="row section-t3">
-                                                            <div class="col-sm-12">
-                                                              <div class="title-box-d">
-                                                                <h3 class="title-d">Amenities</h3>
-                                                              </div>
-                                                            </div>
-                                                          </div>
-                                                          <div class="amenities-list color-text-a">
-                                                            <ul class="list-a no-margin">
-                                                              <li>Balcony</li>
-                                                              <li>Outdoor Kitchen</li>
-                                                              <li>Cable Tv</li>
-                                                              <li>Deck</li>
-                                                              <li>Tennis Courts</li>
-                                                              <li>Internet</li>
-                                                              <li>Parking</li>
-                                                              <li>Sun Room</li>
-                                                              <li>Concrete Flooring</li>
-                                                            </ul>
-                                                          </div>-->
                                 </div>
                             </div>
                         </div>
+                        <% if(user!=null){ %>
+                        <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
+                        <a><button class="btn btn-primary" onclick="openForm()">Order</button></a>
 
+                        <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+                            <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                                <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">
+                                    <h1 style="text-align: center">Order</h1>
+                                    <p>Content of Orders.........</p>
+                                    <input type="hidden" name="postid" value="<%=postID%>">
+                                    <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
+                                    <input type="hidden" name="service" value="createOrder">
+                                    <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                        <%} else {%>
+                        <a href="login"><button type="button" class="btn btn-primary">Create an Order</button></a>
+                        <%}%>
                     </div>
                 </div>
+
             </section><!-- End Property Single-->
-            <%}%>
+
         </main><!-- End #main -->
 
         <!-- ======= Footer ======= -->

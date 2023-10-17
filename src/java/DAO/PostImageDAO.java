@@ -1,7 +1,10 @@
 package DAO;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PostImageDAO extends DBContext {
 
@@ -23,6 +26,21 @@ public class PostImageDAO extends DBContext {
         return 0;
     }
 
+    public String getImageThumbailsByPostID(int postID) {
+        String url = "";
+        try {
+            String sql = "select img_url from Post_Image where img_type = 'thumbnails' and post_id =" + postID;
+            PreparedStatement stm = connect.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                url = rs.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostImageDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return url;
+    }
+
     public int deletePostImageByPostId(int postId) {
         String sql = "DELETE FROM [dbo].[Post_Image]\n"
                 + "      WHERE [Post_Image].post_id = ?";
@@ -38,4 +56,5 @@ public class PostImageDAO extends DBContext {
         PostImageDAO PostImageDAO = new PostImageDAO();
         System.out.println(PostImageDAO.addPostImage(1, "C:\\swp-img", "thumbnail"));
     }
+
 }

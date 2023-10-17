@@ -21,8 +21,9 @@ public class OrdersDAO extends DBContext {
                 int tenantId = rs.getInt(2);
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
-                String status = rs.getString(5);
-                Orders order = new Orders(orderId, tenantId, landlordId, postId, status);
+                String order_date= rs.getString(5);
+                String status = rs.getString(6);
+                Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
         } catch (SQLException ex) {
@@ -40,8 +41,28 @@ public class OrdersDAO extends DBContext {
                 int tenantId = rs.getInt(2);
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
-                String status = rs.getString(5);
-                Orders order = new Orders(orderId, tenantId, landlordId, postId, status);
+                String order_date= rs.getString(5);
+                String status = rs.getString(6);
+                Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
+                Orders.add(order);
+            }
+        } catch (SQLException ex) {
+        }
+        return Orders;
+    }
+    public ArrayList<Orders> getOrdersByTenantId(int targetTenant) {
+        ArrayList<Orders> Orders = new ArrayList<>();
+        String sqlCommand = "SELECT * FROM Orders WHERE tenant_id =" + targetTenant;
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int orderId = rs.getInt(1);
+                int tenantId = rs.getInt(2);
+                int landlordId = rs.getInt(3);
+                int postId = rs.getInt(4);
+                String order_date= rs.getString(5);
+                String status = rs.getString(6);
+                Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
         } catch (SQLException ex) {
@@ -59,8 +80,9 @@ public class OrdersDAO extends DBContext {
                 int tenantId = rs.getInt(2);
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
-                String status = rs.getString(5);
-                Orders order = new Orders(orderId, tenantId, landlordId, postId, status);
+                String order_date= rs.getString(5);
+                String status = rs.getString(6);
+                Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
         } catch (SQLException ex) {
@@ -82,12 +104,36 @@ public class OrdersDAO extends DBContext {
         }
         return rowsUpdated != 0;
     }
+    public boolean addOrder(Orders order) {
+        String sql = "INSERT INTO [dbo].[Orders]\n"
+                + "           ([tenant_id]\n"
+                + "           ,[landlord_id]\n"
+                + "           ,[post_id]\n"
+                + "           ,[order_date]\n"
+                + "           ,[status])\n"
+                + "     VALUES\n"
+                + "		(?, ?, ?, ?, ?)";
 
+        try ( PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
+            preparedStatement.setInt(1, order.getTenantId());
+            preparedStatement.setInt(2, order.getLandlordId());
+            preparedStatement.setInt(3, order.getPostId());
+            preparedStatement.setString(4, order.getOrder_date());
+            preparedStatement.setString(5, order.getStatus());
+            int rowsInserted = preparedStatement.executeUpdate();
+            return (rowsInserted > 0);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     public static void main(String[] args) {
         OrdersDAO dao = new OrdersDAO();
-        ArrayList<Orders> list = dao.getAllOrders();
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println("NOTE NOTE NOTE" + list.get(i));
-        }
+//        ArrayList<Orders> list = dao.getAllOrders();
+//        for (int i = 0; i < list.size(); i++) {
+//            System.out.println("NOTE NOTE NOTE" + list.get(i));
+//        }
+        Orders order = new Orders(0, 9, 6, 1, "06/06/2023", "Sent");
+        dao.addOrder(order);
     }
 }

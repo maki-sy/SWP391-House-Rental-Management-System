@@ -46,6 +46,7 @@ public class ReportDAO extends DBContext {
     }
 
     public void addReport(Report report) {
+        int checkReturn = 0;
         try {
             String sql = "INSERT INTO [dbo].[Report]\n"
                     + "           ([reporter_id]\n"
@@ -79,7 +80,7 @@ public class ReportDAO extends DBContext {
             stm.setString(5, report.getCategories());
             stm.setString(6, report.getDescription());
             stm.setString(7, report.getStatus());
-            stm.executeUpdate();
+            checkReturn = stm.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("addReport() reports: " + ex.getMessage());
             Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);

@@ -5,6 +5,7 @@
 package controller;
 
 import DAO.PostDAO;
+import DAO.PostImageDAO;
 import DAO.SearchDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import model.PostImage;
 import model.PostRental;
+import model.PropertyLocation;
+import model.PropertyType;
+import service.SearchService;
 
 /**
  *
@@ -41,14 +45,16 @@ public class SearchController extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             DAO.SearchDAO dao = new SearchDAO();
-            ResultSet type = dao.getData("select distinct type from Post;");
+            SearchService handle = new SearchService();
+            ArrayList<PropertyType> type = handle.getAllType();
+
             ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
             ResultSet priceFrom = dao.getData("select distinct price from Post;");
             ResultSet priceTo = dao.getData("select distinct price from Post;");
             ResultSet areaFrom = dao.getData("select distinct area from Post;");
             ResultSet areaTo = dao.getData("select distinct area from Post;");
             ResultSet address = dao.getData("select distinct address from Post;");
-            ResultSet location = dao.getData("select distinct location_name from Property_Location;");
+            ArrayList<PropertyLocation> location = handle.getAllLocation();
 
             request.setAttribute("type", type);
             request.setAttribute("bedroom", bedrooms);
@@ -71,7 +77,16 @@ public class SearchController extends HttpServlet {
             List<PostRental> list = dao.searchPostByAttributes(search, roomType, bedroom, priceF, priceT, areaF, areaT, locationn);
             System.out.println(list);
             request.setAttribute("listOfPost", list);
+            PostImageDAO postImageDAO = new PostImageDAO();
+            ArrayList<String> thumbnailList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                String url = postImageDAO.getImageThumbailsByPostID(list.get(i).getId());
+                thumbnailList.add(url);
+            }
+            request.setAttribute("thumbnailList", thumbnailList);
+
             request.getRequestDispatcher("AllPost.jsp").forward(request, response);
+
         }
     }
 

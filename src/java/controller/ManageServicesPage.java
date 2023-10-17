@@ -11,7 +11,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import model.PropertyType;
 import model.Users;
+import service.SearchService;
 
 @WebServlet(name = "ManageServicesPage", urlPatterns = {"/ManageServicesPage"})
 public class ManageServicesPage extends HttpServlet {
@@ -29,7 +32,7 @@ public class ManageServicesPage extends HttpServlet {
             String url = request.getContextPath() + "/landlordServicesPage";
             response.sendRedirect(url);
         } else if (user.getRoleID() == 3) {
-            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            response.sendRedirect("trang-chu");
         } else {
             // Default case: Redirect to index.jsp for unknown roles
             response.sendRedirect("trang-chu");

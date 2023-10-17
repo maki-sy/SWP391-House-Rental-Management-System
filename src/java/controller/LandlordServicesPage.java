@@ -46,10 +46,9 @@ public class LandlordServicesPage extends HttpServlet {
             String service = request.getParameter("service");
 
             // xem order chua xu ly
-            if(service == null) {
+            if (service == null) {
                 request.getRequestDispatcher("/landlordServicesPage?service=pending-requests").forward(request, response);
-            }
-            else if (service.equals("pending-requests")) {
+            } else if (service.equals("pending-requests")) {
                 ArrayList<Orders> ordersList = handleService.getOrdersProcessing(user.getId());
                 request.setAttribute("ordersList", ordersList);
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
@@ -132,21 +131,38 @@ public class LandlordServicesPage extends HttpServlet {
                     PostRental post = handleService.getLastestPostByUserId(user.getId());
                     boolean isThumbnail = true;
                     // luu hinh anh
+//<<<<<<< HEAD
+//                    String uploadDirectory = "C:\\ProgramData";
+//                    String rootDirectory = "./../../../../../../ProgramData/";
+//                    for (Part filePart : request.getParts()) {
+//                        String fileName = handleService.getFileName(filePart);
+//                        if (!fileName.equals("unknown.jpg")) {
+//                            String imageType;
+//                            String imageUrl = rootDirectory + fileName;
+//                            if (isThumbnail) {
+//                                imageType = "thumbails";
+//=======
                     for (Part filePart : request.getParts()) {
                         String fileName = handleService.getFileName(filePart);
                         if (!fileName.equals("unknown.jpg") && !fileName.equals("") && !fileName.isEmpty()) {
                             String imageType;
                             if (isThumbnail) {
                                 imageType = "thumbnails";
+//>>>>>>> 4547230c0e8dd6bac2d429fe0a216952e0f9d6c4
                                 isThumbnail = false;
                             } else {
                                 imageType = "main";
                             }
+//////<<<<<<< HEAD
+////                            Path filePath = Paths.get(uploadDirectory, fileName);
+////                            handleService.addPostImage(post.getId(), imageUrl, imageType);
+//=======
 
                             String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
                             fileName = "post-id-" + post.getId() + "-" + imageType + "(" + (++count) + ")" + "." + fileExtension;
                             String savePath = appPath + File.separator + "web" + File.separator + "assets" + File.separator + "img";
                             String saveSQLpath = "./assets/img/" + fileName;
+//>>>>>>> 4547230c0e8dd6bac2d429fe0a216952e0f9d6c4
                             try ( InputStream fileContent = filePart.getInputStream()) {
                                 Path filePath = Paths.get(savePath, fileName);
                                 Files.copy(fileContent, filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -181,7 +197,7 @@ public class LandlordServicesPage extends HttpServlet {
                 ArrayList<PostRental> postList = handleService.getPublishedPostsByUserId(user.getId());
                 request.setAttribute("postList", postList);
                 request.getRequestDispatcher("/housedetail?id=" + postId).forward(request, response);
-            } else if(service.equals("transaction-history")){
+            } else if (service.equals("transaction-history")) {
                 response.sendRedirect("transaction");
                 return;
             }
