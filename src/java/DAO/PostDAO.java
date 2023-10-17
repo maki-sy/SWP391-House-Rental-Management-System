@@ -206,6 +206,46 @@ public class PostDAO extends DBContext {
         return post;
     }
 
+    /**
+     * Get post information by postID
+     *
+     * @param postID
+     * @return PostRental object contains information, or null if there is no
+     * post corresponding to postID
+     */
+    public PostRental getPostByID(int postID) {
+        PostRental post = null;
+        String sqlCommand = "SELECT * FROM POST where id = ?;";
+
+        try ( PreparedStatement preStmt = connect.prepareStatement(sqlCommand)) {
+            preStmt.setInt(1, postID);
+            ResultSet rs = preStmt.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
+
+                post = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getPostByID() reports " + ex.getMessage());
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return post;
+    }
+
     public List<PostRental> searchPostByKeyword(String key) {
         List<PostRental> post = new ArrayList<>();
         String sqlCommand = "SELECT * FROM Post WHERE name LIKE '%" + key + "%'";
@@ -363,7 +403,7 @@ public class PostDAO extends DBContext {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
                 + "  FROM [Post]\n"
-                 + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
+                + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
                 + "  ORDER BY [status]";
         ResultSet rs = getData(sqlCommand);
         try {
@@ -423,6 +463,7 @@ public class PostDAO extends DBContext {
         }
         return false;
     }
+
     public List<PostRental> getPostDetailsbyLandlordId(int pid) {
         List<PostRental> post = new ArrayList<>();
         String sqlCommand = "SELECT * FROM POST where landlord_id = " + pid;
@@ -438,7 +479,7 @@ public class PostDAO extends DBContext {
                 String address = rs.getString(7);
                 String dess = rs.getString(8);
                 int landlord_id = rs.getInt(9);
-                int location_id=rs.getInt(10);
+                int location_id = rs.getInt(10);
                 String status = rs.getString(11);
                 int promotion_id = rs.getInt(12);
                 Date start = rs.getDate(13);
@@ -452,6 +493,28 @@ public class PostDAO extends DBContext {
         }
 
         return post;
+    }
+
+    /**
+     * Get post's name by post's id
+     *
+     * @param postID
+     * @return post name if post exist, otherwise null
+     */
+    public String getPostName(int postID) {
+        String SQL = "SELECT name FROM Post WHERE id = ?;";
+        String name = null;
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setInt(1, postID);
+            ResultSet rs = preStmt.executeQuery();
+            if (rs.next()) {
+                name = rs.getString(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getPostName() reports " + ex.getMessage());
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return name;
     }
 
 }
