@@ -21,35 +21,119 @@ import model.PostRental;
  */
 public class PostDAO extends DBContext {
 
-    public List<PostRental> getAllPosts() {
-        List<PostRental> post = new ArrayList<>();
-        String sqlCommand = "SELECT * FROM POST;";
+    /**
+     *
+     * @return creater: tienPV
+     */
+    public ArrayList<PostRental> getAllPosts() {
+        ArrayList<PostRental> result = new ArrayList<>();
+        String sqlCommand = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[price]\n"
+                + "      ,[type]\n"
+                + "      ,[area]\n"
+                + "      ,[NumOfBedrooms]\n"
+                + "      ,[address]\n"
+                + "      ,[description]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[location_id]\n"
+                + "      ,[status]\n"
+                + "      ,[promotion_id]\n"
+                + "      ,[post_start_date]\n"
+                + "      ,[post_end_date]\n"
+                + "  FROM [dbo].[Post]\n";
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {
+
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
                 double price = rs.getDouble(3);
                 int type = rs.getInt(4);
                 int area = rs.getInt(5);
-                int numofbeds = rs.getInt(6);
+                int numOfBeds = rs.getInt(6);
                 String address = rs.getString(7);
-                String dess = rs.getString(8);
+                String desscription = rs.getString(8);
                 int landlord_id = rs.getInt(9);
                 int location_id = rs.getInt(10);
                 String status = rs.getString(11);
-                int promotion_id = rs.getInt(12);
-                Date start = rs.getDate(13);
-                Date end = rs.getDate(14);
-
-                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
-                post.add(po);
+                int promotion = rs.getInt(12);
+                Date post_start = rs.getDate(13);
+                Date post_end = rs.getDate(14);
+                result.add(new PostRental(id, name, price, type, area, numOfBeds, address, desscription, landlord_id, location_id, status, promotion, post_start, post_end));
             }
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return result;
+    }
 
-        return post;
+    /**
+     *
+     * @param landlordID
+     * @return creater: tienPV
+     */
+    public ArrayList<PostRental> getAllPostsByLandlordId(int landlordID) {
+        ArrayList<PostRental> result = new ArrayList<>();
+        String sqlCommand = "SELECT TOP (1000) [id]\n"
+                + "      ,[name]\n"
+                + "      ,[price]\n"
+                + "      ,[type]\n"
+                + "      ,[area]\n"
+                + "      ,[NumOfBedrooms]\n"
+                + "      ,[address]\n"
+                + "      ,[description]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[location_id]\n"
+                + "      ,[status]\n"
+                + "      ,[promotion_id]\n"
+                + "      ,[post_start_date]\n"
+                + "      ,[post_end_date]\n"
+                + "  FROM [dbo].[Post]\n"
+                + "  WHERE [landlord_id] = " + landlordID;
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numOfBeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String desscription = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion = rs.getInt(12);
+                Date post_start = rs.getDate(13);
+                Date post_end = rs.getDate(14);
+                result.add(new PostRental(id, name, price, type, area, numOfBeds, address, desscription, landlord_id, location_id, status, promotion, post_start, post_end));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public boolean RemovePostByPostId(int postId) {
+        try {
+            String sql = "DELETE FROM [dbo].[Post]\n"
+                    + "      WHERE [dbo].[Post].id = ?";
+            PreparedStatement pre = connect.prepareStatement(sql);
+            pre.setInt(1, postId);
+            return pre.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
 
     public List<PostRental> getLastestPost() {
@@ -186,7 +270,6 @@ public class PostDAO extends DBContext {
 
                 PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
                 post.add(po);
-                System.out.println("abcabc");
             }
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -218,6 +301,20 @@ public class PostDAO extends DBContext {
         }
     }
 
+    /**
+     * 
+     * @param name
+     * @param price
+     * @param type
+     * @param area
+     * @param NumOfBedrooms
+     * @param address
+     * @param description
+     * @param landrlod_id
+     * @param location_id
+     * @return
+     * @creater: tienPV
+     */
     public boolean insertPost(String name, int price, int type,
             int area, int NumOfBedrooms, String address, String description,
             int landrlod_id, int location_id) {
@@ -253,6 +350,12 @@ public class PostDAO extends DBContext {
         return false;
     }
 
+    /**
+     *
+     * @param userId
+     * @return 
+     * @creater: tienPV
+     */
     public PostRental getLastestPostByUserId(int userId) {
         String sqlCommand = "SELECT TOP 1 * FROM POST\n"
                 + "WHERE landlord_id = " + userId + "\n"
@@ -284,10 +387,16 @@ public class PostDAO extends DBContext {
         return null;
     }
 
+    /**
+     * 
+     * @param userId
+     * @return 
+     * @creater: tienPV
+     */
     public ArrayList<PostRental> getPublishedPostsByUserId(int userId) {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
-                + "  FROM [SWP391].[dbo].[Post]\n"
+                + "  FROM [dbo].[Post]\n"
                 + "  WHERE [landlord_id] = " + userId + " AND status != 'draft' AND status != 'deleted'\n"
                 + "  ORDER BY [status]";
         ResultSet rs = getData(sqlCommand);
@@ -319,8 +428,8 @@ public class PostDAO extends DBContext {
     public ArrayList<PostRental> getEditablePostsByUserId(int userId) {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
-                + "  FROM [SWP391].[dbo].[Post]\n"
-                 + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
+                + "  FROM [dbo].[Post]\n"
+                + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
                 + "  ORDER BY [status]";
         ResultSet rs = getData(sqlCommand);
         try {
@@ -380,6 +489,7 @@ public class PostDAO extends DBContext {
         }
         return false;
     }
+
     public List<PostRental> getPostDetailsbyLandlordId(int pid) {
         List<PostRental> post = new ArrayList<>();
         String sqlCommand = "SELECT * FROM POST where landlord_id = " + pid;
@@ -395,7 +505,7 @@ public class PostDAO extends DBContext {
                 String address = rs.getString(7);
                 String dess = rs.getString(8);
                 int landlord_id = rs.getInt(9);
-                int location_id=rs.getInt(10);
+                int location_id = rs.getInt(10);
                 String status = rs.getString(11);
                 int promotion_id = rs.getInt(12);
                 Date start = rs.getDate(13);
@@ -411,8 +521,161 @@ public class PostDAO extends DBContext {
         return post;
     }
 
+    /**
+     * 
+     * @param landlordId
+     * @return 
+     * @creater: tienPV
+     */
+    public PostRental getLastestPostByLandlordId(int landlordId) {
+        PostRental result = new PostRental();
+        String sqlCommand = "SELECT TOP (1) [id]\n"
+                + "      ,[name]\n"
+                + "      ,[price]\n"
+                + "      ,[type]\n"
+                + "      ,[area]\n"
+                + "      ,[NumOfBedrooms]\n"
+                + "      ,[address]\n"
+                + "      ,[description]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[location_id]\n"
+                + "      ,[status]\n"
+                + "      ,[promotion_id]\n"
+                + "      ,[post_start_date]\n"
+                + "      ,[post_end_date]\n"
+                + "  FROM [dbo].[Post]\n"
+                + "  WHERE [landlord_id]= " + landlordId + "\n"
+                + "  ORDER BY  [id] DESC";
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numOfBeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String desscription = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion = rs.getInt(12);
+                Date post_start = rs.getDate(13);
+                Date post_end = rs.getDate(14);
+                result = new PostRental(id, name, price, type, area, numOfBeds, address, desscription, landlord_id, location_id, status, promotion, post_start, post_end);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+   /**
+    * 
+    * @param landlordId
+    * @return 
+    * @creater: tienPV
+    */
+    public PostRental getSecondLastestPostByLandlordId(int landlordId) {
+        PostRental result = new PostRental();
+        String sqlCommand = "SELECT TOP (2) [id]\n"
+                + "      ,[name]\n"
+                + "      ,[price]\n"
+                + "      ,[type]\n"
+                + "      ,[area]\n"
+                + "      ,[NumOfBedrooms]\n"
+                + "      ,[address]\n"
+                + "      ,[description]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[location_id]\n"
+                + "      ,[status]\n"
+                + "      ,[promotion_id]\n"
+                + "      ,[post_start_date]\n"
+                + "      ,[post_end_date]\n"
+                + "  FROM [dbo].[Post]\n"
+                + "  WHERE [landlord_id]= " + landlordId + "\n"
+                + "  ORDER BY [id] DESC";
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numOfBeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String desscription = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion = rs.getInt(12);
+                Date post_start = rs.getDate(13);
+                Date post_end = rs.getDate(14);
+                result = new PostRental(id, name, price, type, area, numOfBeds, address, desscription, landlord_id, location_id, status, promotion, post_start, post_end);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public PostRental getPostByPostByPostId(int postId) {
+        PostRental result = new PostRental();
+        String sqlCommand = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[price]\n"
+                + "      ,[type]\n"
+                + "      ,[area]\n"
+                + "      ,[NumOfBedrooms]\n"
+                + "      ,[address]\n"
+                + "      ,[description]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[location_id]\n"
+                + "      ,[status]\n"
+                + "      ,[promotion_id]\n"
+                + "      ,[post_start_date]\n"
+                + "      ,[post_end_date]\n"
+                + "  FROM [dbo].[Post]\n"
+                + "  WHERE [id] =" + postId;
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numOfBeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String desscription = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion = rs.getInt(12);
+                Date post_start = rs.getDate(13);
+                Date post_end = rs.getDate(14);
+                result = new PostRental(id, name, price, type, area, numOfBeds, address, desscription, landlord_id, location_id, status, promotion, post_start, post_end);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
-        System.out.println(dao.getLastestPostByUserId(1));
+       
     }
 }
