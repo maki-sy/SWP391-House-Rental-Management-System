@@ -110,7 +110,7 @@ public class AdminAccountController extends HttpServlet {
                     dao_l.updateLandlordInfo(userid, fname, lname, civilid, address, phone);
                     break;
             }
-            request.getRequestDispatcher("admin-dashboard?service=manageAccount").forward(request, response);
+            response.sendRedirect("admin-dashboard?service=manageAccount");
         }
 
     }
