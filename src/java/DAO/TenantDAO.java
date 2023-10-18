@@ -162,4 +162,29 @@ public class TenantDAO extends DBContext {
         }
         return n;
     }
+    
+    public void updateTenantInfo(int userid, String fname, String lname, String civilid, String address, String phone) {
+        String SQL = "UPDATE [dbo].[Tenant]\n"
+                + "   SET [first_name] = ?\n"
+                + "      ,[last_name] = ?\n"
+                + "      ,[address] = ?\n"
+                + "      ,[phone] = ?\n"
+                + "      ,[civil_id] = ?\n"
+                + " WHERE id = ?;";
+
+        try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setString(1, fname);
+            preStmt.setString(2, lname);
+            preStmt.setString(3, address);
+            preStmt.setString(4, phone);
+            preStmt.setString(5, civilid);
+            preStmt.setInt(6, userid);
+
+            preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateTenantInfo(int userid, String fname, String lname, String civilid, String address, String phone) reports " + ex.getMessage());
+            Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
