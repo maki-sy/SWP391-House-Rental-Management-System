@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class DBContext {
 
     protected Connection connect = null;
-    private static final String DB_URL = "jdbc:sqlserver://localhost\\SWP391-House-Rental:1433;databaseName=SWP391";
+    private static final String DB_URL = "jdbc:sqlserver://localhost\\SWP391-House-Rental:1433;databaseName=TuanAnhFinal";
     private static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static final String DB_USR = "sa";
     private static final String DB_PWD = "123456";

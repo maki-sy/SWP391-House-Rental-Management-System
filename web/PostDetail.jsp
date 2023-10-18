@@ -6,10 +6,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
 <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
-<%@ page import="model.Users" %>
+
+<%@ page import="model.Users, service.PostService" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
-Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+    Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+    PostService pService = new PostService();
     DAO.PostDAO dao = new PostDAO();
 %>
 
@@ -314,7 +317,7 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                         </div>
                                         <div class="summary-list">
                                             <ul class="list">
-                                                
+
                                                 <li class="d-flex justify-content-between">
                                                     <strong>Location:</strong>
                                                     <span><%=post.getAddress()%></span>
@@ -378,6 +381,9 @@ Users user = session.getAttribute("user") == null ? null : (Users)session.getAtt
                                                     </div>
                                             </div>
                                     </div>
+                                    <!--Wishlish-->
+                                    <i class="fa-regular fa-heart"></i><a href="wishlist?service=add&id=<%= postID %>">Add to wishlist</a>
+                                    <!--Wishlish-->
                                 </div>
                                 <div class="col-md-7 col-lg-7 section-md-t3">
                                     <div class="row">

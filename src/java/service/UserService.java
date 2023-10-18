@@ -9,6 +9,7 @@ import DAO.LandlordDAO;
 import DAO.TenantDAO;
 import DAO.TokenDAO;
 import DAO.UserDAO;
+import DAO.WishlistDAO;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -39,6 +40,7 @@ import model.Landlord;
 import model.Tenant;
 import model.Token;
 import model.Users;
+import model.Wishlist;
 
 /**
  *
@@ -51,6 +53,7 @@ public class UserService {
     private static final TokenDAO TOKEN_DAO = new TokenDAO();
     private static final UserDAO USER_DAO = new UserDAO();
     private static final AdminDAO ADMIN_DAO = new AdminDAO();
+    private static final WishlistDAO WISHLIST_DAO = new WishlistDAO();
 
     /**
      *
@@ -507,7 +510,7 @@ public class UserService {
             return l.getFirstName() + " " + l.getLastName();
         }
         Admin a = ADMIN_DAO.getAdminByID(userID);
-        if(a != null){
+        if (a != null) {
             return a.getFirstName() + " " + a.getLastName();
         }
 
@@ -522,5 +525,27 @@ public class UserService {
         }
         Users user = userdao.getUsersByEmail(email).get(0);
         return user;
+    }
+
+    /**
+     * Add post to user's wish list. This function only add property to user's
+     * wish list when that property is not in wish list before
+     *
+     * @param userID
+     * @param postID
+     */
+    public void addToWishlist(int userID, int postID) {
+//        Check whether this property has been added to user's wish list before
+        if (!WISHLIST_DAO.checkExist(userID, postID)) {
+            WISHLIST_DAO.addWish(userID, postID);
+        }
+    }
+
+    public List<Wishlist> getWishlistByUserID(int userID) {
+        return WISHLIST_DAO.getWishlistByUserID(userID);
+    }
+
+    public int deleteWish(int wishID) {
+        return WISHLIST_DAO.deleteWishByID(wishID);
     }
 }
