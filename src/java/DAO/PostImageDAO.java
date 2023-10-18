@@ -79,7 +79,6 @@ public class PostImageDAO extends DBContext {
 
     public static void main(String[] args) {
         PostImageDAO PostImageDAO = new PostImageDAO();
-        System.out.println(PostImageDAO.addPostImage(1, "C:\\swp-img", "thumbnail"));
     }
 
 }

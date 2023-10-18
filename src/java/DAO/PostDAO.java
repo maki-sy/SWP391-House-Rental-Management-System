@@ -385,7 +385,11 @@ public class PostDAO extends DBContext {
     }
 
     /**
+<<<<<<< HEAD
      *
+=======
+     * 
+>>>>>>> 7bd606ceeefcb324db01f58e9ea849ed42ac788d
      * @param name
      * @param price
      * @param type
@@ -436,7 +440,11 @@ public class PostDAO extends DBContext {
     /**
      *
      * @param userId
+<<<<<<< HEAD
      * @return
+=======
+     * @return 
+>>>>>>> 7bd606ceeefcb324db01f58e9ea849ed42ac788d
      * @creater: tienPV
      */
     public PostRental getLastestPostByUserId(int userId) {
@@ -471,9 +479,9 @@ public class PostDAO extends DBContext {
     }
 
     /**
-     *
+     * 
      * @param userId
-     * @return
+     * @return 
      * @creater: tienPV
      */
     public ArrayList<PostRental> getPublishedPostsByUserId(int userId) {
@@ -511,7 +519,7 @@ public class PostDAO extends DBContext {
     public ArrayList<PostRental> getEditablePostsByUserId(int userId) {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
-                + "  FROM [Post]\n"
+                + "  FROM [dbo].[Post]\n"
                 + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
                 + "  ORDER BY [status]";
         ResultSet rs = getData(sqlCommand);
@@ -605,6 +613,7 @@ public class PostDAO extends DBContext {
     }
 
     /**
+<<<<<<< HEAD
      * Get post's name by post's id
      *
      * @param postID
@@ -629,6 +638,11 @@ public class PostDAO extends DBContext {
     /**
      * @param landlordId
      * @return
+=======
+     * 
+     * @param landlordId
+     * @return 
+>>>>>>> 7bd606ceeefcb324db01f58e9ea849ed42ac788d
      * @creater: tienPV
      */
     public PostRental getLastestPostByLandlordId(int landlordId) {
@@ -780,6 +794,5 @@ public class PostDAO extends DBContext {
 
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
-
     }
 }
