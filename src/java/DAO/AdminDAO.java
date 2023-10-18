@@ -48,9 +48,8 @@ public class AdminDAO extends DBContext {
 
     }
 
-    public int addAdmin(Admin admin) {
-        int added = 0;
-        String sqlCommand = "INSERT INTO [Admin] ([id],[first_name],[last_name],[Phone]\n"
+    public void addAdmin(Admin admin) {
+        String sqlCommand = "INSERT INTO [Admin] ([id],[first_name],[last_name],[Phone])\n"
                 + "     VALUES (?,?,?,?)";
 
         try {
@@ -61,13 +60,12 @@ public class AdminDAO extends DBContext {
             preStatement.setString(3, admin.getLastName());
             preStatement.setString(4, admin.getPhone());
 
-            added = preStatement.executeUpdate();
+            preStatement.executeUpdate();
         } catch (SQLException ex) {
-            System.err.println("addLandlord() reports: " + ex.getMessage());
-            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("addAdmin(Admin admin) reports: " + ex.getMessage());
+            Logger.getLogger(AdminDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return added;
     }
 
     public void updateAdminInfo(int userid, String fname, String lname, String phone) {
@@ -87,7 +85,7 @@ public class AdminDAO extends DBContext {
             preStmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("updateAdminInfo(int userid, String fname, String lname, String phone) reports " + ex.getMessage());
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

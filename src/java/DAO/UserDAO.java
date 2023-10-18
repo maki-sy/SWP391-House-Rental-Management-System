@@ -349,17 +349,6 @@ public class UserDAO extends DBContext {
     }
 
     public void deleteUser(int userid) {
-        String SQL = "delete from Users where product_id = ?";
-        try {
-            PreparedStatement preStmt = connect.prepareStatement(SQL);
-            preStmt.setInt(1, userid);
-
-            preStmt.executeUpdate();
-        } catch (SQLException ex) {
-            System.out.println("deleteUser(int userid) reports " + ex.getMessage());
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         String role = getUserRole(getUserByID(userid));
         switch (role) {
             case "Tenant":
@@ -373,7 +362,7 @@ public class UserDAO extends DBContext {
                     System.out.println("deleteUser(int userid) reports " + ex.getMessage());
                     Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                return;
+                break;
             case "Landlord":
                 String SQL2 = "delete from Landlord where id = ?";
                 try {
@@ -385,7 +374,7 @@ public class UserDAO extends DBContext {
                     System.out.println("deleteUser(int userid) reports " + ex.getMessage());
                     Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                return;
+                break;
             case "Admin":
                 String SQL3 = "delete from Admin where id = ?";
                 try {
@@ -397,7 +386,18 @@ public class UserDAO extends DBContext {
                     System.out.println("deleteUser(int userid) reports " + ex.getMessage());
                     Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                return;
+                break;
+        }
+        
+        String SQL = "delete from Users where id = ?";
+        try {
+            PreparedStatement preStmt = connect.prepareStatement(SQL);
+            preStmt.setInt(1, userid);
+
+            preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("deleteUser(int userid) reports " + ex.getMessage());
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

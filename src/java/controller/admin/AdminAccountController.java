@@ -100,17 +100,17 @@ public class AdminAccountController extends HttpServlet {
                 case "Admin":
                     AdminDAO dao_a = new AdminDAO();
                     dao_a.updateAdminInfo(userid, fname, lname, phone);
-                    return;
+                    break;
                 case "Tenant":
                     TenantDAO dao_t = new TenantDAO();
                     dao_t.updateTenantInfo(userid, fname, lname, civilid, address, phone);
-                    return;
+                    break;
                 case "Landlord":
                     LandlordDAO dao_l = new LandlordDAO();
                     dao_l.updateLandlordInfo(userid, fname, lname, civilid, address, phone);
-                    return;
+                    break;
             }
-            response.sendRedirect("admin-dashboard?service=manageAccount");
+            request.getRequestDispatcher("admin-dashboard?service=manageAccount").forward(request, response);
         }
 
     }

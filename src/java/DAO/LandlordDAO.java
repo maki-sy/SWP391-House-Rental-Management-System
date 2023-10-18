@@ -106,7 +106,7 @@ public class LandlordDAO extends DBContext {
             }
         } catch (SQLException ex) {
             System.err.println("getLandlordByEmail(String email) reports: " + ex.getMessage());
-            Logger.getLogger(TenantDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return l;
@@ -172,7 +172,7 @@ public class LandlordDAO extends DBContext {
             int rowUpdated = stm.executeUpdate();
             return (rowUpdated > 0);
         } catch (SQLException ex) {
-            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -198,7 +198,7 @@ public class LandlordDAO extends DBContext {
             preStmt.executeUpdate();
         } catch (SQLException ex) {
             System.out.println("updateLandlordInfo(int userid, String fname, String lname, String civilid, String address, String phone) reports " + ex.getMessage());
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
