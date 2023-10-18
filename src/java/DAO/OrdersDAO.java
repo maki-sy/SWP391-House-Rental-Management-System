@@ -21,8 +21,8 @@ public class OrdersDAO extends DBContext {
                 int tenantId = rs.getInt(2);
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
-                String order_date= rs.getString(5);
-                String status = rs.getString(6);
+                String status = rs.getString(5);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
@@ -41,8 +41,8 @@ public class OrdersDAO extends DBContext {
                 int tenantId = rs.getInt(2);
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
-                String order_date= rs.getString(5);
-                String status = rs.getString(6);
+                String status = rs.getString(5);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
@@ -60,8 +60,8 @@ public class OrdersDAO extends DBContext {
                 int tenantId = rs.getInt(2);
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
-                String order_date= rs.getString(5);
-                String status = rs.getString(6);
+                String status = rs.getString(5);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
@@ -80,8 +80,8 @@ public class OrdersDAO extends DBContext {
                 int tenantId = rs.getInt(2);
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
-                String order_date= rs.getString(5);
-                String status = rs.getString(6);
+                String status = rs.getString(5);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
