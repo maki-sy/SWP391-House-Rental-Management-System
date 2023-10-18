@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>AdminLTE 3 | Projects</title>
-<%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation, model.Users" %>
-<%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
+        <%@page import="DAO.UserDAO, model.Users, service.UserService" %>
+        <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -245,57 +245,101 @@
                             <table class="table table-striped projects">
                                 <thead>
                                     <tr>
-                                        <th style="width: 25%">
+                                        <th style="width: 1%">
                                             ID
                                         </th>
-                                        <th style="width: 25%">
+                                        <th style="width: 13%">
                                             Account Email
                                         </th>
-                                        <th style="width: 25%">
-                                            Role ID
+                                        <th style="width: 10%">
+                                            Full Name
                                         </th>
-                                        <th style="width: 25%"  class="text-center" >
+                                        <th style="width: 10%">
+                                            Civil ID
+                                        </th>
+                                        <th style="width: 18%">
+                                            Address
+                                        </th>
+                                        <th style="width: 10%">
+                                            Phone
+                                        </th>
+                                        <th style="width: 8%">
+                                            Role
+                                        </th>
+                                        <th style="width: 5%" class="text-center">
                                             Status
                                         </th>
-
+                                        <th style="width: 15%">
+                                            <a href="admin-account?action=add"  class="btn btn-success btn-sm" ><i class="fas fa-plus"></i> <span>Add New Account</span></a>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <%
                                 List<Users> list = (List<Users>) request.getAttribute("listOfUsers");
+                                UserService uService = new UserService();
+                                UserDAO dao = new UserDAO();
                                 %>
-                                <%for(Users us:list){%>
                                 <tbody>
+                                    <%for(Users us:list){%>
                                     <tr>
                                         <td>
                                             <%=us.getId()%>
                                         </td>
                                         <td>
-                                            <a>
-                                                <%=us.getEmail()%>
-                                            </a>
+                                            <%=us.getEmail()%>
                                         </td>
                                         <td>
-                                            <%=us.getRoleID()%>
+                                            <%=uService.getUserName(us.getId()) == null ? "" : uService.getUserName(us.getId())%>
                                         </td>
-
+                                         <td>
+                                            <%=uService.getCivilID(us.getId()) == null ? "" : uService.getCivilID(us.getId())%>
+                                        </td>
+                                        <td>
+                                            <%=uService.getAddress(us.getId()) == null ? "" : uService.getAddress(us.getId())%>
+                                        </td>
+                                        <td>
+                                            <%=uService.getPhone(us.getId()) == null ? "" : uService.getPhone(us.getId())%>
+                                        </td>
+                                        <td>
+                                            <%=dao.getUserRole(us)%>
+                                        </td>
+                                        <% if( us.getStatus().name() == "VER" ){%>
                                         <td class="project-state">
-                                            <span class="badge badge-success"><%=us.getStatus()%></span>
+                                            <span class="badge badge-success">Verified</span>
                                         </td>
+                                        <%}%>
+                                        <% if( us.getStatus().name() == "UNV" ){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-warning">Unverified</span>
+                                        </td>
+                                        <%}%>
+                                        <% if( us.getStatus().name() == "BAN" ){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-danger">Banned</span>
+                                        </td>
+                                        <%}%>
+                                        <% if( us.getStatus().name() == "DEL" ){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-secondary">Deleted</span>
+                                        </td>
+                                        <%}%>
                                         <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm" href="#">
+                                            <a class="btn btn-info btn-sm" href="admin-account?action=edit&userid=<%=us.getId()%>">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
                                                 Edit
                                             </a>
-                                            <a class="btn btn-danger btn-sm" href="#">
+                                            <% if( us.getStatus().name() != "DEL" ){%>
+                                            <a class="btn btn-danger btn-sm" href="admin-account?action=delete&userid=<%=us.getId()%>">
                                                 <i class="fas fa-trash">
                                                 </i>
                                                 Delete
                                             </a>
+                                            <%}%>
                                         </td>
+                                        <%}%>
                                     </tr>
-                                </tbody>
-                                <%}%>
+                                </tbody>                  
                             </table>
                         </div>
                         <!-- /.card-body -->

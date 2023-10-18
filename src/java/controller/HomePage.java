@@ -17,6 +17,7 @@ import java.util.List;
 import model.PostRental;
 import model.PropertyLocation;
 import model.PropertyType;
+import service.PostService;
 import service.SearchService;
 
 /**
@@ -38,18 +39,31 @@ public class HomePage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        DAO.PostDAO dao = new PostDAO();
-        List<PostRental> list = dao.getLastestPost();
-        List<PostRental> highest = dao.getHighestHousePrice();
+        PostService post = new PostService();
+        List<PostRental> last = post.getLastestHouse();
+        List<PostRental> highest = post.getHighestHousePrice();
+        List<String> thumbnailsLast = new ArrayList<>();
+        List<String> thumbnailsHighest = new ArrayList<>();
+        for (PostRental pr : last) {
+            int postId = pr.getId();
+            String url = post.getImageThumbailsByPostID(postId);
+            thumbnailsLast.add(url);
+        }
+        for (PostRental pr : highest) {
+            int postId = pr.getId();
+            String url = post.getImageThumbailsByPostID(postId);
+            thumbnailsHighest.add(url);
+        }
+
+
         SearchService handle = new SearchService();
         ArrayList<PropertyType> type = handle.getAllType();
-
-        ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
-        ResultSet priceFrom = dao.getData("select distinct price from Post;");
-        ResultSet priceTo = dao.getData("select distinct price from Post;");
-        ResultSet areaFrom = dao.getData("select distinct area from Post;");
-        ResultSet areaTo = dao.getData("select distinct area from Post;");
-        ResultSet address = dao.getData("select distinct address from Post;");
+        ResultSet bedrooms = post.getData("select distinct NumOfBedrooms from Post;");
+        ResultSet priceFrom = post.getData("select distinct price from Post;");
+        ResultSet priceTo = post.getData("select distinct price from Post;");
+        ResultSet areaFrom = post.getData("select distinct area from Post;");
+        ResultSet areaTo = post.getData("select distinct area from Post;");
+        ResultSet address = post.getData("select distinct address from Post;");
         ArrayList<PropertyLocation> location = handle.getAllLocation();
 
         request.setAttribute("type", type);
@@ -61,8 +75,10 @@ public class HomePage extends HttpServlet {
         request.setAttribute("address", address);
         request.setAttribute("location", location);
 
-        request.setAttribute("lastestPost", list);
+        request.setAttribute("lastestPost", last);
         request.setAttribute("highestPost", highest);
+        request.setAttribute("thumbnailsLast", thumbnailsLast);
+        request.setAttribute("thumbnailsHighest", thumbnailsHighest);
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 

@@ -21,22 +21,60 @@ public class LandlordService {
     private final LandlordDAO landlordDAO = new LandlordDAO();
     private final DAO.PostImageDAO postImageDAO = new PostImageDAO();
 
+    /**
+     * @uses: Update order status to 'approved'
+     * @param OrderId ID of the order need to update
+     * @return True if updated success, false otherwise
+     * @creater: tienPV
+     */
     public boolean isApproveStatusUpdated(int OrderId) {
         return ordersDAO.updateStatus("approved", OrderId);
     }
 
+    /**
+     * @uses: Update order status to 'rejected'
+     * @param OrderId ID of the order need to update
+     * @return True if updated success, false otherwise
+     * @creater: tienPV
+     */
     public boolean isRejectStatusUpdated(int OrderId) {
         return ordersDAO.updateStatus("rejected", OrderId);
     }
 
+    /**
+     * @uses:
+     * @param landlordId
+     * @return
+     * @creater: tienPV
+     */
     public ArrayList<Orders> getOrdersProcessing(int landlordId) {
         return ordersDAO.getOrdersByLandlordIdWithConditions(landlordId, "status = 'processing'");
     }
 
+    /**
+     *
+     * @param landlordId
+     * @return
+     * @creater: tienPV
+     */
     public ArrayList<Orders> getOrdersNotProcessing(int landlordId) {
         return ordersDAO.getOrdersByLandlordIdWithConditions(landlordId, "status != 'processing'");
     }
 
+    /**
+     *
+     * @param name
+     * @param price
+     * @param type
+     * @param area
+     * @param NumOfBedrooms
+     * @param address
+     * @param description
+     * @param landrlod_id
+     * @param location_id
+     * @return
+     * @creater: tienPV
+     */
     public boolean isInsertSuccess(String name, int price, int type,
             int area, int NumOfBedrooms, String address, String description,
             int landrlod_id, int location_id) {
@@ -44,18 +82,44 @@ public class LandlordService {
                 description, landrlod_id, location_id);
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     * @creater: tienPV
+     */
     public PostRental getLastestPostByUserId(int userId) {
         return postDAO.getLastestPostByUserId(userId);
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     * @creater: tienPV
+     */
     public int getAccountPointsByUserId(int userId) {
         return landlordDAO.getLandlordByUserID(userId).getPoint();
     }
 
+    /**
+     *
+     * @param postId
+     * @param status
+     * @return
+     * @creater: tienPV
+     */
     public boolean isUpdatePostStatusByPostIdSuccess(int postId, String status) {
         return postDAO.UpdatePostStatus(postId, status);
     }
 
+    /**
+     *
+     * @param userId
+     * @param postStatus
+     * @return
+     * @creater: tienPV
+     */
     public boolean isMoneyDedutedByUserId(int userId, String postStatus) {
         int currentPoint = landlordDAO.getLandlordByUserID(userId).getPoint();
         if (postStatus.equals("basic")) {
@@ -70,6 +134,13 @@ public class LandlordService {
         return false;
     }
 
+    /**
+     *
+     * @param postId
+     * @param postStatus
+     * @return
+     * @creater: tienPV
+     */
     public boolean isUpdatedPostDate(int postId, String postStatus) {
         LocalDate currentDate = LocalDate.now();
         Date dateStart = java.sql.Date.valueOf(currentDate);
@@ -87,6 +158,14 @@ public class LandlordService {
         return postDAO.UpdatePostDate(postId, dateStart, dateEnd);
     }
 
+    /**
+     *
+     * @param payerId
+     * @param postId
+     * @param postStatus
+     * @return
+     * @creater: tienPV
+     */
     public boolean isInsertedTransactionSuccess(int payerId, int postId, String postStatus) {
         TransactionDAO transactionDAO = new TransactionDAO();
         Date currentDate = new Date();
@@ -107,6 +186,12 @@ public class LandlordService {
         return (rowInserted > 0);
     }
 
+    /**
+     *
+     * @param part
+     * @return
+     * @creater: tienPV
+     */
     public String getFileName(Part part) {
         String contentDisposition = part.getHeader("content-disposition");
         String[] tokens = contentDisposition.split(";");
@@ -118,6 +203,12 @@ public class LandlordService {
         return "unknown.jpg";
     }
 
+    /**
+     *
+     * @param fileName
+     * @return
+     * @creater: tienPV
+     */
     public String getFileExtension(String fileName) {
         int lastDotIndex = fileName.lastIndexOf(".");
         if (lastDotIndex != -1) {
@@ -126,6 +217,14 @@ public class LandlordService {
         return "";
     }
 
+    /**
+     *
+     * @param postId
+     * @param imgUrl
+     * @param imgType
+     * @return
+     * @creater: tienPV
+     */
     public int addPostImage(int postId, String imgUrl, String imgType) {
         DAO.PostImageDAO postImageDAO = new PostImageDAO();
         return postImageDAO.addPostImage(postId, imgUrl, imgType);
@@ -154,29 +253,113 @@ public class LandlordService {
         landlord.setPoint(point);
         landlordDAO.updateLandlordByID(landlord);
     }
-    
+
+    /**
+     *
+     * @param userId
+     * @return
+     * @creater: tienPV
+     */
     public ArrayList<PostRental> getPublishedPostsByUserId(int userId) {
         return postDAO.getPublishedPostsByUserId(userId);
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     * @creater: tienPV
+     */
     public ArrayList<PostRental> getEditablePostsByUserId(int userId) {
         return postDAO.getEditablePostsByUserId(userId);
     }
 
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
     public boolean isMovePostToDraftSuccessByPostId(int postId) {
         boolean isDateUpdated = postDAO.UpdatePostDate(postId, null, null);
         boolean isStatusUpdated = postDAO.UpdatePostStatus(postId, "draft");
         return isDateUpdated && isStatusUpdated;
     }
-    
-     public boolean isDeletedPostSuccessByPostId(int postId) {
-        boolean isImageDeleted =  (postImageDAO.deletePostImageByPostId(postId)>0);
+
+    /**
+     *
+     * @param postId
+     * @return
+     */
+    public boolean isDeletedPostSuccessByPostId(int postId) {
+        boolean isImageDeleted = (postImageDAO.deletePostImageByPostId(postId) > 0);
         boolean isStatusUpdated = postDAO.UpdatePostStatus(postId, "deleted");
         return isImageDeleted && isStatusUpdated;
     }
 
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public boolean isDeletedPostForeverByPostId(int postId) {
+        boolean isImageDeleted = (postImageDAO.deletePostImageByPostId(postId) > 0);
+        boolean isPostDeleted = postDAO.RemovePostByPostId(postId);
+        return isImageDeleted && isPostDeleted;
+    }
+
+    /**
+     * 
+     * @param postId
+     * @param landlordId
+     * @return 
+     * creater: tienPV
+     */
+    public boolean isDeleteDuplicateDraftPostsSuccessByPostId(int postId, int landlordId) {
+        PostRental currentPost = postDAO.getPostByPostByPostId(postId);
+        PostRental beforePost = postDAO.getSecondLastestPostByLandlordId(landlordId);
+        boolean isDupl = this.isDuplicateDraftPost(currentPost, beforePost);
+        if (isDupl) {
+            this.isDeletedPostForeverByPostId(beforePost.getId());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param postTarget
+     * @param postOther
+     * @return
+     * @creater: tienPV
+     */
+    private boolean isDuplicateDraftPost(PostRental postTarget, PostRental postOther) {
+        if (postTarget.getId() != postOther.getId()
+                && postTarget.getName().equals(postOther.getName())
+                && postTarget.getPrice() == postOther.getPrice()
+                && postTarget.getType() == postOther.getType()
+                && postTarget.getArea() == postOther.getArea()
+                && postTarget.getNumOfBeds() == postOther.getNumOfBeds()
+                && postTarget.getAddress().equals(postOther.getAddress())
+                && postTarget.getDesscription().equals(postOther.getDesscription())
+                && postTarget.getLandlord_id() == postOther.getLandlord_id()
+                && postTarget.getLocation_id() == postOther.getLocation_id()
+                && postTarget.getStatus().equals(postOther.getStatus())
+                && postTarget.getStatus().equals("draft")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * uses: test function
+     *
+     * @param args
+     * @creater: tienPV
+     */
     public static void main(String[] args) {
         LandlordService n = new LandlordService();
-        System.out.println(n.addPostImage(78, "abc", "thumbnails"));
+        System.out.println();
     }
 }
