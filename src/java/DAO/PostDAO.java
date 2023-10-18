@@ -241,9 +241,9 @@ public class PostDAO extends DBContext {
         return post;
     }
 
-    public List<PostImage> getPostImages(int postid) {
+    public List<PostImage> getMainPostImages(int postid) {
         List<PostImage> post = new ArrayList<>();
-        String sqlCommand = "select b.post_id, b.img_url, b.img_type from post a join Post_Image b on a.id = b.post_id where a.id = " + postid;
+        String sqlCommand = "select b.post_id, b.img_url, b.img_type from post a join Post_Image b on a.id = b.post_id where a.id = " + postid + " and b.img_type = 'main'";
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {

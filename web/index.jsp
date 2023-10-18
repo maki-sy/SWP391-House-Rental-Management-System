@@ -305,19 +305,15 @@
 
         <%
         List<PostRental> highest = (List<PostRental>) request.getAttribute("highestPost");
+        List<String> thumbnailsHighest = (List<String>) request.getAttribute("thumbnailsHighest");
         %>
         <!-- ======= Intro Section ======= -->
         <div class="intro intro-carousel swiper position-relative">
 
             <div class="swiper-wrapper">
-                <%for(PostRental pr:highest){
-                int pID = pr.getId();
-                List<PostImage> image = dao.getPostImages(pID);
-                %>
-                <%for(PostImage po:image){%>
-                <%if(po.getImg_type().equals("thumbnails")){%>
+                <%for(int i =0; i< highest.size();i++){%>
                 <div class="swiper-slide carousel-item-a intro-item bg-image"
-                     style="background-image: url(<%=po.getImg_url()%>)">
+                     style="background-image: url('<%=thumbnailsHighest.get(i)%>')">
                     <div class="overlay overlay-a"></div>
                     <div class="intro-content display-table">
                         <div class="table-cell">
@@ -326,14 +322,14 @@
                                     <div class="col-lg-8">
                                         <div class="intro-body">
                                             <h1 class="intro-title mb-4">
-                                                <a href="housedetail?id=<%=pr.getId()%>"><%=pr.getName()%></a>
+                                                <a href="housedetail?id=<%=highest.get(i).getId()%>"><%=highest.get(i).getName()%></a>
                                                 <br>
                                             </h1>
                                             <h1 class="intro-title mb-4" style="font-size: 50px;">
-                                                <br> <%=pr.getAddress()%>
+                                                <br> <%=highest.get(i).getAddress()%>
                                             </h1>
                                             <p class="intro-subtitle intro-price">
-                                                <a href="#"><span class="price-a">rent | $ <%=pr.getPrice()%></span></a>
+                                                <a href="#"><span class="price-a">rent | $ <%=highest.get(i).getPrice()%></span></a>
                                             </p>
                                         </div>
                                     </div>
@@ -342,15 +338,18 @@
                         </div>
                     </div>
                 </div>
-                <%break;}else{%>
+                <% } %>
+                <%
+                    if (thumbnailsHighest.isEmpty()) { 
+                %>
                 <div class="img-box-a">
                     <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
                 </div>
-                <%continue;}}%>
-                <%}%>
+                <% } %>
             </div>
-            <div class="swiper-pagination"></div>
         </div><!-- End Intro Section -->
+        <div class="swiper-pagination"></div>
+
 
 
         <main id="main">
@@ -439,8 +438,8 @@
             </section><!-- End Services Section -->
 
             <%
-            List<PostRental> list = (List<PostRental>) request.getAttribute("lastestPost");
-            
+List<PostRental> list = (List<PostRental>) request.getAttribute("lastestPost");
+List<String> thumbnailsLast = (List<String>) request.getAttribute("thumbnailsLast");
             %>
             <!-- ======= Latest Properties Section ======= -->
             <section class="section-property section-t8">
@@ -461,36 +460,25 @@
                     </div>
                     <div id="property-carousel" class="swiper">
                         <div class="swiper-wrapper">
-                            <%for(PostRental po:list){
-                            int postID = po.getId();
-                            List<PostImage> image_url = dao.getPostImages(postID);
-                            %>
+                            <% for (int i = 0; i < list.size(); i++) { %>
                             <div class="carousel-item-b swiper-slide">
                                 <div class="card-box-a card-shadow">
-                                    <%for(PostImage p:image_url){%>
-                                    <%if(p.getImg_type().equals("thumbnails")){%>
                                     <div class="img-box-a">
-                                        <img src="<%=p.getImg_url()%>" alt="" class="img-a img-fluid">
+                                        <img src="<%=thumbnailsLast.get(i)%>" alt="" class="img-a img-fluid">
                                     </div>
-                                    <%break;}else{%>
-                                    <div class="img-box-a">
-                                        <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" alt="" class="img-a img-fluid">
-                                    </div>
-                                    <%continue;}}%>
 
                                     <div class="card-overlay">
                                         <div class="card-overlay-a-content">
                                             <div class="card-header-a">
                                                 <h2 class="card-title-a">
-                                                    <a href="housedetail?id=<%=po.getId()%>"><%=po.getName()%>
-                                                    </a>
+                                                    <a href="housedetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getName()%></a>
                                                 </h2>
                                             </div>
                                             <div class="card-body-a">
                                                 <div class="price-box d-flex">
-                                                    <span class="price-a">rent | $ <%=po.getPrice()%></span>
+                                                    <span class="price-a">rent | $ <%=list.get(i).getPrice()%></span>
                                                 </div>
-                                                <a href="housedetail?id=<%=po.getId()%>" class="link-a">Click here to view
+                                                <a href="housedetail?id=<%=list.get(i).getId()%>" class="link-a">Click here to view
                                                     <span class="bi bi-chevron-right"></span>
                                                 </a>
                                             </div>
@@ -498,17 +486,17 @@
                                                 <ul class="card-info d-flex justify-content-around">
                                                     <li>
                                                         <h4 class="card-info-title">Area</h4>
-                                                        <span><%=po.getArea()%>m
+                                                        <span><%=list.get(i).getArea()%>m
                                                             <sup>2</sup>
                                                         </span>
                                                     </li>
                                                     <li>
                                                         <h4 class="card-info-title">Beds</h4>
-                                                        <span><%=po.getNumOfBeds()%></span>
+                                                        <span><%=list.get(i).getNumOfBeds()%></span>
                                                     </li>
                                                     <li>
                                                         <h4 class="card-info-title">Status</h4>
-                                                        <span><%=po.getStatus()%></span>
+                                                        <span><%=list.get(i).getStatus()%></span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -516,16 +504,16 @@
                                     </div>
                                 </div>
                             </div><!-- End carousel item -->
-                            <%}%>
+                            <% } %>
                         </div>
                     </div>
                     <div class="propery-carousel-pagination carousel-pagination"></div>
-
                 </div>
             </section><!-- End Latest Properties Section -->
 
 
-            
+
+
 
             <!-- ======= Latest News Section ======= -->
             <section class="section-news section-t8">
@@ -698,7 +686,7 @@
                                 </div>
                             </div><!-- End carousel item -->
 
-                           
+
 
                         </div>
                     </div>

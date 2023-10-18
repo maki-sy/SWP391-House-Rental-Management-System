@@ -44,7 +44,7 @@ public class OrderService {
     }
 
     public Landlord getLandlordByPostID(int postID) {
-        PostDAO pdao = new PostDAO();
+        PostService pdao = new PostService();
         PostRental post = pdao.getPostDetailsbyID(postID);
         int landlordID = post.getLandlord_id();
         LandlordDAO ldao = new LandlordDAO();
@@ -53,7 +53,7 @@ public class OrderService {
     }
 
     public String getEmailFromLandlordByPostID(int postID) {
-        PostDAO pdao = new PostDAO();
+        PostService pdao = new PostService();
         PostRental post = pdao.getPostDetailsbyID(postID);
         int landlordID = post.getLandlord_id();
         UserDAO udao = new UserDAO();
