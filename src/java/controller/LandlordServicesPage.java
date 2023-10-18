@@ -172,10 +172,10 @@ public class LandlordServicesPage extends HttpServlet {
                     }
                     // --> xong phan luu hinh anh
                     if (typeOfAction.equals("upload")) {
-
                         int accountBalance = handleService.getAccountPointsByUserId(user.getId());
                         request.setAttribute("accountBalance", accountBalance);
                         request.setAttribute("postId", post.getId());
+                        handleService.isDeleteDuplicateDraftPostsSuccessByPostId(post.getId(), user.getId()); // --> xoa bo cac ban nhap giong y het nhau
                         request.getRequestDispatcher("L-pay-for-post.jsp").forward(request, response);
                         // them vao draft thanh cong -> tien hanh thanh toan
                     } else if (isInsertSuccess && typeOfAction.equals("draft")) {
