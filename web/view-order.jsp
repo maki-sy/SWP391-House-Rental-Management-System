@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="assets/css/order-style.css">
-    
+
     <a class="btn btn-primary" href="Profile?service=displayProfile">Back</a>    
-    
+
     <%
             Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
             int roleID = user.getRoleID();
@@ -48,7 +48,7 @@
                                     <th>Landlord</th>
                                     <th>Date ordered</th>
                                     <th>Status</th>
-                                    <th>&nbsp;</th>
+                                    <th>Cancel</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,7 +73,7 @@
                                     <td>
                                         <div class="email">
                                             <span><%=postName%></span>
-                                            <span>FFF</span>
+                                            <a href="housedetail?id=<%=postID%>"><span style="color: blue; text-decoration: underline;">View details</span></a>
                                         </div>
                                     </td>
                                     <td>
@@ -88,9 +88,11 @@
                                     </td>
                                     <td><%=status%></td>
                                     <td>
+                                        <a href="order?service=cancelOrder">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true"><i class="fa fa-close"></i></span>
                                         </button>
+                                        </a>
                                     </td>
                                 </tr>
                                 <%
