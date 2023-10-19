@@ -59,7 +59,7 @@
                 int postID = order.getPostId();
                 String order_date = order.getOrder_date();
                 String status = order.getStatus();
-                PostRental post = Pdao.getPostDetailsbyID(postID).get(0);
+                PostRental post = Pdao.getPostDetailsbyID(postID);
                 String postName = post.getName();
                 Landlord landlord = LDao.getLandlordByUserID(landlordID);
                 String landlordName = landlord.getFirstName()+ " "+landlord.getLastName();

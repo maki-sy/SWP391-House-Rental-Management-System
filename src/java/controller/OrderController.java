@@ -50,7 +50,7 @@ public class OrderController extends HttpServlet {
                     LocalDateTime now = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     String formatDateTime = now.format(formatter);
-                    String status = "Processing";
+                    String status = "processing";
                     Orders order = new Orders(0, tenantid, landlordid, postid, formatDateTime, status);
                     boolean isSpam = Oservice.isSpamOrders(order, user_id);
                     if (!isSpam) {
