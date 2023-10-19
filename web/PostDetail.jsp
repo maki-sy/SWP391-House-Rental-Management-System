@@ -339,7 +339,7 @@
                                                     </div>
                                                 </div>
                                                 <c:if test="${sessionScope.user!=null&&sessionScope.user.roleID==1}">
-                                                    <form action="ReviewManage?id=<%=pr.getId()%>" method="Post"> 
+                                                    <form action="ReviewManage?id=<%=post.getId()%>" method="Post"> 
                                                         <!--                                                Chi cho tenant review-->
                                                         <div class="rate">  
                                                             <input type="radio" id="star5" name="rate" value="5"style="visibility: hidden" />
