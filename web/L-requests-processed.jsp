@@ -312,9 +312,8 @@
                                     <tr>
                                         <th class="col-lg-1" scope="col">#</th>
                                         <th class="col-lg-auto" scope="col">Order ID</th>
-                                        <th class="col-lg-auto" scope="col">Tenant ID</th>
-                                        <th class="col-lg-auto" scope="col">Post ID</th>
                                         <th class="col-lg-auto" scope="col">Status</th>
+                                        <th class="col-lg-auto" scope="col">Order date</th>
                                         <th class="col-lg-1" scope="col">View</th>
                                         <th class="col-lg-1" scope="col">Contact</th>
 
@@ -329,14 +328,12 @@
                                         <td>
                                             <%=order.getOrderId()%>
                                         </td>
-                                        <td>
-                                            <%=order.getTenantId()%>
-                                        </td>
-                                        <td>
-                                            <%=order.getPostId()%>
-                                        </td>
+                                      
                                         <td>
                                             <%=order.getStatus()%>
+                                        </td>
+                                         <td>
+                                           <%=order.getOrder_date()%>
                                         </td>
                                         <td>
                                             <form action="landlordServicesPage" method="POST">
