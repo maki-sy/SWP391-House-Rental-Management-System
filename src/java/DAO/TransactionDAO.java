@@ -145,6 +145,13 @@ public class TransactionDAO extends DBContext {
         return 0;
     }
 
+    /**
+     * Add transaction record to the database. Note that landlord_id = -1 will
+     * be set to NULL in the database (since JDBC does not have setInteger)
+     *
+     * @param transaction
+     * @return
+     */
     public int addTransaction(Transaction transaction) {
         int added = 0;
         String SQL = "INSERT INTO [Transactions]\n"
@@ -161,7 +168,12 @@ public class TransactionDAO extends DBContext {
             preStmt.setInt(3, transaction.getReceiverID());
             preStmt.setString(4, transaction.getType().name());
             preStmt.setString(5, transaction.getTransactionDate());
-            preStmt.setInt(6, transaction.getPostID());
+            int postID = transaction.getPostID();
+            if (postID == -1) {
+                preStmt.setNull(6, java.sql.Types.INTEGER);
+            } else {
+                preStmt.setInt(6, transaction.getPostID());
+            }
 
             added = preStmt.executeUpdate();
         } catch (SQLException ex) {

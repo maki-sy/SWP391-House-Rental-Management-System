@@ -1,12 +1,16 @@
-<%@page import="java.util.List, model.Users, service.UserService" %>
+<%@page import="model.Users, service.UserService" %>
+
+<%
+    Users user = (Users) request.getAttribute("user");
+    UserService uService = new UserService();
+%>
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Account utilities</title>
-
+        <title>Add point to account</title>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -180,13 +184,14 @@
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="admin-dashboard?service=manageAccount" class="nav-link">
+                                <a href="admin-dashboard?service=manageAccount" class="nav-link active">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Account
                                     </p>
                                 </a>
                             </li>
+
                             <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
@@ -195,6 +200,7 @@
                                     </p>
                                 </a>
                             </li>
+
                             <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
@@ -203,16 +209,7 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="admin-dashboard?service=account-utils" class="nav-link active">
-                                    <i class="nav-icon fas fa-cog"></i>
-                                    <p>
-                                        Account Utilities
-                                    </p>
-                                </a>
-                            </li>
-
-                        </ul>      
+                        </ul>            
                         <!-- /.sidebar-menu -->
                 </div>
                 <!-- /.sidebar -->
@@ -225,12 +222,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Welcome ADMIN</h1>
+                                <h1>Accounts</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item active"><a href="trang-chu">Home</a></li>
-                                    <li class="breadcrumb-item">Account utilities</li>
+                                    <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
+                                    <li class="breadcrumb-item active">Manage Account</li>
                                 </ol>
                             </div>
                         </div>
@@ -241,107 +238,43 @@
                 <section class="content">
 
                     <!-- Default box -->
-                    <div class="card">
+                    <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Account utilities</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                            <h3 class="card-title">Transfer point to landlord</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form action="admin-account?action=add-point" method="POST">
+                            <input type="hidden" name="userId" value="<%= user.getId() %>">
+                            <div class="card-body">
+                                <h4>Landlord's information</h4>
+                                <div class="form-group">
+                                    <label for="fullName">Landlord's name</label>
+                                    <input type="text" class="form-control form-control-border" id="fullName" value="<%= uService.getUserName(user.getId()) %>" placeholder="Landlord's full name" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control form-control-border border-width-2" id="email" value="<%= user.getEmail() %>" placeholder="Email" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="balance"><i class="fas fa-money-bill"></i>Landlord balance</label>
+                                    <input type="number" class="form-control rounded-0" id="balance" name="balance" placeholder="Landlord current balance" value="<%= uService.getLandlordPoint(user.getId()) %>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amount"><i class="fas fa-money-check"></i> Amount to transfer</label>
+                                    <input type="number" class="form-control rounded-0" id="amount" name="amount" placeholder="Amount of point" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body p-0">
-                            <table class="table table-striped projects">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 1%">
-                                            ID
-                                        </th>
-                                        <th style="width: 13%">
-                                            Account Email
-                                        </th>
-                                        <th style="width: 10%">
-                                            Full Name
-                                        </th>
+                            <!-- /.card-body -->
 
-                                        <th style="width: 8%">
-                                            Role
-                                        </th>
-                                        <th style="width: 5%" class="text-center">
-                                            Status
-                                        </th>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <a href="admin-dashboard" class="btn btn-primary">Cancel</a>
+                            </div>
 
-                                    </tr>
-                                </thead>
-                                <%
-                                List<Users> list = (List<Users>) request.getAttribute("listOfUsers");
-                                UserService uService = new UserService();
-                                
-                                %>
-                                <tbody>
-                                    <% for(Users user : list) { %>
-                                    <tr>
-                                        <td>
-                                            <%=user.getId()%>
-                                        </td>
-                                        <td>
-                                            <%=user.getEmail()%>
-                                        </td>
-                                        <td>
-                                            <%=uService.getUserName(user.getId()) == null ? "" : uService.getUserName(user.getId())%>
-                                        </td>
+                        </form>
 
-                                        <td>
-                                            <%= uService.getRoleName(user.getRoleID()) %>
-                                        </td>
-                                        <% if( user.getStatus().name() == "VER" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-success">Verified</span>
-                                        </td>
-                                        <%}%>
-                                        <% if( user.getStatus().name() == "UNV" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-warning">Unverified</span>
-                                        </td>
-                                        <%}%>
-                                        <% if( user.getStatus().name() == "BAN" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-danger">Banned</span>
-                                        </td>
-                                        <%}%>
-                                        <% if( user.getStatus().name() == "DEL" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-secondary">Deleted</span>
-                                        </td>
-                                        <%}%>
-                                        <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm" href="admin-account?action=add-point&userId=<%= user.getId() %>">
-                                                <i class="fas fa-pencil-alt"></i>
-                                                Add point
-                                            </a>
-                                            <% if( user.getStatus().name() != "BAN" ){ %>
-                                            <a class="btn btn-danger btn-sm" href="admin-account?action=ban&userid=<%= user.getId() %>">
-                                                <i class="fas fa-ban"></i>
-                                                Ban
-                                            </a>
-                                            <% } else { %>
-                                            <a class="btn btn-danger btn-sm" href="admin-account?action=unban&userid=<%= user.getId() %>">
-                                                <i class="fas fa-unlock"></i>
-                                                Un-ban
-                                            </a>
-                                            <% } %>
-                                        </td>
-                                    </tr>
-                                    <% } %>
 
-                                </tbody>                  
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
                     </div>
                     <!-- /.card -->
 

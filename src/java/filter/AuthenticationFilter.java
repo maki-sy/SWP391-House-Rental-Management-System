@@ -39,7 +39,7 @@ public class AuthenticationFilter implements Filter {
 
         String url = request.getRequestURI();
         
-        System.out.println(url);
+//        System.out.println(url);
 
         // filter URI begins with admin-*
         if (url.matches("/SWP391-House-Rental-Management/admin[\\s\\S]*")) {
