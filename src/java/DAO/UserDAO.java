@@ -278,8 +278,10 @@ public class UserDAO extends DBContext {
 
     /**
      * Get verified account corresponding to email
+     *
      * @param email
-     * @return Users object that verified and corresponding to email. Or null if there is no user.
+     * @return Users object that verified and corresponding to email. Or null if
+     * there is no user.
      */
     public Users getVerifiedAccount(String email) {
         String SQL = "SELECT * FROM Users WHERE email = ? AND status != ?;";
@@ -290,23 +292,23 @@ public class UserDAO extends DBContext {
 
             ResultSet rs = preStmt.executeQuery();
 
-            if(rs.next()){
+            if (rs.next()) {
                 int id = rs.getInt(1);
                 byte[] hashedPwd = rs.getBytes(3);
                 byte[] salt = rs.getBytes(4);
                 int roleID = rs.getInt(5);
                 Users.Status status = Users.Status.valueOf(rs.getString(6));
-                
+
                 user = new Users(id, email, hashedPwd, salt, roleID, status);
-            }            
-            
+            }
+
         } catch (Exception ex) {
             System.out.println("getVerifiedAccount() reports " + ex.getMessage());
         }
 
         return user;
     }
-    
+
     public String getUserRole(Users user) {
         int role_id = user.getRoleID();
         String SQL = "SELECT role_name FROM User_role WHERE id = ?;";
@@ -386,7 +388,7 @@ public class UserDAO extends DBContext {
                 }
                 break;
         }
-        
+
         String SQL = "delete from Users where id = ?";
         try {
             PreparedStatement preStmt = connect.prepareStatement(SQL);
@@ -397,5 +399,32 @@ public class UserDAO extends DBContext {
             System.out.println("deleteUser(int userid) reports " + ex.getMessage());
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Update user's status by ID. If there is no id corresponding, update will
+     * be performed, but no effect to the DB
+     *
+     * @param userID
+     * @param status
+     * @return
+     */
+    public int updateUserStatus(int userID, Users.Status status) {
+        String SQL = "UPDATE [dbo].[Users]\n"
+                + "   SET [status] = ?\n"
+                + " WHERE id = ?;";
+
+        int updated = 0;
+
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setInt(2, userID);
+            preStmt.setString(1, status.name());
+
+            updated = preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateUserStatus() reports " + ex.getMessage());
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return updated;
     }
 }

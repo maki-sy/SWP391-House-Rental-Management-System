@@ -8,7 +8,9 @@ import DAO.AdminDAO;
 import DAO.LandlordDAO;
 import DAO.TenantDAO;
 import DAO.TokenDAO;
+import DAO.UserBannedDAO;
 import DAO.UserDAO;
+import DAO.UserRoleDAO;
 import DAO.WishlistDAO;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
@@ -39,6 +41,7 @@ import model.Admin;
 import model.Landlord;
 import model.Tenant;
 import model.Token;
+import model.UserBanned;
 import model.Users;
 import model.Wishlist;
 
@@ -54,6 +57,8 @@ public class UserService {
     private static final UserDAO USER_DAO = new UserDAO();
     private static final AdminDAO ADMIN_DAO = new AdminDAO();
     private static final WishlistDAO WISHLIST_DAO = new WishlistDAO();
+    private static final UserBannedDAO BAN_DAO = new UserBannedDAO();
+    private static final UserRoleDAO USER_ROLE_DAO = new UserRoleDAO();
 
     /**
      *
@@ -274,6 +279,11 @@ public class UserService {
             return null;
         }
 
+        if (BAN_DAO.checkBannedByID(user.getId())) { // If this user is banned
+            System.out.println("Account " + user.getEmail() + " has been banned");
+            return null;
+        }
+
         byte[] salt = user.getSalt();
         byte[] correctPass = user.getHashedPassword();
         byte[] inputPass = hashingPassword(password, salt);
@@ -297,6 +307,11 @@ public class UserService {
         Users user = USER_DAO.getVerifiedAccount(email);
         boolean sucess = false;
         if (user != null) {
+            if (BAN_DAO.checkBannedByID(user.getId())) { // If this user is banned
+                System.out.println("Account " + user.getEmail() + " has been banned");
+                return null;
+            }
+
             byte[] salt = user.getSalt();
             byte[] correctPass = user.getHashedPassword();
             byte[] inputPass = hashingPassword(password, salt);
@@ -617,7 +632,7 @@ public class UserService {
         Admin admin = new Admin(userID, fname, lname, phone);
         ADMIN_DAO.addAdmin(admin);
     }
-    
+
     /**
      * Add post to user's wish list. This function only add property to user's
      * wish list when that property is not in wish list before
@@ -638,5 +653,47 @@ public class UserService {
 
     public int deleteWish(int wishID) {
         return WISHLIST_DAO.deleteWishByID(wishID);
+    }
+
+    /**
+     * Ban an user by user's id. Ban is only taken if this user's id exists and
+     * not already been banned. TODO: Using Timer for auto unban
+     *
+     * @param userID
+     * @param duration
+     */
+    public void banUser(int userID, int duration) {
+        Users user = USER_DAO.getUserByID(userID);
+        if (user != null && user.getStatus() != Users.Status.BAN) {
+            USER_DAO.updateUserStatus(userID, Users.Status.BAN);
+            LocalDateTime startDate = LocalDateTime.now();
+            LocalDateTime endDate = startDate.plusDays(duration); // default banning time is 100 days
+            UserBanned ban = new UserBanned(userID, user.getEmail(), startDate.toString(), endDate.toString(), UserBanned.Status.Active);
+
+            BAN_DAO.addUserBanned(ban);
+        } else {
+            System.out.println("banUser() says: There is no userID");
+        }
+    }
+
+    /**
+     * Get User object by user's id. If there is no user, this function return
+     * null
+     *
+     * @param userID
+     * @return User object, or null if there is no user
+     */
+    public Users getUserByID(int userID) {
+        return USER_DAO.getUserByID(userID);
+    }
+
+    /**
+     * Get role's name by role's id
+     *
+     * @param roleID
+     * @return String representation of role name, or null if there is no roleID
+     */
+    public String getRoleName(int roleID) {
+        return USER_ROLE_DAO.getRoleName(roleID);
     }
 }

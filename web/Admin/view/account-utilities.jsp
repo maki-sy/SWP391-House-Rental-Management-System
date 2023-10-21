@@ -1,11 +1,12 @@
+<%@page import="java.util.List, model.Users, service.UserService" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Projects</title>
-        <%@page import="DAO.UserDAO, model.Users, service.UserService" %>
-        <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
+        <title>Account utilities</title>
+
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -179,15 +180,13 @@
                             <!-- Add icons to the links using the .nav-icon class
                                  with font-awesome or any other icon font library -->
                             <li class="nav-item">
-                                <a href="admin-dashboard?service=manageAccount" class="nav-link active">
+                                <a href="admin-dashboard?service=manageAccount" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Account
-
                                     </p>
                                 </a>
                             </li>
-                            
                             <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
@@ -196,7 +195,6 @@
                                     </p>
                                 </a>
                             </li>
-                            
                             <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
@@ -205,7 +203,16 @@
                                     </p>
                                 </a>
                             </li>
-                        </ul>            
+                            <li class="nav-item">
+                                <a href="admin-dashboard?service=account-utils" class="nav-link active">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Account Utilities
+                                    </p>
+                                </a>
+                            </li>
+
+                        </ul>      
                         <!-- /.sidebar-menu -->
                 </div>
                 <!-- /.sidebar -->
@@ -218,12 +225,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Accounts</h1>
+                                <h1>Welcome ADMIN</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
-                                    <li class="breadcrumb-item active">Manage Account</li>
+                                    <li class="breadcrumb-item active"><a href="trang-chu">Home</a></li>
+                                    <li class="breadcrumb-item">Account utilities</li>
                                 </ol>
                             </div>
                         </div>
@@ -236,7 +243,7 @@
                     <!-- Default box -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">View account list</h3>
+                            <h3 class="card-title">Account utilities</h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -260,91 +267,77 @@
                                         <th style="width: 10%">
                                             Full Name
                                         </th>
-                                        <th style="width: 10%">
-                                            Civil ID
-                                        </th>
-                                        <th style="width: 18%">
-                                            Address
-                                        </th>
-                                        <th style="width: 10%">
-                                            Phone
-                                        </th>
+
                                         <th style="width: 8%">
                                             Role
                                         </th>
                                         <th style="width: 5%" class="text-center">
                                             Status
                                         </th>
-                                        <th style="width: 15%">
-                                            <a href="admin-account?action=add"  class="btn btn-success btn-sm" ><i class="fas fa-plus"></i> <span>Add New Account</span></a>
-                                        </th>
+
                                     </tr>
                                 </thead>
                                 <%
                                 List<Users> list = (List<Users>) request.getAttribute("listOfUsers");
                                 UserService uService = new UserService();
-                                UserDAO dao = new UserDAO();
+                                
                                 %>
                                 <tbody>
-                                    <%for(Users us:list){%>
+                                    <% for(Users user : list) { %>
                                     <tr>
                                         <td>
-                                            <%=us.getId()%>
+                                            <%=user.getId()%>
                                         </td>
                                         <td>
-                                            <%=us.getEmail()%>
+                                            <%=user.getEmail()%>
                                         </td>
                                         <td>
-                                            <%=uService.getUserName(us.getId()) == null ? "" : uService.getUserName(us.getId())%>
+                                            <%=uService.getUserName(user.getId()) == null ? "" : uService.getUserName(user.getId())%>
                                         </td>
+
                                         <td>
-                                            <%=uService.getCivilID(us.getId()) == null ? "" : uService.getCivilID(us.getId())%>
+                                            <%= uService.getRoleName(user.getRoleID()) %>
                                         </td>
-                                        <td>
-                                            <%=uService.getAddress(us.getId()) == null ? "" : uService.getAddress(us.getId())%>
-                                        </td>
-                                        <td>
-                                            <%=uService.getPhone(us.getId()) == null ? "" : uService.getPhone(us.getId())%>
-                                        </td>
-                                        <td>
-                                            <%=dao.getUserRole(us)%>
-                                        </td>
-                                        <% if( us.getStatus().name() == "VER" ){%>
+                                        <% if( user.getStatus().name() == "VER" ){%>
                                         <td class="project-state">
                                             <span class="badge badge-success">Verified</span>
                                         </td>
                                         <%}%>
-                                        <% if( us.getStatus().name() == "UNV" ){%>
+                                        <% if( user.getStatus().name() == "UNV" ){%>
                                         <td class="project-state">
                                             <span class="badge badge-warning">Unverified</span>
                                         </td>
                                         <%}%>
-                                        <% if( us.getStatus().name() == "BAN" ){%>
+                                        <% if( user.getStatus().name() == "BAN" ){%>
                                         <td class="project-state">
                                             <span class="badge badge-danger">Banned</span>
                                         </td>
                                         <%}%>
-                                        <% if( us.getStatus().name() == "DEL" ){%>
+                                        <% if( user.getStatus().name() == "DEL" ){%>
                                         <td class="project-state">
                                             <span class="badge badge-secondary">Deleted</span>
                                         </td>
                                         <%}%>
                                         <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm" href="admin-account?action=edit&userid=<%=us.getId()%>">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Edit
+                                            <a class="btn btn-info btn-sm" href="#<%=user.getId()%>">
+                                                <i class="fas fa-pencil-alt"></i>
+                                                Add point
                                             </a>
-                                            <% if( us.getStatus().name() != "DEL" ){%>
-                                            <a class="btn btn-danger btn-sm" href="admin-account?action=delete&userid=<%=us.getId()%>">
-                                                <i class="fas fa-trash">
-                                                </i>
-                                                Delete
+                                            <% if( user.getStatus().name() != "BAN" ){ %>
+                                            <a class="btn btn-danger btn-sm" href="admin-account?action=ban&userid=<%= user.getId() %>">
+                                                <i class="fas fa-ban"></i>
+                                                Ban
                                             </a>
-                                            <%}%>
+                                            <% } else { %>
+                                            <a class="btn btn-danger btn-sm" href="admin-account?action=unban&userid=<%= user.getId() %>">
+                                                <i class="fas fa-unlock"></i>
+                                                Un-ban
+                                            </a>
+                                            <% } %>
                                         </td>
-                                        <%}%>
                                     </tr>
+                                    <% } %>
+
                                 </tbody>                  
                             </table>
                         </div>
@@ -382,4 +375,3 @@
         <script src="Admin/assets/javascript/demo.js"></script>
     </body>
 </html>
-
