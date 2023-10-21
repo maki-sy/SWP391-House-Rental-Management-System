@@ -80,8 +80,10 @@ public class LandlordDAO extends DBContext {
 
     /**
      * Get landlord by user's id
+     *
      * @param userID
-     * @return Landlord object corresponding to user's id, or null if there is no landlord
+     * @return Landlord object corresponding to user's id, or null if there is
+     * no landlord
      */
     public Landlord getLandlordByUserID(int userID) {
         String sqlCommand = "SELECT * FROM Landlord WHERE id = ?;";
@@ -199,5 +201,28 @@ public class LandlordDAO extends DBContext {
             System.out.println("updateLandlordInfo(int userid, String fname, String lname, String civilid, String address, String phone) reports " + ex.getMessage());
             Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Get landlord's current balance in the account.
+     *
+     * @param landlordID
+     * @return Current point in the account. If there is no landlordID, this
+     * function returns 0
+     */
+    public int getLandlordPoint(int landlordID) {
+        int point = 0;
+        String SQL = "SELECT account_points FROM Landlord WHERE id = ?;";
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setInt(1, landlordID);
+            ResultSet rs = preStmt.executeQuery();
+            if (rs.next()) {
+                point = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getLandlordPoint() reports " + ex.getMessage());
+            Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return point;
     }
 }

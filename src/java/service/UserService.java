@@ -549,6 +549,23 @@ public class UserService {
         return null;
     }
 
+    /**
+     * Get landlord current balance in the account.
+     *
+     * @param landlordID
+     * @return Current balance of landlord. If the user's id passed in is not of
+     * a landlord account or not a exists ID, it returns 0
+     */
+    public int getLandlordPoint(int landlordID) {
+        int point = 0;
+        Users user = getUserByID(landlordID);
+        if (user == null || user.getRoleID() != 2) { // if id does not exist, or user is not landlord
+            return 0;
+        }
+        point = LANDLORD_DAO.getLandlordPoint(landlordID);
+        return point;
+    }
+
     public String getLastName(int userID) {
         Tenant t = TENANT_DAO.getTenantByUserID(userID);
         if (t != null) {
