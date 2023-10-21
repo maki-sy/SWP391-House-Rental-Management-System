@@ -231,8 +231,9 @@ public class LandlordService {
     }
 
     /**
-     * Add point to landlord account. If the landlordID does not exists, this
-     * function will throw exception
+     * Add point to landlord account and then add transaction history to the
+     * database. If the landlordID does not exists or invalid amount, this
+     * function will throw an exception
      *
      * @param landlordID user's id of landlord account
      * @param amount amount of point to add. The amount must be an integer
@@ -248,10 +249,15 @@ public class LandlordService {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount of point must be greater than 0");
         }
+        // update point to landlord account
         int point = landlord.getPoint();
         point += amount;
         landlord.setPoint(point);
         landlordDAO.updateLandlordByID(landlord);
+
+        // add transaction to database
+        TransactionService tService = new TransactionService();
+        tService.addDepositTransaction(landlordID, amount);
     }
 
     /**
@@ -310,11 +316,10 @@ public class LandlordService {
     }
 
     /**
-     * 
+     *
      * @param postId
      * @param landlordId
-     * @return 
-     * creater: tienPV
+     * @return creater: tienPV
      */
     public boolean isDeleteDuplicateDraftPostsSuccessByPostId(int postId, int landlordId) {
         PostRental currentPost = postDAO.getPostByPostByPostId(postId);

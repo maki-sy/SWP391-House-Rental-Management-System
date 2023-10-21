@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Users;
 import model.Users.Status;
+import service.LandlordService;
 import service.UserService;
 
 /**
@@ -74,6 +75,27 @@ public class AdminAccountController extends HttpServlet {
             request.setAttribute("user", user);
             request.getRequestDispatcher("Admin/view/account-ban.jsp").forward(request, response);
             return;
+        } else if (action.equals("add-point")) { // display add point to landlord form
+            int userID;
+            try {
+                userID = Integer.parseInt(request.getParameter("userId"));
+                // check for user existence
+                Users user = uService.getUserByID(userID);
+                if (user == null) {
+                    request.setAttribute("msg", "Sorry, something went wrong");
+                    request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
+                    return;
+                }
+
+                // if user exists
+                request.setAttribute("user", user);
+                request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
+                return;
+            } catch (NumberFormatException numEx) {
+                System.out.println("Add point to landlord doGet: " + numEx.getMessage());
+                response.sendRedirect("admin-dashboard");
+                return;
+            }
         }
 
     }
@@ -147,6 +169,26 @@ public class AdminAccountController extends HttpServlet {
             // If this account exist
             uService.banUser(userID, duration);
             response.sendRedirect("admin-dashboard?service=account-utils");
+            return;
+        } else if (action.equals("add-point")) {
+            int userID;
+            int amount;
+            try {
+                userID = Integer.parseInt(request.getParameter("userId"));
+                amount = Integer.parseInt(request.getParameter("amount"));
+                LandlordService lService = new LandlordService();
+                lService.addPoint(userID, amount);
+            } catch (NumberFormatException numEx) {
+                System.out.println("doPost add point " + numEx.getMessage());
+
+            } catch (IllegalArgumentException illArgEx) {
+                System.out.println("doPost add point " + illArgEx.getMessage());
+
+            } catch (Exception ex) {
+                System.out.println("doPost add point " + ex.getMessage());
+
+            }
+            response.sendRedirect("admin-dashboard?service=manageAccount");
             return;
         }
 

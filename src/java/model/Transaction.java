@@ -14,7 +14,7 @@ public class Transaction {
         DEPOSIT, // Admin nap tien
         PAY // Landlord pay for post
     }
-    private int id;
+    private int id; // IDENTITY column
     private double pointAmount;
     private int senderID;
     private int receiverID;
@@ -24,6 +24,28 @@ public class Transaction {
 
     public Transaction(int id, double pointAmount, int senderID, int receiverID, Type type, String transactionDate, int postID) {
         this.id = id;
+        this.pointAmount = pointAmount;
+        this.senderID = senderID;
+        this.receiverID = receiverID;
+        this.type = type;
+        this.transactionDate = transactionDate;
+        this.postID = postID;
+    }
+
+    /**
+     * A convenient constructor for transaction without transaction's id
+     * (because transactionID is set to IDENTITY in DB). But note that you
+     * should not use this constructor to construct object, and then retrieve
+     * transactionID from this object because it is set to dummy value -1
+     *
+     * @param pointAmount
+     * @param senderID
+     * @param receiverID
+     * @param type
+     * @param transactionDate
+     * @param postID
+     */
+    public Transaction(double pointAmount, int senderID, int receiverID, Type type, String transactionDate, int postID) {
         this.pointAmount = pointAmount;
         this.senderID = senderID;
         this.receiverID = receiverID;
