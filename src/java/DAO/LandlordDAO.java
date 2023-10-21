@@ -200,4 +200,9 @@ public class LandlordDAO extends DBContext {
             Logger.getLogger(LandlordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void main(String[] args) {
+        LandlordDAO dao = new LandlordDAO();
+        System.out.println(dao.getLandlordByUserID(14).getPoint());
+    }
 }

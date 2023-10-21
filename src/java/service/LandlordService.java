@@ -6,10 +6,20 @@ import DAO.PostDAO;
 import DAO.PostImageDAO;
 import DAO.TransactionDAO;
 import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Landlord;
 import model.Orders;
 import model.PostRental;
@@ -75,7 +85,7 @@ public class LandlordService {
      * @return
      * @creater: tienPV
      */
-    public boolean isInsertSuccess(String name, int price, int type,
+    public boolean isInsertSuccess(String name, double price, int type,
             int area, int NumOfBedrooms, String address, String description,
             int landrlod_id, int location_id) {
         return postDAO.insertPost(name, price, type, area, NumOfBedrooms, address,
@@ -184,6 +194,45 @@ public class LandlordService {
         int rowInserted = transactionDAO.addTransaction(amount, payerId,
                 receiverId, type, transactionDate, postId);
         return (rowInserted > 0);
+    }
+
+    /**
+     *
+     * @param post
+     * @param getParts
+     * @param appPath
+     * @return
+     * @creater: tienPV
+     */
+    public boolean isHandledSaveImageSuccess(PostRental post, Collection<Part> getParts, String appPath) {
+        boolean isThumbnail = true;
+        int count = 0;
+        // luu hinh anh
+        for (Part filePart : getParts) {
+            String fileName = this.getFileName(filePart);
+            if (!fileName.equals("unknown.jpg") && !fileName.equals("") && !fileName.isEmpty()) {
+                String imageType;
+                if (isThumbnail) {
+                    imageType = "thumbnails";
+                    isThumbnail = false;
+                } else {
+                    imageType = "main";
+                }
+
+                String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+                fileName = "post-id-" + post.getId() + "-" + imageType + "(" + (++count) + ")" + "." + fileExtension;
+                String savePath = appPath + File.separator + "web" + File.separator + "assets" + File.separator + "img";
+                String saveSQLpath = "./assets/img/" + fileName;
+                try ( InputStream fileContent = filePart.getInputStream()) {
+                    Path filePath = Paths.get(savePath, fileName);
+                    Files.copy(fileContent, filePath, StandardCopyOption.REPLACE_EXISTING);
+                    this.addPostImage(post.getId(), saveSQLpath, imageType);
+                } catch (IOException ex) {
+                    Logger.getLogger(LandlordService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return isThumbnail;
     }
 
     /**
@@ -303,6 +352,16 @@ public class LandlordService {
      * @return
      * @creater: tienPV
      */
+    public boolean isImageDeletedByPostId(int postId) {
+        return postImageDAO.deletePostImageByPostId(postId) > 0;
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
     public boolean isDeletedPostForeverByPostId(int postId) {
         boolean isImageDeleted = (postImageDAO.deletePostImageByPostId(postId) > 0);
         boolean isPostDeleted = postDAO.RemovePostByPostId(postId);
@@ -310,14 +369,14 @@ public class LandlordService {
     }
 
     /**
-     * 
+     *
      * @param postId
      * @param landlordId
-     * @return 
-     * creater: tienPV
+     * @return
+     * @creater: tienPV
      */
     public boolean isDeleteDuplicateDraftPostsSuccessByPostId(int postId, int landlordId) {
-        PostRental currentPost = postDAO.getPostByPostByPostId(postId);
+        PostRental currentPost = postDAO.getPostByID(postId);
         PostRental beforePost = postDAO.getSecondLastestPostByLandlordId(landlordId);
         boolean isDupl = this.isDuplicateDraftPost(currentPost, beforePost);
         if (isDupl) {
@@ -325,6 +384,18 @@ public class LandlordService {
             return true;
         }
         return false;
+    }
+    
+    
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public PostRental getPostByPostId(int postId) {
+        return postDAO.getPostByID(postId);
     }
 
     /**
@@ -352,6 +423,36 @@ public class LandlordService {
         return false;
     }
 
+   /**
+    * 
+    * @param postId
+    * @param name
+    * @param price
+    * @param type
+    * @param area
+    * @param NumOfBedRooms
+    * @param address
+    * @param description
+    * @param location_id
+    * @return 
+    * @creater: tienPV
+    */
+    public boolean isUpdatedPostByPostId(int postId, String name, double price,
+            int type, int area, int NumOfBedRooms, String address,
+            String description, int location_id) {
+        return postDAO.isUpdatedPostByPostId(postId, name, price, type, area, NumOfBedRooms, address, description, location_id);
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public ArrayList<String> getPostImageURLByPostId(int postId) {
+        return postImageDAO.getPostImageURLByPostId(postId);
+    }
+
     /**
      * uses: test function
      *
@@ -360,6 +461,6 @@ public class LandlordService {
      */
     public static void main(String[] args) {
         LandlordService n = new LandlordService();
-        System.out.println();
+        System.out.println(n.isDeleteDuplicateDraftPostsSuccessByPostId(32, 14));
     }
 }

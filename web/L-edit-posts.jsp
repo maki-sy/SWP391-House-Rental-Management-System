@@ -342,7 +342,7 @@
                                             <%=post.getId()%>
                                         </td>
                                         <td>
-                                            <%=post.getName()%>
+                                            <%=post.getName().substring(0,8)%>...
                                         </td>
                                         <td>
                                             <%=post.getPrice()%>
@@ -360,7 +360,7 @@
                                             <form action="landlordServicesPage"
                                                   method="POST">
                                                 <input type="hidden" name="service"
-                                                       value="edit-post">
+                                                       value="edit-detail-post">
                                                 <input type="hidden" name="post-id"
                                                        value="<%=post.getId()%>">
                                                 <button type="submit"

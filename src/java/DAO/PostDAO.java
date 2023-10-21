@@ -385,11 +385,12 @@ public class PostDAO extends DBContext {
     }
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      *
-=======
-     * 
->>>>>>> 7bd606ceeefcb324db01f58e9ea849ed42ac788d
+     * =======
+     *
+     * >>>>>>> 7bd606ceeefcb324db01f58e9ea849ed42ac788d
+     *
      * @param name
      * @param price
      * @param type
@@ -402,7 +403,7 @@ public class PostDAO extends DBContext {
      * @return
      * @creater: tienPV
      */
-    public boolean insertPost(String name, int price, int type,
+    public boolean insertPost(String name, double price, int type,
             int area, int NumOfBedrooms, String address, String description,
             int landrlod_id, int location_id) {
         String sql = "INSERT INTO [dbo].[Post]\n"
@@ -421,7 +422,7 @@ public class PostDAO extends DBContext {
 
         try ( PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
             preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, price);
+            preparedStatement.setDouble(2, price);
             preparedStatement.setInt(3, type);
             preparedStatement.setInt(4, area);
             preparedStatement.setInt(5, NumOfBedrooms);
@@ -440,11 +441,7 @@ public class PostDAO extends DBContext {
     /**
      *
      * @param userId
-<<<<<<< HEAD
      * @return
-=======
-     * @return 
->>>>>>> 7bd606ceeefcb324db01f58e9ea849ed42ac788d
      * @creater: tienPV
      */
     public PostRental getLastestPostByUserId(int userId) {
@@ -479,9 +476,9 @@ public class PostDAO extends DBContext {
     }
 
     /**
-     * 
+     *
      * @param userId
-     * @return 
+     * @return
      * @creater: tienPV
      */
     public ArrayList<PostRental> getPublishedPostsByUserId(int userId) {
@@ -613,8 +610,53 @@ public class PostDAO extends DBContext {
     }
 
     /**
-<<<<<<< HEAD
-     * Get post's name by post's id
+     *
+     * @param postId
+     * @param name
+     * @param price
+     * @param type
+     * @param area
+     * @param NumOfBedRooms
+     * @param address
+     * @param description
+     * @param location_id
+     * @return
+     * @creater: tienPV
+     */
+    public boolean isUpdatedPostByPostId(int postId, String name, double price,
+            int type, int area, int NumOfBedRooms, String address,
+            String description, int location_id) {
+
+        String sql = "UPDATE [dbo].[Post]\n"
+                + "   SET [name] = ?\n"
+                + "      ,[price] =?\n"
+                + "      ,[type] = ?\n"
+                + "      ,[area] = ?\n"
+                + "      ,[NumOfBedrooms] = ?\n"
+                + "      ,[address] = ?\n"
+                + "      ,[description] = ?\n"
+                + "      ,[location_id] = ?\n"
+                + " WHERE [Post].id = ?";
+        try {
+            PreparedStatement pre = connect.prepareStatement(sql);
+            pre.setString(1, name);
+            pre.setDouble(2, price);
+            pre.setInt(3, type);
+            pre.setInt(4, area);
+            pre.setInt(5, NumOfBedRooms);
+            pre.setString(6, address);
+            pre.setString(7, description);
+            pre.setInt(8, location_id);
+            pre.setInt(9, postId);
+            int rowUpdated = pre.executeUpdate();
+            return (rowUpdated > 0);
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    /**
      *
      * @param postID
      * @return post name if post exist, otherwise null
@@ -638,11 +680,6 @@ public class PostDAO extends DBContext {
     /**
      * @param landlordId
      * @return
-=======
-     * 
-     * @param landlordId
-     * @return 
->>>>>>> 7bd606ceeefcb324db01f58e9ea849ed42ac788d
      * @creater: tienPV
      */
     public PostRental getLastestPostByLandlordId(int landlordId) {
@@ -741,58 +778,9 @@ public class PostDAO extends DBContext {
         return result;
     }
 
-    /**
-     *
-     * @param postId
-     * @return
-     * @creater: tienPV
-     */
-    public PostRental getPostByPostByPostId(int postId) {
-        PostRental result = new PostRental();
-        String sqlCommand = "SELECT [id]\n"
-                + "      ,[name]\n"
-                + "      ,[price]\n"
-                + "      ,[type]\n"
-                + "      ,[area]\n"
-                + "      ,[NumOfBedrooms]\n"
-                + "      ,[address]\n"
-                + "      ,[description]\n"
-                + "      ,[landlord_id]\n"
-                + "      ,[location_id]\n"
-                + "      ,[status]\n"
-                + "      ,[promotion_id]\n"
-                + "      ,[post_start_date]\n"
-                + "      ,[post_end_date]\n"
-                + "  FROM [dbo].[Post]\n"
-                + "  WHERE [id] =" + postId;
-        ResultSet rs = getData(sqlCommand);
-        try {
-            while (rs.next()) {
-
-                int id = rs.getInt(1);
-                String name = rs.getString(2);
-                double price = rs.getDouble(3);
-                int type = rs.getInt(4);
-                int area = rs.getInt(5);
-                int numOfBeds = rs.getInt(6);
-                String address = rs.getString(7);
-                String desscription = rs.getString(8);
-                int landlord_id = rs.getInt(9);
-                int location_id = rs.getInt(10);
-                String status = rs.getString(11);
-                int promotion = rs.getInt(12);
-                Date post_start = rs.getDate(13);
-                Date post_end = rs.getDate(14);
-                result = new PostRental(id, name, price, type, area, numOfBeds, address, desscription, landlord_id, location_id, status, promotion, post_start, post_end);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return result;
-    }
-
+   
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
+
     }
 }

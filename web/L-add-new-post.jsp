@@ -421,17 +421,17 @@
 
                                                         <select required name="type" class="mb-3 form-select"
                                                             aria-label="Default select example" id="type">
-                                                            <option selected disabled>Choose the type of
+                                                            <option disabled>Choose the type of
                                                                 rental house
                                                             </option>
-                                                            <option value="1">Motel</option>
+                                                            <option selected value="1">Motel</option>
                                                             <option value="2">Apartment</option>
                                                         </select>
                                                         <select required name="location_id" class="mb-3 form-select"
                                                             aria-label="Default select example" id="location_id">
-                                                            <option selected disabled>Select province/city
+                                                            <option disabled>Select province/city
                                                             </option>
-                                                            <option value="1">Hanoi</option>
+                                                            <option selected value="1">Hanoi</option>
                                                             <option value="2">Haiphong</option>
                                                             <option value="3">Da Nang</option>
                                                             <option value="4">Ho Chi Minh City</option>
@@ -498,7 +498,7 @@
                                                         <div class="form-check mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                    name="typeOfAction" id="draft" value="draft">
+                                                                    name="typeOfAction" id="draft" value="draft" checked>
                                                                 <label class="form-check-label" for="inlineRadio1">Save
                                                                     as draft</label>
                                                             </div>
@@ -710,7 +710,7 @@
                                                 Validator.checkTextFields('#Detailed-description', 50, 600),
                                                 Validator.checkTextFields('#address', 10, 20),
                                                 Validator.checkImageFields('#formFileMultiple', 2, 20),
-                                                Validator.checkDigitFields('#Rental-price', 20, 10000),
+                                                Validator.checkFloatFields('#Rental-price', 20, 10000),
                                                 Validator.checkDigitFields('#House-area', 5, 300),
                                                 Validator.checkDigitFields('#Number-bedrooms', 1, 300),
                                             ]
