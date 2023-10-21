@@ -159,7 +159,6 @@
                             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                                 <ol class="breadcrumb mb-0">
                                     <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#">User</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                                 </ol>
                             </nav>
@@ -196,7 +195,7 @@
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
                                             <a href="change-password.jsp"><button type="button"
-                                                                 class="btn btn-primary">Change
+                                                                                  class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>
                                         <li
@@ -269,7 +268,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     <%}%>
@@ -297,14 +296,14 @@
 
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=updateProfile&id=<%=landlord.getId()%>&roleid=<%=user.getRoleID()%>"><button type="button" class="btn btn-primary">Edit
+                                            <a href="Profile?service=updateProfile"><button type="button" class="btn btn-primary">Edit
                                                     public
                                                     information</button></a>
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
                                             <a href="change-password.jsp"><button type="button"
-                                                                 class="btn btn-primary">Change
+                                                                                  class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>
                                         <li
@@ -321,8 +320,7 @@
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Send
-                                                    Report</button></a>
+                                            <a href="order?service=viewOrder"><button type="button" class="btn btn-primary">My Order</button></a>
                                         </li>
 
 
@@ -379,7 +377,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     <%}%>

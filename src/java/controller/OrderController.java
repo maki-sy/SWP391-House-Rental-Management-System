@@ -50,7 +50,7 @@ public class OrderController extends HttpServlet {
                     LocalDateTime now = LocalDateTime.now();
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     String formatDateTime = now.format(formatter);
-                    String status = "Processing";
+                    String status = "processing";
                     Orders order = new Orders(0, tenantid, landlordid, postid, formatDateTime, status);
                     boolean isSpam = Oservice.isSpamOrders(order, user_id);
                     if (!isSpam) {
@@ -59,18 +59,19 @@ public class OrderController extends HttpServlet {
                     response.sendRedirect("housedetail?id=" + postid);
                 }
                 if (service.equals("viewOrder")) {
-                    if (role_id == 1) {
+                    if (role_id == 1) { // removable if
                         List<Orders> TenantOrders = Oservice.getOrdersOfTenant(user.getId());
                         request.setAttribute("TenantOrders", TenantOrders);
                         //response.sendRedirect("trang-chu");
                         request.getRequestDispatcher("view-order.jsp").forward(request, response);
                     }
-//                    if (role_id == 2) {
-//                        List<Orders> LandlordOrders = Odao.getOrdersByLandlordId(user_id);
-//                        request.setAttribute("LandlordOrders", LandlordOrders);
-//                        request.getRequestDispatcher("view-order.jsp").forward(request, response);
-//                    }
-
+                }
+                if(service.equals("viewLandlord")){
+                    int landlord_id = Integer.parseInt(request.getParameter("id"));
+                    String landlord_email=request.getParameter("email");
+                    request.setAttribute("landlord_id", landlord_id);
+                    request.setAttribute("landlord_email", landlord_email);
+                    request.getRequestDispatcher("T_ViewLandlordInfo.jsp").forward(request, response);
                 }
 
             }
