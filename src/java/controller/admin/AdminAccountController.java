@@ -38,6 +38,7 @@ public class AdminAccountController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        UserService uService = new UserService();
         UserDAO dao = new UserDAO();
 
         if (action.equals("add")) {
@@ -54,7 +55,27 @@ public class AdminAccountController extends HttpServlet {
             int userid = Integer.parseInt(request.getParameter("userid"));
             dao.deleteUser(userid);
             response.sendRedirect("admin-dashboard?service=manageAccount");
+        } else if (action.equals("ban")) { // display ban user page
+            int userID;
+            try {
+                userID = Integer.parseInt(request.getParameter("userid"));
+            } catch (NumberFormatException numberEx) {
+                // TODO: Use 404 error page of admin instead
+                response.sendRedirect("admin-dashboard?service=manageAccount");
+                return;
+            }
+
+            Users user = uService.getUserByID(userID);
+            if (user == null) {
+                request.setAttribute("msg", "Sorry, something went wrong");
+                request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
+                return;
+            }
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("Admin/view/account-ban.jsp").forward(request, response);
+            return;
         }
+
     }
 
     /**
@@ -111,18 +132,24 @@ public class AdminAccountController extends HttpServlet {
                     break;
             }
             response.sendRedirect("admin-dashboard?service=manageAccount");
+        } else if (action.equals("ban")) {
+            int userID;
+            int duration;
+            try {
+                userID = Integer.parseInt(request.getParameter("userID"));
+                duration = Integer.parseInt(request.getParameter("duration"));
+            } catch (NumberFormatException numberEx) {
+                System.out.println("Banning error " + numberEx.getMessage());
+                response.sendRedirect("admin-dashboard?service=manageAccount");
+                return;
+            }
+
+            // If this account exist
+            uService.banUser(userID, duration);
+            response.sendRedirect("admin-dashboard?service=account-utils");
+            return;
         }
 
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

@@ -183,23 +183,34 @@
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Account
-
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
-                                <a href="admin-dashboard?service=manageReport" class="nav-link">
-                                    <i class="nav-icon fas fa-cog"></i>
-                                    <p>
-                                        Process Report
-                                    </p>
-                                </a>
                             </li>
-                        </ul>            
+                            <li class="nav-item">
+                            <a href="admin-dashboard?service=manageReport" class="nav-link">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Process Report
+                                </p>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                            <a href="admin-dashboard?service=account-utils" class="nav-link">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Account Utilities
+                                </p>
+                            </a>
+                            </li>
+                        </ul>      
                         <!-- /.sidebar-menu -->
                 </div>
                 <!-- /.sidebar -->

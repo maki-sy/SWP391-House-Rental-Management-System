@@ -38,6 +38,7 @@ public class AdminHomepage extends HttpServlet {
         AdminService service = new AdminService();
         if (ser == null) {
             request.getRequestDispatcher("Admin/view/admin-view.jsp").forward(request, response);
+            return;
         }
         if (ser.equals("managePost")) {
             List<PostRental> list = service.getAllPost();
@@ -47,7 +48,7 @@ public class AdminHomepage extends HttpServlet {
             List<Users> list = service.getAllUsers();
             request.setAttribute("listOfUsers", list);
             request.getRequestDispatcher("Admin/view/account-list.jsp").forward(request, response);
-        } else if (ser.equals("deletePost")) {
+        } else if (ser.equals("deletePost")) {  // ???
             int id = Integer.parseInt(request.getParameter("id"));
             service.updatePostStatus(id);
             request.getRequestDispatcher("admin-dashboard?service=managePost").forward(request, response);
@@ -55,22 +56,26 @@ public class AdminHomepage extends HttpServlet {
             List<Report> list = service.getAllReports();
             request.setAttribute("listOfReport", list);
             request.getRequestDispatcher("Admin/view/report-list.jsp").forward(request, response);
+        } else if(ser.equals("account-utils")){
+            List<Users> users = service.getAllUsers();
+            request.setAttribute("listOfUsers", users);
+            request.getRequestDispatcher("Admin/view/account-utilities.jsp").forward(request, response);
+            return;
         }
     }
 
-        /**
-         * Handles the HTTP <code>POST</code> method.
-         *
-         * @param request servlet request
-         * @param response servlet response
-         * @throws ServletException if a servlet-specific error occurs
-         * @throws IOException if an I/O error occurs
-         */
-        @Override
-        protected void doPost
-        (HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        }
-
     }
+
+}

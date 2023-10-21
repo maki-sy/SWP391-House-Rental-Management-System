@@ -1,11 +1,11 @@
+<%@page import="model.Users, service.UserService" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Projects</title>
-        <%@page import="DAO.UserDAO, model.Users, service.UserService" %>
-        <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
+        <title>Ban account</title>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -183,21 +183,14 @@
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Account
-
                                     </p>
                                 </a>
-                            </li>
-                            
-                            <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
-                            </li>
-                            
-                            <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
@@ -218,12 +211,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Accounts</h1>
+                                <h1>Ban account</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
-                                    <li class="breadcrumb-item active">Manage Account</li>
+                                    <li class="breadcrumb-item active">Ban Account</li>
                                 </ol>
                             </div>
                         </div>
@@ -233,124 +226,82 @@
                 <!-- Main content -->
                 <section class="content">
 
-                    <!-- Default box -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">View account list</h3>
+                    <%
+                        Users user = (Users) request.getAttribute("user");
+                        UserService uService = new UserService();
+                    %>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                    <form action="admin-account?action=ban" method="POST">
+                        <input type="hidden" name="userID" value="<%= user.getId() %>" readonly="">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">User information</h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="email">Account Email</label>
+                                            <input type="text" id="email" name="email" class="form-control" value="<%=user.getEmail()%>" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="userName">First Name</label>
+                                            <input type="text" id="fname" name="fname" class="form-control" value="<%=uService.getFirstName(user.getId()) == null ? "" : uService.getFirstName(user.getId())%>" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="userName">Last Name</label>
+                                            <input type="text" id="lname" name="lname" class="form-control" value="<%=uService.getLastName(user.getId()) == null ? "" : uService.getLastName(user.getId())%>" readonly>
+                                        </div>
+
+                                        <!-- Admin do not need civil id -->
+                                        <% if(user.getRoleID() == 1 || user.getRoleID() == 2 ){ %> <!-- 1 is Tenant, 2 is Landlord -->
+                                        <div class="form-group">
+                                            <label for="civilid">Civil ID</label>
+                                            <input type="text" id="civilid" name="civilid" class="form-control" value="<%=uService.getCivilID(user.getId()) == null ? "" : uService.getCivilID(user.getId())%>" readonly>
+                                        </div>
+                                        <%}%>
+
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="text" id="phone" name="phone" class="form-control" value="<%=uService.getPhone(user.getId()) == null ? "" : uService.getPhone(user.getId())%>" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="role">Role</label>
+                                            <input type="text" id="role" name="role" class="form-control" value="<%= uService.getRoleName(user.getRoleID()) %>" readonly>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="duration">Ban duration</label>
+                                            <select name="duration" id="duration">
+                                                <option value="100">100 days</option>
+                                                <option value="200">200 days</option>
+                                                <option value="365">365 days</option>
+                                                <option value="99999">Permanent</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <a href="admin-dashboard?service=manageAccount" class="btn btn-secondary">Cancel</a>
+                                <input type="submit" value="Save Changes" class="btn btn-success float-right">
                             </div>
                         </div>
-                        <div class="card-body p-0">
-                            <table class="table table-striped projects">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 1%">
-                                            ID
-                                        </th>
-                                        <th style="width: 13%">
-                                            Account Email
-                                        </th>
-                                        <th style="width: 10%">
-                                            Full Name
-                                        </th>
-                                        <th style="width: 10%">
-                                            Civil ID
-                                        </th>
-                                        <th style="width: 18%">
-                                            Address
-                                        </th>
-                                        <th style="width: 10%">
-                                            Phone
-                                        </th>
-                                        <th style="width: 8%">
-                                            Role
-                                        </th>
-                                        <th style="width: 5%" class="text-center">
-                                            Status
-                                        </th>
-                                        <th style="width: 15%">
-                                            <a href="admin-account?action=add"  class="btn btn-success btn-sm" ><i class="fas fa-plus"></i> <span>Add New Account</span></a>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <%
-                                List<Users> list = (List<Users>) request.getAttribute("listOfUsers");
-                                UserService uService = new UserService();
-                                UserDAO dao = new UserDAO();
-                                %>
-                                <tbody>
-                                    <%for(Users us:list){%>
-                                    <tr>
-                                        <td>
-                                            <%=us.getId()%>
-                                        </td>
-                                        <td>
-                                            <%=us.getEmail()%>
-                                        </td>
-                                        <td>
-                                            <%=uService.getUserName(us.getId()) == null ? "" : uService.getUserName(us.getId())%>
-                                        </td>
-                                        <td>
-                                            <%=uService.getCivilID(us.getId()) == null ? "" : uService.getCivilID(us.getId())%>
-                                        </td>
-                                        <td>
-                                            <%=uService.getAddress(us.getId()) == null ? "" : uService.getAddress(us.getId())%>
-                                        </td>
-                                        <td>
-                                            <%=uService.getPhone(us.getId()) == null ? "" : uService.getPhone(us.getId())%>
-                                        </td>
-                                        <td>
-                                            <%=dao.getUserRole(us)%>
-                                        </td>
-                                        <% if( us.getStatus().name() == "VER" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-success">Verified</span>
-                                        </td>
-                                        <%}%>
-                                        <% if( us.getStatus().name() == "UNV" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-warning">Unverified</span>
-                                        </td>
-                                        <%}%>
-                                        <% if( us.getStatus().name() == "BAN" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-danger">Banned</span>
-                                        </td>
-                                        <%}%>
-                                        <% if( us.getStatus().name() == "DEL" ){%>
-                                        <td class="project-state">
-                                            <span class="badge badge-secondary">Deleted</span>
-                                        </td>
-                                        <%}%>
-                                        <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm" href="admin-account?action=edit&userid=<%=us.getId()%>">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Edit
-                                            </a>
-                                            <% if( us.getStatus().name() != "DEL" ){%>
-                                            <a class="btn btn-danger btn-sm" href="admin-account?action=delete&userid=<%=us.getId()%>">
-                                                <i class="fas fa-trash">
-                                                </i>
-                                                Delete
-                                            </a>
-                                            <%}%>
-                                        </td>
-                                        <%}%>
-                                    </tr>
-                                </tbody>                  
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
+                    </form>
 
                 </section>
                 <!-- /.content -->
@@ -382,4 +333,3 @@
         <script src="Admin/assets/javascript/demo.js"></script>
     </body>
 </html>
-
