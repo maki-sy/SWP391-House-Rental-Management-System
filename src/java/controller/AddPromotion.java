@@ -29,8 +29,9 @@ import service.PromotionService;
  */
 @WebServlet(name = "AddPromotion", urlPatterns = {"/AddPromotion"})
 public class AddPromotion extends HttpServlet {
+
     SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
-    PromotionService pservice=new PromotionService();
+    PromotionService pservice = new PromotionService();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,8 +46,8 @@ public class AddPromotion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String service = request.getParameter("service");
-         HttpSession session = request.getSession();
-         Users user = (Users) session.getAttribute("user");
+        HttpSession session = request.getSession();
+        Users user = (Users) session.getAttribute("user");
         List<PostRental> listp = pservice.GetPostByLandlordId(user.getId());
         request.setAttribute("listp", listp);
         if (service == null) {
@@ -63,15 +64,22 @@ public class AddPromotion extends HttpServlet {
                 //get promotion's infor
                 String temp_discount = request.getParameter("discount");
                 String des = request.getParameter("desciptions");
-                Date promotion_start_date = Date.valueOf(request.getParameter("start_date"));
-                Date promotion_end_date = Date.valueOf(request.getParameter("end_date"));
+                Date promotion_start_date = null;
+                Date promotion_end_date = null;
                 Date local = Date.valueOf(LocalDate.now());
                 int discount = 0;
                 try {//user enter text instead of number
                     discount = Integer.parseInt(temp_discount);
                 } catch (NumberFormatException e) {
                     request.setAttribute("mess", "Discount must be an integer");
-                request.getRequestDispatcher("AddPromotionForm.jsp").forward(request, response);                 
+                    request.getRequestDispatcher("AddPromotionForm.jsp").forward(request, response);
+                }
+                try {
+                    promotion_start_date = Date.valueOf(request.getParameter("start_date"));
+                    promotion_end_date = Date.valueOf(request.getParameter("end_date"));
+                } catch (Exception ex) {
+                    request.setAttribute("mess", "Wrong date format");
+                    request.getRequestDispatcher("AddPromotionForm.jsp").forward(request, response);
                 }
                 if (promotion_start_date.after(promotion_end_date)) {    //start date occurs after end date
                     request.setAttribute("mess", "Start date must occurs before end date");
@@ -81,7 +89,7 @@ public class AddPromotion extends HttpServlet {
                     request.getRequestDispatcher("AddPromotionForm.jsp").forward(request, response);
                 } else {
                     Promotion promotion = new Promotion(-1, discount, des, promotion_start_date, promotion_end_date);
-                    int creId=pservice.createReturnId(promotion);
+                    int creId = pservice.createReturnId(promotion);
                     //set property promotion_id
                     for (String pro : p) {
                         int a = Integer.parseInt(pro);

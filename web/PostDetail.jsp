@@ -6,7 +6,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
 <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
+
 <%@ page import="model.Users, service.PostService" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
     PostService pService = new PostService();
@@ -38,7 +41,60 @@
 
         <!-- Template Main CSS File -->
         <link href="assets/css/style.css" rel="stylesheet">
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            .rate {
+                float: left;
+                height: 46px;
+                padding: 0 10px;
+            }
+            .rate:not(:checked) > input {
+                position:absolute;
 
+            }
+            .rate:not(:checked) > label {
+                float:right;
+                width:1em;
+                overflow:hidden;
+                white-space:nowrap;
+                cursor:pointer;
+                font-size:30px;
+                color:#ccc;
+            }
+            .rate:not(:checked) > label:before {
+                content: '★ ';
+            }
+            .rate > input:checked ~ label {
+                color: #ffc700;
+            }
+            .rate:not(:checked) > label:hover,
+            .rate:not(:checked) > label:hover ~ label {
+                color: #deb217;
+            }
+            .rate > input:checked + label:hover,
+            .rate > input:checked + label:hover ~ label,
+            .rate > input:checked ~ label:hover,
+            .rate > input:checked ~ label:hover ~ label,
+            .rate > label:hover ~ input:checked ~ label {
+                color: #c59b08;
+
+            }
+            .checked {
+                color: orange;
+            }
+            .form-control-borderless {
+                border: none;
+            }
+
+            .form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+                border: none;
+                outline: none;
+                box-shadow: none;
+            }
+        </style>
         <!-- =======================================================
         * Template Name: EstateAgency
         * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -276,6 +332,51 @@
 
                                             </ul>
                                         </div>
+                                                <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="title-box-d section-t4">
+                                                        <h3 class="title-d">Comment</h3>
+                                                    </div>
+                                                </div>
+                                                <c:if test="${sessionScope.user!=null&&sessionScope.user.roleID==1}">
+                                                    <form action="ReviewManage?id=<%=post.getId()%>" method="Post"> 
+                                                        <!--                                                Chi cho tenant review-->
+                                                        <div class="rate">  
+                                                            <input type="radio" id="star5" name="rate" value="5"style="visibility: hidden" />
+                                                            <label for="star5" title="text">5 stars</label>
+                                                            <input type="radio" id="star4" name="rate" value="4"style="visibility: hidden" />
+                                                            <label for="star4" title="text">4 stars</label>
+                                                            <input type="radio" id="star3" name="rate" value="3"style="visibility: hidden" />
+                                                            <label for="star3" title="text">3 stars</label>
+                                                            <input type="radio" id="star2" name="rate" value="2"style="visibility: hidden" />
+                                                            <label for="star2" title="text">2 stars</label>
+                                                            <input type="radio" id="star1" name="rate" value="1" style="visibility: hidden" />
+                                                            <label for="star1" title="text">1 star</label>
+                                                        </div>
+                                                        <br>
+                                                        <br>
+                                                        <div style="border: solid;border-radius:10px ">
+                                                        <input name="comment" type="text" placeholder="Add your thought" class="text-center form-control-borderless"
+                                                               style="width: 250px;height: 50px;border-radius:15px ">
+                                                        <button type="submit" class="btn btn-primary" style="background-color: #2eca6a">Submit</button>
+                                                        </div>
+                                                    </c:if>
+                                                    <p class="text-danger">${mess}</p>
+                                                    <div class="row">
+                                                        <c:forEach items="${listr}" var="o">
+                                                            <div class="col-sm-12">
+                                                                <div class="testimonials-content">
+                                                                    <p class="testimonial-text" style="width: 1000px">
+                                                                        ${o.address}
+                                                                    </p>
+                                                                </div>
+                                                                <div class="testimonial-author-box">
+                                                                    <h5 class="testimonial-author"> ${o.id} <span class="fa fa-star checked">⭐</span> by ${o.lastName} ${o.firstName}  on ${o.civilID}</h5>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
+                                                    </div>
+                                            </div>
                                     </div>
                                     <!--Wishlish-->
                                     <i class="fa-regular fa-heart"></i><a href="wishlist?service=add&id=<%= post.getId() %>">Add to wishlist</a>

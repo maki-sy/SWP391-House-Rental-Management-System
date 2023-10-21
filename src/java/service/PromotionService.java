@@ -46,22 +46,57 @@ public class PromotionService {
     public void DeletePromotion(int id) {
         PROMOTION_DAO.removePromotion(id);
     }
-    public Promotion GetPromotionById(int id){
-        Promotion promotion =PROMOTION_DAO.GetPromotionByID(id);
+
+    public Promotion GetPromotionById(int id) {
+        Promotion promotion = PROMOTION_DAO.GetPromotionByID(id);
         return promotion;
     }
-    public void UpdatePromotionDiscountDes(int discount,String des,int id){
+
+    public void UpdatePromotionDiscountDes(int discount, String des, int id) {
         PROMOTION_DAO.UpdatePromotionDiscountDes(discount, des, id);
     }
-    public void UpdatePromotionDuration(Date start,Date end,int id){
+
+    public void UpdatePromotionDuration(Date start, Date end, int id) {
         PROMOTION_DAO.UpdatePromotionDuration(start, end, id);
     }
-    public List<Promotion> GetPromotionByLandlordId(int id){
-        List<Promotion> list =PROMOTION_DAO.GetPromotionByLandlordId(id);
+
+    public List<Promotion> GetPromotionByLandlordId(int id) {
+        List<Promotion> list = PROMOTION_DAO.GetPromotionByLandlordId(id);
         return list;
     }
-    public List<PostRental> GetPostByLandlordId(int id){
-        List<PostRental> list=POST_DAO.getPostDetailsbyLandlordId(id);
+
+    public List<PostRental> GetPostByLandlordId(int id) {
+        List<PostRental> list = POST_DAO.getPostDetailsbyLandlordId(id);
         return list;
+    }
+
+    public boolean validateDiscount(String temp_discount) {
+        int discount = 0;
+        try {
+            discount = Integer.parseInt(temp_discount);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
+
+    public boolean validateDate(String startDate, String endDate) {
+        try {
+            Date promotion_start_date = Date.valueOf(startDate);
+            Date promotion_end_date = Date.valueOf(endDate);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        PromotionService p = new PromotionService();
+        String temp = "ok";
+        if (p.validateDiscount(temp)) {
+            System.err.println("true");
+        } else {
+            System.out.println("false");
+        }
     }
 }
