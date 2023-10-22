@@ -9,19 +9,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
-import java.io.File;
 import java.util.ArrayList;
 import model.Orders;
 import model.PostRental;
 import model.Users;
 import service.LandlordService;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @WebServlet(name = "landlordServicesPage", urlPatterns = {"/landlordServicesPage"})
 @MultipartConfig
@@ -29,11 +24,13 @@ public class LandlordServicesPage extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //-- Lay duong dan thu muc goc --//
         ServletContext context = getServletContext();
         String appPath = context.getRealPath("");
         Path projectPath = Paths.get(appPath);
         Path parentDirectory = projectPath.getParent().getParent();
         appPath = parentDirectory.toString();
+        //-- Lay xong duong dan thu muc goc --//
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             LandlordService handleService = new LandlordService();
@@ -106,71 +103,36 @@ public class LandlordServicesPage extends HttpServlet {
                 ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
                 request.setAttribute("postList", postList);
                 request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
-            } else if (service.equals("edit-post")) {
-                request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
+            } else if (service.equals("edit-detail-post")) {
+                int postId = Integer.parseInt(request.getParameter("post-id"));
+                PostRental post = handleService.getPostByPostId(postId);
+                ArrayList<String> urlList =  handleService.getPostImageURLByPostId(postId);
+                request.setAttribute("post", post);
+                request.setAttribute("urlList", urlList);
+                request.getRequestDispatcher("L-edit-detail-post.jsp").forward(request, response);
                 // do  something
-            } else if (service.equals("add-new-post")) {
-                request.getRequestDispatcher("L-add-new-post.jsp").forward(request, response);
-            } else if (service.equals("submit-add-new-post")) {
-
-                // xong phan luu anh
+            } else if (service.equals("submit-edit-detail-post")) {
+                 int postId = Integer.parseInt(request.getParameter("post-id"));
+                PostRental post = handleService.getPostByPostId(postId);
                 String name = request.getParameter("name");
-                int price = Integer.parseInt(request.getParameter("price"));
+                double price = Double.parseDouble(request.getParameter("price"));
                 int area = Integer.parseInt(request.getParameter("area"));
                 int NumOfBedrooms = Integer.parseInt(request.getParameter("NumOfBedrooms"));
                 String address = request.getParameter("address");
-                // file chua xu ly
                 String description = request.getParameter("description");
                 int type = Integer.parseInt(request.getParameter("type"));
                 int location_id = Integer.parseInt(request.getParameter("location_id"));
+                String typeActionImg = request.getParameter("add-or-replace");
                 String typeOfAction = request.getParameter("typeOfAction");
-                boolean isInsertSuccess = handleService.isInsertSuccess(name, price, type, area, NumOfBedrooms,
-                        address, description, user.getId(), location_id);
-                int count = 0;
-                if (isInsertSuccess) {
-                    PostRental post = handleService.getLastestPostByUserId(user.getId());
-                    boolean isThumbnail = true;
-                    // luu hinh anh
-//<<<<<<< HEAD
-//                    String uploadDirectory = "C:\\ProgramData";
-//                    String rootDirectory = "./../../../../../../ProgramData/";
-//                    for (Part filePart : request.getParts()) {
-//                        String fileName = handleService.getFileName(filePart);
-//                        if (!fileName.equals("unknown.jpg")) {
-//                            String imageType;
-//                            String imageUrl = rootDirectory + fileName;
-//                            if (isThumbnail) {
-//                                imageType = "thumbails";
-//=======
-                    for (Part filePart : request.getParts()) {
-                        String fileName = handleService.getFileName(filePart);
-                        if (!fileName.equals("unknown.jpg") && !fileName.equals("") && !fileName.isEmpty()) {
-                            String imageType;
-                            if (isThumbnail) {
-                                imageType = "thumbnails";
-//>>>>>>> 4547230c0e8dd6bac2d429fe0a216952e0f9d6c4
-                                isThumbnail = false;
-                            } else {
-                                imageType = "main";
-                            }
-//////<<<<<<< HEAD
-////                            Path filePath = Paths.get(uploadDirectory, fileName);
-////                            handleService.addPostImage(post.getId(), imageUrl, imageType);
-//=======
-
-                            String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
-                            fileName = "post-id-" + post.getId() + "-" + imageType + "(" + (++count) + ")" + "." + fileExtension;
-                            String savePath = appPath + File.separator + "web" + File.separator + "assets" + File.separator + "img";
-                            String saveSQLpath = "./assets/img/" + fileName;
-//>>>>>>> 4547230c0e8dd6bac2d429fe0a216952e0f9d6c4
-                            try ( InputStream fileContent = filePart.getInputStream()) {
-                                Path filePath = Paths.get(savePath, fileName);
-                                Files.copy(fileContent, filePath, StandardCopyOption.REPLACE_EXISTING);
-                                handleService.addPostImage(post.getId(), saveSQLpath, imageType);
-                            }
-                        }
+                boolean isUpdatedPostByPostId = handleService.isUpdatedPostByPostId(post.getId(),
+                        name, price, type, area, NumOfBedrooms, address, description, location_id);
+                if (isUpdatedPostByPostId) {
+                    if (typeActionImg.equals("replace-photo")) {
+                        handleService.isImageDeletedByPostId(postId);
                     }
-                    // --> xong phan luu hinh anh
+                    //-- Luu hinh anh --//
+                    handleService.isHandledSaveImageSuccess(post, request.getParts(), appPath);
+                    //-- Xong phan luu hinh anh --//
                     if (typeOfAction.equals("upload")) {
                         int accountBalance = handleService.getAccountPointsByUserId(user.getId());
                         request.setAttribute("accountBalance", accountBalance);
@@ -178,7 +140,45 @@ public class LandlordServicesPage extends HttpServlet {
                         handleService.isDeleteDuplicateDraftPostsSuccessByPostId(post.getId(), user.getId()); // --> xoa bo cac ban nhap giong y het nhau
                         request.getRequestDispatcher("L-pay-for-post.jsp").forward(request, response);
                         // them vao draft thanh cong -> tien hanh thanh toan
-                    } else if (isInsertSuccess && typeOfAction.equals("draft")) {
+                    } else if (typeOfAction.equals("draft")) {
+                        // them vao draft thanh cong
+                        ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
+                        request.setAttribute("postList", postList);
+                        request.setAttribute("mess", "Draft post updated successfully :)");
+                        request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/landlordServicesPage?service=view-request-post&post-id=" + postId).forward(request, response);
+                    }
+                }
+            }
+            
+            else if (service.equals("add-new-post")) {
+                request.getRequestDispatcher("L-add-new-post.jsp").forward(request, response);
+            } else if (service.equals("submit-add-new-post")) {
+                String name = request.getParameter("name");
+                int price = Integer.parseInt(request.getParameter("price"));
+                int area = Integer.parseInt(request.getParameter("area"));
+                int NumOfBedrooms = Integer.parseInt(request.getParameter("NumOfBedrooms"));
+                String address = request.getParameter("address");
+                String description = request.getParameter("description");
+                int type = Integer.parseInt(request.getParameter("type"));
+                int location_id = Integer.parseInt(request.getParameter("location_id"));
+                String typeOfAction = request.getParameter("typeOfAction");
+                boolean isInsertSuccess = handleService.isInsertSuccess(name, price, type, area, NumOfBedrooms,
+                        address, description, user.getId(), location_id);
+                if (isInsertSuccess) {
+                    PostRental post = handleService.getLastestPostByUserId(user.getId());
+                    //-- Luu hinh anh --//
+                    handleService.isHandledSaveImageSuccess(post, request.getParts(), appPath);
+                    //-- Xong phan luu hinh anh --//
+                    if (typeOfAction.equals("upload")) {
+                        int accountBalance = handleService.getAccountPointsByUserId(user.getId());
+                        request.setAttribute("accountBalance", accountBalance);
+                        request.setAttribute("postId", post.getId());
+                        handleService.isDeleteDuplicateDraftPostsSuccessByPostId(post.getId(), user.getId()); // --> xoa bo cac ban nhap giong y het nhau
+                        request.getRequestDispatcher("L-pay-for-post.jsp").forward(request, response);
+                        // them vao draft thanh cong -> tien hanh thanh toan
+                    } else if (typeOfAction.equals("draft")) {
                         // them vao draft thanh cong
                         ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
                         request.setAttribute("postList", postList);

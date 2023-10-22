@@ -43,6 +43,29 @@ public class PostImageDAO extends DBContext {
         return url;
     }
 
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public ArrayList<String> getPostImageURLByPostId(int postId) {
+        ArrayList<String> url = new ArrayList<>();
+        String sql = "SELECT [img_url]\n"
+                + "  FROM [dbo].[Post_Image]\n"
+                + "  WHERE post_id = " + postId;
+        ResultSet rs = getData(sql);
+        try {
+            while (rs.next()) {
+                url.add(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+
+        }
+
+        return url;
+    }
+
     public ArrayList<PostImage> getImageThumbails() {
         ArrayList<PostImage> list = new ArrayList<>();
         String sqlCommand = "SELECT [id]\n"
@@ -79,6 +102,7 @@ public class PostImageDAO extends DBContext {
 
     public static void main(String[] args) {
         PostImageDAO PostImageDAO = new PostImageDAO();
+        System.out.println(PostImageDAO.getPostImageURLByPostId(34));
     }
 
 }

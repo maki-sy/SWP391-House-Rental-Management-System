@@ -39,11 +39,9 @@
         <!-- ======= JSP ======= -->
         <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role");
             Object loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user");
-            ArrayList<PostRental>
-            postList = (ArrayList<PostRental>)request.getAttribute("postList");
+            PostRental post = (PostRental)request.getAttribute("post");
+            ArrayList<String> urlList = (ArrayList<String>)request.getAttribute("urlList");
         %>
-
-
         <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
@@ -148,20 +146,22 @@
 
         <!-- ======= Header/Navbar ======= -->
         <%@include file="header.jsp" %>
+
         <!-- End Header/Navbar -->
 
-        <!-- Main content -->
         <main id="main">
             <section class="section-news section-t3">
                 <div class="container py-5">
                     <div class="row">
                         <div class="col">
                             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-                                <ol class="breadcrumb mb-0 mt-0">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#">User</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">User
-                                        Profile</li>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="#">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="#">Manage services</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Add
+                                        new post</li>
                                 </ol>
                             </nav>
                         </div>
@@ -176,14 +176,52 @@
                                     <div class="mb-3"></div>
                                     <ul class="list-group text-start">
                                         <li class="text-start list-group-item active list-group-item-action"
-                                            aria-current="true">Manage pending requests</li>
+                                            aria-current="true">Add new post</li>
                                         <li class="list-group-item"><span
-                                                class="text-bg-primary">--View--</span><span>
-                                                View detailed post information</span></li>
+                                                class="text-bg-warning">--Post
+                                                title--</span><span>
+                                                The title is placed at the top of the
+                                                article</span></li>
                                         <li class="list-group-item"><span
-                                                class="text-bg-danger">--Draft--</span>
-                                            <span>
-                                                Move to the post Draft, you can edit and pay at any time, but return the post to unpaid status</span></li>
+                                                class="text-bg-warning">--Rental
+                                                price--</span><span>
+                                                The original rental price of the house has not
+                                                yet been discounted</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--House
+                                                area--</span><span>
+                                                Area of the house</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Number of
+                                                bedrooms--</span><span>
+                                                Total number of bedrooms in the house</span>
+                                        </li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Address of
+                                                the house--</span><span>
+                                                Detailed address of the house such as house
+                                                number, lane number, lane name, ward name</span>
+                                        </li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Upload
+                                                photo--</span><span>
+                                                You can absolutely upload multiple photos at the
+                                                same time</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-warning">--Detailed
+                                                description--</span><span>
+                                                Describe all the details of the house
+                                                attractively to attract tenants</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-danger">--Save as
+                                                draft--</span><span>
+                                                Save it as a draft and you can publish it
+                                                later</span></li>
+                                        <li class="list-group-item"><span
+                                                class="text-bg-danger">--Proceed
+                                                with payment--</span><span>
+                                                Select payments and post to the community</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -319,77 +357,202 @@
                         </div>
 
                         <div class="card col-lg-8">
+                            <form id='form-1' action="landlordServicesPage" method="POST"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="service" value="submit-edit-detail-post">
+                                <input type="hidden" name="post-id" value="<%=post.getId()%>">
+                                <div class="mb-3"></div>
+                                <div class="mb-3">
+                                    <label for="Post-title" class="form-label" >Post
+                                        title</label>
+                                    <textarea required name="name" class="form-control"
+                                              id="Post-title" rows="1" placeholder="<%=post.getName()%>"><%=post.getName()%></textarea>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label for="Rental-price" class="form-label">Rental
+                                            price</label>
+                                        <textarea required name="price" class="form-control"
+                                                  id="Rental-price" rows="1" placeholder="<%=post.getPrice()%>"><%=post.getPrice()%></textarea>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="House-area" class="form-label">House
+                                            area</label>
+                                        <textarea required name="area" class="form-control"
+                                                  id="House-area" rows="1" placeholder="<%=post.getArea()%>"><%=post.getArea()%></textarea>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="Number-bedrooms" class="form-label">Number
+                                            of
+                                            bedrooms</label>
+                                        <textarea required name="NumOfBedrooms"
+                                                  class="form-control" id="Number-bedrooms"
+                                                  rows="1" placeholder="<%=post.getNumOfBeds()%>"><%=post.getNumOfBeds()%></textarea>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
 
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="col-lg-1" scope="col">#</th>
-                                        <th class="col-lg-1" scope="col">ID</th>
-                                        <th class="col-lg-1" scope="col">Name</th>
-                                        <th class="col-lg-1" scope="col">Price</th>
-                                        <th class="col-lg-1" scope="col">Status</th>
-                                        <th class="col-lg-2" scope="col">Start date</th>
-                                        <th class="col-lg-2" scope="col">End date</th>
-                                        <th class="col-lg-1" scope="col">View</th>
-                                        <th class="col-lg-1" scope="col">Draft</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%int count=0; for(PostRental post : postList) {%>
-                                    <tr>
-                                        <th scope="row">
-                                            <%=++count%>
-                                        </th>
-                                        <td>
-                                            <%=post.getId()%>
-                                        </td>
-                                        <td>
-                                            <%=post.getName().substring(0,10)%>...%>
-                                        </td>
-                                        <td>
-                                            <%=post.getPrice()%>
-                                        </td>
-                                        <td>
-                                            <%=post.getStatus()%>
-                                        </td>
-                                        <td>
-                                            <%=post.getPost_start()%>
-                                        </td>
-                                        <td>
-                                            <%=post.getPost_end()%>
-                                        </td>
-                                        <td>
-                                            <form action="landlordServicesPage"
-                                                  method="POST">
-                                                <input type="hidden" name="service"
-                                                       value="view-request-post">
-                                                <input type="hidden" name="post-id"
-                                                       value="<%=post.getId()%>">
-                                                <button type="submit"
-                                                        class="w-100 btn btn-sm btn-primary">
-                                                    <ion-icon name="eye-outline"></ion-icon>
-                                                </button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <a href="javascript:void(0);"
-                                               onclick="confirmRemoveToDraft(<%=post.getId()%>)">
-                                                <button type="submit"
-                                                        class="w-100 btn btn-sm btn-danger">
-                                                    <ion-icon name="albums-outline"></ion-icon>
-                                                </button>
-                                            </a>
-                                        </td>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address
+                                        of the
+                                        house</label>
+                                    <textarea required name="address" class="form-control"
+                                              id="address" rows="1" placeholder="<%=post.getAddress()%>"><%=post.getAddress()%></textarea>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-8">
+                                            <div id="property-single-carousel" class="swiper">
+                                                <div class="swiper-wrapper">
+                                                    <%for(String url : urlList){%>
+                                                    <div class="carousel-item-b swiper-slide ">
+                                                        <img class="rounded mx-auto d-block img-fluid" src="<%=url%>" alt="">
+                                                    </div>
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                            <div class="property-single-carousel-pagination carousel-pagination"></div>
+                                        </div>
+                                    </div>
 
+                                </div>
+                                <div class="mb-3">
 
-                                    </tr>
-                                    <%}%>
-                                </tbody>
-                            </table>
+                                    <label for="formFileMultiple" class="form-label">Upload
+                                        multiple photos</label>
+                                    <input name="media" class="form-control" type="file"
+                                           id="formFileMultiple" multiple>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                               name="add-or-replace" id="add-new-photo" value="add-new-photo" checked>
+                                        <label class="form-check-label" for="inlineRadio1">Add new photo</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                               name="add-or-replace" id="replace-photo" value="replace-photo">
+                                        <label class="form-check-label"
+                                               for="inlineRadio2">Replace photo</label>
+                                    </div>
+                                </div>   
+                                <div class="mb-3">
+                                    <label for="Detailed-description"
+                                           class="form-label">Detailed
+                                        description</label>
+                                    <textarea required name="description" class="form-control"
+                                              id="Detailed-description" rows="12" placeholder="<%=post.getDesscription()%>"><%=post.getDesscription()%></textarea>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+
+                                <select required name="type" class="mb-3 form-select"
+                                        aria-label="Default select example" id="type">
+                                    <option disabled>Choose the type of
+                                        rental house
+                                    </option>
+                                    <option selected value="1">Motel</option>
+                                    <option value="2">Apartment</option>
+                                </select>
+                                <select required name="location_id" class="mb-3 form-select"
+                                        aria-label="Default select example" id="location_id">
+                                    <option disabled>Select province/city
+                                    </option>
+                                    <option selected value="1">Hanoi</option>
+                                    <option value="2">Haiphong</option>
+                                    <option value="3">Da Nang</option>
+                                    <option value="4">Ho Chi Minh City</option>
+                                    <option value="5">Can Tho</option>
+                                    <option value="6">An Giang</option>
+                                    <option value="7">Bac Giang</option>
+                                    <option value="8">Bac Kan</option>
+                                    <option value="9">Bac Ninh</option>
+                                    <option value="10">Ba Ria - Vung Tau</option>
+                                    <option value="11">Ben Tre</option>
+                                    <option value="12">Binh Dinh</option>
+                                    <option value="13">Binh Duong</option>
+                                    <option value="14">Binh Phuoc</option>
+                                    <option value="15">Binh Thuan</option>
+                                    <option value="16">Ca Mau</option>
+                                    <option value="17">Cao Bang</option>
+                                    <option value="18">Dak Lak</option>
+                                    <option value="19">Dak Nong</option>
+                                    <option value="20">Dien Bien</option>
+                                    <option value="21">Dong Nai</option>
+                                    <option value="22">Dong Thap</option>
+                                    <option value="23">Gia Lai</option>
+                                    <option value="24">Ha Giang</option>
+                                    <option value="25">Ha Nam</option>
+                                    <option value="26">Ha Tinh</option>
+                                    <option value="27">Hai Duong</option>
+                                    <option value="28">Hoa Binh</option>
+                                    <option value="29">Hung Yen</option>
+                                    <option value="30">Khanh Hoa</option>
+                                    <option value="31">Kien Giang</option>
+                                    <option value="32">Kon Tum</option>
+                                    <option value="33">Lai Chau</option>
+                                    <option value="34">Lam Dong</option>
+                                    <option value="35">Lang Son</option>
+                                    <option value="36">Lao Cai</option>
+                                    <option value="37">Long An</option>
+                                    <option value="38">Nam Dinh</option>
+                                    <option value="39">Nghe An</option>
+                                    <option value="40">Ninh Binh</option>
+                                    <option value="41">Ninh Thuan</option>
+                                    <option value="42">Phu Tho</option>
+                                    <option value="43">Phu Yen</option>
+                                    <option value="44">Quang Binh</option>
+                                    <option value="45">Quang Nam</option>
+                                    <option value="46">Quang Ngai</option>
+                                    <option value="47">Quang Ninh</option>
+                                    <option value="48">Quang Tri</option>
+                                    <option value="49">Soc Trang</option>
+                                    <option value="50">Son La</option>
+                                    <option value="51">Tay Ninh</option>
+                                    <option value="52">Thai Binh</option>
+                                    <option value="53">Thai Nguyen</option>
+                                    <option value="54">Thanh Hoa</option>
+                                    <option value="55">Thua Thien Hue</option>
+                                    <option value="56">Tien Giang</option>
+                                    <option value="57">Tra Vinh</option>
+                                    <option value="58">Tuyen Quang</option>
+                                    <option value="59">Vinh Long</option>
+                                    <option value="60">Vinh Phuc</option>
+                                    <option value="61">Yen Bai</option>
+                                    <option value="62">Bac Long Vi Island</option>
+                                    <option value="63">Phu Quy Islands</option>
+                                </select>
+                                <%if(post.getStatus().equals("draft")) {%>
+                                <div class="form-check mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                               name="typeOfAction" id="draft" value="draft" checked>
+                                        <label class="form-check-label" for="inlineRadio1">Save
+                                            as draft</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                               name="typeOfAction" id="pay" value="upload">
+                                        <label class="form-check-label"
+                                               for="inlineRadio2">Proceed with
+                                            payment</label>
+                                    </div>
+                                </div>
+                                <%}%>
+                                <div>
+                                    <button id="btn-submit" type="submit"
+                                            class="btn btn-warning w-100" disabled>Submit
+                                        now</button>
+                                </div>
+
+                            </form>
                         </div>
                         </section>
                         </main>
-
 
                         <!-- ======= Footer ======= -->
                         <section class="section-footer">
@@ -402,7 +565,8 @@
                                             </div>
                                             <div class="w-body-a">
                                                 <p class="w-text-a color-text-a">
-                                                    Enim minim veniam quis nostrud exercitation ullamco laboris
+                                                    Enim minim veniam quis nostrud exercitation
+                                                    ullamco laboris
                                                     nisi ut
                                                     aliquip exea
                                                     commodo consequat duis
@@ -416,7 +580,8 @@
                                                         contact@example.com
                                                     </li>
                                                     <li class="color-a">
-                                                        <span class="color-text-a">Email .</span> +54 356 945234
+                                                        <span class="color-text-a">Email .</span>
+                                                        +54 356 945234
                                                     </li>
                                                 </ul>
                                             </div>
@@ -463,7 +628,8 @@
                                     <div class="col-sm-12 col-md-4 section-md-t3">
                                         <div class="widget-a">
                                             <div class="w-header-a">
-                                                <h3 class="w-title-a text-brand">International sites</h3>
+                                                <h3 class="w-title-a text-brand">International sites
+                                                </h3>
                                             </div>
                                             <div class="w-body-a">
                                                 <ul class="list-unstyled">
@@ -548,7 +714,8 @@
                                         <div class="copyright-footer">
                                             <p class="copyright color-text-a">
                                                 &copy; Copyright
-                                                <span class="color-a">EstateAgency</span> All Rights Reserved.
+                                                <span class="color-a">EstateAgency</span> All Rights
+                                                Reserved.
                                             </p>
                                         </div>
                                         <div class="credits">
@@ -565,15 +732,23 @@
                                 class="bi bi-arrow-up-short"></i></a>
 
                         <!-- Handle Javascript -->
+                        <script src="assets/js/edit-detail-post.js"></script>
                         <script>
-                            var mess = '<%= request.getAttribute("mess") %>'
-                            if (mess !== 'null' && mess !== null) {
-                                setTimeout(function () {
-                                    alert(mess)
-                                }, 500);
-                            }
+                            Validator({
+                                form: '#form-1',
+                                errorSelector: '.invalid-feedback',
+                                rules:
+                                        [
+                                            Validator.checkTextFields('#Post-title', 10, 60),
+                                            Validator.checkTextFields('#Detailed-description', 50, 600),
+                                            Validator.checkTextFields('#address', 10, 20),
+                                            Validator.checkImageFields('#formFileMultiple', 2, 20),
+                                            Validator.checkFloatFields('#Rental-price', 20, 10000),
+                                            Validator.checkDigitFields('#House-area', 5, 300),
+                                            Validator.checkDigitFields('#Number-bedrooms', 1, 300),
+                                        ]
+                            })
                         </script>
-                        <script src="assets/js/published_posts.js"></script>
 
                         <!-- Vendor JS Files -->
                         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
