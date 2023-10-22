@@ -71,4 +71,61 @@ public class UserBannedDAO extends DBContext {
         }
         return added;
     }
+
+    /**
+     * Get UserBanned object by user's id. If there is no userID corresponding
+     * in the UserBanned table, this
+     * function returns null
+     *
+     * @param userID
+     * @return UserBanned object
+     */
+    public UserBanned getBannedUserByID(int userID) {
+        UserBanned banned = null;
+        String SQL = "SELECT * FROM User_banned WHERE id = ?;";
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setInt(1, userID);
+
+            ResultSet rs = preStmt.executeQuery();
+            if (rs.next()) {
+                String email = rs.getString(2);
+                String startDate = rs.getString(3);
+                String endDate = rs.getString(4);
+                UserBanned.Status status = UserBanned.Status.valueOf(rs.getString(5));
+
+                banned = new UserBanned(userID, email, startDate, endDate, status);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getBannedUserByID() reports " + ex.getMessage());
+            Logger.getLogger(UserBannedDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return banned;
+    }
+
+    public int updateBannedByID(UserBanned ban) {
+        String SQL = "UPDATE [dbo].[User_banned]\n"
+                + "   SET [email] = ?\n"
+                + "      ,[ban_start_date] = ?\n"
+                + "      ,[ban_end_date] = ?\n"
+                + "      ,[status] = ?\n"
+                + " WHERE id = ?;";
+
+        int updated = 0;
+
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setString(1, ban.getEmail());
+            preStmt.setString(2, ban.getStartDate());
+            preStmt.setString(3, ban.getEndDate());
+            preStmt.setString(4, ban.getStatus().name());
+            preStmt.setInt(5, ban.getId());
+
+            updated = preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("updateBannedByID() reports " + ex.getMessage());
+            Logger.getLogger(UserBannedDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return updated;
+    }
 }

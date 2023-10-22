@@ -42,60 +42,84 @@ public class AdminAccountController extends HttpServlet {
         UserService uService = new UserService();
         UserDAO dao = new UserDAO();
 
-        if (action.equals("add")) {
-            request.getRequestDispatcher("Admin/view/project-add.jsp").forward(request, response);
-        } else if (action.equals("edit")) {
-            int userid = Integer.parseInt(request.getParameter("userid"));
-            Users user = dao.getUserByID(userid);
-            Status status[] = Users.Status.values();
-
-            request.setAttribute("user", user);
-            request.setAttribute("status", status);
-            request.getRequestDispatcher("Admin/view/project-edit.jsp").forward(request, response);
-        } else if (action.equals("delete")) {
-            int userid = Integer.parseInt(request.getParameter("userid"));
-            dao.deleteUser(userid);
-            response.sendRedirect("admin-dashboard?service=manageAccount");
-        } else if (action.equals("ban")) { // display ban user page
-            int userID;
-            try {
-                userID = Integer.parseInt(request.getParameter("userid"));
-            } catch (NumberFormatException numberEx) {
-                // TODO: Use 404 error page of admin instead
+        switch (action) {
+            case "add":
+                request.getRequestDispatcher("Admin/view/project-add.jsp").forward(request, response);
+                break;
+            case "edit": {
+                int userid = Integer.parseInt(request.getParameter("userid"));
+                Users user = dao.getUserByID(userid);
+                Status status[] = Users.Status.values();
+                request.setAttribute("user", user);
+                request.setAttribute("status", status);
+                request.getRequestDispatcher("Admin/view/project-edit.jsp").forward(request, response);
+                break;
+            }
+            case "delete": {
+                int userid = Integer.parseInt(request.getParameter("userid"));
+                dao.deleteUser(userid);
                 response.sendRedirect("admin-dashboard?service=manageAccount");
-                return;
+                break;
             }
+            case "ban": { // display ban user page
+                int userID;
+                try {
+                    userID = Integer.parseInt(request.getParameter("userid"));
+                } catch (NumberFormatException numberEx) {
+                    // TODO: Use 404 error page of admin instead
+                    response.sendRedirect("admin-dashboard?service=manageAccount");
+                    return;
+                }
 
-            Users user = uService.getUserByID(userID);
-            if (user == null) {
-                request.setAttribute("msg", "Sorry, something went wrong");
-                request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
-                return;
-            }
-            request.setAttribute("user", user);
-            request.getRequestDispatcher("Admin/view/account-ban.jsp").forward(request, response);
-            return;
-        } else if (action.equals("add-point")) { // display add point to landlord form
-            int userID;
-            try {
-                userID = Integer.parseInt(request.getParameter("userId"));
-                // check for user existence
                 Users user = uService.getUserByID(userID);
                 if (user == null) {
                     request.setAttribute("msg", "Sorry, something went wrong");
                     request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
                     return;
                 }
-
-                // if user exists
                 request.setAttribute("user", user);
-                request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
+                request.getRequestDispatcher("Admin/view/account-ban.jsp").forward(request, response);
                 return;
-            } catch (NumberFormatException numEx) {
-                System.out.println("Add point to landlord doGet: " + numEx.getMessage());
+            }
+            case "add-point": { // display add point to landlord form
+                int userID;
+                try {
+                    userID = Integer.parseInt(request.getParameter("userId"));
+                    // check for user existence
+                    Users user = uService.getUserByID(userID);
+                    if (user == null) {
+                        request.setAttribute("msg", "Sorry, something went wrong");
+                        request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
+                        return;
+                    }
+
+                    // if user exists
+                    request.setAttribute("user", user);
+                    request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
+                    return;
+                } catch (NumberFormatException numEx) {
+                    System.out.println("Add point to landlord doGet: " + numEx.getMessage());
+                    response.sendRedirect("admin-dashboard");
+                    return;
+                }
+            }
+            case "unban": {
+                try {
+                    int userId = Integer.parseInt(request.getParameter("userid"));
+                    uService.unbanUser(userId);
+                    response.sendRedirect("admin-dashboard?service=account-utils");
+                    return;
+                } catch (NumberFormatException numEx) {
+                    System.out.println("Unban in doGet " + numEx.getMessage());
+                } catch (Exception ex) {
+                    // TODO: Create an 404-error page for admin to display error message
+                    System.out.println("Unban user doGet: " + ex.getMessage());
+                }
                 response.sendRedirect("admin-dashboard");
                 return;
             }
+            default:
+                break;
         }
 
     }
