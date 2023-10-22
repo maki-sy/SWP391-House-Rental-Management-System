@@ -50,7 +50,7 @@ import model.Wishlist;
  * @author DTS
  */
 public class UserService {
-
+    
     private static final TenantDAO TENANT_DAO = new TenantDAO();
     private static final LandlordDAO LANDLORD_DAO = new LandlordDAO();
     private static final TokenDAO TOKEN_DAO = new TokenDAO();
@@ -69,14 +69,14 @@ public class UserService {
      * @param password Raw password
      */
     public void registerTenant(String firstName, String lastName, String email, String phone, String password) {
-
+        
         System.out.println("registerTenant() called");
         // Check for User with role Tenant with existance emai
         List<Users> usersList = USER_DAO.getUsersByEmail(email);
         Predicate<Users> byStatus = user -> user.getStatus() != Users.Status.UNV;
         Predicate<Users> byRole = user -> user.getRoleID() == Users.Role.TENANT.getValue();
         List<Users> tenantList = usersList.stream().filter(byRole).collect(Collectors.toList());
-
+        
         if (tenantList.isEmpty()) { // This email have never been registered as tenant before. And also there is no account the same email, that has been VERIFIED
             // Check if there is account with email, and is already activated (verified/banned/etc. )
             List<Users> userStatus = usersList.stream().filter(byStatus).collect(Collectors.toList());
@@ -84,7 +84,7 @@ public class UserService {
                 System.out.println("AN ACCOUNT WITH THIS EMAIL ALREADY EXISTS AND ACTIVATED");
                 return;
             }
-
+            
             byte[] salt = generateSalt();
             byte[] hashedPassword = hashingPassword(password, salt);
 
@@ -106,14 +106,14 @@ public class UserService {
             System.out.println("DUPLICATE EMAIL WITH TENANT ROLE");
         }
     }
-
+    
     public void registerLandlord(String firstName, String lastName, String email, String phone, String password) {
         // Check for User with role Tenant with existance emai
         List<Users> usersList = USER_DAO.getUsersByEmail(email);
         Predicate<Users> byStatus = user -> user.getStatus() != Users.Status.UNV;
         Predicate<Users> byRole = user -> user.getRoleID() == Users.Role.LANDLORD.getValue();
         List<Users> landlordList = usersList.stream().filter(byRole).collect(Collectors.toList());
-
+        
         if (landlordList.isEmpty()) { // This email have never been registered as tenant before
             // Check if there is account with email, and is already activated (verified/banned/etc. )
             List<Users> userStatus = usersList.stream().filter(byStatus).collect(Collectors.toList());
@@ -121,7 +121,7 @@ public class UserService {
                 System.out.println("AN ACCOUNT WITH THIS EMAIL ALREADY EXISTS AND ACTIVATED");
                 return;
             }
-
+            
             byte[] salt = generateSalt();
             byte[] hashedPassword = hashingPassword(password, salt);
 
@@ -141,7 +141,7 @@ public class UserService {
             sendConfirmationEmail(email, token.getToken(), "LANDLORD");
         }
     }
-
+    
     private boolean checkActiveAccount(String email) {
         return USER_DAO.checkActiveAccount(email);
     }
@@ -160,7 +160,7 @@ public class UserService {
         // ------------
 
         Properties prop = new Properties();
-
+        
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
         prop.put("mail.smtp.auth", "true");
@@ -172,22 +172,22 @@ public class UserService {
                 return new PasswordAuthentication(username, password);
             }
         });
-
+        
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(
                     Message.RecipientType.TO, InternetAddress.parse(sendTo));
             message.setSubject(subject);
-
+            
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(content, "text/html; charset=utf-8");
-
+            
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(mimeBodyPart);
-
+            
             message.setContent(multipart);
-
+            
             Transport.send(message);
         } catch (MessagingException e) {
             System.out.println("Messeage exception in sendEmail(): " + e.getMessage());
@@ -209,7 +209,7 @@ public class UserService {
         // Send confirmation email to user
         sendEmail(receivedEmail, subject, content);
     }
-
+    
     private void changePasswordEmail(String receivedEmail, String token) {
         String subject = "Verifying change password request";
         String content = "Hi " + receivedEmail + ", you received this email because you've requested to change your password. To verify the request, click on the following link : <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/changePassword?token=" + token + "\">CHANGE YOUR PASSWORD HERE</a>";
@@ -227,7 +227,7 @@ public class UserService {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[20];
         random.nextBytes(bytes);
-
+        
         String token = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         System.out.println("Generated token: " + token);
         System.out.println("Token length: " + token.length());
@@ -266,7 +266,7 @@ public class UserService {
      * @return Users object logged in if successfully, or null if log in fail
      */
     public Users login(String email, String password, int roleID) {
-
+        
         Users user = USER_DAO.getUserByEmailRole(email, roleID);
         if (user == null) { // there is no user with such type and role
             System.out.println("login() says: There is no account with email " + email + " and roleID " + roleID);
@@ -278,17 +278,17 @@ public class UserService {
             System.out.println("Account " + email + " has not been activated");
             return null;
         }
-
+        
         if (BAN_DAO.checkBannedByID(user.getId())) { // If this user is banned
             System.out.println("Account " + user.getEmail() + " has been banned");
             return null;
         }
-
+        
         byte[] salt = user.getSalt();
         byte[] correctPass = user.getHashedPassword();
         byte[] inputPass = hashingPassword(password, salt);
         boolean sucess = Arrays.equals(correctPass, inputPass);
-
+        
         if (sucess) {
             return user;
         } else {
@@ -311,7 +311,7 @@ public class UserService {
                 System.out.println("Account " + user.getEmail() + " has been banned");
                 return null;
             }
-
+            
             byte[] salt = user.getSalt();
             byte[] correctPass = user.getHashedPassword();
             byte[] inputPass = hashingPassword(password, salt);
@@ -333,7 +333,7 @@ public class UserService {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
-
+        
         return salt;
     }
 
@@ -366,7 +366,7 @@ public class UserService {
      * @return
      */
     public boolean verifyEmail(String tokenStr) {
-
+        
         Token token = TOKEN_DAO.getToken(tokenStr);
         if (token == null) { // invalid token: token does not exist in the DB
             System.out.println("Token does not exist in the DB");
@@ -396,7 +396,7 @@ public class UserService {
             return false;
         }
     }
-
+    
     public String verifyChangePassword(String password, String tokenStr) {
         Token token = TOKEN_DAO.getToken(tokenStr);
         if (token == null) { // invalid token: token does not exist in the DB
@@ -413,14 +413,14 @@ public class UserService {
 
                 // Get User object corresponding to token
                 Users user = USER_DAO.getUserByID(token.getUserID());
-
+                
                 byte[] salt = generateSalt();
                 byte[] hashed_password = hashingPassword(password, salt);
                 USER_DAO.updateUserPassword(user, hashed_password, salt);
                 return "success";
             }
         }
-
+        
     }
 
     /**
@@ -434,19 +434,19 @@ public class UserService {
         System.out.println("Time: " + token.getExpireDate());
         LocalDateTime tokenTime = LocalDateTime.parse(token.getExpireDate(), formatter);
         LocalDateTime now = LocalDateTime.now();
-
+        
         return tokenTime.isBefore(now);
     }
-
+    
     public boolean checkPassword(Users user, String inputPassword) {
         byte[] salt = user.getSalt();
         byte[] hashedInputPassword = hashingPassword(inputPassword, salt);
-
+        
         boolean check = Arrays.equals(hashedInputPassword, user.getHashedPassword());
-
+        
         return check;
     }
-
+    
     public void changePassword(int user_id, String email) {
         Token token = generateUserToken(user_id, email, Token.TokenType.CHANGEPWD);
         changePasswordEmail(email, token.getToken());
@@ -499,13 +499,13 @@ public class UserService {
     public void resetUserPassword(String token, String usrPassword) {
         Token tokenObj = TOKEN_DAO.getToken(token);
         Users user = USER_DAO.getUserByID(tokenObj.getUserID());
-
+        
         byte[] salt = generateSalt();
         byte[] hashedPwd = hashingPassword(usrPassword, salt);
-
+        
         user.setSalt(salt);
         user.setHashedPassword(hashedPwd);
-
+        
         USER_DAO.updateUser(user);
     }
 
@@ -528,10 +528,10 @@ public class UserService {
         if (a != null) {
             return a.getFirstName() + " " + a.getLastName();
         }
-
+        
         return null;
     }
-
+    
     public String getFirstName(int userID) {
         Tenant t = TENANT_DAO.getTenantByUserID(userID);
         if (t != null) {
@@ -545,7 +545,7 @@ public class UserService {
         if (a != null) {
             return a.getFirstName();
         }
-
+        
         return null;
     }
 
@@ -565,7 +565,7 @@ public class UserService {
         point = LANDLORD_DAO.getLandlordPoint(landlordID);
         return point;
     }
-
+    
     public String getLastName(int userID) {
         Tenant t = TENANT_DAO.getTenantByUserID(userID);
         if (t != null) {
@@ -579,10 +579,10 @@ public class UserService {
         if (a != null) {
             return a.getLastName();
         }
-
+        
         return null;
     }
-
+    
     public String getAddress(int userID) {
         Tenant t = TENANT_DAO.getTenantByUserID(userID);
         if (t != null) {
@@ -596,10 +596,10 @@ public class UserService {
         if (a != null) {
             return ""; //Admin do not need address
         }
-
+        
         return null;
     }
-
+    
     public String getPhone(int userID) {
         Tenant t = TENANT_DAO.getTenantByUserID(userID);
         if (t != null) {
@@ -613,24 +613,24 @@ public class UserService {
         if (a != null) {
             return a.getPhone();
         }
-
+        
         return null;
     }
-
+    
     public String getCivilID(int userID) {
         Tenant t = TENANT_DAO.getTenantByUserID(userID);
         if (t != null) {
             return t.getCivilID();
         }
-
+        
         Landlord l = LANDLORD_DAO.getLandlordByUserID(userID);
         if (l != null) {
             return l.getCivilID();
         }
-
+        
         return null;
     }
-
+    
     public Users getUserByEmail(String email) {
         UserDAO userdao = new UserDAO();
         List<Users> list = userdao.getUsersByEmail(email);
@@ -640,7 +640,7 @@ public class UserService {
         Users user = userdao.getUsersByEmail(email).get(0);
         return user;
     }
-
+    
     public void addUser(String email, String fname, String lname, String phone, String password) {
         byte[] salt = generateSalt();
         byte[] hashedPwd = hashingPassword(password, salt);
@@ -663,11 +663,11 @@ public class UserService {
             WISHLIST_DAO.addWish(userID, postID);
         }
     }
-
+    
     public List<Wishlist> getWishlistByUserID(int userID) {
         return WISHLIST_DAO.getWishlistByUserID(userID);
     }
-
+    
     public int deleteWish(int wishID) {
         return WISHLIST_DAO.deleteWishByID(wishID);
     }
@@ -682,12 +682,24 @@ public class UserService {
     public void banUser(int userID, int duration) {
         Users user = USER_DAO.getUserByID(userID);
         if (user != null && user.getStatus() != Users.Status.BAN) {
-            USER_DAO.updateUserStatus(userID, Users.Status.BAN);
+            
             LocalDateTime startDate = LocalDateTime.now();
-            LocalDateTime endDate = startDate.plusDays(duration); // default banning time is 100 days
-            UserBanned ban = new UserBanned(userID, user.getEmail(), startDate.toString(), endDate.toString(), UserBanned.Status.Active);
-
-            BAN_DAO.addUserBanned(ban);
+            LocalDateTime endDate = startDate.plusDays(duration);
+            
+            UserBanned ban = BAN_DAO.getBannedUserByID(userID);
+            if (ban == null) { // this user has never been banned before, add it to database
+                ban = new UserBanned(userID, user.getEmail(), startDate.toString(), endDate.toString(), UserBanned.Status.Active);
+                BAN_DAO.addUserBanned(ban);
+            } else { // this user has been banned before, we update record in the database
+                ban.setStartDate(startDate.toString());
+                ban.setEndDate(endDate.toString());
+                ban.setStatus(UserBanned.Status.Active);
+                BAN_DAO.updateBannedByID(ban);
+            }
+            
+            // Save user status to database
+            USER_DAO.updateUserStatus(userID, Users.Status.BAN);
+            
         } else {
             System.out.println("banUser() says: There is no userID");
         }
@@ -712,5 +724,41 @@ public class UserService {
      */
     public String getRoleName(int roleID) {
         return USER_ROLE_DAO.getRoleName(roleID);
+    }
+
+    /**
+     * Unban an user by user's id. An account is only capable of unban when it
+     * is not already banned or deleted. After unban, account will we set to UNV
+     * status (unverified email)
+     *
+     * @param userID
+     * @throws java.lang.Exception User does not exist or user's status is not
+     * banned
+     */
+    public void unbanUser(int userID) throws Exception {
+        Users user = getUserByID(userID);
+        // check for existence of user
+        if (user == null) {
+            throw new Exception("Cannot unban user, user does not exist");
+        }
+        // check status of user
+        Users.Status status = user.getStatus();
+        if (status == Users.Status.BAN) {
+            // unban user by updating user's status
+            user.setStatus(Users.Status.UNV);
+
+            // update User_Banned table
+            UserBanned banned = BAN_DAO.getBannedUserByID(userID);
+            if (banned == null) {
+                throw new Exception("UserID " + userID + " does not get banned");
+            }
+            banned.setStatus(UserBanned.Status.Disable); // disable ban penalize
+            
+            // Save changes to the database
+            BAN_DAO.updateBannedByID(banned);
+            USER_DAO.updateUser(user);
+        } else {
+            throw new Exception("Cannot unban user that are not banned");
+        }
     }
 }
