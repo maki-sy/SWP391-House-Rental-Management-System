@@ -4,7 +4,6 @@ function Validator(options) {
     var formElement = document.querySelector(options.form)
     var submitElement = formElement.querySelector('#btn-submit')
 
-
     function validate(inputElement, rule) {
         var errorMessage = rule.test(inputElement);
         var errorElement = inputElement.parentElement.querySelector(options.errorSelector);
@@ -13,8 +12,7 @@ function Validator(options) {
             inputElement.classList.remove("is-valid");
             inputElement.classList.add("is-invalid");
             errorElement.innerText = errorMessage;
-        }
-        else {
+        } else {
             inputElement.classList.remove("is-invalid");
             inputElement.classList.add("is-valid");
             errorElement.innerText = '';
@@ -35,8 +33,7 @@ function Validator(options) {
         if (isFormValid) {
             submitElement.classList.add('btn-primary')
             submitElement.removeAttribute('disabled')
-        }
-        else {
+        } else {
             submitElement.classList.remove('btn-primary')
             submitElement.setAttribute("disabled", "");
         }
@@ -114,9 +111,9 @@ isNumberImageOutOfRange = (inputElement, min, max) => {
 
     var value = selectedFiles.length
     if (value < min) {
-        return 'Please insert at least ' + min + ' photo'
+        return 'Please insert at least ' + min + ' photos'
     } else if (value > max) {
-        return 'Please insert less than ' + max + ' characters'
+        return 'Please insert less than ' + max + ' photos'
     } else {
         return undefined
     }
@@ -127,7 +124,7 @@ Validator.checkTextFields = function (selector, min, max) {
         selector: selector,
         test: function (inputElement) {
             var isRequiredB = isRequired(inputElement)
-            var isTextOutOfRangeB = isTextOutOfRange(inputElement, min,)
+            var isTextOutOfRangeB = isTextOutOfRange(inputElement, min, )
             if (isRequiredB) {
                 return isRequiredB
             }

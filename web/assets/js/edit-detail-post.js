@@ -3,7 +3,32 @@
 function Validator(options) {
     var formElement = document.querySelector(options.form)
     var submitElement = formElement.querySelector('#btn-submit')
-
+    var keep = formElement.querySelector('#keep')
+    var replace = formElement.querySelector('#replace-photo')
+    var add = formElement.querySelector('#add-new-photo')
+    keep.addEventListener('click', () => {
+        options.rules.forEach((rule) => {
+            var inputElement = formElement.querySelector(rule.selector);
+            validate(inputElement, rule);
+        })
+    })
+    replace.addEventListener('click', () => {
+        options.rules.forEach((rule) => {
+            var inputElement = formElement.querySelector(rule.selector);
+            validate(inputElement, rule);
+        })
+    })
+    add.addEventListener('click', () => {
+        options.rules.forEach((rule) => {
+            var inputElement = formElement.querySelector(rule.selector);
+            validate(inputElement, rule);
+        })
+    })
+    
+    options.rules.forEach((rule) => {
+        var inputElement = formElement.querySelector(rule.selector);
+        validate(inputElement, rule);
+    })
 
     function validate(inputElement, rule) {
         var errorMessage = rule.test(inputElement);
@@ -13,8 +38,7 @@ function Validator(options) {
             inputElement.classList.remove("is-valid");
             inputElement.classList.add("is-invalid");
             errorElement.innerText = errorMessage;
-        }
-        else {
+        } else {
             inputElement.classList.remove("is-invalid");
             inputElement.classList.add("is-valid");
             errorElement.innerText = '';
@@ -35,8 +59,7 @@ function Validator(options) {
         if (isFormValid) {
             submitElement.classList.add('btn-primary')
             submitElement.removeAttribute('disabled')
-        }
-        else {
+        } else {
             submitElement.classList.remove('btn-primary')
             submitElement.setAttribute("disabled", "");
         }
@@ -53,6 +76,9 @@ function Validator(options) {
 
         // xu ly Blur
         inputElement.onblur = () => {
+            validate(inputElement, rule);
+        }
+        inputElement.onclick = () => {
             validate(inputElement, rule);
         }
 
@@ -114,9 +140,9 @@ isNumberImageOutOfRange = (inputElement, min, max) => {
 
     var value = selectedFiles.length
     if (value < min) {
-        return 'Please insert at least ' + min + ' photo'
+        return 'Please insert at least ' + min + ' photos'
     } else if (value > max) {
-        return 'Please insert less than ' + max + ' characters'
+        return 'Please insert less than ' + max + ' photos'
     } else {
         return undefined
     }
@@ -127,7 +153,7 @@ Validator.checkTextFields = function (selector, min, max) {
         selector: selector,
         test: function (inputElement) {
             var isRequiredB = isRequired(inputElement)
-            var isTextOutOfRangeB = isTextOutOfRange(inputElement, min,)
+            var isTextOutOfRangeB = isTextOutOfRange(inputElement, min, )
             if (isRequiredB) {
                 return isRequiredB
             }
@@ -147,13 +173,29 @@ Validator.checkImageFields = function (selector, min, max) {
         selector: selector,
         test: function (inputElement) {
             var isRequiredB = isRequired(inputElement)
-            var isNumberImageOutOfRangeB = isNumberImageOutOfRange(inputElement, min, max)
-            if (isRequiredB) {
-                return isRequiredB
+            var keep = document.getElementById('keep');
+            var add = document.getElementById('add-new-photo');
+            var replace = document.getElementById('replace-photo');
+            if (keep.checked === true) {
+
             }
-            if (isNumberImageOutOfRangeB) {
-                return isNumberImageOutOfRangeB
+            if (add.checked === true) {
+                if (isRequiredB) {
+                    return isRequiredB
+                }
+                if (isNumberImageOutOfRange(inputElement, 1, max)) {
+                    return isNumberImageOutOfRange(inputElement, 1, max)
+                }
             }
+            if (replace.checked === true) {
+                if (isRequiredB) {
+                    return isRequiredB
+                }
+                if (isNumberImageOutOfRange(inputElement, min, max)) {
+                    return isNumberImageOutOfRange(inputElement, min, max)
+                }
+            }
+
             return undefined
         }
     }
@@ -199,6 +241,5 @@ Validator.checkFloatFields = function (selector, min, max) {
             }
             return undefined
         }
-
     }
 }

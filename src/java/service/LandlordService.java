@@ -204,23 +204,20 @@ public class LandlordService {
      * @return
      * @creater: tienPV
      */
-    public boolean isHandledSaveImageSuccess(PostRental post, Collection<Part> getParts, String appPath) {
-        boolean isThumbnail = true;
-        int count = 0;
+    public boolean isHandledSaveImageSuccess(PostRental post, Collection<Part> getParts, String appPath, int initIndex) {
         // luu hinh anh
         for (Part filePart : getParts) {
             String fileName = this.getFileName(filePart);
             if (!fileName.equals("unknown.jpg") && !fileName.equals("") && !fileName.isEmpty()) {
                 String imageType;
-                if (isThumbnail) {
+                if (initIndex == 0) {
                     imageType = "thumbnails";
-                    isThumbnail = false;
                 } else {
                     imageType = "main";
                 }
 
                 String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
-                fileName = "post-id-" + post.getId() + "-" + imageType + "(" + (++count) + ")" + "." + fileExtension;
+                fileName = "post-id-" + post.getId() + "-" + imageType + "(" + (++initIndex) + ")" + "." + fileExtension;
                 String savePath = appPath + File.separator + "web" + File.separator + "assets" + File.separator + "img";
                 String saveSQLpath = "./assets/img/" + fileName;
                 try ( InputStream fileContent = filePart.getInputStream()) {
@@ -232,7 +229,85 @@ public class LandlordService {
                 }
             }
         }
-        return isThumbnail;
+        return initIndex > 0;
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     */
+    public boolean isDeletedPostSuccessByPostId(int postId, String appPath) {
+        boolean isImageDeleted = isImageDeletedByPostId(postId, appPath);
+        boolean isStatusUpdated = postDAO.UpdatePostStatus(postId, "deleted");
+        return isImageDeleted && isStatusUpdated;
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public boolean isImageDeletedByPostId(int postId, String appPath) {
+        boolean isDeletePostImageByPostId = false;
+        if (this.isDeleteImageLocalFile(postId, appPath)) {
+            isDeletePostImageByPostId = postImageDAO.deletePostImageByPostId(postId) > 0;
+        }
+        return isDeletePostImageByPostId;
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater tienPV
+     */
+    private boolean isDeleteImageLocalFile(int postId, String appPath) {
+        ArrayList<String> urls = postImageDAO.getPostImageURLByPostId(postId);
+        for (int i = 0; i < urls.size(); i++) {
+            String localPath = appPath + "\\web" + urls.get(i).substring(1).replace("/", "\\");
+            File targetFile = new File(localPath);
+            if (targetFile.exists()) {
+                targetFile.delete();
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     *
+     * @param postId
+     * @return
+     * @creater: tienPV
+     */
+    public boolean isDeletedPostForeverByPostId(int postId, String appPath) {
+        boolean isPostDeleted = false;
+        if (this.isImageDeletedByPostId(postId, appPath)) {
+            isPostDeleted = postDAO.RemovePostByPostId(postId);
+        }
+        return isPostDeleted;
+    }
+
+    /**
+     *
+     * @param postId
+     * @param landlordId
+     * @return creater: tienPV
+     */
+    public boolean isDeleteDuplicateDraftPostsSuccessByPostId(int postId, int landlordId, String appPath) {
+        PostRental currentPost = postDAO.getPostByID(postId);
+        PostRental beforePost = postDAO.getSecondLastestPostByLandlordId(landlordId);
+        boolean isDupl = this.isDuplicateDraftPost(currentPost, beforePost);
+        if (isDupl) {
+            if (this.isImageDeletedByPostId(beforePost.getId(), appPath) == true) {
+                this.isDeletedPostForeverByPostId(beforePost.getId(), appPath);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -345,58 +420,6 @@ public class LandlordService {
      *
      * @param postId
      * @return
-     */
-    public boolean isDeletedPostSuccessByPostId(int postId) {
-        boolean isImageDeleted = (postImageDAO.deletePostImageByPostId(postId) > 0);
-        boolean isStatusUpdated = postDAO.UpdatePostStatus(postId, "deleted");
-        return isImageDeleted && isStatusUpdated;
-    }
-
-    /**
-     *
-     * @param postId
-     * @return
-     * @creater: tienPV
-     */
-    public boolean isImageDeletedByPostId(int postId) {
-        return postImageDAO.deletePostImageByPostId(postId) > 0;
-    }
-
-    /**
-     *
-     * @param postId
-     * @return
-     * @creater: tienPV
-     */
-    public boolean isDeletedPostForeverByPostId(int postId) {
-        boolean isImageDeleted = (postImageDAO.deletePostImageByPostId(postId) > 0);
-        boolean isPostDeleted = postDAO.RemovePostByPostId(postId);
-        return isImageDeleted && isPostDeleted;
-    }
-
-    /**
-     *
-     * @param postId
-     * @param landlordId
-     * @return creater: tienPV
-     */
-    public boolean isDeleteDuplicateDraftPostsSuccessByPostId(int postId, int landlordId) {
-        PostRental currentPost = postDAO.getPostByID(postId);
-        PostRental beforePost = postDAO.getSecondLastestPostByLandlordId(landlordId);
-        boolean isDupl = this.isDuplicateDraftPost(currentPost, beforePost);
-        if (isDupl) {
-            this.isDeletedPostForeverByPostId(beforePost.getId());
-            return true;
-        }
-        return false;
-    }
-    
-    
-
-    /**
-     *
-     * @param postId
-     * @return
      * @creater: tienPV
      */
     public PostRental getPostByPostId(int postId) {
@@ -428,20 +451,20 @@ public class LandlordService {
         return false;
     }
 
-   /**
-    * 
-    * @param postId
-    * @param name
-    * @param price
-    * @param type
-    * @param area
-    * @param NumOfBedRooms
-    * @param address
-    * @param description
-    * @param location_id
-    * @return 
-    * @creater: tienPV
-    */
+    /**
+     *
+     * @param postId
+     * @param name
+     * @param price
+     * @param type
+     * @param area
+     * @param NumOfBedRooms
+     * @param address
+     * @param description
+     * @param location_id
+     * @return
+     * @creater: tienPV
+     */
     public boolean isUpdatedPostByPostId(int postId, String name, double price,
             int type, int area, int NumOfBedRooms, String address,
             String description, int location_id) {
@@ -466,6 +489,5 @@ public class LandlordService {
      */
     public static void main(String[] args) {
         LandlordService n = new LandlordService();
-        System.out.println(n.isDeleteDuplicateDraftPostsSuccessByPostId(32, 14));
     }
 }
