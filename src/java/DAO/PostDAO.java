@@ -486,7 +486,7 @@ public class PostDAO extends DBContext {
         String sqlCommand = "SELECT *\n"
                 + "  FROM [dbo].[Post]\n"
                 + "  WHERE [landlord_id] = " + userId + " AND status != 'draft' AND status != 'deleted'\n"
-                + "  ORDER BY [status]";
+                + "  ORDER BY [id] DESC";
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {
@@ -518,7 +518,7 @@ public class PostDAO extends DBContext {
         String sqlCommand = "SELECT *\n"
                 + "  FROM [dbo].[Post]\n"
                 + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
-                + "  ORDER BY [status]";
+                + "  ORDER BY [id] DESC";
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {

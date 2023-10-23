@@ -30,12 +30,14 @@ public class LandlordServicesPage extends HttpServlet {
         Path projectPath = Paths.get(appPath);
         Path parentDirectory = projectPath.getParent().getParent();
         appPath = parentDirectory.toString();
+        
         //-- Lay xong duong dan thu muc goc --//
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             LandlordService handleService = new LandlordService();
             HttpSession session = request.getSession();
             Users user = (Users) session.getAttribute("user");
+            session.setAttribute("accountBalance", handleService.getAccountPointsByUserId(user.getId()));
             if (user == null || user.getRoleID() != 2) {
                 response.sendRedirect("trang-chu");
                 return;
@@ -98,7 +100,8 @@ public class LandlordServicesPage extends HttpServlet {
                 request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
             } else if (service.equals("delete-post")) {
                 int postId = Integer.parseInt(request.getParameter("post-id"));
-                handleService.isDeletedPostSuccessByPostId(postId);
+                handleService.isDeletedPostSuccessByPostId(postId, appPath);
+                
                 request.setAttribute("mess", "Post deleted successfully :)");
                 ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
                 request.setAttribute("postList", postList);
@@ -106,13 +109,13 @@ public class LandlordServicesPage extends HttpServlet {
             } else if (service.equals("edit-detail-post")) {
                 int postId = Integer.parseInt(request.getParameter("post-id"));
                 PostRental post = handleService.getPostByPostId(postId);
-                ArrayList<String> urlList =  handleService.getPostImageURLByPostId(postId);
+                ArrayList<String> urlList = handleService.getPostImageURLByPostId(postId);
                 request.setAttribute("post", post);
                 request.setAttribute("urlList", urlList);
                 request.getRequestDispatcher("L-edit-detail-post.jsp").forward(request, response);
                 // do  something
             } else if (service.equals("submit-edit-detail-post")) {
-                 int postId = Integer.parseInt(request.getParameter("post-id"));
+                int postId = Integer.parseInt(request.getParameter("post-id"));
                 PostRental post = handleService.getPostByPostId(postId);
                 String name = request.getParameter("name");
                 double price = Double.parseDouble(request.getParameter("price"));
@@ -127,32 +130,36 @@ public class LandlordServicesPage extends HttpServlet {
                 boolean isUpdatedPostByPostId = handleService.isUpdatedPostByPostId(post.getId(),
                         name, price, type, area, NumOfBedrooms, address, description, location_id);
                 if (isUpdatedPostByPostId) {
-                    if (typeActionImg.equals("replace-photo")) {
-                        handleService.isImageDeletedByPostId(postId);
+                    if (typeActionImg.equals("keep")) {
+                    } else if (typeActionImg.equals("replace-photo")) {
+                        handleService.isImageDeletedByPostId(postId, appPath);
+                        handleService.isHandledSaveImageSuccess(post, request.getParts(), appPath, 0);
+                    } else if (typeActionImg.equals("add-new-photo")) {
+                        handleService.isHandledSaveImageSuccess(post, request.getParts(), appPath, handleService.getPostImageURLByPostId(postId).size() - 1);
                     }
                     //-- Luu hinh anh --//
-                    handleService.isHandledSaveImageSuccess(post, request.getParts(), appPath);
+
                     //-- Xong phan luu hinh anh --//
-                    if (typeOfAction.equals("upload")) {
-                        int accountBalance = handleService.getAccountPointsByUserId(user.getId());
-                        request.setAttribute("accountBalance", accountBalance);
-                        request.setAttribute("postId", post.getId());
-                        handleService.isDeleteDuplicateDraftPostsSuccessByPostId(post.getId(), user.getId()); // --> xoa bo cac ban nhap giong y het nhau
-                        request.getRequestDispatcher("L-pay-for-post.jsp").forward(request, response);
-                        // them vao draft thanh cong -> tien hanh thanh toan
-                    } else if (typeOfAction.equals("draft")) {
-                        // them vao draft thanh cong
-                        ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
-                        request.setAttribute("postList", postList);
-                        request.setAttribute("mess", "Draft post updated successfully :)");
-                        request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
-                    } else {
+                    if (!post.getStatus().equals("draft")) {
                         request.getRequestDispatcher("/landlordServicesPage?service=view-request-post&post-id=" + postId).forward(request, response);
+                    } else {
+                        if (typeOfAction.equals("upload")) {
+
+                            request.setAttribute("postId", post.getId());
+                            handleService.isDeleteDuplicateDraftPostsSuccessByPostId(post.getId(), user.getId(), appPath); // --> xoa bo cac ban nhap giong y het nhau
+                            request.getRequestDispatcher("L-pay-for-post.jsp").forward(request, response);
+                            // them vao draft thanh cong -> tien hanh thanh toan
+                        } else if (typeOfAction.equals("draft")) {
+                            // them vao draft thanh cong
+                            ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
+                            request.setAttribute("postList", postList);
+                            request.setAttribute("mess", "Draft post updated successfully :)");
+                            request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
+                        }
                     }
+
                 }
-            }
-            
-            else if (service.equals("add-new-post")) {
+            } else if (service.equals("add-new-post")) {
                 request.getRequestDispatcher("L-add-new-post.jsp").forward(request, response);
             } else if (service.equals("submit-add-new-post")) {
                 String name = request.getParameter("name");
@@ -169,13 +176,13 @@ public class LandlordServicesPage extends HttpServlet {
                 if (isInsertSuccess) {
                     PostRental post = handleService.getLastestPostByUserId(user.getId());
                     //-- Luu hinh anh --//
-                    handleService.isHandledSaveImageSuccess(post, request.getParts(), appPath);
+                    handleService.isHandledSaveImageSuccess(post, request.getParts(), appPath, 0);
                     //-- Xong phan luu hinh anh --//
                     if (typeOfAction.equals("upload")) {
                         int accountBalance = handleService.getAccountPointsByUserId(user.getId());
                         request.setAttribute("accountBalance", accountBalance);
                         request.setAttribute("postId", post.getId());
-                        handleService.isDeleteDuplicateDraftPostsSuccessByPostId(post.getId(), user.getId()); // --> xoa bo cac ban nhap giong y het nhau
+                        handleService.isDeleteDuplicateDraftPostsSuccessByPostId(post.getId(), user.getId(), appPath); // --> xoa bo cac ban nhap giong y het nhau
                         request.getRequestDispatcher("L-pay-for-post.jsp").forward(request, response);
                         // them vao draft thanh cong -> tien hanh thanh toan
                     } else if (typeOfAction.equals("draft")) {

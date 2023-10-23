@@ -6,7 +6,6 @@ package service;
 
 import DAO.LandlordDAO;
 import DAO.OrdersDAO;
-import DAO.PostDAO;
 import DAO.UserDAO;
 import java.util.ArrayList;
 import java.util.List;
