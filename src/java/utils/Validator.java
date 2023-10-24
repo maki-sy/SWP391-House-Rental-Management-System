@@ -21,6 +21,8 @@ import org.passay.RuleResult;
 public class Validator {
 
     /**
+     * Validate password. A satisfied password must contain at least 6
+     * characters, 1 upper case, 1 lower case, and 1 special symbol.
      *
      * @param password
      * @return
