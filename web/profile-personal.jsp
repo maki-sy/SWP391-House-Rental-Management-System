@@ -164,6 +164,7 @@
                             </nav>
                         </div>
                     </div>
+                    <%if(user!=null){%>
                     <%if(tenant!=null){%>
                     <div class="row">
                         <div class="col-lg-4">
@@ -204,11 +205,7 @@
                                                 <button type="button" class="btn btn-primary">View my wish list</button>
                                             </a>
                                         </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button"
-                                                                 class="btn btn-primary">Transaction history</button></a>
-                                        </li>
+
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
                                             <a href="order?service=viewOrder"><button type="button" class="btn btn-primary">My Order</button></a>
@@ -312,18 +309,6 @@
                                                 <button type="button" class="btn btn-primary">Wishlist</button>
                                             </a>
                                         </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button"
-                                                                 class="btn btn-primary">Transaction
-                                                    history</button></a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="order?service=viewOrder"><button type="button" class="btn btn-primary">My Order</button></a>
-                                        </li>
-
-
                                     </ul>
                                 </div>
                             </div>
@@ -380,6 +365,7 @@
 
                         </div>
                     </div>
+                    <%}%>
                     <%}%>
                 </div>
             </section>
