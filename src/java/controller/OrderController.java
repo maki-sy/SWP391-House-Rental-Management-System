@@ -73,6 +73,11 @@ public class OrderController extends HttpServlet {
                     request.setAttribute("landlord_email", landlord_email);
                     request.getRequestDispatcher("T_ViewLandlordInfo.jsp").forward(request, response);
                 }
+                if(service.equals("cancelOrder")){
+                    int order_id=Integer.parseInt(request.getParameter("id"));
+                    Oservice.deleteOrder(order_id);
+                    request.getRequestDispatcher("order?service=viewOrder").forward(request, response);
+                }
 
             }
 

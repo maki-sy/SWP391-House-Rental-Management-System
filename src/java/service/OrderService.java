@@ -60,4 +60,8 @@ public class OrderService {
         String landlord_email = user.getEmail();
         return landlord_email;
     }
+    public void deleteOrder(int id){
+        OrdersDAO dao = new OrdersDAO();
+        dao.deleteOrder(id);
+    }
 }

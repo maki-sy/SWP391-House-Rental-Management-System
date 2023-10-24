@@ -163,9 +163,10 @@
                                     Log in
                                 </div>
                                 <%if(request.getAttribute("errorMsg") !=null) { %>
-                                <p>
+                                <br>
+                                <div class="alert alert-danger" role="alert">
                                     <%= (String)request.getAttribute("errorMsg") %>
-                                </p>
+                                </div>
                                 <% } %>
                                 <form class="p-3 mt-3 login-form" action="login" method="POST">
                                     <div class="form-field d-flex align-items-center">
@@ -174,19 +175,19 @@
                                     </div>
                                     <div class="form-field d-flex align-items-center">
                                         <span class="fas fa-key"></span>
-                                        <input type="password" name="password" id="pwd" placeholder="Password" required>
+                                        <input type="password" name="password" id="pwd" placeholder="Password" required minlength="6">
                                     </div>
                                     <!-- Them phan chon role -->
                                     <div class="role form-group">
                                         <select class="form-field d-flex align-items-center form-control" id="role" name="role" required>
-                                            <span class="far fa-user"></span>
+                                            <span class="fas fa-user"></span>
                                             <option value="" disabled selected>Select role</option>
                                             <option value="1">Tenant</option>
                                             <option value="2">Landlord</option>
                                         </select>
                                     </div>
                                     <input type="hidden" name="type" value="login">
-                                    <button class="btn mt-3">Login</button>
+                                    <button class="btn mt-3" id="loginBtn">Login</button>
                                 </form>
                                 <div class="text-center fs-6">
                                     <a href="recover?service=forgotForm">Forget password?</a>
@@ -201,6 +202,13 @@
                                 Create new account
                             </div>
 
+                            <%if(request.getAttribute("registerError") != null) { %>
+                            <br>
+                            <div class="alert alert-danger" role="alert">
+                                <%= (String)request.getAttribute("registerError") %>
+                            </div>
+                            <% } %>
+
                             <form class="p-3 mt-3 register-form" method="POST" action="login">
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
@@ -212,7 +220,7 @@
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
-                                    <input type="text" name="email" id="email" placeholder="Email" required>
+                                    <input type="email" name="email" id="email" placeholder="Email" required>
                                 </div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="fas fa-key"></span>
@@ -237,7 +245,7 @@
                                     </select>
                                 </div>
 
-                                <button class="btn mt-3">Register</button>
+                                <button class="btn mt-3" id="registerBtn">Register</button>
 
                                 <input type="hidden" name="type" value="register">
                             </form>
@@ -424,6 +432,61 @@
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- Validator.js for validating password -->
+        <script type="text/javascript" src="https://unpkg.com/validator@latest/validator.min.js"></script>
+
+        <!-- Validate password -->
+        <script type="text/javascript">
+
+            let password = document.getElementById("pwd"); // password input field in login form
+            let registerPwd = document.getElementById("password"); // password input field in register form
+            let retypePwd = document.getElementById("re-password");
+
+            let options = {
+                minLength: 6,
+                minLowercase: 1,
+                minUppercase: 1,
+                minSymbols: 1
+            }
+
+            // add eventHandler
+            password.addEventListener("input", checkValidPassword);
+            registerPwd.addEventListener("input", checkRegisterPassword)
+            retypePwd.addEventListener("input", checkRetypeMatch);
+
+            // check login password
+            function checkValidPassword() {
+
+                let loginValidPwd = validator.isStrongPassword(password.value, options);
+                if (!loginValidPwd) { // password does not valid
+                    password.setCustomValidity("Password does not valid. It must at least 6 characters long, 1 lowercase, 1 uppercase and 1 special symbols");
+                    password.reportValidity();
+                } else {
+                    password.setCustomValidity(""); // set validity to empty so that form can be submitted
+                }
+            }
+
+            function checkRegisterPassword() {
+                let registerValidPwd = validator.isStrongPassword(registerPwd.value, options);
+                if (registerValidPwd) {
+                    registerPwd.setCustomValidity("");
+                } else {
+                    registerPwd.setCustomValidity("Password does not valid. It must at least 6 characters long, 1 lowercase, 1 uppercase and 1 special symbols");
+                    registerPwd.reportValidity();
+                }
+            }
+
+            function checkRetypeMatch() {
+                if (registerPwd.value !== retypePwd.value) {
+                    retypePwd.setCustomValidity("Password does not match");
+                    retypePwd.reportValidity();
+                } else {
+                    retypePwd.setCustomValidity("");
+                }
+            }
+
+        </script>
     </body>
 
 </html>
