@@ -42,7 +42,7 @@ public class Users {
     }
 
     /**
-     * Create Users object with a dummy userID = 0 (since user_id is set as IDENTITY
+     * Create Users object with a dummy userID (since user_id is set as IDENTITY
      * in the DB)
      *
      * @param email

@@ -74,10 +74,6 @@ public class AddPromotion extends HttpServlet {
                     request.setAttribute("mess", "Discount must be an integer");
                     request.getRequestDispatcher("AddPromotionForm.jsp").forward(request, response);
                 }
-                if(discount<0||discount>100){
-                    request.setAttribute("mess", "Discount must be between 0 and 100");
-                    request.getRequestDispatcher("AddPromotionForm.jsp").forward(request, response);
-                }
                 try {
                     promotion_start_date = Date.valueOf(request.getParameter("start_date"));
                     promotion_end_date = Date.valueOf(request.getParameter("end_date"));

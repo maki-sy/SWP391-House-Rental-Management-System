@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Token;
-import org.passay.RuleResult;
 import service.UserService;
-import utils.Validator;
 
 /**
  * Servlet class to handle forgot password related actions: display form to
@@ -38,7 +36,7 @@ public class ForgotPassword extends HttpServlet {
             throws ServletException, IOException {
         UserService uService = new UserService();
         String service = request.getParameter("service");
-
+        
         if (service == null) {
             service = "forgotForm";
         }
@@ -50,7 +48,7 @@ public class ForgotPassword extends HttpServlet {
 
         // display form to let user set the new password
         if (service.equals("resetPwd")) {
-
+           
             String token = request.getParameter("token");
 
             boolean validToken = uService.checkValidToken(token, Token.TokenType.FORGOTPWD);
@@ -58,7 +56,7 @@ public class ForgotPassword extends HttpServlet {
             if (validToken) {
                 request.setAttribute("verified", true);
                 request.setAttribute("token", token);
-
+                
             } else {
                 request.setAttribute("verified", false);
             }
@@ -105,18 +103,6 @@ public class ForgotPassword extends HttpServlet {
             if (!password.equals(rePwd)) {
                 request.setAttribute("errorMsg", "Password does not match");
                 request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
-                return;
-            }
-
-            // Password validate
-            Validator validator = new Validator();
-            RuleResult result = validator.validatePassword(password);
-            if (result.isValid()) {
-                System.out.println("Password is valid");
-            } else {
-                System.out.println("Reset password: Invalid password");
-                request.setAttribute("msg", "Password does not valid");
-                request.getRequestDispatcher("/404-error-page.jsp").forward(request, response);
                 return;
             }
 

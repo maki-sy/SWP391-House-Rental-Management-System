@@ -38,7 +38,7 @@
                                     <strong>Reset Password</strong>
                                 </h1>
                             </div>
-
+                            
                             <% if(verified) { %>
                             <svg xmlns="http://www.w3.org/2000/svg" class="text-success" width="75" height="75"
                                  fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
@@ -49,21 +49,21 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
                             </svg>
-
+                            
                             <div class="text-center">
                                 <h1>Sorry are you lost the way?</h1>
                                 <p>The link you followed has been wrong, or the token has been expired</p>
                                 <a href="trang-chu"><button class="btn btn-outline-success">Back Home</button></a>
                             </div>
                             <% } %>
-
+                        
                             <% if(verified) { %>
                             <div class="pt-3 pb-3">
                                 <form class="form-horizontal" action="recover?service=resetPwd" method="POST">
                                     <!-- Password Input -->
                                     <div class="form-group row justify-content-center px-3">
                                         <div class="col-9 px-0">
-                                            <input type="password" name="password" id="password"
+                                            <input type="password" name="password"
                                                    placeholder="&#xf084; &nbsp; New Password"
                                                    class="form-control border-info placeicon">
                                         </div>
@@ -71,7 +71,7 @@
                                     <!-- Re-Password Input -->
                                     <div class="form-group row justify-content-center px-3">
                                         <div class="col-9 px-0">
-                                            <input type="password" name="confPassword" id="confPassword"
+                                            <input type="password" name="confPassword"
                                                    placeholder="&#xf084; &nbsp; Confirm New Password"
                                                    class="form-control border-info placeicon">
                                         </div>
@@ -87,7 +87,7 @@
                                 </form>
                             </div>
                             <% } %>        
-
+                                
                             <!-- Alternative Login -->
                             <div class="mx-0 px-0 bg-light">
 
@@ -117,49 +117,6 @@
         </div>
         <script type='text/javascript'
         src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js'></script>
-
-        <!-- Validator.js for validating password -->
-        <script type="text/javascript" src="https://unpkg.com/validator@latest/validator.min.js"></script>
-
-        <!-- Validate password -->
-        <script type="text/javascript">
-
-            let password = document.getElementById("password"); // password input field in login form
-            let retypePwd = document.getElementById("confPassword");
-
-            let options = {
-                minLength: 6,
-                minLowercase: 1,
-                minUppercase: 1,
-                minSymbols: 1
-            }
-
-            // add eventHandler
-            password.addEventListener("input", checkPassword);
-            retypePwd.addEventListener("input", checkRetypeMatch);
-
-            // check login password
-            function checkPassword() {
-
-                let loginValidPwd = validator.isStrongPassword(password.value, options);
-                if (!loginValidPwd) { // password does not valid
-                    password.setCustomValidity("Password does not valid. It must at least 6 characters long, 1 lowercase, 1 uppercase and 1 special symbols");
-                    password.reportValidity();
-                } else {
-                    password.setCustomValidity(""); // set validity to empty so that form can be submitted
-                }
-            }
-
-            function checkRetypeMatch() {
-                if (password.value !== retypePwd.value) {
-                    retypePwd.setCustomValidity("Password does not match");
-                    retypePwd.reportValidity();
-                } else {
-                    retypePwd.setCustomValidity("");
-                }
-            }
-
-        </script>
 
     </body>
 

@@ -101,7 +101,6 @@
                 Landlord landlord = LDao.getLandlordByUserID(landlordID);
                 String landlordName = landlord.getFirstName()+ " "+landlord.getLastName();
                 String landlordEmail = service.getEmailFromLandlordByPostID(postID);
-                int order_id=order.getOrderId();
                                 %>
                                 <tr class="alert" role="alert">
 
@@ -146,7 +145,7 @@
                             </td>
                             <td><%=status%></td>
                             <td>
-                                <a href="order?service=cancelOrder&id=<%=order_id%>">
+                                <a href="order?service=cancelOrder">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="fa fa-close"></i></span>
                                     </button>

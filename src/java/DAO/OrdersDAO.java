@@ -22,7 +22,7 @@ public class OrdersDAO extends DBContext {
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
                 String status = rs.getString(5);
-                String order_date = rs.getString(6);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
@@ -42,7 +42,7 @@ public class OrdersDAO extends DBContext {
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
                 String status = rs.getString(5);
-                String order_date = rs.getString(6);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
@@ -50,7 +50,6 @@ public class OrdersDAO extends DBContext {
         }
         return Orders;
     }
-
     public ArrayList<Orders> getOrdersByTenantId(int targetTenant) {
         ArrayList<Orders> Orders = new ArrayList<>();
         String sqlCommand = "SELECT * FROM Orders WHERE tenant_id =" + targetTenant;
@@ -62,7 +61,7 @@ public class OrdersDAO extends DBContext {
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
                 String status = rs.getString(5);
-                String order_date = rs.getString(6);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
@@ -82,7 +81,7 @@ public class OrdersDAO extends DBContext {
                 int landlordId = rs.getInt(3);
                 int postId = rs.getInt(4);
                 String status = rs.getString(5);
-                String order_date = rs.getString(6);
+                String order_date= rs.getString(6);
                 Orders order = new Orders(orderId, tenantId, landlordId, postId, order_date, status);
                 Orders.add(order);
             }
@@ -105,7 +104,6 @@ public class OrdersDAO extends DBContext {
         }
         return rowsUpdated != 0;
     }
-
     public boolean addOrder(Orders order) {
         String sql = "INSERT INTO [dbo].[Orders]\n"
                 + "           ([tenant_id]\n"
@@ -129,27 +127,13 @@ public class OrdersDAO extends DBContext {
         }
         return false;
     }
-
-    public void deleteOrder(int id) {
-        String sql = "DELETE FROM [dbo].[Orders]\n"
-                + "      WHERE order_id=" + id;
-        try{
-            PreparedStatement stm = connect.prepareStatement(sql);
-            stm.executeUpdate();
-        }catch(SQLException ex){
-            System.err.println("deleteOrder() reports: " + ex.getMessage());
-            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public static void main(String[] args) {
         OrdersDAO dao = new OrdersDAO();
 //        ArrayList<Orders> list = dao.getAllOrders();
 //        for (int i = 0; i < list.size(); i++) {
 //            System.out.println("NOTE NOTE NOTE" + list.get(i));
 //        }
-        Orders order = new Orders(0, 15, 6, 1, "06/06/2023", "Sent");
+        Orders order = new Orders(0, 9, 6, 1, "06/06/2023", "Sent");
         dao.addOrder(order);
-        //dao.deleteOrder(1);
     }
 }

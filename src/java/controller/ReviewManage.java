@@ -26,7 +26,7 @@ import service.ReviewService;
 @WebServlet(name = "ReviewManage", urlPatterns = {"/ReviewManage"})
 public class ReviewManage extends HttpServlet {
 
-    
+    ReviewService Rservice = new ReviewService();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,7 +39,6 @@ public class ReviewManage extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ReviewService Rservice = new ReviewService();
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         String temp_star = request.getParameter("rate");
@@ -50,19 +49,16 @@ public class ReviewManage extends HttpServlet {
             star = Integer.parseInt(temp_star);
         }
         int pid = Integer.parseInt(request.getParameter("id"));
-//        String temp_comment = "This is a c hell test show khanh .";
-        String temp_comment = request.getParameter("comment");
-        System.out.println("temp comment " + temp_comment);
-        if (star == 0 && "".equals(temp_comment)) {
-            request.setAttribute("mess", "Vote star or Write comment");
+        String comment = request.getParameter("comment");
+        Users user = (Users) session.getAttribute("user");
+        int uid = user.getId();
+        Date local = Date.valueOf(LocalDate.now());
+        if (Rservice.checkWord(comment)) {//contain bad word
+            //send back with note
+            request.setAttribute("mess", "This message was blocked because a bad word was found. "
+                    + "If you believe this word should not be blocked, please message support.");
             request.getRequestDispatcher("housedetail?id=" + pid).forward(request, response);
         } else {
-            Users user = (Users) session.getAttribute("user");
-            int uid = user.getId();
-            Date local = Date.valueOf(LocalDate.now());
-            String comment = Rservice.filter(temp_comment);
-            System.out.println(".................................");
-            System.out.println(comment);
             Review re = new Review(-1, uid, pid, local, star, comment);
             Rservice.addReview(re);
 

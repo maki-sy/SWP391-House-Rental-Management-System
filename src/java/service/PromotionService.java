@@ -74,11 +74,7 @@ public class PromotionService {
         int discount = 0;
         try {
             discount = Integer.parseInt(temp_discount);
-            if (discount < 0 || discount > 100) {
-                return false;
-            } else {
-                return true;
-            }
+            return true;
         } catch (NumberFormatException ex) {
             return false;
         }
