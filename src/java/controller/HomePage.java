@@ -11,14 +11,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import model.PostRental;
 import model.PropertyLocation;
 import model.PropertyType;
+import model.Users;
 import service.PostService;
 import service.SearchService;
+import service.UserService;
 
 /**
  *
@@ -39,6 +42,16 @@ public class HomePage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+        UserService handleUser = new UserService();
+        HttpSession session = request.getSession();
+        Users user = (Users) session.getAttribute("user");
+
+        if (user != null) {
+            int id = user.getId();
+            String urlAvt = handleUser.getAvatarByUserID(id).getAvatar_url();
+            session.setAttribute("userAvatar", urlAvt);
+        }
+
         PostService post = new PostService();
         List<PostRental> last = post.getLastestHouse();
         List<PostRental> highest = post.getHighestHousePrice();
@@ -55,25 +68,8 @@ public class HomePage extends HttpServlet {
             thumbnailsHighest.add(url);
         }
 
-
-        SearchService handle = new SearchService();
-        ArrayList<PropertyType> type = handle.getAllType();
-        ResultSet bedrooms = post.getData("select distinct NumOfBedrooms from Post;");
-        ResultSet priceFrom = post.getData("select distinct price from Post;");
-        ResultSet priceTo = post.getData("select distinct price from Post;");
-        ResultSet areaFrom = post.getData("select distinct area from Post;");
-        ResultSet areaTo = post.getData("select distinct area from Post;");
-        ResultSet address = post.getData("select distinct address from Post;");
-        ArrayList<PropertyLocation> location = handle.getAllLocation();
-
-        request.setAttribute("type", type);
-        request.setAttribute("bedroom", bedrooms);
-        request.setAttribute("priceFrom", priceFrom);
-        request.setAttribute("priceTo", priceTo);
-        request.setAttribute("areaFrom", areaFrom);
-        request.setAttribute("areaTo", areaTo);
-        request.setAttribute("address", address);
-        request.setAttribute("location", location);
+        SearchService search = new SearchService();
+        search.loadSearchData(request);
 
         request.setAttribute("lastestPost", last);
         request.setAttribute("highestPost", highest);
