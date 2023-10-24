@@ -51,7 +51,7 @@
             }
         </style>
     </head>
-    <body oncontextmenu='return false' class='snippet-body'>
+    <body class='snippet-body'>
         <div class="container padding-bottom-3x mb-2 mt-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-10">
@@ -70,7 +70,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="email-for-pass">Enter your email address</label> <input
-                                    class="form-control" type="text" name="email" id="email-for-pass" required=""><small
+                                    class="form-control" type="email" name="email" id="email-for-pass" required><small
                                     class="form-text text-muted">Enter the registered email address . Then we'll send an
                                     email to this address.</small>
                             </div>
@@ -78,8 +78,8 @@
                         <div class="card-footer">
                             <button class="btn btn-success" type="submit">Get New
                                 Password</button>
-                            <button class="btn btn-danger" type="submit">Back to
-                                Login</button>
+                            <a href="trang-chu" class="btn btn-danger">Back to
+                                Login</a>
                         </div>
                     </form>
                 </div>
