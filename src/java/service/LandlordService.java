@@ -234,6 +234,7 @@ public class LandlordService {
         }
         return isThumbnail;
     }
+    
 
     /**
      *
