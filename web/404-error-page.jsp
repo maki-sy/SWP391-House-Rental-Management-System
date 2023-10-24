@@ -143,8 +143,8 @@
                 margin: 0;
                 width: 100%;
                 height: 100%;
-                font-family: 'Dosis', sans-serif;
-                font-weight: 300;
+/*                font-family: 'Dosis', sans-serif;
+                font-weight: 300;*/
                 -webkit-user-select: none; /* Safari 3.1+ */
                 -moz-user-select: none; /* Firefox 2+ */
                 -ms-user-select: none; /* IE 10+ */

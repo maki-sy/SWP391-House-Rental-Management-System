@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpSession;
 import model.Landlord;
 import model.Tenant;
 import model.Users;
+import org.passay.RuleResult;
 import service.UserService;
+import utils.Validator;
 
 /**
  *
@@ -99,6 +101,18 @@ public class Login extends HttpServlet {
             // ------ END DEBUG ----
             // if password and retype password does not match, return immediately
             if (!password.equals(rePassword)) {
+                return;
+            }
+
+            // Password validate
+            Validator validator = new Validator();
+            RuleResult result = validator.validatePassword(password);
+            if (result.isValid()) {
+                System.out.println("Password is valid");
+            } else {
+                System.out.println("Invalid password when register");
+                request.setAttribute("registerError", "Password does not valid");
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
                 return;
             }
 
