@@ -131,7 +131,7 @@
                                         <input type="hidden" name="id" value="<%=landlordID%>">
                                         <input type="hidden" name="email" value="<%=landlordEmail%>">
                                         <input type="hidden" name="service" value="viewLandlord">
-                                        <span style="color: blue; text-decoration: underline"><input  type="submit" class="text-button" name="submit" value="">View landlord details</span>
+                                        <span ><input style="color: blue; text-decoration: underline" type="submit" class="text-button" name="submit" value="View landlord details"></span>
                                     </form>
 
                                     <%}else{%>
