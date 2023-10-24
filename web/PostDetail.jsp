@@ -304,6 +304,30 @@
                                             alert("Order has been successfully submitted to the landlord.");
                                         }
                                     </script>
+                                    
+                                    <!--Wishlish-->
+                                    <i class="fa-regular fa-heart"></i><a href="wishlist?service=add&id=<%= post.getId() %>">Add to wishlist</a>
+                                    <!--Wishlish-->
+                                    <% if(user!=null){ %>
+                        <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
+                        <a><button class="btn btn-primary" onclick="openForm()">Order</button></a>
+
+                        <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+                            <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                                <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">
+                                    <h1 style="text-align: center">Order</h1>
+                                    <p>Content of Orders.........</p>
+                                    <input type="hidden" name="postid" value="<%=post.getId()%>">
+                                    <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
+                                    <input type="hidden" name="service" value="createOrder">
+                                    <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                        <%} else {%>
+                        <a href="login"><button type="button" class="btn btn-primary">Create an Order</button></a>
+                        <%}%>
+
                                     <div class="property-summary">
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -378,9 +402,7 @@
                                                     </div>
                                             </div>
                                     </div>
-                                    <!--Wishlish-->
-                                    <i class="fa-regular fa-heart"></i><a href="wishlist?service=add&id=<%= post.getId() %>">Add to wishlist</a>
-                                    <!--Wishlish-->
+                                    
                                 </div>
                                 <div class="col-md-7 col-lg-7 section-md-t3">
                                     <div class="row">
@@ -398,25 +420,7 @@
                                 </div>
                             </div>
                         </div>
-                        <% if(user!=null){ %>
-                        <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
-                        <a><button class="btn btn-primary" onclick="openForm()">Order</button></a>
-
-                        <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-                            <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">
-                                    <h1 style="text-align: center">Order</h1>
-                                    <p>Content of Orders.........</p>
-                                    <input type="hidden" name="postid" value="<%=post.getId()%>">
-                                    <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
-                                    <input type="hidden" name="service" value="createOrder">
-                                    <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
-                                </form>
-                            </div>
-                        </div>
-                        <%} else {%>
-                        <a href="login"><button type="button" class="btn btn-primary">Create an Order</button></a>
-                        <%}%>
+                        
                     </div>
                 </div>
 
