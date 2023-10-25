@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Projects</title>
+        <title>Admin | Report List</title>
         <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation, model.Report" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
         <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -188,16 +188,28 @@
 
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link active">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="admin-dashboard?service=account-utils" class="nav-link">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Account Utilities
                                     </p>
                                 </a>
                             </li>

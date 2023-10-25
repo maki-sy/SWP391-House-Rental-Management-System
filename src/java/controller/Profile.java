@@ -43,69 +43,76 @@ public class Profile extends HttpServlet {
             HttpSession session = request.getSession();
             String service = request.getParameter("service");
             Users user = (Users) session.getAttribute("user");
-            int id = user.getId();
-            int role_id = user.getRoleID();
-            if (service.equals("displayProfile")) {
-                switch (role_id) {
-                    case 1: {
-                        Tenant tn = daotn.getTenantByUserID(id);
-                        request.setAttribute("tn", tn);
-                        request.setAttribute("role_name", "Tenant");
-                        break;
-                    }
-                    case 2: {
-                        Landlord ll = daoll.getLandlordByUserID(id);
-                        request.setAttribute("ll", ll);
-                        request.setAttribute("role_name", "Landlord");
-                        break;
-                    }
-                    case 3: {
-                        request.setAttribute("role_name", "Admin");
-                        break;
-                    }
-                    default:
-                        break;
-                }
-                request.getRequestDispatcher("/profile-personal.jsp").forward(request, response);
-            }
-            if (service.equals("updateProfile")) {
-                String submit = request.getParameter("submit");
-
-                if (submit == null) {
+            if (user != null) {
+                int id = user.getId();
+                int role_id = user.getRoleID();
+                if (service.equals("displayProfile")) {
                     switch (role_id) {
-                        case 1:
-                            request.setAttribute("role_name", "Tenant");
+                        case 1: {
                             Tenant tn = daotn.getTenantByUserID(id);
                             request.setAttribute("tn", tn);
+                            request.setAttribute("role_name", "Tenant");
                             break;
-                        case 2:
-                            request.setAttribute("role_name", "Landlord");
+                        }
+                        case 2: {
                             Landlord ll = daoll.getLandlordByUserID(id);
                             request.setAttribute("ll", ll);
+                            request.setAttribute("role_name", "Landlord");
                             break;
-                        case 3:
+                        }
+                        case 3: {
                             request.setAttribute("role_name", "Admin");
                             break;
+                        }
                         default:
                             break;
                     }
-                    request.getRequestDispatcher("/UpdateProfile.jsp").forward(request, response);
-                } else {// da submit --> update
-                    String tnid = request.getParameter("tnid");
-                    String llid = request.getParameter("llid");
-                    String fname = request.getParameter("fname");
-                    String lname = request.getParameter("lname");
-                    String phone = request.getParameter("phone");
-                    String address = request.getParameter("address");
-                    if (tnid != null) {
-                        System.out.println(daotn.updateProfileByID(Integer.parseInt(tnid), fname, lname, address, phone));
-                    }
-                    if (llid != null) {
-                        System.out.println(daoll.updateProfileByID(Integer.parseInt(llid), fname, lname, address, phone));
-                    }
-                    //  response.sendRedirect("trang-chu");
-                    request.getRequestDispatcher("Profile?service=displayProfile").forward(request, response);
+                    request.getRequestDispatcher("/profile-personal.jsp").forward(request, response);
                 }
+                if (service.equals("updateProfile")) {
+                    String submit = request.getParameter("submit");
+
+                    if (submit == null) {
+                        switch (role_id) {
+                            case 1:
+                                request.setAttribute("role_name", "Tenant");
+                                Tenant tn = daotn.getTenantByUserID(id);
+                                request.setAttribute("tn", tn);
+                                break;
+                            case 2:
+                                request.setAttribute("role_name", "Landlord");
+                                Landlord ll = daoll.getLandlordByUserID(id);
+                                request.setAttribute("ll", ll);
+                                break;
+                            case 3:
+                                request.setAttribute("role_name", "Admin");
+                                break;
+                            default:
+                                break;
+                        }
+                        request.getRequestDispatcher("/UpdateProfile.jsp").forward(request, response);
+                    } else {// da submit --> update
+                        String tnid = request.getParameter("tnid");
+                        String llid = request.getParameter("llid");
+                        String fname = request.getParameter("fname");
+                        String lname = request.getParameter("lname");
+                        String phone = request.getParameter("phone");
+                        String address = request.getParameter("address");
+                        if (tnid != null) {
+                            System.out.println(daotn.updateProfileByID(Integer.parseInt(tnid), fname, lname, address, phone));
+                        }
+                        if (llid != null) {
+                            System.out.println(daoll.updateProfileByID(Integer.parseInt(llid), fname, lname, address, phone));
+                        }
+                        //  response.sendRedirect("trang-chu");
+                        request.getRequestDispatcher("Profile?service=displayProfile").forward(request, response);
+                    }
+                }
+                if (service.equals("changePassword")) {
+                    request.getRequestDispatcher("change-password.jsp").forward(request, response);
+                }
+            } else {
+                response.sendRedirect("404-error-page.jsp");
             }
         }
     }

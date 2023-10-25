@@ -5,25 +5,20 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Project Edit</title>
+        <title>Admin | Add Account</title>
 
         <%@page import="DAO.UserDAO, model.Users, model.Users.Status, service.UserService" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
-        
+
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="assets/vendor/fontawesome-free/css/all.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="Admin/assets/css/adminlte.min.css">
+
     </head>
     <body class="hold-transition sidebar-mini">
-        <%
-            Users user = (Users) request.getAttribute("user");
-            Status status[] = (Status[]) request.getAttribute("status"); 
-            UserService uService = new UserService();
-            UserDAO dao = new UserDAO();
-        %>
         <!-- Site wrapper -->
         <div class="wrapper">
             <!-- Navbar -->
@@ -75,7 +70,7 @@
                             <a href="#" class="dropdown-item">
                                 <!-- Message Start -->
                                 <div class="media">
-                                    <img src="../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                    <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                     <div class="media-body">
                                         <h3 class="dropdown-item-title">
                                             Brad Diesel
@@ -91,7 +86,7 @@
                             <a href="#" class="dropdown-item">
                                 <!-- Message Start -->
                                 <div class="media">
-                                    <img src="../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                     <div class="media-body">
                                         <h3 class="dropdown-item-title">
                                             John Pierce
@@ -107,7 +102,7 @@
                             <a href="#" class="dropdown-item">
                                 <!-- Message Start -->
                                 <div class="media">
-                                    <img src="../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                     <div class="media-body">
                                         <h3 class="dropdown-item-title">
                                             Nora Silvester
@@ -195,16 +190,28 @@
 
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="admin-dashboard?service=account-utils" class="nav-link">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Account Utilities
                                     </p>
                                 </a>
                             </li>
@@ -221,12 +228,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Edit Account</h1>
+                                <h1>Add New Account</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
-                                    <li class="breadcrumb-item active">Edit Account</li>
+                                    <li class="breadcrumb-item active">Add Account</li>
                                 </ol>
                             </div>
                         </div>
@@ -236,7 +243,7 @@
                 <!-- Main content -->
                 <section class="content">
 
-                    <form action="admin-account?action=edit&userid=<%=user.getId()%>" method="POST">
+                    <form action="admin-account?action=add" method="POST">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-primary">
@@ -252,56 +259,29 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="email">Account Email</label>
-                                            <input type="text" id="email" name="email" class="form-control" value="<%=user.getEmail()%>" readonly>
+                                            <input type="text" id="email" name="email" class="form-control" value="">
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="userName">First Name</label>
-                                            <input type="text" id="fname" name="fname" class="form-control" value="<%=uService.getFirstName(user.getId()) == null ? "" : uService.getFirstName(user.getId())%>">
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label for="userName">Last Name</label>
-                                            <input type="text" id="lname" name="lname" class="form-control" value="<%=uService.getLastName(user.getId()) == null ? "" : uService.getLastName(user.getId())%>">
+                                            <label for="fname">First Name</label>
+                                            <input type="text" id="fname" name="fname" class="form-control" value="">
                                         </div>
 
-                                        <!-- Admin do not need civil id -->
-                                        <% if(user.getRoleID() == 1 || user.getRoleID() == 2 ){ %> <!-- 1 is Tenant, 2 is Landlord -->
-                                         <div class="form-group">
-                                            <label for="civilid">Civil ID</label>
-                                            <input type="text" id="civilid" name="civilid" class="form-control" value="<%=uService.getCivilID(user.getId()) == null ? "" : uService.getCivilID(user.getId())%>">
-                                        </div>
-                                        <%}%>
-                                        
                                         <div class="form-group">
-                                            <label for="address">Address</label>
-                                            <input type="text" id="address" name="address" class="form-control" value="<%=uService.getAddress(user.getId()) == null ? "" : uService.getAddress(user.getId())%>">
+                                            <label for="lname">Last Name</label>
+                                            <input type="text" id="lname" name="lname" class="form-control" value="">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control" value="<%=uService.getPhone(user.getId()) == null ? "" : uService.getPhone(user.getId())%>">
+                                            <input type="text" id="phone" name="phone" class="form-control" value="">
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="role">Role</label>
-                                            <input type="text" id="role" name="role" class="form-control" value="<%=dao.getUserRole(user)%>" readonly>
+                                            <label for="password">Password</label>
+                                            <input type="password" id="password" name="password" class="form-control" value="">
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="status">Status</label>
-                                            <select name="status" id="status">
-                                                <% 
-                                                    for(Status st : status){ 
-                                                        if(st == user.getStatus()){
-                                                %>
-                                                <option value="<%=st%>" selected><%=st%></option>
-                                                        <%} else {%>
-                                                <option value="<%=st%>"><%=st%></option>
-                                                        <%}
-                                                    }%>
-                                            </select>
-                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
@@ -312,7 +292,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <a href="admin-dashboard?service=manageAccount" class="btn btn-secondary">Cancel</a>
-                                <input type="submit" value="Save Changes" class="btn btn-success float-right">
+                                <input type="submit" value="Create New Account" class="btn btn-success float-right">
                             </div>
                         </div>
                     </form>

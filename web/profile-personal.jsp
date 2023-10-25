@@ -194,7 +194,7 @@
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="change-password.jsp"><button type="button"
+                                            <a href="Profile?service=changePassword"><button type="button"
                                                                                   class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>
@@ -302,7 +302,7 @@
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="change-password.jsp"><button type="button"
+                                            <a href="Profile?service=changePassword"><button type="button"
                                                                                   class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>

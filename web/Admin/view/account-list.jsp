@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Projects</title>
+        <title>Admin | Account List</title>
         <%@page import="DAO.UserDAO, model.Users, service.UserService" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
         <!-- Google Font: Source Sans Pro -->
@@ -187,7 +187,6 @@
                                     </p>
                                 </a>
                             </li>
-                            
                             <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
@@ -196,12 +195,19 @@
                                     </p>
                                 </a>
                             </li>
-                            
                             <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="admin-dashboard?service=account-utils" class="nav-link">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Account Utilities
                                     </p>
                                 </a>
                             </li>

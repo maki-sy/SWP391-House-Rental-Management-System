@@ -44,7 +44,7 @@ public class AdminAccountController extends HttpServlet {
 
         switch (action) {
             case "add":
-                request.getRequestDispatcher("Admin/view/project-add.jsp").forward(request, response);
+                request.getRequestDispatcher("Admin/view/add-account.jsp").forward(request, response);
                 break;
             case "edit": {
                 int userid = Integer.parseInt(request.getParameter("userid"));
@@ -52,12 +52,12 @@ public class AdminAccountController extends HttpServlet {
                 Status status[] = Users.Status.values();
                 request.setAttribute("user", user);
                 request.setAttribute("status", status);
-                request.getRequestDispatcher("Admin/view/project-edit.jsp").forward(request, response);
+                request.getRequestDispatcher("Admin/view/edit-account.jsp").forward(request, response);
                 break;
             }
             case "delete": {
                 int userid = Integer.parseInt(request.getParameter("userid"));
-                dao.deleteUser(userid);
+                dao.updateUserDelete(userid);
                 response.sendRedirect("admin-dashboard?service=manageAccount");
                 break;
             }
