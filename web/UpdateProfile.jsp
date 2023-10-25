@@ -32,7 +32,7 @@
 
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -207,13 +207,11 @@
                                             <a href="#!"><button type="button" class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>
-                                        <li class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Top up your
-                                                    account</button></a>
-                                        </li>
-                                        <li class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Transaction
-                                                    history</button></a>
+                                        <li
+                                            class="list-group-item justify-content-between align-items-center">
+                                            <a href="wishlist?service=view">
+                                                <button type="button" class="btn btn-primary">View my wish list</button>
+                                            </a>
                                         </li>
                                         <li class="list-group-item justify-content-between align-items-center">
                                             <a href="order?service=viewOrder"><button type="button" class="btn btn-primary">My Order</button></a>
@@ -251,7 +249,7 @@
                                                 <p class="mb-0">Address</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=tenant.getAddress()%>"></p>
+                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=tenant.getAddress()%>" maxlength="80"></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -302,20 +300,6 @@
                                             <a href="#!"><button type="button" class="btn btn-primary">Change
                                                     password</button></a>
                                         </li>
-                                        <li class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Top up your
-                                                    account</button></a>
-                                        </li>
-                                        <li class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Transaction
-                                                    history</button></a>
-                                        </li>
-                                        <li class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button" class="btn btn-primary">Send
-                                                    Report</button></a>
-                                        </li>
-
-
                                     </ul>
                                 </div>
                             </div>
@@ -330,7 +314,7 @@
                                                 <p class="mb-0">First Name</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="text-muted mb-0"><input type="text" name="fname" value="<%=landlord.getFirstName()%>" pattern="^[a-zA-Z]*$" required></p>
+                                                <p class="text-muted mb-0"><input type="text" name="fname" value="<%=landlord.getFirstName()%>" pattern="^[a-zA-Z ]*$" required></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -339,7 +323,7 @@
                                                 <p class="mb-0">Last Name</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="text-muted mb-0"><input type="text" name="lname" value="<%=landlord.getLastName()%>" pattern="^[a-zA-Z]*$" required></p>
+                                                <p class="text-muted mb-0"><input type="text" name="lname" value="<%=landlord.getLastName()%>" pattern="^[a-zA-Z ]*$" required></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -349,7 +333,7 @@
                                                 <p class="mb-0">Address</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=landlord.getAddress()%>"></p>
+                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=landlord.getAddress()%>" maxlength="80"></p>
                                             </div>
                                         </div>
                                         <hr>
