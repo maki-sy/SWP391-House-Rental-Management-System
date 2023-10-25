@@ -488,19 +488,43 @@ public class UserService {
     }
 
     /**
-     * Send forgot password email to email address. If the email address does
-     * not exist in the DB, or the account has not been activated, the email
-     * will not be sent
+     * Send forgot password email to email address. The email will be sent in
+     * two cases: First, the account's email is activated. Second, there is no
+     * account with this email has been activated, if so there will be two link
+     * corresponding to two roles to reset password. If you provides this
+     * function a email, in the database has two accounts for this email, and
+     * one account has been activated, then only account with role of activated
+     * account will be able to reset the password
      *
      * @param email
      */
     public void sendForgotPwdEmail(String email) {
+
+        if (!USER_DAO.checkEmail(email)) {
+            System.out.println("Email " + email + " does not exist in the database");
+            return;
+        }
+
+        String mailSubject = "Account recovery for House Rental Management";
         Users user = USER_DAO.getVerifiedAccount(email);
-        if (user == null) {
-            System.out.println("Email does not exist, or this account has not been activated");
-        } else {
+        if (user == null) { // there is no activated account, we create reset link for all roles of this email
+            System.out.println("Account(s) has not been activated");
+            // users list contains at most 2 account with email, and unverified
+            List<Users> users = USER_DAO.getUsersByEmail(email);
+            String content = "You've requested to reset your password \n.";
+            for (Users u : users) {
+                Token token = generateUserToken(u.getId(), email, Token.TokenType.FORGOTPWD);
+                try {
+                    content += "Click on this link to reset your " + u.getRole().name().toUpperCase() + " account password <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/recover?service=resetPwd&token=" + token.getToken() + "\">RESET YOUR PASSWORD HERE</a>\n";
+                } catch (Exception ex) {
+                    System.out.println("sendForgotPwdEmail() reports: getRole() of Users model throw exception " + ex.getMessage());
+                    Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
+            }
+            sendEmail(email, mailSubject, content);
+        } else { // there is activated account, we send the link to reset password for that account of specific role
             Token token = generateUserToken(user.getId(), email, Token.TokenType.FORGOTPWD);
-            String mailSubject = "Account recovery for House Rental Management";
             String content = "You've requested to reset your password, please click on this link to reset your password <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/recover?service=resetPwd&token=" + token.getToken() + "\">RESET YOUR PASSWORD HERE</a>";
             sendEmail(email, mailSubject, content);
         }
