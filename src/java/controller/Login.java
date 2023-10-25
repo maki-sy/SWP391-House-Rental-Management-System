@@ -136,6 +136,7 @@ public class Login extends HttpServlet {
             Users loggedUser = userService.login(email, password, Integer.valueOf(role));
             if (loggedUser == null) { // login fail
                 System.out.println("LOGIN FAILED");
+                // TODO: Create a more specific error message
                 request.setAttribute("errorMsg", "Wrong email/password. Or email does not exist");
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
             } else { // login sucess
@@ -145,15 +146,4 @@ public class Login extends HttpServlet {
             }
         }
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

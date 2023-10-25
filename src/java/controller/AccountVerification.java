@@ -54,6 +54,7 @@ public class AccountVerification extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
+        return;
     }
 }

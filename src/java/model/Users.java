@@ -42,8 +42,8 @@ public class Users {
     }
 
     /**
-     * Create Users object with a dummy userID = 0 (since user_id is set as IDENTITY
-     * in the DB)
+     * Create Users object with a dummy userID = 0 (since user_id is set as
+     * IDENTITY in the DB)
      *
      * @param email
      * @param hashedPassword
@@ -96,6 +96,22 @@ public class Users {
 
     public int getRoleID() {
         return roleID;
+    }
+
+    public Role getRole() throws Exception {
+        if (roleID == 1) {
+            return Role.TENANT;
+        }
+
+        if (roleID == 2) {
+            return Role.LANDLORD;
+        }
+
+        if (roleID == 3) {
+            return Role.ADMIN;
+        }
+
+        throw new Exception("RoleID out of bound");
     }
 
     public void setRoleID(int roleID) {
