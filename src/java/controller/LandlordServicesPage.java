@@ -30,7 +30,7 @@ public class LandlordServicesPage extends HttpServlet {
         Path projectPath = Paths.get(appPath);
         Path parentDirectory = projectPath.getParent().getParent();
         appPath = parentDirectory.toString();
-        
+
         //-- Lay xong duong dan thu muc goc --//
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
@@ -49,11 +49,15 @@ public class LandlordServicesPage extends HttpServlet {
                 request.getRequestDispatcher("/landlordServicesPage?service=pending-requests").forward(request, response);
             } else if (service.equals("pending-requests")) {
                 ArrayList<Orders> ordersList = handleService.getOrdersProcessing(user.getId());
+                ArrayList<String> tenantsName = handleService.getTenantNameByOrderList(ordersList);
+                request.setAttribute("tenantsName", tenantsName);
                 request.setAttribute("ordersList", ordersList);
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
             } // xem order da xu ly
             else if (service.equals("requests-processed")) {
                 ArrayList<Orders> ordersList = handleService.getOrdersNotProcessing(user.getId());
+                ArrayList<String> tenantsName = handleService.getTenantNameByOrderList(ordersList);
+                request.setAttribute("tenantsName", tenantsName);
                 request.setAttribute("ordersList", ordersList);
                 request.getRequestDispatcher("L-requests-processed.jsp").forward(request, response);
             } // xem post da chon
@@ -71,6 +75,8 @@ public class LandlordServicesPage extends HttpServlet {
                 int orderId = Integer.parseInt(request.getParameter("order-id"));
                 handleService.isApproveStatusUpdated(orderId);
                 ArrayList<Orders> ordersList = handleService.getOrdersProcessing(user.getId());
+                ArrayList<String> tenantsName = handleService.getTenantNameByOrderList(ordersList);
+                request.setAttribute("tenantsName", tenantsName);
                 request.setAttribute("ordersList", ordersList);
                 request.setAttribute("mess", "Approve successfully! Now customers can contact you :)");
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
@@ -79,6 +85,8 @@ public class LandlordServicesPage extends HttpServlet {
                 int orderId = Integer.parseInt(request.getParameter("order-id"));
                 handleService.isRejectStatusUpdated(orderId);
                 ArrayList<Orders> ordersList = handleService.getOrdersProcessing(user.getId());
+                ArrayList<String> tenantsName = handleService.getTenantNameByOrderList(ordersList);
+                request.setAttribute("tenantsName", tenantsName);
                 request.setAttribute("ordersList", ordersList);
                 request.setAttribute("mess", "Reject successfully! Now customers cant bother you :)");
                 request.getRequestDispatcher("landlord-services.jsp").forward(request, response);
@@ -101,7 +109,7 @@ public class LandlordServicesPage extends HttpServlet {
             } else if (service.equals("delete-post")) {
                 int postId = Integer.parseInt(request.getParameter("post-id"));
                 handleService.isDeletedPostSuccessByPostId(postId, appPath);
-                
+
                 request.setAttribute("mess", "Post deleted successfully :)");
                 ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
                 request.setAttribute("postList", postList);
@@ -113,7 +121,7 @@ public class LandlordServicesPage extends HttpServlet {
                 request.setAttribute("post", post);
                 request.setAttribute("urlList", urlList);
                 request.getRequestDispatcher("L-edit-detail-post.jsp").forward(request, response);
-                // do  something
+
             } else if (service.equals("submit-edit-detail-post")) {
                 int postId = Integer.parseInt(request.getParameter("post-id"));
                 PostRental post = handleService.getPostByPostId(postId);

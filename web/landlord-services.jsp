@@ -41,15 +41,18 @@
             Object loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user");
             ArrayList<Orders>
             ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
+            ArrayList<String>
+            tenantsName = (ArrayList<String>)request.getAttribute("tenantsName");
         %>
         <!-- End JSP Code -->
 
         <!-- ======= Header/Navbar ======= -->
         <%@include file="header.jsp" %>
         <!-- End Header/Navbar -->
-       <main id="main" style="margin-top: 3rem">
+        <main id="main" style="margin-top: 3rem">
             <section class="section-news section-t3">
                 <div class="container py-5">
+
                     <div class="row">
                         <div class="col">
                             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
@@ -61,7 +64,7 @@
                             </nav>
                         </div>
                     </div>
-
+                 
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="card mb-4">
@@ -92,7 +95,7 @@
                             <%@include file="L-service-sidebar.jsp" %>
                             <!-- END MINI SIDE BAR -->
                         </div>
-                        
+
 
                         <!-- Main content here -->
                         <div class="card col-lg-8">
@@ -102,6 +105,7 @@
                                     <tr>
                                         <th class="col-lg-1" scope="col">#</th>
                                         <th class="col-lg-auto" scope="col">Order ID</th>
+                                        <th class="col-lg-auto" scope="col">Tennant Name</th>
                                         <th class="col-lg-auto" scope="col">Status</th>
                                         <th class="col-lg-auto" scope="col">Order date</th>
                                         <th class="col-lg-1" scope="col">View</th>
@@ -111,20 +115,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%int count=0; for(Orders order : ordersList) {%>
+                                    <%for(int i = 0; i < ordersList.size(); i++) {%>
                                     <tr>
                                         <th scope="row">
-                                            <%=++count%>
+                                            <%=i+1%>
                                         </th>
                                         <td>
-                                            <%=order.getOrderId()%>
-                                        </td>
-
-                                        <td>
-                                            <%=order.getStatus()%>
+                                            <%=ordersList.get(i).getOrderId()%>
                                         </td>
                                         <td>
-                                            <%=order.getOrder_date()%>
+                                            <%=tenantsName.get(i)%>
+                                        </td>
+                                        <td>
+                                            <%=ordersList.get(i).getStatus()%>
+                                        </td>
+                                        <td>
+                                            <%=ordersList.get(i).getOrder_date()%>
                                         </td>
                                         <td>
                                             <form action="landlordServicesPage"
@@ -132,7 +138,7 @@
                                                 <input type="hidden" name="service"
                                                        value="view-request-post">
                                                 <input type="hidden" name="post-id"
-                                                       value="<%=order.getPostId()%>">
+                                                       value="<%=ordersList.get(i).getPostId()%>">
                                                 <button type="submit"
                                                         class="w-100 btn btn-sm btn-primary">
                                                     <ion-icon name="eye-outline"></ion-icon>
@@ -145,7 +151,7 @@
                                                 <input type="hidden" name="service"
                                                        value="contact">
                                                 <input type="hidden" name="tenant-id"
-                                                       value="<%=order.getTenantId()%>">
+                                                       value="<%=ordersList.get(i).getTenantId()%>">
                                                 <button type="submit"
                                                         class="w-100 btn btn-sm btn-warning">
                                                     <ion-icon
@@ -155,7 +161,7 @@
                                         </td>
                                         <td>
                                             <a href="javascript:void(0);"
-                                               onclick="confirmApprove(<%=order.getOrderId()%>)">
+                                               onclick="confirmApprove(<%=ordersList.get(i).getOrderId()%>)">
                                                 <button type="submit"
                                                         class="w-100 btn btn-sm btn-success">
                                                     <ion-icon
@@ -165,7 +171,7 @@
                                         </td>
                                         <td>
                                             <a href="javascript:void(0);"
-                                               onclick="confirmReject(<%=order.getOrderId()%>)">
+                                               onclick="confirmReject(<%=ordersList.get(i).getOrderId()%>)">
                                                 <button type="submit"
                                                         class="w-100 btn btn-sm btn-danger">
                                                     <ion-icon
