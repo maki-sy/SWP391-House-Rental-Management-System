@@ -101,8 +101,8 @@ public class UserDAO extends DBContext {
 
     /**
      *
-     * @param user Users object to added to the DB. userID field will be ignored
-     * since user_id in the DB is set as IDENTITY
+     * @param user Users object to added to the DB. <b>userID field will be ignored
+     * since user_id in the DB is set as IDENTITY</b>
      * @return ID of user have just added to the DB. Or -1 if there is error
      */
     public int addUser(Users user) {
