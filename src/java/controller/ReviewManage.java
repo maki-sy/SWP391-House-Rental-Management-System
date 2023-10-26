@@ -5,6 +5,7 @@
 package controller;
 
 import DAO.ReviewDAO;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -43,6 +44,8 @@ public class ReviewManage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         String temp_star = request.getParameter("rate");
+        ServletContext servletContext = getServletContext();
+        String filePath = servletContext.getRealPath("\\assets\\badWord.txt");
         int star = 0;
         if (temp_star == null) {
             star = 0;
@@ -50,9 +53,7 @@ public class ReviewManage extends HttpServlet {
             star = Integer.parseInt(temp_star);
         }
         int pid = Integer.parseInt(request.getParameter("id"));
-//        String temp_comment = "This is a c hell test show khanh .";
         String temp_comment = request.getParameter("comment");
-        System.out.println("temp comment " + temp_comment);
         if (star == 0 && "".equals(temp_comment)) {
             request.setAttribute("mess", "Vote star or Write comment");
             request.getRequestDispatcher("housedetail?id=" + pid).forward(request, response);
@@ -60,14 +61,13 @@ public class ReviewManage extends HttpServlet {
             Users user = (Users) session.getAttribute("user");
             int uid = user.getId();
             Date local = Date.valueOf(LocalDate.now());
-            String comment = Rservice.filter(temp_comment);
-            System.out.println(".................................");
+            String comment = Rservice.filter(temp_comment,filePath);
+            //System.out.println(".................................");
             System.out.println(comment);
             Review re = new Review(-1, uid, pid, local, star, comment);
             Rservice.addReview(re);
 
             request.getRequestDispatcher("housedetail?id=" + pid).forward(request, response);
-//            response.sendRedirect("trang-chu");
         }
     }
 
