@@ -281,7 +281,9 @@
                                             <label for="password">Password</label>
                                             <input type="password" id="password" name="password" class="form-control" value="">
                                         </div>
-
+                                        <div class="text-left text-danger">
+                                            <p>${message}</p>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>

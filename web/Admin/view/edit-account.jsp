@@ -289,7 +289,7 @@
                                         <%}%>
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control" value="<%=uService.getPhone(user.getId()) == null ? "" : uService.getPhone(user.getId())%>">
+                                            <input type="text" id="phone" name="phone" class="form-control" value="<%=uService.getPhone(user.getId()) == null ? "" : uService.getPhone(user.getId())%>" required>
                                         </div>
 
                                         <div class="form-group">
@@ -303,6 +303,9 @@
                                                 <option value="VER">Verified</option>
                                                 <option value="UNV">Unverified</option>
                                             </select>
+                                        </div>
+                                        <div class="text-center text-danger">
+                                            <p>${message}</p>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -347,5 +350,7 @@
         <script src="Admin/assets/javascript/adminlte.min.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="Admin/assets/javascript/demo.js"></script>
+
+        <script src="Admin/assets/javascript/phone-validate.js"></script>
     </body>
 </html>
