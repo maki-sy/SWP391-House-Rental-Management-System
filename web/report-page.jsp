@@ -34,7 +34,7 @@
     <%
         Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
     %>  
-    <button class="btn btn-primary">View previous report</button>
+    <a href="ReportCenter"><button class="btn btn-primary">View previous report</button></a>
     <form method="post" id="reportform" action="ReportCenter" style="display: flex; flex-direction: column; align-items: center;"<%--onSubmit="return validateForm();""--%>>
         <div style="max-width: 400px;">
         </div>
