@@ -32,7 +32,8 @@
 
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -236,7 +237,12 @@
                     <div class="row">
                         <div class="col-md-12 col-lg-8">
                             <div class="title-single-box">
-                                <h1 class="title-single"><%=post.getName()%></h1>
+                                <!--Wishlish-->
+                                <div style="display: flex; gap: 20px">
+                                    <h1 class="title-single"><%=post.getName()%></h1>
+                                    <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="fa fa-heart" aria-hidden="true" style="color:pink;font-size:60px"></i></a>
+                                </div>
+                                <!--Wishlish-->
                                 <span class="color-text-a"><%=post.getAddress()%></span>
                             </div>
                         </div>
@@ -253,7 +259,7 @@
                                         <%=post.getName()%>
                                     </li>
                                 </ol>
-                            </nav>
+                            </nav>                          
                         </div>
                     </div>
                 </div>
@@ -304,6 +310,27 @@
                                             alert("Order has been successfully submitted to the landlord.");
                                         }
                                     </script>
+
+                                    <% if(user!=null){ %>
+                                    <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
+                                    <a><button class="btn btn-primary" onclick="openForm()">Order</button></a>
+
+                                    <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+                                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                                            <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">
+                                                <h1 style="text-align: center">Order</h1>
+                                                <p>Content of Orders.........</p>
+                                                <input type="hidden" name="postid" value="<%=post.getId()%>">
+                                                <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
+                                                <input type="hidden" name="service" value="createOrder">
+                                                <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <%} else {%>
+                                    <a href="login"><button type="button" class="btn btn-primary">Create an Order</button></a>
+                                    <%}%>
+
                                     <div class="property-summary">
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -332,55 +359,53 @@
 
                                             </ul>
                                         </div>
-                                                <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="title-box-d section-t4">
-                                                        <h3 class="title-d">Comment</h3>
-                                                    </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="title-box-d section-t4">
+                                                    <h3 class="title-d">Comment</h3>
                                                 </div>
-                                                <c:if test="${sessionScope.user!=null&&sessionScope.user.roleID==1}">
-                                                    <form action="ReviewManage?id=<%=post.getId()%>" method="Post"> 
-                                                        <!--                                                Chi cho tenant review-->
-                                                        <div class="rate">  
-                                                            <input type="radio" id="star5" name="rate" value="5"style="visibility: hidden" />
-                                                            <label for="star5" title="text">5 stars</label>
-                                                            <input type="radio" id="star4" name="rate" value="4"style="visibility: hidden" />
-                                                            <label for="star4" title="text">4 stars</label>
-                                                            <input type="radio" id="star3" name="rate" value="3"style="visibility: hidden" />
-                                                            <label for="star3" title="text">3 stars</label>
-                                                            <input type="radio" id="star2" name="rate" value="2"style="visibility: hidden" />
-                                                            <label for="star2" title="text">2 stars</label>
-                                                            <input type="radio" id="star1" name="rate" value="1" style="visibility: hidden" />
-                                                            <label for="star1" title="text">1 star</label>
-                                                        </div>
-                                                        <br>
-                                                        <br>
-                                                        <div style="border: solid;border-radius:10px ">
+                                            </div>
+                                            <c:if test="${sessionScope.user!=null&&sessionScope.user.roleID==1}">
+                                                <form action="ReviewManage?id=<%=post.getId()%>" method="Post"> 
+                                                    <!--                                                Chi cho tenant review-->
+                                                    <div class="rate">  
+                                                        <input type="radio" id="star5" name="rate" value="5"style="visibility: hidden" />
+                                                        <label for="star5" title="text">5 stars</label>
+                                                        <input type="radio" id="star4" name="rate" value="4"style="visibility: hidden" />
+                                                        <label for="star4" title="text">4 stars</label>
+                                                        <input type="radio" id="star3" name="rate" value="3"style="visibility: hidden" />
+                                                        <label for="star3" title="text">3 stars</label>
+                                                        <input type="radio" id="star2" name="rate" value="2"style="visibility: hidden" />
+                                                        <label for="star2" title="text">2 stars</label>
+                                                        <input type="radio" id="star1" name="rate" value="1" style="visibility: hidden" />
+                                                        <label for="star1" title="text">1 star</label>
+                                                    </div>
+                                                    <br>
+                                                    <br>
+                                                    <div style="border: solid;border-radius:10px ">
                                                         <input name="comment" type="text" placeholder="Add your thought" class="text-center form-control-borderless"
                                                                style="width: 250px;height: 50px;border-radius:15px ">
                                                         <button type="submit" class="btn btn-primary" style="background-color: #2eca6a">Submit</button>
-                                                        </div>
-                                                    </c:if>
-                                                    <p class="text-danger">${mess}</p>
-                                                    <div class="row">
-                                                        <c:forEach items="${listr}" var="o">
-                                                            <div class="col-sm-12">
-                                                                <div class="testimonials-content">
-                                                                    <p class="testimonial-text" style="width: 1000px">
-                                                                        ${o.address}
-                                                                    </p>
-                                                                </div>
-                                                                <div class="testimonial-author-box">
-                                                                    <h5 class="testimonial-author"> ${o.id} <span class="fa fa-star checked">⭐</span> by ${o.lastName} ${o.firstName}  on ${o.civilID}</h5>
-                                                                </div>
-                                                            </div>
-                                                        </c:forEach>
                                                     </div>
-                                            </div>
+                                                </c:if>
+                                                <p class="text-danger">${mess}</p>
+                                                <div class="row">
+                                                    <c:forEach items="${listr}" var="o">
+                                                        <div class="col-sm-12">
+                                                            <div class="testimonials-content">
+                                                                <p class="testimonial-text" style="width: 1000px">
+                                                                    ${o.address}
+                                                                </p>
+                                                            </div>
+                                                            <div class="testimonial-author-box">
+                                                                <h5 class="testimonial-author"> ${o.id} <span class="fa fa-star checked">⭐</span> by ${o.lastName} ${o.firstName}  on ${o.civilID}</h5>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+                                        </div>
                                     </div>
-                                    <!--Wishlish-->
-                                    <i class="fa-regular fa-heart"></i><a href="wishlist?service=add&id=<%= post.getId() %>">Add to wishlist</a>
-                                    <!--Wishlish-->
+
                                 </div>
                                 <div class="col-md-7 col-lg-7 section-md-t3">
                                     <div class="row">
@@ -398,25 +423,7 @@
                                 </div>
                             </div>
                         </div>
-                        <% if(user!=null){ %>
-                        <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
-                        <a><button class="btn btn-primary" onclick="openForm()">Order</button></a>
 
-                        <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-                            <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">
-                                    <h1 style="text-align: center">Order</h1>
-                                    <p>Content of Orders.........</p>
-                                    <input type="hidden" name="postid" value="<%=post.getId()%>">
-                                    <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
-                                    <input type="hidden" name="service" value="createOrder">
-                                    <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
-                                </form>
-                            </div>
-                        </div>
-                        <%} else {%>
-                        <a href="login"><button type="button" class="btn btn-primary">Create an Order</button></a>
-                        <%}%>
                     </div>
                 </div>
 
@@ -424,163 +431,7 @@
 
         </main><!-- End #main -->
 
-        <!-- ======= Footer ======= -->
-        <section class="section-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12 col-md-4">
-                        <div class="widget-a">
-                            <div class="w-header-a">
-                                <h3 class="w-title-a text-brand">EstateAgency</h3>
-                            </div>
-                            <div class="w-body-a">
-                                <p class="w-text-a color-text-a">
-                                    Enim minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exea commodo consequat
-                                    duis
-                                    sed aute irure.
-                                </p>
-                            </div>
-                            <div class="w-footer-a">
-                                <ul class="list-unstyled">
-                                    <li class="color-a">
-                                        <span class="color-text-a">Phone .</span> contact@example.com
-                                    </li>
-                                    <li class="color-a">
-                                        <span class="color-text-a">Email .</span> +54 356 945234
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-4 section-md-t3">
-                        <div class="widget-a">
-                            <div class="w-header-a">
-                                <h3 class="w-title-a text-brand">The Company</h3>
-                            </div>
-                            <div class="w-body-a">
-                                <div class="w-body-a">
-                                    <ul class="list-unstyled">
-                                        <li class="item-list-a">
-                                            <i class="bi bi-chevron-right"></i> <a href="#">Site Map</a>
-                                        </li>
-                                        <li class="item-list-a">
-                                            <i class="bi bi-chevron-right"></i> <a href="#">Legal</a>
-                                        </li>
-                                        <li class="item-list-a">
-                                            <i class="bi bi-chevron-right"></i> <a href="#">Agent Admin</a>
-                                        </li>
-                                        <li class="item-list-a">
-                                            <i class="bi bi-chevron-right"></i> <a href="#">Careers</a>
-                                        </li>
-                                        <li class="item-list-a">
-                                            <i class="bi bi-chevron-right"></i> <a href="#">Affiliate</a>
-                                        </li>
-                                        <li class="item-list-a">
-                                            <i class="bi bi-chevron-right"></i> <a href="#">Privacy Policy</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-4 section-md-t3">
-                        <div class="widget-a">
-                            <div class="w-header-a">
-                                <h3 class="w-title-a text-brand">International sites</h3>
-                            </div>
-                            <div class="w-body-a">
-                                <ul class="list-unstyled">
-                                    <li class="item-list-a">
-                                        <i class="bi bi-chevron-right"></i> <a href="#">Venezuela</a>
-                                    </li>
-                                    <li class="item-list-a">
-                                        <i class="bi bi-chevron-right"></i> <a href="#">China</a>
-                                    </li>
-                                    <li class="item-list-a">
-                                        <i class="bi bi-chevron-right"></i> <a href="#">Hong Kong</a>
-                                    </li>
-                                    <li class="item-list-a">
-                                        <i class="bi bi-chevron-right"></i> <a href="#">Argentina</a>
-                                    </li>
-                                    <li class="item-list-a">
-                                        <i class="bi bi-chevron-right"></i> <a href="#">Singapore</a>
-                                    </li>
-                                    <li class="item-list-a">
-                                        <i class="bi bi-chevron-right"></i> <a href="#">Philippines</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <nav class="nav-footer">
-                            <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <a href="#">Home</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">About</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">Property</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">Blog</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">Contact</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="socials-a">
-                            <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <a href="#">
-                                        <i class="bi bi-facebook" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">
-                                        <i class="bi bi-twitter" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">
-                                        <i class="bi bi-instagram" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#">
-                                        <i class="bi bi-linkedin" aria-hidden="true"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="copyright-footer">
-                            <p class="copyright color-text-a">
-                                &copy; Copyright
-                                <span class="color-a">EstateAgency</span> All Rights Reserved.
-                            </p>
-                        </div>
-                        <div class="credits">
-                            <!--
-                      All the links in the footer should remain intact.
-                      You can delete the links only if you purchased the pro version.
-                      Licensing information: https://bootstrapmade.com/license/
-                      Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=EstateAgency
-                            -->
-                            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer><!-- End  Footer -->
+        <%@include file="footer.jsp" %>
 
         <div id="preloader"></div>
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

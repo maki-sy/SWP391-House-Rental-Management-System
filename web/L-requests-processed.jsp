@@ -34,14 +34,15 @@
         <!-- Template Main CSS File -->
         <link href="assets/css/style.css" rel="stylesheet">
         <link href="assets/css/customer-card.css" rel="stylesheet">
-        
+
     </head>
 
     <body>
         <!-- ======= JSP ======= -->
         <% String role=session.getAttribute("role")==null ? null : (String) session.getAttribute("role"); Object
-            loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); ArrayList<Orders>
-            ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
+            loggedUser=session.getAttribute("user")==null ? null : session.getAttribute("user"); 
+            ArrayList<Orders> ordersList = (ArrayList<Orders>)request.getAttribute("ordersList");
+            ArrayList<String> tenantsName = (ArrayList<String>)request.getAttribute("tenantsName");
         %>
         <!-- End JSP Code -->
 
@@ -86,7 +87,7 @@
                                 </div>
                             </div>
                             <!-- SIDE BAR HERE -->
-                           <%@include file="L-service-sidebar.jsp" %>
+                            <%@include file="L-service-sidebar.jsp" %>
                             <!-- END SIDE BAR -->
                         </div>
 
@@ -97,6 +98,7 @@
                                     <tr>
                                         <th class="col-lg-1" scope="col">#</th>
                                         <th class="col-lg-auto" scope="col">Order ID</th>
+                                        <th class="col-lg-auto" scope="col">Tennant Name</th>
                                         <th class="col-lg-auto" scope="col">Status</th>
                                         <th class="col-lg-auto" scope="col">Order date</th>
                                         <th class="col-lg-1" scope="col">View</th>
@@ -105,25 +107,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%int count=0; for(Orders order : ordersList) {%>
+                                   <%int row = 0; for(int i = 0; i < ordersList.size(); i++) {%>
                                     <tr>
                                         <th scope="row">
-                                            <%=++count%>
+                                            <%=++row%>
                                         </th>
                                         <td>
-                                            <%=order.getOrderId()%>
+                                            <%=ordersList.get(i).getOrderId()%>
                                         </td>
-                                      
                                         <td>
-                                            <%=order.getStatus()%>
+                                            <%=tenantsName.get(i)%>
                                         </td>
-                                         <td>
-                                           <%=order.getOrder_date()%>
+                                        <td>
+                                            <%=ordersList.get(i).getStatus()%>
+                                        </td>
+                                        <td>
+                                            <%=ordersList.get(i).getOrder_date()%>
                                         </td>
                                         <td>
                                             <form action="landlordServicesPage" method="POST">
                                                 <input type="hidden" name="service" value="view-request-post">
-                                                <input type="hidden" name="post-id" value="<%=order.getPostId()%>">
+                                                <input type="hidden" name="post-id" value="<%=ordersList.get(i).getPostId()%>">
                                                 <button type="submit" class="w-100 btn btn-sm btn-primary">
                                                     <ion-icon name="eye-outline"></ion-icon>
                                                 </button>
@@ -132,7 +136,7 @@
                                         <td>
                                             <form action="landlordServicesPage" method="POST">
                                                 <input type="hidden" name="service" value="contact">
-                                                <input type="hidden" name="tenant-id" value="<%=order.getTenantId()%>">
+                                                <input type="hidden" name="tenant-id" value="<%=ordersList.get(i).getTenantId()%>">
                                                 <button type="submit"
                                                         class="w-100 btn btn-sm btn-warning">
                                                     <ion-icon name="call-outline"></ion-icon>
@@ -152,8 +156,8 @@
                         </main>
 
                         <!-- ======= Footer ======= -->
-                         <%@include file="footer.jsp" %>
-                         <!-- End  Footer -->
+                        <%@include file="footer.jsp" %>
+                        <!-- End  Footer -->
 
                         <div id="preloader"></div>
                         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

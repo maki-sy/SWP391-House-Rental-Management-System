@@ -4,6 +4,7 @@ import DAO.LandlordDAO;
 import DAO.OrdersDAO;
 import DAO.PostDAO;
 import DAO.PostImageDAO;
+import DAO.TenantDAO;
 import DAO.TransactionDAO;
 import jakarta.servlet.http.Part;
 import java.io.File;
@@ -26,10 +27,11 @@ import model.PostRental;
 
 public class LandlordService {
 
-    private final DAO.PostDAO postDAO = new PostDAO();
+    private final PostDAO postDAO = new PostDAO();
     private final OrdersDAO ordersDAO = new OrdersDAO();
     private final LandlordDAO landlordDAO = new LandlordDAO();
-    private final DAO.PostImageDAO postImageDAO = new PostImageDAO();
+    private final PostImageDAO postImageDAO = new PostImageDAO();
+    private final TenantDAO tenantDAO = new TenantDAO();
 
     /**
      * @uses: Update order status to 'approved'
@@ -309,6 +311,7 @@ public class LandlordService {
         }
         return false;
     }
+    
 
     /**
      *
@@ -479,6 +482,22 @@ public class LandlordService {
      */
     public ArrayList<String> getPostImageURLByPostId(int postId) {
         return postImageDAO.getPostImageURLByPostId(postId);
+    }
+    
+    /**
+     * 
+     * @param orderList
+     * @return 
+     * @creater tienPV
+     */
+    public ArrayList<String> getTenantNameByOrderList(ArrayList<Orders> orderList) {
+        ArrayList<String> nameList = new ArrayList<>();
+        for (Orders idx : orderList) {
+            String firstName = tenantDAO.getTenantByUserID(idx.getTenantId()).getFirstName();
+            String lastName = tenantDAO.getTenantByUserID(idx.getTenantId()).getLastName();
+            nameList.add(firstName + " " + lastName);
+        }
+        return nameList;
     }
 
     /**

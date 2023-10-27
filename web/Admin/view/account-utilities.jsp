@@ -169,7 +169,7 @@
                     <!-- Sidebar user (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="https://ben.com.vn/tin-tuc/wp-content/uploads/2021/12/anh-che-cho-hai-huoc-cho-dien-thoai-4.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="<%=session.getAttribute("userAvatar")%>" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
                             <a href="#" class="d-block">Admin</a>
@@ -318,10 +318,12 @@
                                         </td>
                                         <%}%>
                                         <td class="project-actions text-right">
+                                            <%if(uService.getRoleName(user.getRoleID()).equals("Landlord")){%>
                                             <a class="btn btn-info btn-sm" href="admin-account?action=add-point&userId=<%= user.getId() %>">
                                                 <i class="fas fa-pencil-alt"></i>
                                                 Add point
                                             </a>
+                                            <%}%>
                                             <% if( user.getStatus().name() != "BAN" ){ %>
                                             <a class="btn btn-danger btn-sm" href="admin-account?action=ban&userid=<%= user.getId() %>">
                                                 <i class="fas fa-ban"></i>

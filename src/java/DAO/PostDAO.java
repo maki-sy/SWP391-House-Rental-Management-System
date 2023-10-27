@@ -181,9 +181,10 @@ public class PostDAO extends DBContext {
 
     public List<PostRental> getLastestPost() {
         List<PostRental> post = new ArrayList<>();
-        String sqlCommand = "SELECT TOP 4 * FROM Post where status = 'basic' ORDER BY post_start_date DESC;";
+        String sqlCommand = "SELECT TOP 4 * FROM Post where status != 'draft' and status != 'deleted' ORDER BY post_start_date DESC;";
         ResultSet rs = getData(sqlCommand);
         try {
+
             while (rs.next()) {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
@@ -212,7 +213,7 @@ public class PostDAO extends DBContext {
 
     public List<PostRental> getHighestHousePrice() {
         List<PostRental> post = new ArrayList<>();
-        String sqlCommand = "SELECT TOP 3 * FROM Post ORDER BY price DESC;";
+        String sqlCommand = "SELECT TOP 3 * FROM Post where status != 'draft' and status != 'deleted' ORDER BY price DESC;";
         ResultSet rs = getData(sqlCommand);
         try {
             while (rs.next()) {
@@ -778,7 +779,6 @@ public class PostDAO extends DBContext {
         return result;
     }
 
-   
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
 

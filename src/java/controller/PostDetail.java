@@ -49,37 +49,19 @@ public class PostDetail extends HttpServlet {
             int pid = Integer.parseInt(request.getParameter("id"));
 
             PostService post = new PostService();
-            ReviewDAO rdao=new ReviewDAO();
+            ReviewDAO rdao = new ReviewDAO();
             SearchService handle = new SearchService();
             PostRental po = post.getPostDetailsbyID(pid);
             ArrayList<String> thumbnailList = new ArrayList<>();
             List<String> url = post.getPostImagesUrlByPostId(pid);
             List<Tenant> listr = rdao.getReviewByPostId(pid);
-
-
             request.setAttribute("PostDetail", po);
             request.setAttribute("thumbnailList", url);
 
-            ArrayList<PropertyType> type = handle.getAllType();
-            ResultSet bedrooms = post.getData("select distinct NumOfBedrooms from Post;");
-            ResultSet priceFrom = post.getData("select distinct price from Post;");
-            ResultSet priceTo = post.getData("select distinct price from Post;");
-            ResultSet areaFrom = post.getData("select distinct area from Post;");
-            ResultSet areaTo = post.getData("select distinct area from Post;");
-            ResultSet address = post.getData("select distinct address from Post;");
-            ArrayList<PropertyLocation> location = handle.getAllLocation();
+            SearchService search = new SearchService();
+            search.loadSearchData(request);
 
-            request.setAttribute("type", type);
-            request.setAttribute("bedroom", bedrooms);
-            request.setAttribute("priceFrom", priceFrom);
-            request.setAttribute("priceTo", priceTo);
-            request.setAttribute("areaFrom", areaFrom);
-            request.setAttribute("areaTo", areaTo);
-            request.setAttribute("address", address);
-            request.setAttribute("location", location);
-
-
-request.setAttribute("listr", listr);
+            request.setAttribute("listr", listr);
 
             request.getRequestDispatcher("PostDetail.jsp").forward(request, response);
         }

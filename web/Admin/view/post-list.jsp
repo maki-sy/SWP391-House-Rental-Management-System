@@ -170,7 +170,7 @@
                     <!-- Sidebar user (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="https://ben.com.vn/tin-tuc/wp-content/uploads/2021/12/anh-che-cho-hai-huoc-cho-dien-thoai-4.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="<%=session.getAttribute("userAvatar")%>" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
                             <a href="#" class="d-block">Admin</a>
@@ -213,7 +213,7 @@
                                     </p>
                                 </a>
                             </li>
-                        </ul>            
+                        </ul>                
                         <!-- /.sidebar-menu -->
                 </div>
                 <!-- /.sidebar -->
@@ -283,7 +283,7 @@
                                         <th class="col-lg-1 text-center">
                                             Status
                                         </th>
-                                        <th class="col-lg-2 text-center" > Tool
+                                        <th class="col-lg-1 text-center" > Tool
                                         </th>
                                     </tr>
                                 </thead>
@@ -310,19 +310,38 @@
                                         <td>
                                             <%=pr.getAddress()%>
                                         </td>
+                                        <%if("basic".equals(pr.getStatus())){%>
                                         <td class="project-state">
-                                            <span class="badge badge-success"><%=pr.getStatus()%></span>
+                                            <span class="badge badge-success">Basic</span>
                                         </td>
-                                        <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm text-center" href="#">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Edit
-                                            </a>
+                                        <%}%>
+                                        <%if("standard".equals(pr.getStatus())){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-warning">Standard</span>
+                                        </td>
+                                        <%}%>
+                                        <%if("premium".equals(pr.getStatus())){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-primary">Premium</span>
+                                        </td>
+                                        <%}%>
+                                        <%if("draft".equals(pr.getStatus())){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-info">Draft</span>
+                                        </td>
+                                        <%}%>
+                                        <%if("deleted".equals(pr.getStatus())){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-danger">Deleted</span>
+                                        </td>
+                                        <%}%>
+                                        <td class="project-actions">
+                                            <% if (!"deleted".equals(pr.getStatus())) { %>
                                             <a class="btn btn-danger btn-sm text-center" href="javascript:void(0);" onclick="confirmDelete(<%=pr.getId()%>);">
                                                 <i class="fas fa-trash"></i>
                                                 Delete
                                             </a>
+                                            <% } %>
                                         </td>
                                     </tr>
                                 </tbody>
