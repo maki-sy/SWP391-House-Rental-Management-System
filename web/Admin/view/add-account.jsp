@@ -5,11 +5,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Project Edit</title>
+        <title>Admin | Add Account</title>
 
         <%@page import="DAO.UserDAO, model.Users, model.Users.Status, service.UserService" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
-        
+
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -190,16 +190,28 @@
 
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="admin-dashboard?service=account-utils" class="nav-link">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Account Utilities
                                     </p>
                                 </a>
                             </li>
@@ -254,7 +266,7 @@
                                             <label for="fname">First Name</label>
                                             <input type="text" id="fname" name="fname" class="form-control" value="">
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <label for="lname">Last Name</label>
                                             <input type="text" id="lname" name="lname" class="form-control" value="">
@@ -269,7 +281,9 @@
                                             <label for="password">Password</label>
                                             <input type="password" id="password" name="password" class="form-control" value="">
                                         </div>
-
+                                        <div class="text-left text-danger">
+                                            <p>${message}</p>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>

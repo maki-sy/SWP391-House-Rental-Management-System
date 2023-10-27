@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Projects</title>
+        <title>Admin | Dashboard</title>
         <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation, model.Users" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
         <!-- Google Font: Source Sans Pro -->

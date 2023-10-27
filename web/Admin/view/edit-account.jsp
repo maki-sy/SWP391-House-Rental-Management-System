@@ -5,11 +5,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Project Edit</title>
+        <title>Admin | Edit Account</title>
 
         <%@page import="DAO.UserDAO, model.Users, model.Users.Status, service.UserService" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
-        
+
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -192,19 +192,30 @@
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Account
-
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=managePost" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Manage Post
                                     </p>
                                 </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="admin-dashboard?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="admin-dashboard?service=account-utils" class="nav-link">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Account Utilities
                                     </p>
                                 </a>
                             </li>
@@ -259,7 +270,7 @@
                                             <label for="userName">First Name</label>
                                             <input type="text" id="fname" name="fname" class="form-control" value="<%=uService.getFirstName(user.getId()) == null ? "" : uService.getFirstName(user.getId())%>">
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <label for="userName">Last Name</label>
                                             <input type="text" id="lname" name="lname" class="form-control" value="<%=uService.getLastName(user.getId()) == null ? "" : uService.getLastName(user.getId())%>">
@@ -267,20 +278,18 @@
 
                                         <!-- Admin do not need civil id -->
                                         <% if(user.getRoleID() == 1 || user.getRoleID() == 2 ){ %> <!-- 1 is Tenant, 2 is Landlord -->
-                                         <div class="form-group">
+                                        <div class="form-group">
                                             <label for="civilid">Civil ID</label>
                                             <input type="text" id="civilid" name="civilid" class="form-control" value="<%=uService.getCivilID(user.getId()) == null ? "" : uService.getCivilID(user.getId())%>">
                                         </div>
-                                        <%}%>
-                                        
                                         <div class="form-group">
                                             <label for="address">Address</label>
                                             <input type="text" id="address" name="address" class="form-control" value="<%=uService.getAddress(user.getId()) == null ? "" : uService.getAddress(user.getId())%>">
                                         </div>
-
+                                        <%}%>
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control" value="<%=uService.getPhone(user.getId()) == null ? "" : uService.getPhone(user.getId())%>">
+                                            <input type="text" id="phone" name="phone" class="form-control" value="<%=uService.getPhone(user.getId()) == null ? "" : uService.getPhone(user.getId())%>" required>
                                         </div>
 
                                         <div class="form-group">
@@ -290,17 +299,13 @@
 
                                         <div class="form-group">
                                             <label for="status">Status</label>
-                                            <select name="status" id="status">
-                                                <% 
-                                                    for(Status st : status){ 
-                                                        if(st == user.getStatus()){
-                                                %>
-                                                <option value="<%=st%>" selected><%=st%></option>
-                                                        <%} else {%>
-                                                <option value="<%=st%>"><%=st%></option>
-                                                        <%}
-                                                    }%>
+                                            <select name="status" id="status" required>
+                                                <option value="VER">Verified</option>
+                                                <option value="UNV">Unverified</option>
                                             </select>
+                                        </div>
+                                        <div class="text-center text-danger">
+                                            <p>${message}</p>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -345,5 +350,7 @@
         <script src="Admin/assets/javascript/adminlte.min.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="Admin/assets/javascript/demo.js"></script>
+
+        <script src="Admin/assets/javascript/phone-validate.js"></script>
     </body>
 </html>
