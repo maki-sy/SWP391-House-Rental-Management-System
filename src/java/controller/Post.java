@@ -52,27 +52,9 @@ public class Post extends HttpServlet {
                 String url = po.getImageThumbailsByPostID(post.get(i).getId());
                 thumbnailList.add(url);
             }
-
-            ArrayList<PropertyType> type = handle.getAllType();
-
-            ResultSet bedrooms = po.getData("select distinct NumOfBedrooms from Post;");
-            ResultSet priceFrom = po.getData("select distinct price from Post;");
-            ResultSet priceTo = po.getData("select distinct price from Post;");
-            ResultSet areaFrom = po.getData("select distinct area from Post;");
-            ResultSet areaTo = po.getData("select distinct area from Post;");
-            ResultSet address = po.getData("select distinct address from Post;");
-            ArrayList<PropertyLocation> location = handle.getAllLocation();
-
             request.setAttribute("thumbnailList", thumbnailList);
-
-            request.setAttribute("type", type);
-            request.setAttribute("bedroom", bedrooms);
-            request.setAttribute("priceFrom", priceFrom);
-            request.setAttribute("priceTo", priceTo);
-            request.setAttribute("areaFrom", areaFrom);
-            request.setAttribute("areaTo", areaTo);
-            request.setAttribute("address", address);
-            request.setAttribute("location", location);
+            SearchService search = new SearchService();
+            search.loadSearchData(request);
 //            request.setAttribute("PostImage", postimage);
             request.getRequestDispatcher("AllPost.jsp").forward(request, response);
         }

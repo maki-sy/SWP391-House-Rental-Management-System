@@ -85,7 +85,7 @@
                         <div class="col-lg-4">
                             <div class="card mb-4">
                                 <div class="card-body text-center">
-                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
+                                    <img src="<%=session.getAttribute("userAvatar")%>" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
                                     <h5 class="my-3"><%=tenant.getFirstName()%>&nbsp;<%=tenant.getLastName()%></h5>
                                     <p class="text-muted mb-1"><%=user.getEmail()%></p>
@@ -96,6 +96,14 @@
                                         <button type="button" class="btn btn-outline-primary ms-1"
                                                 disabled><%=user.getStatus()%></button>
                                     </div>
+                                    <button type="button" class="btn btn-outline-primary ms-1"
+                                            >Upload/Update Avatar</button>
+                                    <form action="uploadavt" method="post" enctype="multipart/form-data">
+                                        <div class="input-group mb-3">
+                                            <input type="file" name="avatar" class="form-control" accept="image/*">
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">Upload/Update Avatar</button>
+                                    </form>
                                 </div>
                             </div>
                             <div class="card mb-4 mb-lg-0">
@@ -185,7 +193,7 @@
                         <div class="col-lg-4">
                             <div class="card mb-4">
                                 <div class="card-body text-center">
-                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
+                                    <img src="<%=session.getAttribute("userAvatar")%>" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
                                     <h5 class="my-3"><%=landlord.getFirstName()%>&nbsp;<%=landlord.getLastName()%></h5>
                                     <p class="text-muted mb-1"><%=user.getEmail()%></p>
@@ -196,6 +204,13 @@
                                         <button type="button" class="btn btn-outline-primary ms-1"
                                                 disabled><%=user.getStatus()%></button>
                                     </div>
+
+                                    <form action="uploadavt" method="post" enctype="multipart/form-data">
+                                        <div class="input-group mb-3">
+                                            <input type="file" name="avatar" class="form-control" accept="image/*">
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">Upload/Update Avatar</button>
+                                    </form>
                                 </div>
                             </div>
                             <div class="card mb-4 mb-lg-0">
