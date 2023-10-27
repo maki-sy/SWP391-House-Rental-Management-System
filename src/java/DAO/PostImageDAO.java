@@ -91,7 +91,7 @@ public class PostImageDAO extends DBContext {
 
     public int deletePostImageByPostId(int postId) {
         String sql = "DELETE FROM [dbo].[Post_Image]\n"
-                + "      WHERE [Post_Image].post_id = ?";
+                + "      WHERE [post_id] = ?";
         try ( PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
             preparedStatement.setInt(1, postId);
             return preparedStatement.executeUpdate();
