@@ -253,7 +253,7 @@
                                         <a href="trang-chu">Home</a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <a href="property-grid.html">Properties</a>
+                                        <a href="Post">Properties</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">
                                         <%=post.getName()%>

@@ -37,7 +37,7 @@
     %>  
     <%@include file="header.jsp" %>
     <div style="margin-top: 7%">
-        <a href="ReportCenter"><button class="btn btn-primary">View previous report</button></a>
+        <a href="ReportCenter?type=viewreport"><button class="btn btn-primary">View previous report</button></a>
         <%
             if(user!=null){
             if(type.equals("post")){
