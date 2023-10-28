@@ -33,41 +33,78 @@
     <%@ page import="model.Users" %>
     <%
         Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
+        String type = (String)request.getAttribute("report_type");
     %>  
-    <a href="ReportCenter"><button class="btn btn-primary">View previous report</button></a>
-    <form method="post" id="reportform" action="ReportCenter" style="display: flex; flex-direction: column; align-items: center;"<%--onSubmit="return validateForm();""--%>>
-        <div style="max-width: 400px;">
-        </div>
-        <div style="padding-bottom: 18px;font-size : 24px; color: red; text-align: center; font-weight: bold">Report An Issue!</div>
-        <div style="padding-bottom: 18px;">Reported by<span style="color: red;"> *</span><br/>
-            <input type="text" style="width: 650px;" name="reporter_email" value="<%=user.getEmail()%>" readonly style="max-width : 450px;" class="form-control"/>
-        </div>
-        <div style="padding-bottom: 18px;">Categories<br/>
-            <select name="categories" style="width: 650px;" id="categories" style="max-width : 300px;" class="form-control" onchange="showInput(this.value)" required>
-                <option selected disabled>Select a category</option>
-                <option value="User Complaint">User Complaint</option>
-                <option value="Fraudulent Post">Fraudulent Post</option>
-                <option value="Payment Problems">Payment Problems</option>
-                <option value="System Bug">System Bug</option>
-                <option value="Legal">Legal</option>
-                <option value="Others">Others</option>
-            </select>
-        </div>
+    <%@include file="header.jsp" %>
+    <div style="margin-top: 7%">
+        <a href="ReportCenter"><button class="btn btn-primary">View previous report</button></a>
+        <%
+            if(user!=null){
+            if(type.equals("post")){
+            String url_ref = (String)request.getAttribute("url_ref");
+        %>
 
-        <!-- Initially hide this div -->
-        <div id="reportDiv" style="display: none; padding-bottom: 18px;">Reported Property<span style="color: red;"> *</span><br/>
-            <input type="text" style="width: 650px;" placeholder="Relative URL of the post" id="data_2" name="post_link" style="max-width : 450px;" class="form-control"  />
-        </div>
-        <div id="personDiv" style="display: none; padding-bottom: 18px;">Reported Person<span style="color: red;"> *</span><br/>
-            <input type="text" style="width: 650px;" placeholder="Email of the reported person" id="data_3" name="reported_email" style="max-width : 450px;" class="form-control"/>
-        </div>
+        <form method="post" id="reportform" action="ReportCenter" style="display: flex; flex-direction: column; align-items: center;"<%--onSubmit="return validateForm();""--%>>
+            <div style="max-width: 400px;">
+            </div>
+            <div style="padding-bottom: 18px;font-size : 24px; color: red; text-align: center; font-weight: bold">Report An Issue!</div>
+            <div style="padding-bottom: 18px;">Reported by<span style="color: red;"> *</span><br/>
+                <input type="text" style="width: 650px;" name="reporter_email" value="<%=user.getEmail()%>" readonly style="max-width : 450px;" class="form-control"/>
+            </div>
+            <div style="padding-bottom: 18px;">Categories<br/>
+                <select name="categories" style="width: 650px;" id="categories" style="max-width : 300px;" class="form-control" onchange="showInput(this.value)" required>
+                    <option disabled>Select a category</option>
+                    <option value="Fraudulent Post" selected>Fraudulent Post</option>
+                </select>
+
+                <!-- Initially hide this div -->
+                <div id="reportDiv" style="padding-bottom: 18px;">Reported Property<span style="color: red;"> *</span><br/>
+                    <input type="text" style="width: 650px;" placeholder="Relative URL of the post" id="data_2" name="post_link" value="<%=url_ref%>" style="max-width : 450px;" class="form-control" readonly />
+                </div>
+
+                <div style="padding-bottom: 18px;">Description<br/>
+                    <textarea id="data_7" style="width: 650px;" name="description" placeholder="Provide a description for your problem..." style="max-width : 450px;" rows="6" class="form-control"></textarea>
+                </div>
+                <div style="padding-bottom: 18px;"><input name="Submit" value="Submit" type="submit"  class="btn btn-primary"/></div>
+        </form>
+        <%}else{%> 
+
+        <form method="post" id="reportform" action="ReportCenter" style="display: flex; flex-direction: column; align-items: center;"<%--onSubmit="return validateForm();""--%>>
+            <div style="max-width: 400px;">
+            </div>
+            <div style="padding-bottom: 18px;font-size : 24px; color: red; text-align: center; font-weight: bold">Repsort An Issue!</div>
+            <div style="padding-bottom: 18px;">Reported by<span style="color: red;"> *</span><br/>
+                <input type="text" style="width: 650px;" name="reporter_email" value="<%=user.getEmail()%>" readonly style="max-width : 450px;" class="form-control"/>
+            </div>
+            <div style="padding-bottom: 18px;">Categories<br/>
+                <select name="categories" style="width: 650px;" id="categories" style="max-width : 300px;" class="form-control" onchange="showInput(this.value)" required>
+                    <option selected disabled>Select a category</option>
+                    <option value="User Complaint">User Complaint</option>
+                    <option value="Fraudulent Post">Fraudulent Post</option>
+                    <option value="Payment Problems">Payment Problems</option>
+                    <option value="System Bug">System Bug</option>
+                    <option value="Legal">Legal</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <!--   Initially hide this div--> 
+            <div id="reportDiv" style="display: none; padding-bottom: 18px;">Reported Property<span style="color: red;"> *</span><br/>
+                <input type="text" style="width: 650px;" placeholder="Relative URL of the post" id="data_2" name="post_link" style="max-width : 450px;" class="form-control"  />
+            </div>
+            <div id="personDiv" style="display: none; padding-bottom: 18px;">Reported Person<span style="color: red;"> *</span><br/>
+                <input type="text" style="width: 650px;" placeholder="Email of the reported person" id="data_3" name="reported_email" style="max-width : 450px;" class="form-control"/>
+            </div>
 
 
-        <div style="padding-bottom: 18px;">Description<br/>
-            <textarea id="data_7" style="width: 650px;" name="description" placeholder="Provide a description for your problem..." style="max-width : 450px;" rows="6" class="form-control"></textarea>
-        </div>
-        <div style="padding-bottom: 18px;"><input name="Submit" value="Submit" type="submit"  class="btn btn-primary"/></div>
-    </form>
+            <div style="padding-bottom: 18px;">Description<br/>
+                <textarea id="data_7" style="width: 650px;" name="description" placeholder="Provide a description for your problem..." style="max-width : 450px;" rows="6" class="form-control"></textarea>
+            </div>
+            <div style="padding-bottom: 18px;"><input name="Submit" value="Submit" type="submit"  class="btn btn-primary"/></div>
+        </form>
+        <%}
+}%>
+    </div>
     <script>
         function showInput(value) {
             var reportDiv = document.getElementById("reportDiv");
@@ -107,33 +144,40 @@
             if (categories.selectedIndex === 0) {
                 alert('Please select a category.');
                 e.preventDefault();
-            } else
-            if (categories.value === "Fraudulent Post") {
-                if (reportInput.value.trim() === "") {
-                    alert("Please enter the relative URL of the post.");
-                    e.preventDefault();
-                } else
-                if (!isValidUrl(reportInput.value.trim())) {
-                    alert("Please enter a valid URL.");
-                    e.preventDefault();
-                } else {
-                    alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
+            } 
+            else {
+                if (categories.value === "Fraudulent Post") {
+                    if (reportInput.value.trim() === "") {
+                        alert("Please enter the relative URL of the post.");
+                        e.preventDefault();
+                    }
+                    else
+                        if (!isValidUrl(reportInput.value.trim())) {
+                            alert("Please enter a valid URL.");
+                            e.preventDefault();
+                        } 
+                        else {
+                            alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
+                        }
                 }
-
-            }
+            else {
             if (categories.value === "User Complaint") {
                 if (personInput.value.trim() === "") {
                     alert("Please enter the email of the reported person.");
                     e.preventDefault();
                 } else
-                if (!isValidEmail(personInput.value.trim())) {
+                    if (!isValidEmail(personInput.value.trim())) {
                     alert("Please enter a valid email.");
                     e.preventDefault();
                 } else {
                     alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
                 }
             }
-        });
+            else{
+                alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
+            }
+        }
+    }});
     </script>
 
     <!--        <form action="//submit.form" id="ReportProblem100" method="post" onsubmit="return ValidateForm(this);">

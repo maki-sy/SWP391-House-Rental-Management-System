@@ -240,7 +240,7 @@
                                 <!--Wishlish-->
                                 <div style="display: flex; gap: 20px">
                                     <h1 class="title-single"><%=post.getName()%></h1>
-                                    <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="fa fa-heart" aria-hidden="true" style="color:pink;font-size:60px"></i></a>
+                                    <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="fa fa-heart" aria-hidden="true" style="color:pink;font-size:30px"></i></a>
                                 </div>
                                 <!--Wishlish-->
                                 <span class="color-text-a"><%=post.getAddress()%></span>
@@ -261,6 +261,7 @@
                                 </ol>
                             </nav>                          
                         </div>
+                            <a href="ReportCenter?type=post&postid=<%=post.getId()%>"><i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i></a>
                     </div>
                 </div>
             </section><!-- End Intro Single-->
