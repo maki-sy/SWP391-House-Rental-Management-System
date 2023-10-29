@@ -233,7 +233,7 @@
                                             <form action="wishlist?service=delete" method="POST">
                                                 <input type="hidden" name="wishId" value="<%= w.getId() %>">
                                                 <button type="submit" class="w-100 btn btn-sm btn-primary">
-                                                    <ion-icon name="trash-outline"></ion-icon>
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
                                             </form>
                                         </td>
