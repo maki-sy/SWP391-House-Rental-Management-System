@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top ">
     <div class="container">
         <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
@@ -71,7 +72,7 @@
             <i class="bi bi-search"></i>
         </button>
         <% if(user != null) { %>
-        <a href="${pageContext.request.contextPath}/ReportCenter"><button type="button" class="btn btn-primary">Send Report</button></a>
+        <a href="${pageContext.request.contextPath}/ReportCenter?type=general"><i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i></a>
         <% } %>
     </div>
 </nav>

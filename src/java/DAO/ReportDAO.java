@@ -44,7 +44,28 @@ public class ReportDAO extends DBContext {
 
         return report;
     }
-
+    public List<Report> getReportbyUserID(int UserID){
+        List<Report> report = new ArrayList<>();
+        String sqlCommand = "SELECT * FROM Report WHERE reporter_id="+ UserID;
+        ResultSet rs = getData(sqlCommand);
+        try {
+            while (rs.next()) {
+                int report_id = rs.getInt(1);
+                int reporter_id = rs.getInt(2);
+                int property_id = rs.getInt(3);
+                int reported_id = rs.getInt(4);
+                String report_date = rs.getString(5);
+                String categories = rs.getString(6);
+                String description = rs.getString(7);
+                String status = rs.getString(8);
+                Report rp = new Report(report_id, reporter_id, property_id, reported_id, report_date, categories, description, status);
+                report.add(rp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return report;
+    }
     public void addReport(Report report) {
         int checkReturn = 0;
         try {
@@ -86,11 +107,24 @@ public class ReportDAO extends DBContext {
             Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void deleteReport(int id) {
+        String sql = "DELETE FROM [dbo].[Report]\n"
+                + "      WHERE report_id=" + id;
+        try{
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.executeUpdate();
+        }catch(SQLException ex){
+            System.err.println("deleteReport() reports: " + ex.getMessage());
+            Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
- //   public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        ReportDAO dao = new ReportDAO();
 //        List<Report> report = new ArrayList<>();
-//         report=dao.getAllReports();
+//         report=dao.getReportbyUserID(18);
+//         for(int i=0;i<report.size();i++)
+//         System.out.println(report.get(i).getDescription());
 //         for(int i=0;i<report.size();i++)
 //         System.out.println(report.get(i).getDescription());
 //        LocalDateTime now = LocalDateTime.now();
@@ -102,5 +136,5 @@ public class ReportDAO extends DBContext {
 //        String post_link = "http://localhost:8080/SWP391-House-Rental-Management/housedetail?id=1";
 //        post_id = Integer.parseInt(post_link.replaceAll(".*id=", ""));
 //        System.out.println(post_id);
- //   }
+//   }
 }

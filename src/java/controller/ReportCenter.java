@@ -11,8 +11,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import model.Report;
 import model.Users;
 import service.ReportService;
@@ -36,11 +38,16 @@ public class ReportCenter extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            ReportService reportservice = new ReportService();
-            UserService userservice = new UserService();
 
+        ReportService reportservice = new ReportService();
+        UserService userservice = new UserService();
+        HttpSession session = request.getSession();
+        Users loggedUser = (Users) session.getAttribute("user");
+
+        if (loggedUser == null) {
+            response.sendRedirect("trang-chu");
+            return;
+        } else {
             String reporter_email = request.getParameter("reporter_email");
             String categories = request.getParameter("categories");
             String post_link = request.getParameter("post_link");
@@ -103,7 +110,45 @@ public class ReportCenter extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        request.getRequestDispatcher("/report-page.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        Users loggedUser = (Users) session.getAttribute("user");
+        ReportService reportservice = new ReportService();
+        String type = request.getParameter("type");
+        if (loggedUser == null) {
+            response.sendRedirect("trang-chu");
+            return;
+        } else {
+            if (type.equals("post")) {
+                request.setAttribute("report_type", type);
+                request.setAttribute("category", "Fraudulent Post");
+                int postid = Integer.parseInt(request.getParameter("postid"));
+                String url = "http://localhost:8080/SWP391-House-Rental-Management/housedetail?id=" + postid;
+                request.setAttribute("url_ref", url);
+                request.getRequestDispatcher("report-page.jsp").forward(request, response);
+            }
+            if (type.equals("general")) {
+                request.setAttribute("report_type", type);
+                request.getRequestDispatcher("report-page.jsp").forward(request, response);
+            }
+            //            if(type.equals("user")){
+//                request.setAttribute("category", "User Complaint");
+//                int userid=Integer.parseInt(request.getParameter("userid"));
+//                String email=userservice.getUserByID(userid).getEmail();
+//                request.setAttribute("type", "2");
+//                request.setAttribute("email", email);
+//                request.getRequestDispatcher("/report-page.jsp").forward(request, response);
+//            }
+            if (type.equals("viewreport")) {
+                List<Report> reports = reportservice.getReportByUserID(loggedUser.getId());
+                request.setAttribute("reports", reports);
+                request.getRequestDispatcher("view-report.jsp").forward(request, response);
+            }
+            if (type.equals("cancel")) {
+                int report_id = Integer.parseInt(request.getParameter("id"));
+                reportservice.deleteReport(report_id);
+                request.getRequestDispatcher("ReportCenter?type=viewreport").forward(request, response);
+            }
+        }
     }
 
     /**

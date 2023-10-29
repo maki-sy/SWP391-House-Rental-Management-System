@@ -171,7 +171,7 @@
                                     <p class="text-muted mb-4">*******</p>
                                     <div class="d-flex justify-content-center mb-2">
                                         <button type="button" class="btn btn-primary"
-                                                disabled><%--=role_name--%></button>
+                                                disabled><%--=role_name--%>Tenant</button>
                                         <button type="button" class="btn btn-outline-primary ms-1"
                                                 disabled><%=user.getStatus()%></button>
                                     </div>
@@ -198,11 +198,6 @@
                                             <a href="wishlist?service=view">
                                                 <button type="button" class="btn btn-primary">Wishlist</button>
                                             </a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="#!"><button type="button"
-                                                                 class="btn btn-primary">Transaction history</button></a>
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
@@ -238,7 +233,7 @@
                                             <form action="wishlist?service=delete" method="POST">
                                                 <input type="hidden" name="wishId" value="<%= w.getId() %>">
                                                 <button type="submit" class="w-100 btn btn-sm btn-primary">
-                                                    <ion-icon name="trash-outline"></ion-icon>
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
                                             </form>
                                         </td>
