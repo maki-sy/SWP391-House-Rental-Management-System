@@ -206,11 +206,10 @@
         <%@include file="header.jsp" %>
         <!-- End Header/Navbar -->
         <%
-                  PostRental post = (PostRental) request.getAttribute("PostDetail");
-                  ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
-                  String location_name = (String) request.getAttribute("location_name"); 
-                  String postSale = (String) request.getAttribute("postSale"); 
-                  double postSaleValue = Double.parseDouble(postSale);
+            PostRental post = (PostRental) request.getAttribute("PostDetail");
+            ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
+            String location_name = (String) request.getAttribute("location_name"); 
+            String postSale = (String) request.getAttribute("postSale"); 
         %>
 
 
@@ -279,7 +278,9 @@
                                             </div>
 
                                             <div class="card-title-c align-self-center">
-                                                <h5 class="title-c"><%= String.format("%.1f", postSaleValue) %></h5>
+                                                <h5 class="title-c">
+                                                    <%= (postSale.equals("Free")) ? postSale : String.format("%.1f", Double.parseDouble(postSale)) %>
+                                                </h5>
                                             </div>
                                         </div>
                                     </div>
