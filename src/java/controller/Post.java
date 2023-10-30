@@ -20,6 +20,7 @@ import model.PostRental;
 import model.PropertyLocation;
 import model.PropertyType;
 import service.PostService;
+import service.PromotionService;
 import service.SearchService;
 
 /**
@@ -44,15 +45,24 @@ public class Post extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             PostService po = new PostService();
+            PromotionService pros = new PromotionService();
             SearchService handle = new SearchService();
             List<PostRental> post = po.getPublishedPosts();
             request.setAttribute("listOfPost", post);
+
             ArrayList<String> thumbnailList = new ArrayList<>();
             for (int i = 0; i < post.size(); i++) {
                 String url = po.getImageThumbailsByPostID(post.get(i).getId());
                 thumbnailList.add(url);
             }
             request.setAttribute("thumbnailList", thumbnailList);
+
+            ArrayList<Integer> saleList = new ArrayList<>();
+            for (int i = 0; i < post.size(); i++) {
+                int proID = pros.getPostPromotion(post.get(i).getPromotion());
+                saleList.add(proID);
+            }
+            request.setAttribute("saleList", saleList);
             SearchService search = new SearchService();
             search.loadSearchData(request);
 //            request.setAttribute("PostImage", postimage);

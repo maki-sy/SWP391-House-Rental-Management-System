@@ -94,6 +94,11 @@ public class PromotionService {
         }
     }
 
+    public int getPostPromotion(int promotionID) {
+        DAO.PromotionDAO dao = new PromotionDAO();
+        return dao.getPostPromotion(promotionID);
+    }
+
     public static void main(String[] args) {
         PromotionService p = new PromotionService();
         String temp = "ok";

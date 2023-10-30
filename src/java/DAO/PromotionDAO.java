@@ -157,6 +157,7 @@ public class PromotionDAO extends DBContext {
             Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     public List<Promotion> GetPromotionByLandlordId(int id) {
         List<Promotion> list = new ArrayList<>();
         String sql = "SELECT landlord_id, a.promotion_id, discount, descriptions, promotion_start_date, promotion_end_date\n"
@@ -181,6 +182,23 @@ public class PromotionDAO extends DBContext {
             Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+
+    public int getPostPromotion(int id) {
+        String sql = "SELECT discount FROM Promotions WHERE promotion_id =" + id;
+        ResultSet rs = getData(sql);
+        int promotionid = 0;
+        try {
+            while (rs.next()) {
+                promotionid = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.err.println("getPromotionById() for Post: " + ex.getMessage());
+            Logger.getLogger(PromotionDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return promotionid;
+
     }
 
     public static void main(String[] args) {

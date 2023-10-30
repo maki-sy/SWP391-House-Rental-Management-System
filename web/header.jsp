@@ -12,32 +12,14 @@
         <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
             <ul class="navbar-nav">
 
-                <li class="nav-item">
-                    <a class="nav-link active" href="trang-chu">Home</a>
+                <li class="nav-item" id="home-link">
+                    <a class="nav-link" href="trang-chu">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="Post">Houses</a>
-
+                <li class="nav-item" id="post-link">
+                    <a class="nav-link" href="Post">Houses</a>
                 </li>
-                <!--
-                                <li class="nav-item">
-                                    <a class="nav-link " href="agents-grid.jsp">Landlords</a>
-                                </li>-->
-                <!--                <li class="nav-item">
-                                    <a class="nav-link " href="PromotionManage">Promotion</a>
-                                </li>-->
-
-                <!--                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">Pages</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item " href="property-single.jsp">House Detail</a>
-                                        <a class="dropdown-item " href="agent-single.jsp">Landlord Detail</a>
-                                    </div>
-                                </li>-->
-
-                <li class="nav-item">
-                    <a class="nav-link " href="Contact">Contact</a>
+                <li class="nav-item" id="contact-link">
+                    <a class="nav-link" href="Contact">Contact</a>
                 </li>
             </ul>
         </div>
@@ -74,4 +56,16 @@
         <a href="${pageContext.request.contextPath}/ReportCenter"><button type="button" class="btn btn-primary">Send Report</button></a>
         <% } %>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var currentUrl = window.location.href;
+            if (currentUrl.indexOf("trang-chu") !== -1) {
+                document.getElementById("home-link").classList.add("active");
+            } else if (currentUrl.indexOf("Post") !== -1) {
+                document.getElementById("post-link").classList.add("active");
+            } else if (currentUrl.indexOf("Contact") !== -1) {
+                document.getElementById("contact-link").classList.add("active");
+            }
+        });
+    </script>
 </nav>

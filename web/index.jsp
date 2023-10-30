@@ -75,7 +75,6 @@
                         <%
                             ArrayList<PropertyType> type = (ArrayList<PropertyType>) request.getAttribute("type");
                             ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
-                            ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
                             ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
                             ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
                             ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
@@ -103,43 +102,23 @@
                                 </select>
                             </div>
                         </div>
-
-
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Price From</label>
-                                <select class="form-control form-select form-control-a" id="price" name="priceFrom">
-                                    <option>0</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Price To</label>
+                                <label class="pb-2" for="price">Price</label>
                                 <select class="form-control form-select form-control-a" id="price" name="priceTo">
                                     <option>Unlimite</option>
-                                    <option value="800">800$</option>
-                                    <option value="900">900$</option>
-                                    <option value="1000">1000$</option>
-                                    <option value="1200">1200$</option>
-                                    <option value="1500">1500$</option>
-                                    <option value="1800">1800$</option>
-                                    <option value="2000">2000$</option>
-                                    <option value="2100">2100$</option>
+                                    <option value="800"><800$</option>
+                                    <option value="1000"><1000$</option>
+                                    <option value="1500"><1500$</option>
+                                    <option value="2000"><2000$</option>
+                                    <option value="2100"><3000$</option>
                                 </select>
                             </div>
                         </div>
+                        
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
-                                <label class="pb-2" for="areaFrom">Area From</label>
-                                <select class="form-control form-select form-control-a" id="areas" name="areaFrom">
-                                    <option>0</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="areaTo">Area To</label>
+                                <label class="pb-2" for="areaTo">Area</label>
                                 <select class="form-control form-select form-control-a" id="areas" name="areaTo">
                                     <option>Any</option>
                                     <option value="10">10m2</option>

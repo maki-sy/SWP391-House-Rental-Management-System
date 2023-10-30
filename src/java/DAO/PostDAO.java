@@ -728,6 +728,21 @@ public class PostDAO extends DBContext {
         return result;
     }
 
+    public String getLocationByLocationID(int postID) {
+        String url = null;
+        String sql = "select location_name from Property_Location where id = ?";
+        try ( PreparedStatement stm = connect.prepareStatement(sql)) {
+            stm.setInt(1, postID);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                url = rs.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostImageDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return url;
+    }
+
     /**
      *
      * @param landlordId
