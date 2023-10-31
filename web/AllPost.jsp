@@ -71,7 +71,6 @@
                         <%
                             ArrayList<PropertyType> type = (ArrayList<PropertyType>) request.getAttribute("type");
                             ResultSet bedroom = (ResultSet) request.getAttribute("bedroom");
-                            ResultSet priceFrom = (ResultSet) request.getAttribute("priceFrom");
                             ResultSet priceTo = (ResultSet) request.getAttribute("priceTo");
                             ResultSet areaFrom = (ResultSet) request.getAttribute("areaFrom");
                             ResultSet areaTo = (ResultSet) request.getAttribute("areaTo");
@@ -99,50 +98,30 @@
                                 </select>
                             </div>
                         </div>
-
-
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Price From</label>
-                                <select class="form-control form-select form-control-a" id="price" name="priceFrom">
-                                    <option>0</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Price To</label>
+                                <label class="pb-2" for="price">Price</label>
                                 <select class="form-control form-select form-control-a" id="price" name="priceTo">
                                     <option>Unlimite</option>
-                                    <option value="800">800$</option>
-                                    <option value="900">900$</option>
-                                    <option value="1000">1000$</option>
-                                    <option value="1200">1200$</option>
-                                    <option value="1500">1500$</option>
-                                    <option value="1800">1800$</option>
-                                    <option value="2000">2000$</option>
-                                    <option value="2100">2100$</option>
+                                    <option value="800"><800$</option>
+                                    <option value="1000"><1000$</option>
+                                    <option value="1500"><1500$</option>
+                                    <option value="2000"><2000$</option>
+                                    <option value="2100"><3000$</option>
                                 </select>
                             </div>
                         </div>
+
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
-                                <label class="pb-2" for="areaFrom">Area From</label>
-                                <select class="form-control form-select form-control-a" id="areas" name="areaFrom">
-                                    <option>0</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="areaTo">Area To</label>
+                                <label class="pb-2" for="areaTo">Area</label>
                                 <select class="form-control form-select form-control-a" id="areas" name="areaTo">
                                     <option>Any</option>
-                                    <option value="10">10m2</option>
-                                    <option value="14">14m2</option>
-                                    <option value="15">15m2</option>
-                                    <option value="18">18m2</option>
-                                    <option value="20">20m2</option>
+                                    <option value="10"><10m2</option>
+                                    <option value="14"><14m2</option>
+                                    <option value="15"><15m2</option>
+                                    <option value="18"><18m2</option>
+                                    <option value="20"><20m2</option>
                                 </select>
                             </div>
                         </div>
@@ -171,6 +150,7 @@
         <%
                   List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");
                   ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
+                  ArrayList<Integer> saleList = (ArrayList<Integer>) request.getAttribute("saleList");
                   
         %>
         <main id="main">
@@ -236,19 +216,41 @@
                                             <div class="card-header-a">
                                                 <h2 class="card-title-a">
                                                     <a href="housedetail?id=<%=list.get(i).getId()%>">
-                                                <% String name = list.get(i).getName();
-                                                int maxCharacters = 15;
-                                                if (name.length() > maxCharacters) {
-                                                name = name.substring(0, maxCharacters) + "..."
-                                                ;}%>
-                                                <%= name %>
+                                                        <% String name = list.get(i).getName();
+                                                        int maxCharacters = 15;
+                                                        if (name.length() > maxCharacters) {
+                                                        name = name.substring(0, maxCharacters) + "..."
+                                                        ;}%>
+                                                        <%= name %>
                                                     </a>
                                                 </h2>
                                             </div>
                                             <div class="card-body-a ">
-                                                <div class="price-box d-flex" >
-                                                    <span class="price-a">rent | $ <%=list.get(i).getPrice()%></span>
+                                                <% if (saleList.get(i) == 0) { %>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">rent | $ <%=String.format("%.1f", list.get(i).getPrice())%></span>
                                                 </div>
+                                                <% } else if (saleList.get(i) < 100) { %>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">
+                                                        <span>rent | $</span>
+                                                        <span class="text-decoration-line-through"><%=String.format("%.1f", list.get(i).getPrice())%></span>
+                                                    </span>
+                                                </div>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">For Sale | $ <%=String.format("%.1f", list.get(i).getPrice() - (list.get(i).getPrice() * saleList.get(i) / 100))%></span>
+                                                </div>
+                                                <% } else { %>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">
+                                                        <span>rent | $</span>
+                                                        <span class="text-decoration-line-through"><%=String.format("%.1f", list.get(i).getPrice())%></span>
+                                                    </span>
+                                                </div>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">For Sale | $ Free</span>
+                                                </div>
+                                                <% } %>
                                                 <a href="housedetail?id=<%=list.get(i).getId()%>" class="link-a">Click here to view
                                                     <span class="bi bi-chevron-right"></span>
                                                 </a>

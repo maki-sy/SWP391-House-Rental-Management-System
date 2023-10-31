@@ -22,6 +22,7 @@ import model.PropertyType;
 
 import service.PostService;
 import model.Tenant;
+import service.PromotionService;
 
 import service.SearchService;
 
@@ -51,7 +52,21 @@ public class PostDetail extends HttpServlet {
             PostService post = new PostService();
             ReviewDAO rdao = new ReviewDAO();
             SearchService handle = new SearchService();
+
             PostRental po = post.getPostDetailsbyID(pid);
+            PromotionService pros = new PromotionService();
+//            double postSale = 0;
+            String postSale;
+            if (po.getPromotion() != 0) {
+                double postSaleDOU = po.getPrice() - (po.getPrice() * pros.getPostPromotion(po.getPromotion()) / 100);
+                postSale = Double.toString(postSaleDOU);
+            } else {
+                postSale = Double.toString(po.getPrice());
+            }
+            if (Double.valueOf(postSale).compareTo(0.0) == 0) {
+                postSale = "Free";
+            }
+            request.setAttribute("postSale", postSale);
             ArrayList<String> thumbnailList = new ArrayList<>();
             List<String> url = post.getPostImagesUrlByPostId(pid);
             List<Tenant> listr = rdao.getReviewByPostId(pid);
@@ -61,6 +76,8 @@ public class PostDetail extends HttpServlet {
             SearchService search = new SearchService();
             search.loadSearchData(request);
 
+            String location_name = post.getLocationByLocationID(po.getLocation_id());
+            request.setAttribute("location_name", location_name);
             request.setAttribute("listr", listr);
 
             request.getRequestDispatcher("PostDetail.jsp").forward(request, response);

@@ -48,7 +48,6 @@
     </head>
 
     <body>
-        <div class="click-closed"></div>
 
         <!-- ======= JSP ======= -->
         <% 
