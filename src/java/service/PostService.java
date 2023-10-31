@@ -7,6 +7,7 @@ package service;
 import DAO.DBContext;
 import DAO.PostDAO;
 import DAO.PostImageDAO;
+import DAO.PromotionDAO;
 import java.util.ArrayList;
 import java.util.List;
 import model.PostImage;
@@ -43,17 +44,17 @@ public class PostService extends DBContext {
         System.out.println("getPostByID() service " + postID);
         return POST_DAO.getPostByID(postID);
     }
-    
+
     /**
      * Get post's name by ID
+     *
      * @param postID
      * @return post name if post exist, otherwise null
      */
-    public String getPostName(int postID){
+    public String getPostName(int postID) {
         return POST_DAO.getPostName(postID);
     }
-    
-    
+
     public PostRental getPostDetailsbyID(int pid) {
         PostDAO dao = new DAO.PostDAO();
         PostRental post = dao.getPostDetailsbyID(pid);
@@ -114,9 +115,14 @@ public class PostService extends DBContext {
         return this.getImageHomeThumbails(dao.getLastestPost());
     }
 
+    public String getLocationByLocationID(int postID) {
+        DAO.PostDAO dao = new PostDAO();
+        return dao.getLocationByLocationID(postID);
+    }
+
     public static void main(String[] args) {
         PostService dao = new PostService();
-        
+
     }
 
 }

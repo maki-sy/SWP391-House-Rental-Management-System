@@ -21,6 +21,7 @@ import model.PostImage;
 import model.PostRental;
 import model.PropertyLocation;
 import model.PropertyType;
+import service.PromotionService;
 import service.SearchService;
 
 /**
@@ -46,36 +47,18 @@ public class SearchController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             DAO.SearchDAO dao = new SearchDAO();
             SearchService handle = new SearchService();
-            ArrayList<PropertyType> type = handle.getAllType();
+            PromotionService pros = new PromotionService();
+            SearchService search = new SearchService();
+            search.loadSearchData(request);
 
-            ResultSet bedrooms = dao.getData("select distinct NumOfBedrooms from Post;");
-            ResultSet priceFrom = dao.getData("select distinct price from Post;");
-            ResultSet priceTo = dao.getData("select distinct price from Post;");
-            ResultSet areaFrom = dao.getData("select distinct area from Post;");
-            ResultSet areaTo = dao.getData("select distinct area from Post;");
-            ResultSet address = dao.getData("select distinct address from Post;");
-            ArrayList<PropertyLocation> location = handle.getAllLocation();
-
-            request.setAttribute("type", type);
-            request.setAttribute("bedroom", bedrooms);
-            request.setAttribute("priceFrom", priceFrom);
-            request.setAttribute("priceTo", priceTo);
-            request.setAttribute("areaFrom", areaFrom);
-            request.setAttribute("areaTo", areaTo);
-            request.setAttribute("address", address);
-            request.setAttribute("location", location);
-
-            String search = request.getParameter("txt").trim();
+            String searchh = request.getParameter("txt").trim();
             String roomType = request.getParameter("type");
             String bedroom = request.getParameter("bed");
-            String priceF = request.getParameter("priceFrom");
             String priceT = request.getParameter("priceTo");
-            String areaF = request.getParameter("areaFrom");
             String areaT = request.getParameter("areaTo");
             String locationn = request.getParameter("location");
 
-            List<PostRental> list = dao.searchPostByAttributes(search, roomType, bedroom, priceF, priceT, areaF, areaT, locationn);
-            System.out.println(list);
+            List<PostRental> list = dao.searchPostByAttributes(searchh, roomType, bedroom, priceT, areaT, locationn);
             request.setAttribute("listOfPost", list);
             PostImageDAO postImageDAO = new PostImageDAO();
             ArrayList<String> thumbnailList = new ArrayList<>();
@@ -83,6 +66,12 @@ public class SearchController extends HttpServlet {
                 String url = postImageDAO.getImageThumbailsByPostID(list.get(i).getId());
                 thumbnailList.add(url);
             }
+            ArrayList<Integer> saleList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                int proID = pros.getPostPromotion(list.get(i).getPromotion());
+                saleList.add(proID);
+            }
+            request.setAttribute("saleList", saleList);
             request.setAttribute("thumbnailList", thumbnailList);
 
             request.getRequestDispatcher("AllPost.jsp").forward(request, response);

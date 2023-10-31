@@ -51,7 +51,7 @@ public class SearchDAO extends DBContext {
         return post;
     }
 
-    public List<PostRental> searchPostByAttributes(String keyword, String type, String bedroom, String priceFrom, String priceTo, String areaFrom, String areaTo, String location) {
+    public List<PostRental> searchPostByAttributes(String keyword, String type, String bedroom, String priceTo, String areaTo, String location) {
         List<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT a.*"
                 + "FROM Post a "
@@ -67,15 +67,8 @@ public class SearchDAO extends DBContext {
         if (!"Any".equals(bedroom)) {
             sqlCommand += " AND a.NumOfBedrooms = ?";
         }
-        if (!"Unlimite".equals(priceFrom)) {
-            sqlCommand += " AND a.price >= ?";
-        }
         if (!"Unlimite".equals(priceTo)) {
             sqlCommand += " AND a.price <= ?";
-        }
-
-        if (!"Any".equals(areaFrom)) {
-            sqlCommand += " AND a.area >= ?";
         }
         if (!"Any".equals(areaTo)) {
             sqlCommand += " AND a.area <= ?";
@@ -95,14 +88,8 @@ public class SearchDAO extends DBContext {
             if (!"Any".equals(bedroom)) {
                 preparedStatement.setString(parameterIndex++, bedroom);
             }
-            if (!"Unlimite".equals(priceFrom) && isInteger(priceFrom)) {
-                preparedStatement.setInt(parameterIndex++, Integer.parseInt(priceFrom));
-            }
             if (!"Unlimite".equals(priceTo) && isInteger(priceTo)) {
                 preparedStatement.setInt(parameterIndex++, Integer.parseInt(priceTo));
-            }
-            if (!"Any".equals(areaFrom) && isInteger(areaFrom)) {
-                preparedStatement.setInt(parameterIndex++, Integer.parseInt(areaFrom));
             }
             if (!"Any".equals(areaTo) && isInteger(areaTo)) {
                 preparedStatement.setInt(parameterIndex++, Integer.parseInt(areaTo));
