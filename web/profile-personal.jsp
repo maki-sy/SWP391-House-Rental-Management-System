@@ -9,7 +9,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>EstateAgency Bootstrap Template - Index</title>
+        <title>Rental House - Index</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -34,6 +34,12 @@
                 text-decoration: none; /* Loại bỏ gạch chân dưới văn bản */
             }
         </style>
+        <style>
+    .breadcrumb {
+        background: transparent; /* Đảm bảo nền trong suốt */
+        margin: 0; /* Đảm bảo không có khoảng trắng */
+    }
+</style>
         <!-- =======================================================
       * Template Name: EstateAgency
       * Updated: Jul 27 2023 with Bootstrap v5.3.1
@@ -64,8 +70,7 @@
 
         <!-- ======= Header/Navbar ======= -->
         <%@include file="header.jsp" %>
-
-        <main id="main">
+        <main id="main" style="margin-top: 3rem">
             <section class="section-news section-t3">
                 <div class="container py-5">
                     <div class="row">
@@ -95,8 +100,7 @@
                                         <button type="button" class="btn btn-outline-primary ms-1"
                                                 disabled><%=user.getStatus()%></button>
                                     </div>
-                                    <button type="button" class="btn btn-outline-primary ms-1"
-                                            >Upload/Update Avatar</button>
+                                    
                                     <form action="uploadavt" method="post" enctype="multipart/form-data">
                                         <div class="input-group mb-3">
                                             <input type="file" name="avatar" class="form-control" accept="image/*">

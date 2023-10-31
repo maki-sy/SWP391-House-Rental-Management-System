@@ -20,6 +20,7 @@ import model.PropertyLocation;
 import model.PropertyType;
 import model.Users;
 import service.PostService;
+import service.PromotionService;
 import service.SearchService;
 import service.UserService;
 
@@ -45,7 +46,7 @@ public class HomePage extends HttpServlet {
         UserService handleUser = new UserService();
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
-
+        PromotionService pros = new PromotionService();
         if (user != null) {
             int id = user.getId();
             String urlAvt = handleUser.getAvatarByUserID(id).getAvatar_url();
@@ -54,7 +55,21 @@ public class HomePage extends HttpServlet {
 
         PostService post = new PostService();
         List<PostRental> last = post.getLastestHouse();
+        ArrayList<Integer> saleListLastest = new ArrayList<>();
+        for (int i = 0; i < last.size(); i++) {
+            int proID = pros.getPostPromotion(last.get(i).getPromotion());
+            saleListLastest.add(proID);
+        }
+        request.setAttribute("saleListLastest", saleListLastest);
+        
+
         List<PostRental> highest = post.getHighestHousePrice();
+        ArrayList<Integer> saleListHighest = new ArrayList<>();
+        for (int i = 0; i < highest.size(); i++) {
+            int proID = pros.getPostPromotion(highest.get(i).getPromotion());
+            saleListHighest.add(proID);
+        }
+        request.setAttribute("saleListHighest", saleListHighest);
         List<String> thumbnailsLast = new ArrayList<>();
         List<String> thumbnailsHighest = new ArrayList<>();
         for (PostRental pr : last) {
