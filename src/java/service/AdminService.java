@@ -35,6 +35,10 @@ public class AdminService extends DBContext {
         DAO.PostDAO dao = new PostDAO();
         dao.updatePostByAdmin(id);
     }
+    public void updateReportStatus(int id) {
+        DAO.ReportDAO dao = new ReportDAO();
+        dao.updateReportStatus(id);
+    }
     public List<Report> getAllReports(){
         DAO.ReportDAO dao = new ReportDAO();
         List<Report> list = dao.getAllReports();

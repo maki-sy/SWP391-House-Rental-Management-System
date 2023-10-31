@@ -115,7 +115,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6 mb-2">
                             <div class="form-group mt-3">
                                 <label class="pb-2" for="areaTo">Area</label>
@@ -157,6 +157,8 @@
         <%
         List<PostRental> highest = (List<PostRental>) request.getAttribute("highestPost");
         List<String> thumbnailsHighest = (List<String>) request.getAttribute("thumbnailsHighest");
+        
+        ArrayList<Integer> saleListHighest = (ArrayList<Integer>) request.getAttribute("saleListHighest");
         %>
         <!-- ======= Intro Section ======= -->
         <div class="intro intro-carousel swiper position-relative">
@@ -179,9 +181,31 @@
                                             <h1 class="intro-title mb-4" style="font-size: 50px;">
                                                 <br> <%=highest.get(i).getAddress()%>
                                             </h1>
-                                            <p class="intro-subtitle intro-price">
-                                                <a href="#"><span class="price-a">rent | $ <%=highest.get(i).getPrice()%></span></a>
-                                            </p>
+                                            <% if (saleListHighest.get(i) == 0) { %>
+                                                <p class="intro-subtitle intro-price">
+                                                    <span class="price-a">rent | $ <%=String.format("%.1f", highest.get(i).getPrice())%></span>
+                                                </p>
+                                                <% } else if (saleListHighest.get(i) < 100) { %>
+                                                <p class="intro-subtitle intro-price">
+                                                    <span class="price-a">
+                                                        <span>rent | $</span>
+                                                        <span class="text-decoration-line-through"><%=String.format("%.1f", highest.get(i).getPrice())%></span>
+                                                    </span>
+                                                </p>
+                                                <p class="intro-subtitle intro-price">
+                                                    <span class="price-a">For Sale | $ <%=String.format("%.1f", highest.get(i).getPrice() - (highest.get(i).getPrice() * saleListHighest.get(i) / 100))%></span>
+                                                </p>
+                                                <% } else { %>
+                                                <p class="intro-subtitle intro-price">
+                                                    <span class="price-a">
+                                                        <span>rent | $</span>
+                                                        <span class="text-decoration-line-through"><%=String.format("%.1f", highest.get(i).getPrice())%></span>
+                                                    </span>
+                                                </p>
+                                                <p class="intro-subtitle intro-price">
+                                                    <span class="price-a">For Sale | $ Free</span>
+                                                </p>
+                                                <% } %>
                                         </div>
                                     </div>
                                 </div>
@@ -291,6 +315,7 @@
             <%
 List<PostRental> list = (List<PostRental>) request.getAttribute("lastestPost");
 List<String> thumbnailsLast = (List<String>) request.getAttribute("thumbnailsLast");
+ArrayList<Integer> saleListLastest = (ArrayList<Integer>) request.getAttribute("saleListLastest");
             %>
             <!-- ======= Latest Properties Section ======= -->
             <section class="section-property section-t8">
@@ -327,13 +352,35 @@ List<String> thumbnailsLast = (List<String>) request.getAttribute("thumbnailsLas
                                                 if (name.length() > maxCharacters) {
                                                 name = name.substring(0, maxCharacters) + "..."
                                                 ;}%>
-                                                <%= name %></a>
+                                                        <%= name %></a>
                                                 </h2>
                                             </div>
                                             <div class="card-body-a">
+                                                <% if (saleListLastest.get(i) == 0) { %>
                                                 <div class="price-box d-flex">
-                                                    <span class="price-a">rent | $ <%=list.get(i).getPrice()%></span>
+                                                    <span class="price-a">rent | $ <%=String.format("%.1f", list.get(i).getPrice())%></span>
                                                 </div>
+                                                <% } else if (saleListLastest.get(i) < 100) { %>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">
+                                                        <span>rent | $</span>
+                                                        <span class="text-decoration-line-through"><%=String.format("%.1f", list.get(i).getPrice())%></span>
+                                                    </span>
+                                                </div>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">For Sale | $ <%=String.format("%.1f", list.get(i).getPrice() - (list.get(i).getPrice() * saleListLastest.get(i) / 100))%></span>
+                                                </div>
+                                                <% } else { %>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">
+                                                        <span>rent | $</span>
+                                                        <span class="text-decoration-line-through"><%=String.format("%.1f", list.get(i).getPrice())%></span>
+                                                    </span>
+                                                </div>
+                                                <div class="price-box d-flex">
+                                                    <span class="price-a">For Sale | $ Free</span>
+                                                </div>
+                                                <% } %>
                                                 <a href="housedetail?id=<%=list.get(i).getId()%>" class="link-a">Click here to view
                                                     <span class="bi bi-chevron-right"></span>
                                                 </a>
@@ -367,133 +414,6 @@ List<String> thumbnailsLast = (List<String>) request.getAttribute("thumbnailsLas
                 </div>
             </section><!-- End Latest Properties Section -->
 
-
-
-
-
-            <!-- ======= Latest News Section ======= -->
-            <section class="section-news section-t8">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="title-wrap d-flex justify-content-between">
-                                <div class="title-box">
-                                    <h2 class="title-a">Latest News</h2>
-                                </div>
-                                <div class="title-link">
-                                    <a href="blog-grid.jsp">All News
-                                        <span class="bi bi-chevron-right"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="news-carousel" class="swiper">
-                        <div class="swiper-wrapper">
-
-                            <div class="carousel-item-c swiper-slide">
-                                <div class="card-box-b card-shadow news-box">
-                                    <div class="img-box-b">
-                                        <img src="assets/img/post-2.jpg" alt="" class="img-b img-fluid">
-                                    </div>
-                                    <div class="card-overlay">
-                                        <div class="card-header-b">
-                                            <div class="card-category-b">
-                                                <a href="#" class="category-b">House</a>
-                                            </div>
-                                            <div class="card-title-b">
-                                                <h2 class="title-2">
-                                                    <a href="blog-single.jsp">House is comming
-                                                        <br> new</a>
-                                                </h2>
-                                            </div>
-                                            <div class="card-date">
-                                                <span class="date-b">18 Sep. 2017</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
-
-                            <div class="carousel-item-c swiper-slide">
-                                <div class="card-box-b card-shadow news-box">
-                                    <div class="img-box-b">
-                                        <img src="assets/img/post-5.jpg" alt="" class="img-b img-fluid">
-                                    </div>
-                                    <div class="card-overlay">
-                                        <div class="card-header-b">
-                                            <div class="card-category-b">
-                                                <a href="#" class="category-b">Travel</a>
-                                            </div>
-                                            <div class="card-title-b">
-                                                <h2 class="title-2">
-                                                    <a href="blog-single.jsp">Travel is comming
-                                                        <br> new</a>
-                                                </h2>
-                                            </div>
-                                            <div class="card-date">
-                                                <span class="date-b">18 Sep. 2017</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
-
-                            <div class="carousel-item-c swiper-slide">
-                                <div class="card-box-b card-shadow news-box">
-                                    <div class="img-box-b">
-                                        <img src="assets/img/post-7.jpg" alt="" class="img-b img-fluid">
-                                    </div>
-                                    <div class="card-overlay">
-                                        <div class="card-header-b">
-                                            <div class="card-category-b">
-                                                <a href="#" class="category-b">Park</a>
-                                            </div>
-                                            <div class="card-title-b">
-                                                <h2 class="title-2">
-                                                    <a href="blog-single.jsp">Park is comming
-                                                        <br> new</a>
-                                                </h2>
-                                            </div>
-                                            <div class="card-date">
-                                                <span class="date-b">18 Sep. 2017</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
-
-                            <div class="carousel-item-c swiper-slide">
-                                <div class="card-box-b card-shadow news-box">
-                                    <div class="img-box-b">
-                                        <img src="assets/img/post-3.jpg" alt="" class="img-b img-fluid">
-                                    </div>
-                                    <div class="card-overlay">
-                                        <div class="card-header-b">
-                                            <div class="card-category-b">
-                                                <a href="#" class="category-b">Travel</a>
-                                            </div>
-                                            <div class="card-title-b">
-                                                <h2 class="title-2">
-                                                    <a href="#">Travel is comming
-                                                        <br> new</a>
-                                                </h2>
-                                            </div>
-                                            <div class="card-date">
-                                                <span class="date-b">18 Sep. 2017</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- End carousel item -->
-
-                        </div>
-                    </div>
-
-                    <div class="news-carousel-pagination carousel-pagination"></div>
-                </div>
-            </section><!-- End Latest News Section -->
 
             <!-- ======= Testimonials Section ======= -->
             <section class="section-testimonials section-t8 nav-arrow-a">

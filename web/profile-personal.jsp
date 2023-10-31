@@ -100,8 +100,7 @@
                                         <button type="button" class="btn btn-outline-primary ms-1"
                                                 disabled><%=user.getStatus()%></button>
                                     </div>
-                                    <button type="button" class="btn btn-outline-primary ms-1"
-                                            >Upload/Update Avatar</button>
+                                    
                                     <form action="uploadavt" method="post" enctype="multipart/form-data">
                                         <div class="input-group mb-3">
                                             <input type="file" name="avatar" class="form-control" accept="image/*">
