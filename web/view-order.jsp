@@ -6,10 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.Orders, DAO.OrdersDAO" %>
-<%@page import="java.util.List, java.sql.ResultSet"%>
+<%@page import="java.util.ArrayList, java.sql.ResultSet"%>
 <%@ page import="model.Users" %>
 <%@ page import="service.OrderService" %>
-<%@page import="model.PostRental, model.Landlord, model.PostImage, DAO.PostDAO, DAO.LandlordDAO"%>
+<%@page import="model.PostRental, model.Landlord, model.PostImage, DAO.PostDAO"%>
 <!DOCTYPE html>
 <html>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
@@ -51,10 +51,8 @@
             Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
             int roleID = user.getRoleID();
             PostDAO Pdao = new PostDAO();
-            LandlordDAO LDao = new LandlordDAO();
             OrderService service = new OrderService();
-            if(roleID==1){
-                List<Orders> listOfOrders = (List<Orders>)request.getAttribute("TenantOrders");
+                ArrayList<Orders> listOfOrders = (ArrayList<Orders>)request.getAttribute("TenantOrders");
     %>
     <a class="btn btn-primary" href="Profile?service=displayProfile">Back</a>
     <%@include file="header.jsp" %>
@@ -98,8 +96,8 @@
                 String status = order.getStatus();
                 PostRental post = Pdao.getPostDetailsbyID(postID);
                 String postName = post.getName();
-                Landlord landlord = LDao.getLandlordByUserID(landlordID);
-                String landlordName = landlord.getFirstName()+ " "+landlord.getLastName();
+                Landlord landlord = service.getLandlordByID(landlordID);
+                String landlordName = service.getLandlordFullName(landlordID);
                 String landlordEmail = service.getEmailFromLandlordByPostID(postID);
                 int order_id=order.getOrderId();
                                 %>
@@ -114,49 +112,43 @@
                                             <a href="housedetail?id=<%=postID%>"><span style="color: blue; text-decoration: underline;">View details</span></a>
                                         </div>
                                     </td>
-                            <style>
-                                .text-button {
-                                    background: none;
-                                    border: none;
-                                    padding: 0;
-                                    font: inherit;
-                                    cursor: pointer;
-                                    outline: inherit;
-                                }
-                            </style>
-                            <td>
-                                <div class="email">
-                                    <span><%=landlordName%></span>
-                                    <%if(status.equals("approved")){%>
-                                    <form action="order" method="post">
-                                        <input type="hidden" name="id" value="<%=landlordID%>">
-                                        <input type="hidden" name="email" value="<%=landlordEmail%>">
-                                        <input type="hidden" name="service" value="viewLandlord">
-                                        <span ><input style="color: blue; text-decoration: underline" type="submit" class="text-button" name="submit" value="View landlord details"></span>
-                                    </form>
+                                    <td>
+                                        <div>
+                                            <span><%=landlordName%></span>
+                                            <%if(status.equals("approved")){%>
+                                            <form action="order" method="post">
+                                                <input type="hidden" name="id" value="<%=landlordID%>">
+                                                <input type="hidden" name="email" value="<%=landlordEmail%>">
+                                                <input type="hidden" name="service" value="viewLandlord">
+                                                <span ><input style="color: blue; text-decoration: underline" type="submit" class="text-button" name="submit" value="View landlord details"></span>
+                                            </form>
 
-                                    <%}else{%>
-                                    <span>&nbsp;</span>
-                                    <%}%>
-                                </div>
-                            </td>
+                                            <%}else{%>
+                                            <span>&nbsp;</span>
+                                            <%}%>
+                                        </div>
+                                    </td>
 
-                            <td class="email">
-                                <%=order_date%>
-                            </td>
-                            <td><%=status%></td>
-                            <td>
-                                <a href="order?service=cancelOrder&id=<%=order_id%>">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                                    </button>
-                                </a>
-                            </td>
-                            </tr>
-                            <%
-}
-}
-                            %>
+                                    <td>
+                                        <%=order_date%>
+                                    </td>
+                                    <td>
+                                        <%=status%>
+                                    </td>
+                                    <td>
+                                        <%if(status.equals("processing")){%>
+                                        <a href="order?service=cancelOrder&id=<%=order_id%>">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                            </button>
+                                        </a>
+                                        <%}%>  
+                                    </td>
+
+                                </tr>
+                                <%
+    }
+                                %>
                             </tbody>
                         </table>
                     </div>
@@ -170,3 +162,30 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
 </html>
+<%--
+            for(Orders order : listOfOrders){
+                int tenantID = order.getTenantId();
+                int landlordID = order.getLandlordId();
+                int postID = order.getPostId();
+                String order_date = order.getOrder_date();
+                String status = order.getStatus();
+                PostRental post = Pdao.getPostDetailsbyID(postID);
+                String postName = post.getName();
+                Landlord landlord = service.getLandlordByID(landlordID);
+                //String landlordName = service.getLandlordFullName(landlordID);
+                String landlordEmail = service.getEmailFromLandlordByPostID(postID);
+                int order_id=order.getOrderId();
+                                %>
+                            <div>
+                                <%=order_id%>
+                                <%=tenantID%>
+                                <%=landlordID%>
+                                <%=postID%>
+                                <%=order_date%>
+                                <%=status%>
+                                <%=landlordEmail%>
+<%--=service.getLandlordFullName(landlordID)--%>
+</div>
+<%--
+}
+--%>

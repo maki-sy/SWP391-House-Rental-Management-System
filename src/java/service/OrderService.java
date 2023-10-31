@@ -64,4 +64,24 @@ public class OrderService {
         OrdersDAO dao = new OrdersDAO();
         dao.deleteOrder(id);
     }
+    public Landlord getLandlordByID(int landlordID){
+        LandlordDAO dao=new LandlordDAO();
+        return dao.getLandlordByUserID(landlordID);
+    }
+    public String getLandlordFullName(int landlordID){
+        LandlordDAO dao=new LandlordDAO();
+        Landlord ll=dao.getLandlordByUserID(landlordID);
+        String name;
+        name=ll.getFirstName()+" "+ll.getLastName();
+        return name;      
+    }
+    public static void main(String[] args){
+        OrderService os=new OrderService();
+//        ArrayList<Orders> list = os.getOrdersOfTenant(18);
+//        for(int i=0;i<list.size();i++)
+//            System.out.println(list.get(i).getOrderId()+" "+list.get(i).getTenantId()+" "+list.get(i).getLandlordId()+" "+list.get(i).getPostId()+" "+list.get(i).getStatus()+" "+list.get(i).getOrder_date());
+//        Landlord ll=os.getLandlordByID(6);
+//        System.out.println(ll.getFirstName());
+        System.out.println(os.getLandlordFullName(6));
+    }
 }
