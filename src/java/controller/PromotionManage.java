@@ -38,11 +38,15 @@ public class PromotionManage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session=request.getSession();
+        HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
-        List<Promotion> listPromotion = pservice.GetPromotionByLandlordId(user.getId());
-        request.setAttribute("listPromotion", listPromotion);
-        request.getRequestDispatcher("PromotionManage.jsp").forward(request, response);
+        if (user == null) {
+            request.getRequestDispatcher("trang-chu").forward(request, response);
+        } else {
+            List<Promotion> listPromotion = pservice.GetPromotionByLandlordId(user.getId());
+            request.setAttribute("listPromotion", listPromotion);
+            request.getRequestDispatcher("PromotionManage.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

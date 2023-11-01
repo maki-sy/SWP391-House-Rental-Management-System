@@ -48,6 +48,9 @@ public class AddPromotion extends HttpServlet {
         String service = request.getParameter("service");
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
+        if (user == null || user.getRoleID() != 2) {
+            response.sendRedirect("trang-chu");
+        }
         List<PostRental> listp = pservice.GetPostByLandlordId(user.getId());
         request.setAttribute("listp", listp);
         if (service == null) {

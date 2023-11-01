@@ -118,6 +118,16 @@
                     </a>
                 </div>
             </li>
+            <li class="list-group-item">
+                <div class="contain">
+                    <a href="AddPromotion?service=form">
+                        <div class="btn btn-primary"> + </div>
+                        <button type="button"
+                                class="btn btn-secondary">Add new Promotion
+                        </button>
+                    </a>
+                </div>
+            </li>
 
         </ul>
     </div>
