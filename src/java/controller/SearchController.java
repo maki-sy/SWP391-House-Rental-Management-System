@@ -21,6 +21,7 @@ import model.PostImage;
 import model.PostRental;
 import model.PropertyLocation;
 import model.PropertyType;
+import service.PostService;
 import service.PromotionService;
 import service.SearchService;
 
@@ -46,8 +47,8 @@ public class SearchController extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             DAO.SearchDAO dao = new SearchDAO();
-            SearchService handle = new SearchService();
             PromotionService pros = new PromotionService();
+            PostService po = new PostService();
             SearchService search = new SearchService();
             search.loadSearchData(request);
 
@@ -58,23 +59,31 @@ public class SearchController extends HttpServlet {
             String areaT = request.getParameter("areaTo");
             String locationn = request.getParameter("location");
 
-            List<PostRental> list = dao.searchPostByAttributes(searchh, roomType, bedroom, priceT, areaT, locationn);
-            request.setAttribute("listOfPost", list);
-            PostImageDAO postImageDAO = new PostImageDAO();
-            ArrayList<String> thumbnailList = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                String url = postImageDAO.getImageThumbailsByPostID(list.get(i).getId());
-                thumbnailList.add(url);
-            }
-            ArrayList<Integer> saleList = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                int proID = pros.getPostPromotion(list.get(i).getPromotion());
-                saleList.add(proID);
-            }
-            request.setAttribute("saleList", saleList);
-            request.setAttribute("thumbnailList", thumbnailList);
+            String index = request.getParameter("index");
+            int pageIndex = Integer.parseInt(index);
+            request.setAttribute("pIndex", pageIndex);
+            int numOfPost = po.getNumberOfPostSearch(searchh, roomType, bedroom, priceT, areaT, locationn);
 
-            request.getRequestDispatcher("AllPost.jsp").forward(request, response);
+            request.setAttribute("nPost", numOfPost);
+
+            List<PostRental> list = dao.searchPostByAttributes(searchh, roomType, bedroom, priceT, areaT, locationn, pageIndex);
+            request.setAttribute("listSearch", list);
+            System.out.println(list);
+//            ArrayList<String> thumbnailList = new ArrayList<>();
+//            for (int i = 0; i < list.size(); i++) {
+//                String url = po.getImageThumbailsByPostID(list.get(i).getId());
+//                thumbnailList.add(url);
+//            }
+//            request.setAttribute("thumbnailList", thumbnailList);
+//            ArrayList<Integer> saleList = new ArrayList<>();
+//            for (int i = 0; i < list.size(); i++) {
+//                int discount = pros.getPostPromotion(list.get(i).getPromotion());
+//                saleList.add(discount);
+//            }
+//            request.setAttribute("saleList", saleList);
+//            request.setAttribute("thumbnailList", thumbnailList);
+
+            request.getRequestDispatcher("/Post").forward(request, response);
 
         }
     }

@@ -55,7 +55,7 @@
             </div>
             <span class="close-box-collapse right-boxed bi bi-x"></span>
             <div class="box-collapse-wrap form">
-                <form action="search" method="GET" class="form-a">
+                <form action="search" method="POST" class="form-a">
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-group">

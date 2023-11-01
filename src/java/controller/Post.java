@@ -44,10 +44,25 @@ public class Post extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            System.out.println(request.getMethod());
             PostService po = new PostService();
             PromotionService pros = new PromotionService();
             SearchService handle = new SearchService();
-            List<PostRental> post = po.getPublishedPosts();
+
+            //lay index tu cai JSP
+            String index = request.getParameter("index");
+            int pageIndex = Integer.parseInt(index);
+            request.setAttribute("pageIndex", pageIndex);
+            int numOfPost = po.getNumberOfPost();
+            request.setAttribute("numOfPost", numOfPost);
+
+            ArrayList<PostRental> post = new ArrayList<>();
+            if (request.getAttribute("listSearch") != null) {
+                post = (ArrayList<PostRental>) request.getAttribute("listSearch");
+//                System.out.println(post);
+            } else {
+                post = po.getPagingList(pageIndex);
+            }
             request.setAttribute("listOfPost", post);
 
             ArrayList<String> thumbnailList = new ArrayList<>();
@@ -59,10 +74,11 @@ public class Post extends HttpServlet {
 
             ArrayList<Integer> saleList = new ArrayList<>();
             for (int i = 0; i < post.size(); i++) {
-                int proID = pros.getPostPromotion(post.get(i).getPromotion());
-                saleList.add(proID);
+                int discount = pros.getPostPromotion(post.get(i).getPromotion());
+                saleList.add(discount);
             }
             request.setAttribute("saleList", saleList);
+
             SearchService search = new SearchService();
             search.loadSearchData(request);
 //            request.setAttribute("PostImage", postimage);
@@ -82,6 +98,7 @@ public class Post extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         processRequest(request, response);
     }
 
@@ -96,6 +113,8 @@ public class Post extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<PostRental> post = (List<PostRental>) request.getAttribute("listSearch");
+        System.out.println(post +"xxyyzz");
         processRequest(request, response);
     }
 

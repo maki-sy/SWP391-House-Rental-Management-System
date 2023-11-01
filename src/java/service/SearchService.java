@@ -1,16 +1,19 @@
 package service;
 
+import DAO.DBContext;
 import DAO.OrdersDAO;
 import DAO.PropertyLocationDAO;
 import DAO.PropertyTypeDAO;
 import jakarta.servlet.http.HttpServletRequest;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Orders;
 import model.PropertyLocation;
 import model.PropertyType;
 
-public class SearchService {
+public class SearchService extends DBContext {
 
     public ArrayList<PropertyType> getAllType() {
         PropertyTypeDAO dao = new PropertyTypeDAO();
@@ -45,5 +48,8 @@ public class SearchService {
         request.setAttribute("address", address);
         request.setAttribute("location", location);
     }
+
+    
+
 
 }
