@@ -209,7 +209,9 @@
                             </div>
                             <% } %>
 
-                            <form class="p-3 mt-3 register-form" method="POST" action="login">
+
+                            <form id="register-form" class="p-3 mt-3 register-form" method="POST" action="login">
+                                <div id="error-message" class="alert alert-danger d-none"></div>
                                 <div class="form-field d-flex align-items-center">
                                     <span class="far fa-user"></span>
                                     <input type="text" name="first-name" id="first-name" placeholder="First name" required>
@@ -485,6 +487,25 @@
                     retypePwd.setCustomValidity("");
                 }
             }
+
+
+            // Verify phone number
+            let  errorMessageDiv = document.getElementById('error-message');
+
+            document.getElementById('register-form').addEventListener('submit', function (event) {
+                let phoneNumber = document.getElementById('phone-number').value;
+                let locale = 'vi-VN';
+                let isValidPhoneNumber = validator.isMobilePhone(phoneNumber, locale);
+
+                if (!isValidPhoneNumber) {
+                    event.preventDefault();
+                    errorMessageDiv.textContent = 'Invalid phone number!';
+                    errorMessageDiv.classList.remove('d-none');
+                } else {
+                    errorMessageDiv.textContent = '';
+                    errorMessageDiv.classList.add('d-none');
+                }
+            });
 
         </script>
     </body>
