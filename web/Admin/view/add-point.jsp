@@ -250,6 +250,7 @@
                             <h3 class="card-title">Transfer point to landlord</h3>
                         </div>
                         <!-- /.card-header -->
+                        
                         <!-- form start -->
                         <form action="admin-account?action=add-point" method="POST">
                             <input type="hidden" name="userId" value="<%= user.getId() %>">
@@ -271,12 +272,13 @@
                                     <label for="amount"><i class="fas fa-money-check"></i> Amount to transfer</label>
                                     <input type="number" class="form-control rounded-0" id="amount" name="amount" placeholder="Amount of point" required>
                                 </div>
+                                <p class="alert alert-danger">${msg}</p>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="admin-dashboard" class="btn btn-primary">Cancel</a>
+                                <a href="admin-dashboard?service=account-utils" class="btn btn-primary">Cancel</a>
                             </div>
 
                         </form>

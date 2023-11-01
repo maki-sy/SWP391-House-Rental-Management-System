@@ -1,5 +1,8 @@
+<%@ page import="model.Users" %>
+
 <%
     boolean verified = request.getAttribute("verified") == null ? false : (boolean)request.getAttribute("verified");
+    Users user = (Users)session.getAttribute("user");
 %>
 <!<!-- Email verification page. User navigate to this page when click the Confirmation link with token in the email -->
 <!DOCTYPE html>
