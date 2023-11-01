@@ -27,8 +27,6 @@ import service.ReviewService;
 @WebServlet(name = "ReviewManage", urlPatterns = {"/ReviewManage"})
 public class ReviewManage extends HttpServlet {
 
-    
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,6 +44,10 @@ public class ReviewManage extends HttpServlet {
         String temp_star = request.getParameter("rate");
         ServletContext servletContext = getServletContext();
         String filePath = servletContext.getRealPath("\\assets\\badWord.txt");
+        Users user = (Users) session.getAttribute("user");
+        if (user == null) {
+            request.getRequestDispatcher("trang-chu").forward(request, response);
+        }
         int star = 0;
         if (temp_star == null) {
             star = 0;
@@ -54,14 +56,13 @@ public class ReviewManage extends HttpServlet {
         }
         int pid = Integer.parseInt(request.getParameter("id"));
         String temp_comment = request.getParameter("comment");
-        if (star == 0 && "".equals(temp_comment)) {
-            request.setAttribute("mess", "Vote star or Write comment");
+        if (star == 0 || "".equals(temp_comment)) {
+            request.setAttribute("mess", "Vote star and Write comment");
             request.getRequestDispatcher("housedetail?id=" + pid).forward(request, response);
         } else {
-            Users user = (Users) session.getAttribute("user");
             int uid = user.getId();
             Date local = Date.valueOf(LocalDate.now());
-            String comment = Rservice.filter(temp_comment,filePath);
+            String comment = Rservice.filter(temp_comment, filePath);
             //System.out.println(".................................");
             System.out.println(comment);
             Review re = new Review(-1, uid, pid, local, star, comment);
