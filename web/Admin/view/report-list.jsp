@@ -198,7 +198,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="admin-dashboard?service=manageReport" class="nav-link active">
+                                <a href="admin-report?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report
@@ -304,19 +304,22 @@
                                         <td>
                                             <%=rp.getDescription()%>
                                         </td>
+                                        <%if("Sent".equals(rp.getStatus())){%>
+                                        <td class="project-state">
+                                            <span class="badge badge-warning"><%=rp.getStatus()%></span>
+                                        </td>
+                                        <%}else{%>
                                         <td class="project-state">
                                             <span class="badge badge-success"><%=rp.getStatus()%></span>
                                         </td>
-                                        <td class="project-actions text-right">
-                                            <a class="btn btn-info btn-sm text-center" href="#">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Edit
+                                        <%}%>
+                                        <td class="project-actions">
+
+                                            <a class="btn btn-primary btn-sm text-center" href="javascript:void(0);" onclick="confirmUpdate(<%=rp.getReporter_id()%>);">
+                                                <i class="fas fa-star"></i>
+                                                Update Status
                                             </a>
-                                            <a class="btn btn-danger btn-sm text-center" href="">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
-                                            </a>
+
                                         </td>
                                     </tr>
                                 </tbody>
@@ -348,7 +351,14 @@
         <!-- ./wrapper -->
 
         <!-- jQuery -->
-
+        <script>
+            function confirmUpdate(reportID) {
+                var confirmation = confirm("Bạn có chắc chắn muốn update status report này ?");
+                if (confirmation) {
+                    window.location.href = "admin-report?service=updateStatus&id=" + reportID;
+                }
+            }
+        </script>
         <script src="assets/vendor/jquery/jquery.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

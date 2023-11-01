@@ -118,6 +118,16 @@ public class ReportDAO extends DBContext {
             Logger.getLogger(ReportDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void updateReportStatus(int id) {
+        try {
+            String sql = "UPDATE Report SET status = 'Seen' WHERE reporter_id = ?";
+            PreparedStatement stm = connect.prepareStatement(sql);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 //    public static void main(String[] args) {
 //        ReportDAO dao = new ReportDAO();

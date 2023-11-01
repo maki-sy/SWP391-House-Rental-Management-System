@@ -196,7 +196,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="admin-dashboard?service=manageReport" class="nav-link">
+                                <a href="admin-report?service=manageReport" class="nav-link">
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Process Report

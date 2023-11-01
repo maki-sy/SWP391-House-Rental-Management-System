@@ -36,7 +36,7 @@
         String type = (String)request.getAttribute("report_type");
     %>  
     <%@include file="header.jsp" %>
-    <div style="margin-top: 7%">
+    <div style="margin-top: 9rem">
         <a href="ReportCenter?type=viewreport"><button class="btn btn-primary">View previous report</button></a>
         <%
             if(user!=null){

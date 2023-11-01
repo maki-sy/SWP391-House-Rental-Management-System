@@ -52,10 +52,6 @@ public class AdminHomepage extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             service.updatePostStatus(id);
             request.getRequestDispatcher("admin-dashboard?service=managePost").forward(request, response);
-        } else if (ser.equals("manageReport")) {
-            List<Report> list = service.getAllReports();
-            request.setAttribute("listOfReport", list);
-            request.getRequestDispatcher("Admin/view/report-list.jsp").forward(request, response);
         } else if(ser.equals("account-utils")){
             List<Users> users = service.getAllUsers();
             request.setAttribute("listOfUsers", users);
