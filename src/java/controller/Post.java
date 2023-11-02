@@ -44,25 +44,27 @@ public class Post extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            System.out.println(request.getMethod());
             PostService po = new PostService();
             PromotionService pros = new PromotionService();
             SearchService handle = new SearchService();
 
             //lay index tu cai JSP
             String index = request.getParameter("index");
-            int pageIndex = Integer.parseInt(index);
-            request.setAttribute("pageIndex", pageIndex);
             int numOfPost = po.getNumberOfPost();
+            int pageIndex;
             request.setAttribute("numOfPost", numOfPost);
-
-            ArrayList<PostRental> post = new ArrayList<>();
-            if (request.getAttribute("listSearch") != null) {
-                post = (ArrayList<PostRental>) request.getAttribute("listSearch");
-//                System.out.println(post);
-            } else {
-                post = po.getPagingList(pageIndex);
+            if (index == null) {
+                index = "1";
             }
+            pageIndex = Integer.parseInt(index);
+            if (pageIndex > numOfPost || pageIndex < 1) {
+                pageIndex = 1;
+            }
+
+            request.setAttribute("pageIndex", pageIndex);
+
+            ArrayList<PostRental> post = po.getPagingList(pageIndex);
+
             request.setAttribute("listOfPost", post);
 
             ArrayList<String> thumbnailList = new ArrayList<>();
@@ -98,7 +100,7 @@ public class Post extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         processRequest(request, response);
     }
 
@@ -114,7 +116,7 @@ public class Post extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<PostRental> post = (List<PostRental>) request.getAttribute("listSearch");
-        System.out.println(post +"xxyyzz");
+        System.out.println(post + "xxyyzz");
         processRequest(request, response);
     }
 

@@ -142,7 +142,7 @@ public class PostService extends DBContext {
 
     public static void main(String[] args) {
         PostService dao = new PostService();
-        System.out.println(dao.getNumberOfPostSearch("Chung Cu", null, null, null, null, null));
+      
         
     }
 

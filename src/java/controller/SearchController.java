@@ -63,27 +63,25 @@ public class SearchController extends HttpServlet {
             int pageIndex = Integer.parseInt(index);
             request.setAttribute("pIndex", pageIndex);
             int numOfPost = po.getNumberOfPostSearch(searchh, roomType, bedroom, priceT, areaT, locationn);
-
             request.setAttribute("nPost", numOfPost);
 
             List<PostRental> list = dao.searchPostByAttributes(searchh, roomType, bedroom, priceT, areaT, locationn, pageIndex);
             request.setAttribute("listSearch", list);
-            System.out.println(list);
-//            ArrayList<String> thumbnailList = new ArrayList<>();
-//            for (int i = 0; i < list.size(); i++) {
-//                String url = po.getImageThumbailsByPostID(list.get(i).getId());
-//                thumbnailList.add(url);
-//            }
-//            request.setAttribute("thumbnailList", thumbnailList);
-//            ArrayList<Integer> saleList = new ArrayList<>();
-//            for (int i = 0; i < list.size(); i++) {
-//                int discount = pros.getPostPromotion(list.get(i).getPromotion());
-//                saleList.add(discount);
-//            }
-//            request.setAttribute("saleList", saleList);
-//            request.setAttribute("thumbnailList", thumbnailList);
+            ArrayList<String> thumbnailList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                String url = po.getImageThumbailsByPostID(list.get(i).getId());
+                thumbnailList.add(url);
+            }
+            request.setAttribute("thumbnailList", thumbnailList);
+            ArrayList<Integer> saleList = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                int discount = pros.getPostPromotion(list.get(i).getPromotion());
+                saleList.add(discount);
+            }
+            request.setAttribute("saleList", saleList);
+            request.setAttribute("thumbnailList", thumbnailList);
 
-            request.getRequestDispatcher("/Post").forward(request, response);
+            request.getRequestDispatcher("PostSearch.jsp").forward(request, response);
 
         }
     }

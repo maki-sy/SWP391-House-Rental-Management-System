@@ -60,7 +60,7 @@
             </div>
             <span class="close-box-collapse right-boxed bi bi-x"></span>
             <div class="box-collapse-wrap form">
-                <form action="search" method="POST" class="form-a">
+                <form action="search" method="GET" class="form-a">
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-group">
@@ -137,6 +137,7 @@
                                 </select>
                             </div>
                         </div>
+                        <input type="text" name="index" value="1" style="display: none;">        
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-b">Search Property</button>
                         </div>
@@ -285,8 +286,9 @@
                         </div>
                     </div>
                     <%
-                    int pageIndex = (Integer) request.getAttribute("pIndex");
-                    int numOfPost = (Integer) request.getAttribute("nPost");
+                int pageIndex = (Integer) request.getAttribute("pIndex");
+                int numOfPost = (Integer) request.getAttribute("nPost");
+          
                     %>
 
                     <div class="row" style="margin-top: 3rem">
@@ -294,17 +296,19 @@
                             <nav class="pagination-a">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item <%= (pageIndex == 1) ? "disabled" : "" %>">
-                                        <a class="page-link" href="<%= (pageIndex > 1) ? "search?index=" + (pageIndex - 1) : "#" %>">
+                                        <a class="page-link" href="<%= (pageIndex < numOfPost) ? "search?" + "&txt=" + request.getParameter("txt").trim() + "&type=" + request.getParameter("type") + "&bed=" + request.getParameter("bed") + "&priceTo=" + request.getParameter("priceTo") + "&areaTo=" + request.getParameter("areaTo") + "&location=" + request.getParameter("location") + "&index=" + (pageIndex - 1) : "#" %>">
                                             <span class="bi bi-chevron-left"></span>
                                         </a>
                                     </li>
-                                    <% for (int i = 1; i <= numOfPage; i++) { %>
+                                    <% for (int i = 1; i <= numOfPost; i++) { %>
                                     <li class="page-item <%= (i == pageIndex) ? "active" : "" %>">
-                                        <a class="page-link" href="search?index=<%=i%>"><%=i%></a>
+                                        <a class="page-link" href="search?&txt=<%=request.getParameter("txt").trim()%>&type=<%=request.getParameter("type")%>&bed=<%=request.getParameter("bed")%>&priceTo=<%=request.getParameter("priceTo")%>&areaTo=<%=request.getParameter("areaTo")%>&location=<%=request.getParameter("location")%>&index=<%=i%>">
+                                            <%=i%>
+                                        </a>
                                     </li>
                                     <% } %>
-                                    <li class="page-item <%= (pageIndex == numOfPage) ? "disabled" : "" %>">
-                                        <a class="page-link" href="<%= (pageIndex < numOfPage) ? "search?index=" + (pageIndex + 1) : "#" %>">
+                                    <li class="page-item <%= (pageIndex == numOfPost) ? "disabled" : "" %>">
+                                        <a class="page-link" href="<%= (pageIndex < numOfPost) ? "search?" + "&txt=" + request.getParameter("txt").trim() + "&type=" + request.getParameter("type") + "&bed=" + request.getParameter("bed") + "&priceTo=" + request.getParameter("priceTo") + "&areaTo=" + request.getParameter("areaTo") + "&location=" + request.getParameter("location") + "&index=" + (pageIndex + 1) : "#" %>">
                                             <span class="bi bi-chevron-right"></span>
                                         </a>
                                     </li>
@@ -312,6 +316,8 @@
                             </nav>
                         </div>
                     </div>
+
+
 
 
 

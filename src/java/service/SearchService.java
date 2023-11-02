@@ -32,18 +32,14 @@ public class SearchService extends DBContext {
         SearchService handle = new SearchService();
         ArrayList<PropertyType> type = handle.getAllType();
         ResultSet bedrooms = post.getData("select distinct NumOfBedrooms from Post;");
-        ResultSet priceFrom = post.getData("select distinct price from Post;");
         ResultSet priceTo = post.getData("select distinct price from Post;");
-        ResultSet areaFrom = post.getData("select distinct area from Post;");
         ResultSet areaTo = post.getData("select distinct area from Post;");
         ResultSet address = post.getData("select distinct address from Post;");
         ArrayList<PropertyLocation> location = handle.getAllLocation();
 
         request.setAttribute("type", type);
         request.setAttribute("bedroom", bedrooms);
-        request.setAttribute("priceFrom", priceFrom);
         request.setAttribute("priceTo", priceTo);
-        request.setAttribute("areaFrom", areaFrom);
         request.setAttribute("areaTo", areaTo);
         request.setAttribute("address", address);
         request.setAttribute("location", location);

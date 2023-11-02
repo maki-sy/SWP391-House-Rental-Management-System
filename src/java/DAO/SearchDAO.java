@@ -57,7 +57,6 @@ public class SearchDAO extends DBContext {
                 + "FROM Post a "
                 + "JOIN Property_Location b ON a.location_id = b.id "
                 + "WHERE a.status != 'draft' AND a.status != 'deleted' ";
-
         if (!keyword.isEmpty()) {
             sqlCommand += " AND a.name LIKE ?";
         }
@@ -76,7 +75,7 @@ public class SearchDAO extends DBContext {
         if (!"Any".equals(location)) {
             sqlCommand += " AND b.id = ?";
         }
-        try ( PreparedStatement preparedStatement = connect.prepareStatement(sqlCommand + " ORDER BY a.id OFFSET ? ROWS FETCH FIRST 10 ROWS ONLY")) {
+        try ( PreparedStatement preparedStatement = connect.prepareStatement(sqlCommand + " ORDER BY a.id OFFSET ? ROWS FETCH FIRST 9 ROWS ONLY")) {
             int parameterIndex = 1;
 
             if (!keyword.isEmpty()) {
@@ -98,7 +97,7 @@ public class SearchDAO extends DBContext {
             if (!"Any".equals(location)) {
                 preparedStatement.setString(parameterIndex++, location);
             }
-            preparedStatement.setInt(parameterIndex++, (index - 1) * 10);
+            preparedStatement.setInt(parameterIndex++, (index - 1) * 9);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {

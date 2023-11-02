@@ -154,8 +154,8 @@ public class PostDAO extends DBContext {
             while (rs.next()) {
                 int total = rs.getInt(1);
                 int countPage = 0;
-                countPage = total / 10;
-                if (total % 10 != 0) {
+                countPage = total / 9;
+                if (total % 9 != 0) {
                     countPage++;
                 }
                 return countPage;
@@ -189,9 +189,9 @@ public class PostDAO extends DBContext {
         if (!"Any".equals(location)) {
             sql += " AND b.id = ?";
         }
-        try {
+        try ( PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
             int parameterIndex = 1;
-            PreparedStatement preparedStatement = connect.prepareStatement(sql);
+
             if (!keyword.isEmpty()) {
                 preparedStatement.setString(parameterIndex++, "%" + keyword + "%");
             }
@@ -212,9 +212,14 @@ public class PostDAO extends DBContext {
             }
 
             ResultSet rs = preparedStatement.executeQuery();
-
             while (rs.next()) {
-                return rs.getInt(1);
+                int total = rs.getInt(1);
+                int countPage = 0;
+                countPage = total / 9; // neu total = 10 thi countPage o day = 1 roi`
+                if (total % 9 != 0) {
+                    countPage++;
+                }
+                return countPage;
             }
         } catch (SQLException ex) {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -230,9 +235,9 @@ public class PostDAO extends DBContext {
                 + "  WHERE status != 'draft' AND status != 'deleted'\n"
                 + "  ORDER BY id"
                 + "  OFFSET ? ROWS"
-                + "  FETCH FIRST 10 ROWS ONLY";
+                + "  FETCH FIRST 9 ROWS ONLY";
         try ( PreparedStatement ps = connect.prepareStatement(sqlCommand)) {
-            ps.setInt(1, (index - 1) * 10);
+            ps.setInt(1, (index - 1) * 9);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt(1);
