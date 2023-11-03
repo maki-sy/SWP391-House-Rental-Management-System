@@ -69,7 +69,7 @@ public class WishlistController extends HttpServlet {
                         
                         // add post to user's wishlist
                         uService.addToWishlist(loggedUser.getId(), Integer.parseInt(postId));
-                        response.sendRedirect("trang-chu"); // TODO: use JS
+                        response.sendRedirect("housedetail?id="+postId); // TODO: use JS
                         break;
                     case "view":
                         List<Wishlist> wishes = uService.getWishlistByUserID(loggedUser.getId());

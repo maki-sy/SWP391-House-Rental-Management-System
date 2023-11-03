@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import model.Orders;
 import model.Users;
@@ -35,11 +36,10 @@ public class OrderController extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             OrderService Oservice = new OrderService();
-            if (session.getAttribute("user") != null);
-            {
+            if (session.getAttribute("user") != null) {
                 Users user = (Users) session.getAttribute("user");
                 int user_id = user.getId();
-                int role_id = user.getRoleID();
+                //int role_id = user.getRoleID();
                 String service = request.getParameter("service");
                 if (service.equals("createOrder")) {
                     int postid = Integer.parseInt(request.getParameter("postid"));
@@ -59,28 +59,29 @@ public class OrderController extends HttpServlet {
                     response.sendRedirect("housedetail?id=" + postid);
                 }
                 if (service.equals("viewOrder")) {
-                    if (role_id == 1) { // removable if
-                        List<Orders> TenantOrders = Oservice.getOrdersOfTenant(user.getId());
+                    //if (role_id == 1) { // removable if
+                        ArrayList<Orders> TenantOrders = Oservice.getOrdersOfTenant(user.getId());
                         request.setAttribute("TenantOrders", TenantOrders);
                         //response.sendRedirect("trang-chu");
                         request.getRequestDispatcher("view-order.jsp").forward(request, response);
-                    }
+                    //}
                 }
-                if(service.equals("viewLandlord")){
+                if (service.equals("viewLandlord")) {
                     int landlord_id = Integer.parseInt(request.getParameter("id"));
-                    String landlord_email=request.getParameter("email");
+                    String landlord_email = request.getParameter("email");
                     request.setAttribute("landlord_id", landlord_id);
                     request.setAttribute("landlord_email", landlord_email);
                     request.getRequestDispatcher("T_ViewLandlordInfo.jsp").forward(request, response);
                 }
-                if(service.equals("cancelOrder")){
-                    int order_id=Integer.parseInt(request.getParameter("id"));
+                if (service.equals("cancelOrder")) {
+                    int order_id = Integer.parseInt(request.getParameter("id"));
                     Oservice.deleteOrder(order_id);
                     request.getRequestDispatcher("order?service=viewOrder").forward(request, response);
                 }
 
+            } else {
+                response.sendRedirect("login?type=login");
             }
-
         }
     }
 
