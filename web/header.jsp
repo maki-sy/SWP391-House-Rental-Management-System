@@ -18,7 +18,7 @@
                     <a class="nav-link" href="trang-chu">Home</a>
                 </li>
                 <li class="nav-item" id="post-link">
-                    <a class="nav-link" href="Post?index=1">Houses</a>
+                    <a class="nav-link" href="Post">Houses</a>
                 </li>
                 <li class="nav-item" id="contact-link">
                     <a class="nav-link" href="Contact">Contact</a>
