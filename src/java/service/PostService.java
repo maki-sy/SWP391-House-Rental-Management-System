@@ -8,8 +8,12 @@ import DAO.DBContext;
 import DAO.PostDAO;
 import DAO.PostImageDAO;
 import DAO.PromotionDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.PostImage;
 import model.PostRental;
 import model.Wishlist;
@@ -120,9 +124,26 @@ public class PostService extends DBContext {
         return dao.getLocationByLocationID(postID);
     }
 
+    public ArrayList<PostRental> getPagingList(int index) {
+        DAO.PostDAO dao = new PostDAO();
+        ArrayList<PostRental> list = dao.getPagingPost(index);
+        return list;
+    }
+
+    public int getNumberOfPost() {
+        DAO.PostDAO dao = new PostDAO();
+        return dao.getCountNumberOfPage();
+    }
+
+    public int getNumberOfPostSearch(String keyword, String type, String bedroom, String priceTo, String areaTo, String location) {
+        DAO.PostDAO dao = new PostDAO();
+        return dao.getNumberOfPostAfterSearch(keyword, type, bedroom, priceTo, areaTo, location);
+    }
+
     public static void main(String[] args) {
         PostService dao = new PostService();
-
+      
+        
     }
 
 }

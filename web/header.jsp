@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+
 <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top ">
     <div class="container">
         <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
@@ -17,7 +18,7 @@
                     <a class="nav-link" href="trang-chu">Home</a>
                 </li>
                 <li class="nav-item" id="post-link">
-                    <a class="nav-link" href="Post">Houses</a>
+                    <a class="nav-link" href="Post?index=1">Houses</a>
                 </li>
                 <li class="nav-item" id="contact-link">
                     <a class="nav-link" href="Contact">Contact</a>

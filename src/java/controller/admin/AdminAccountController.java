@@ -261,19 +261,34 @@ public class AdminAccountController extends HttpServlet {
             try {
                 userID = Integer.parseInt(request.getParameter("userId"));
                 amount = Integer.parseInt(request.getParameter("amount"));
+
+                // get user object to set in the request, if user does not 
+                // exist, exception will be thrown in addPoint() and dispatch 
+                // to 404-error (which does not use user variable from 
+                // request). With other exceptions (user != null), dispatch to 
+                // add-point.jsp and therefore add-point.jsp can access it
+                Users user = uService.getUserByID(userID);
+                request.setAttribute("user", user);
+
                 LandlordService lService = new LandlordService();
                 lService.addPoint(userID, amount);
             } catch (NumberFormatException numEx) {
                 System.out.println("doPost add point " + numEx.getMessage());
-
+                request.setAttribute("msg", numEx.getMessage());
+                request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
+                return;
             } catch (IllegalArgumentException illArgEx) {
                 System.out.println("doPost add point " + illArgEx.getMessage());
-
+                request.setAttribute("msg", illArgEx.getMessage());
+                request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
+                return;
             } catch (Exception ex) {
                 System.out.println("doPost add point " + ex.getMessage());
-
+                request.setAttribute("msg", ex.getMessage());
+                request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
+                return;
             }
-            response.sendRedirect("admin-dashboard?service=manageAccount");
+            response.sendRedirect("admin-dashboard?service=account-utils");
             return;
         }
 

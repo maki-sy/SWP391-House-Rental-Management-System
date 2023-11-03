@@ -149,7 +149,7 @@
 
         <!-- End Header/Navbar -->
         <%
-                  List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");
+                  List<PostRental> list = (List<PostRental>) request.getAttribute("listSearch");
                   ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
                   ArrayList<Integer> saleList = (ArrayList<Integer>) request.getAttribute("saleList");
                   
@@ -286,8 +286,9 @@
                         </div>
                     </div>
                     <%
-int pageIndex = (Integer) request.getAttribute("pageIndex");
-int numOfPost = (Integer) request.getAttribute("numOfPost");
+                int pageIndex = (Integer) request.getAttribute("pIndex");
+                int numOfPost = (Integer) request.getAttribute("nPost");
+          
                     %>
 
                     <div class="row" style="margin-top: 3rem">
@@ -295,17 +296,19 @@ int numOfPost = (Integer) request.getAttribute("numOfPost");
                             <nav class="pagination-a">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item <%= (pageIndex == 1) ? "disabled" : "" %>">
-                                        <a class="page-link" href="<%= (pageIndex > 1) ? "Post?index=" + (pageIndex - 1) : "#" %>">
+                                        <a class="page-link" href="<%= (pageIndex < numOfPost) ? "search?" + "&txt=" + request.getParameter("txt").trim() + "&type=" + request.getParameter("type") + "&bed=" + request.getParameter("bed") + "&priceTo=" + request.getParameter("priceTo") + "&areaTo=" + request.getParameter("areaTo") + "&location=" + request.getParameter("location") + "&index=" + (pageIndex - 1) : "#" %>">
                                             <span class="bi bi-chevron-left"></span>
                                         </a>
                                     </li>
                                     <% for (int i = 1; i <= numOfPost; i++) { %>
                                     <li class="page-item <%= (i == pageIndex) ? "active" : "" %>">
-                                        <a class="page-link" href="Post?index=<%=i%>"><%=i%></a>
+                                        <a class="page-link" href="search?&txt=<%=request.getParameter("txt").trim()%>&type=<%=request.getParameter("type")%>&bed=<%=request.getParameter("bed")%>&priceTo=<%=request.getParameter("priceTo")%>&areaTo=<%=request.getParameter("areaTo")%>&location=<%=request.getParameter("location")%>&index=<%=i%>">
+                                            <%=i%>
+                                        </a>
                                     </li>
                                     <% } %>
                                     <li class="page-item <%= (pageIndex == numOfPost) ? "disabled" : "" %>">
-                                        <a class="page-link" href="<%= (pageIndex < numOfPost) ? "Post?index=" + (pageIndex + 1) : "#" %>">
+                                        <a class="page-link" href="<%= (pageIndex < numOfPost) ? "search?" + "&txt=" + request.getParameter("txt").trim() + "&type=" + request.getParameter("type") + "&bed=" + request.getParameter("bed") + "&priceTo=" + request.getParameter("priceTo") + "&areaTo=" + request.getParameter("areaTo") + "&location=" + request.getParameter("location") + "&index=" + (pageIndex + 1) : "#" %>">
                                             <span class="bi bi-chevron-right"></span>
                                         </a>
                                     </li>
@@ -313,6 +316,8 @@ int numOfPost = (Integer) request.getAttribute("numOfPost");
                             </nav>
                         </div>
                     </div>
+
+
 
 
 

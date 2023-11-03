@@ -76,10 +76,8 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="btn btn-success" type="submit">Get New
-                                Password</button>
-                            <a href="trang-chu" class="btn btn-danger">Back to
-                                Login</a>
+                            <button class="btn btn-success" type="submit">Get New Password</button>
+                            <a href="login?type=login" class="btn btn-danger">Back to Login</a>
                         </div>
                     </form>
                 </div>

@@ -51,13 +51,12 @@ public class SearchDAO extends DBContext {
         return post;
     }
 
-    public List<PostRental> searchPostByAttributes(String keyword, String type, String bedroom, String priceTo, String areaTo, String location) {
+    public List<PostRental> searchPostByAttributes(String keyword, String type, String bedroom, String priceTo, String areaTo, String location, int index) {
         List<PostRental> postList = new ArrayList<>();
-        String sqlCommand = "SELECT a.*"
+        String sqlCommand = "SELECT a.* "
                 + "FROM Post a "
                 + "JOIN Property_Location b ON a.location_id = b.id "
-                + "WHERE 1=1 and status != 'draft' and status != 'deleted'";
-
+                + "WHERE a.status != 'draft' AND a.status != 'deleted' ";
         if (!keyword.isEmpty()) {
             sqlCommand += " AND a.name LIKE ?";
         }
@@ -76,9 +75,9 @@ public class SearchDAO extends DBContext {
         if (!"Any".equals(location)) {
             sqlCommand += " AND b.id = ?";
         }
-
-        try ( PreparedStatement preparedStatement = connect.prepareStatement(sqlCommand)) {
+        try ( PreparedStatement preparedStatement = connect.prepareStatement(sqlCommand + " ORDER BY a.id OFFSET ? ROWS FETCH FIRST 9 ROWS ONLY")) {
             int parameterIndex = 1;
+
             if (!keyword.isEmpty()) {
                 preparedStatement.setString(parameterIndex++, "%" + keyword + "%");
             }
@@ -98,6 +97,7 @@ public class SearchDAO extends DBContext {
             if (!"Any".equals(location)) {
                 preparedStatement.setString(parameterIndex++, location);
             }
+            preparedStatement.setInt(parameterIndex++, (index - 1) * 9);
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {

@@ -223,7 +223,7 @@
                                 <!--Wishlish-->
                                 <div style="display: flex; gap: 20px">
                                     <h1 class="title-single"><%=post.getName()%></h1>
-                                    <%if(user!=null&&user.getRoleID()==1){%>
+                                    <%if(user != null && user.getRoleID()==1){%>
                                     <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="fa fa-heart" aria-hidden="true" style="color:pink;font-size:30px"></i></a>
                                         <%}%>
                                 </div>
@@ -246,7 +246,7 @@
                                 </ol>
                             </nav>                          
                         </div>
-                        <%if(user!=null&&user.getRoleID()==1){%>
+                        <%if(user != null && user.getRoleID()==1){%>
                         <a href="ReportCenter?type=post&postid=<%=post.getId()%>"><i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i></a>
                             <%}%>
                     </div>

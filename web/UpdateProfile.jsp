@@ -22,7 +22,7 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>EstateAgency Bootstrap Template - Index</title>
+        <title>Rental House - Index</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -96,8 +96,7 @@
                                         <button type="button" class="btn btn-outline-primary ms-1"
                                                 disabled><%=user.getStatus()%></button>
                                     </div>
-                                    <button type="button" class="btn btn-outline-primary ms-1"
-                                            >Upload/Update Avatar</button>
+
                                     <form action="uploadavt" method="post" enctype="multipart/form-data">
                                         <div class="input-group mb-3">
                                             <input type="file" name="avatar" class="form-control" accept="image/*">
