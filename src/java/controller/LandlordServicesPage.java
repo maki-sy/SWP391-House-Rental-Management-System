@@ -17,6 +17,7 @@ import service.LandlordService;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import model.Tenant;
 
 @WebServlet(name = "landlordServicesPage", urlPatterns = {"/landlordServicesPage"})
 @MultipartConfig
@@ -68,9 +69,13 @@ public class LandlordServicesPage extends HttpServlet {
             } // xem trang ca nhan tennant
             else if (service.equals("contact")) {
                 int tenantId = Integer.parseInt(request.getParameter("tenant-id"));
-                String serviceResponse = "displayProfile";
-                int roleId = 1;
-                request.getRequestDispatcher("/Profile?service=" + serviceResponse + "&id=" + tenantId + "&roleid=" + roleId).forward(request, response);
+                Tenant tenant = handleService.getTenantByUserID(tenantId);
+                String tenantEmail = handleService.getUserByID(tenantId).getEmail();
+                String tenantAvatarURL = handleService.getAvatarURLByUserID(tenantId);
+                request.setAttribute("tenant", tenant);
+                request.setAttribute("tenantEmail", tenantEmail);
+                request.setAttribute("tenantAvatarURL", tenantAvatarURL);
+                request.getRequestDispatcher("/L-view-tenant-profile.jsp").forward(request, response);
             } else if (service.equals("approve-request")) {
                 int orderId = Integer.parseInt(request.getParameter("order-id"));
                 handleService.isApproveStatusUpdated(orderId);

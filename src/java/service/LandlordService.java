@@ -6,6 +6,8 @@ import DAO.PostDAO;
 import DAO.PostImageDAO;
 import DAO.TenantDAO;
 import DAO.TransactionDAO;
+import DAO.UserAvatarDAO;
+import DAO.UserDAO;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +26,8 @@ import java.util.logging.Logger;
 import model.Landlord;
 import model.Orders;
 import model.PostRental;
+import model.Tenant;
+import model.Users;
 
 public class LandlordService {
 
@@ -32,6 +36,8 @@ public class LandlordService {
     private final LandlordDAO landlordDAO = new LandlordDAO();
     private final PostImageDAO postImageDAO = new PostImageDAO();
     private final TenantDAO tenantDAO = new TenantDAO();
+    private final UserAvatarDAO userAvatarDAO = new UserAvatarDAO();
+    private final UserDAO usersDAO = new UserDAO();
 
     /**
      * @uses: Update order status to 'approved'
@@ -311,7 +317,6 @@ public class LandlordService {
         }
         return false;
     }
-    
 
     /**
      *
@@ -483,11 +488,11 @@ public class LandlordService {
     public ArrayList<String> getPostImageURLByPostId(int postId) {
         return postImageDAO.getPostImageURLByPostId(postId);
     }
-    
+
     /**
-     * 
+     *
      * @param orderList
-     * @return 
+     * @return
      * @creater tienPV
      */
     public ArrayList<String> getTenantNameByOrderList(ArrayList<Orders> orderList) {
@@ -498,6 +503,36 @@ public class LandlordService {
             nameList.add(firstName + " " + lastName);
         }
         return nameList;
+    }
+
+    /**
+     *
+     * @param userId
+     * @return
+     * @creater tienPV
+     */
+    public Tenant getTenantByUserID(int userId) {
+        return tenantDAO.getTenantByUserID(userId);
+    }
+
+    /**
+     *
+     * @param userId
+     * @return
+     * @creater tienPV
+     */
+    public String getAvatarURLByUserID(int userId) {
+        return userAvatarDAO.getAvatarByUserID(userId).getAvatar_url();
+    }
+
+    /**
+     * 
+     * @param userId
+     * @return
+     * @creater tienPV
+     */
+    public Users getUserByID(int userId) {
+        return usersDAO.getUserByID(userId);
     }
 
     /**
