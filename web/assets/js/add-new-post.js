@@ -124,7 +124,7 @@ Validator.checkTextFields = function (selector, min, max) {
         selector: selector,
         test: function (inputElement) {
             var isRequiredB = isRequired(inputElement)
-            var isTextOutOfRangeB = isTextOutOfRange(inputElement, min, )
+            var isTextOutOfRangeB = isTextOutOfRange(inputElement, min, max)
             if (isRequiredB) {
                 return isRequiredB
             }
