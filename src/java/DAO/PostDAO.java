@@ -147,6 +147,122 @@ public class PostDAO extends DBContext {
         }
     }
 
+    public int getCountNumberOfPage() {
+        String sql = "select count(*) from Post";
+        ResultSet rs = getData(sql);
+        try {
+            while (rs.next()) {
+                int total = rs.getInt(1);
+                int countPage = 0;
+                countPage = total / 9;
+                if (total % 9 != 0) {
+                    countPage++;
+                }
+                return countPage;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public int getNumberOfPostAfterSearch(String keyword, String type, String bedroom, String priceTo, String areaTo, String location) {
+        String sql = "SELECT COUNT(*) FROM Post a "
+                + "JOIN Property_Location b ON a.location_id = b.id "
+                + "WHERE a.status != 'draft' AND a.status != 'deleted' ";
+
+        if (!keyword.isEmpty()) {
+            sql += " AND a.name LIKE ?";
+        }
+        if (!"All Type".equals(type)) {
+            sql += " AND a.type = ?";
+        }
+        if (!"Any".equals(bedroom)) {
+            sql += " AND a.NumOfBedrooms = ?";
+        }
+        if (!"Unlimite".equals(priceTo)) {
+            sql += " AND a.price <= ?";
+        }
+        if (!"Any".equals(areaTo)) {
+            sql += " AND a.area <= ?";
+        }
+        if (!"Any".equals(location)) {
+            sql += " AND b.id = ?";
+        }
+        try ( PreparedStatement preparedStatement = connect.prepareStatement(sql)) {
+            int parameterIndex = 1;
+
+            if (!keyword.isEmpty()) {
+                preparedStatement.setString(parameterIndex++, "%" + keyword + "%");
+            }
+            if (!"All Type".equals(type)) {
+                preparedStatement.setString(parameterIndex++, type);
+            }
+            if (!"Any".equals(bedroom)) {
+                preparedStatement.setString(parameterIndex++, bedroom);
+            }
+            if (!"Unlimite".equals(priceTo) && isInteger(priceTo)) {
+                preparedStatement.setInt(parameterIndex++, Integer.parseInt(priceTo));
+            }
+            if (!"Any".equals(areaTo) && isInteger(areaTo)) {
+                preparedStatement.setInt(parameterIndex++, Integer.parseInt(areaTo));
+            }
+            if (!"Any".equals(location)) {
+                preparedStatement.setString(parameterIndex++, location);
+            }
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int total = rs.getInt(1);
+                int countPage = 0;
+                countPage = total / 9; // neu total = 10 thi countPage o day = 1 roi`
+                if (total % 9 != 0) {
+                    countPage++;
+                }
+                return countPage;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
+
+    public ArrayList<PostRental> getPagingPost(int index) {
+        ArrayList<PostRental> postList = new ArrayList<>();
+        String sqlCommand = "SELECT *\n"
+                + "  FROM Post\n"
+                + "  WHERE status != 'draft' AND status != 'deleted'\n"
+                + "  ORDER BY id"
+                + "  OFFSET ? ROWS"
+                + "  FETCH FIRST 9 ROWS ONLY";
+        try ( PreparedStatement ps = connect.prepareStatement(sqlCommand)) {
+            ps.setInt(1, (index - 1) * 9);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                postList.add(po);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return postList;
+    }
+
     public ArrayList<PostRental> getPublishedPosts() {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
@@ -560,6 +676,15 @@ public class PostDAO extends DBContext {
         return false;
     }
 
+    private boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public boolean UpdatePostDate(int post_id, Date post_start_date, Date post_end_date) {
         try {
             String sql = "UPDATE [dbo].[Post]\n"
@@ -796,6 +921,7 @@ public class PostDAO extends DBContext {
 
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
-
+        List<PostRental> getPagingPost = dao.getPagingPost(2);
+        System.out.println(getPagingPost);
     }
 }
