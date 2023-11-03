@@ -101,8 +101,8 @@ public class UserDAO extends DBContext {
 
     /**
      *
-     * @param user Users object to added to the DB. <b>userID field will be ignored
-     * since user_id in the DB is set as IDENTITY</b>
+     * @param user Users object to added to the DB. <b>userID field will be
+     * ignored since user_id in the DB is set as IDENTITY</b>
      * @return ID of user have just added to the DB. Or -1 if there is error
      */
     public int addUser(Users user) {
@@ -244,8 +244,14 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Determine whether this email in the database
+     *
+     * @param email
+     * @return true if database contains this email, false otherwise
+     */
     public boolean checkEmail(String email) {
-        String SQL = "SELECT * FROM Users WHERE email = ?;";
+        String SQL = "SELECT id FROM Users WHERE email = ?;";
         try {
             PreparedStatement preStmt = connect.prepareStatement(SQL);
             preStmt.setString(1, email);

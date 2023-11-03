@@ -154,6 +154,31 @@ public class UserService {
         }
     }
 
+    /**
+     * Send a confirmation email to user. This function will generate a new
+     * token to DB (expire time = 10 mins), this token will be embedded to
+     * confirm link that sent to user's email address
+     *
+     * @param receiver Email address
+     * @param user Users that the generated token applied for
+     */
+    public void sendConfirmationEmail(String receiver, Users user) {
+        // Generate token for email verification
+        Token token = generateUserToken(user.getId(), user.getEmail(), Token.TokenType.CONFIRMATION);
+
+        String subject = "Confirm registration for House Rental Management System";
+        String content;
+        try {
+            content = "Hi " + receiver + ", you received this email because you've been registered as a " + user.getRole().name() + " in our website. Here is your confimation link to verify your email <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/verify?token=" + token.getToken() + "\">CLICK HERE TO CONFIRM</a>";
+        } catch (Exception ex) {
+            content = "Hi " + receiver + ", you received this email because you've been registered as a <<<INVALID ROLE NAME>>> in our website. Here is your confimation link to verify your email <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/verify?token=" + token.getToken() + "\">CLICK HERE TO CONFIRM</a>";
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Send confirmation email to user
+        sendEmail(receiver, subject, content);
+    }
+
     private boolean checkActiveAccount(String email) {
         return USER_DAO.checkActiveAccount(email);
     }
@@ -285,12 +310,6 @@ public class UserService {
             return null;
         }
 
-        // verify whether this account activated or not
-        if (user.getStatus() == Users.Status.UNV) {
-            System.out.println("Account " + email + " has not been activated");
-            return null;
-        }
-
         if (BAN_DAO.checkBannedByID(user.getId())) { // If this user is banned
             System.out.println("Account " + user.getEmail() + " has been banned");
             return null;
@@ -301,7 +320,23 @@ public class UserService {
         byte[] inputPass = hashingPassword(password, salt);
         boolean sucess = Arrays.equals(correctPass, inputPass);
 
-        if (sucess) {
+        if (sucess) { // correct username and password
+            Users verifiedUser = USER_DAO.getVerifiedAccount(email);
+            // ... but there is another account with the same email, and verified
+            if (verifiedUser != null && (verifiedUser.getId() != user.getId())) {
+                System.out.println("There is another account with the same email, and has been verified");
+                return null;
+            }
+
+            // If email and password correct, and there is no account activated for this email
+            if (user.getStatus() == Users.Status.UNV && verifiedUser == null) {
+                System.out.println("This account " + email + " has not been activated. We will send you a confirmation email");
+                // re-send confirmation email for this account
+                sendConfirmationEmail(email, user);
+                return null;
+            }
+
+            // this account has been activated
             return user;
         } else {
             return null;
@@ -313,7 +348,7 @@ public class UserService {
      *
      * @param email
      * @param password
-     * @return
+     * @return Users object logged in if successfully, or null if login fail
      */
     public Users login(String email, String password) {
         Users user = USER_DAO.getVerifiedAccount(email);
@@ -465,19 +500,43 @@ public class UserService {
     }
 
     /**
-     * Send forgot password email to email address. If the email address does
-     * not exist in the DB, or the account has not been activated, the email
-     * will not be sent
+     * Send forgot password email to email address. The email will be sent in
+     * two cases: First, the account's email is activated. Second, there is no
+     * account with this email has been activated, if so there will be two link
+     * corresponding to two roles to reset password. If you provides this
+     * function a email, in the database has two accounts for this email, and
+     * one account has been activated, then only account with role of activated
+     * account will be able to reset the password
      *
      * @param email
      */
     public void sendForgotPwdEmail(String email) {
+
+        if (!USER_DAO.checkEmail(email)) {
+            System.out.println("Email " + email + " does not exist in the database");
+            return;
+        }
+
+        String mailSubject = "Account recovery for House Rental Management";
         Users user = USER_DAO.getVerifiedAccount(email);
-        if (user == null) {
-            System.out.println("Email does not exist, or this account has not been activated");
-        } else {
+        if (user == null) { // there is no activated account, we create reset link for all roles of this email
+            System.out.println("Account(s) has not been activated");
+            // users list contains at most 2 account with email, and unverified
+            List<Users> users = USER_DAO.getUsersByEmail(email);
+            String content = "You've requested to reset your password \n.";
+            for (Users u : users) {
+                Token token = generateUserToken(u.getId(), email, Token.TokenType.FORGOTPWD);
+                try {
+                    content += "Click on this link to reset your " + u.getRole().name().toUpperCase() + " account password <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/recover?service=resetPwd&token=" + token.getToken() + "\">RESET YOUR PASSWORD HERE</a>\n";
+                } catch (Exception ex) {
+                    System.out.println("sendForgotPwdEmail() reports: getRole() of Users model throw exception " + ex.getMessage());
+                    Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
+            }
+            sendEmail(email, mailSubject, content);
+        } else { // there is activated account, we send the link to reset password for that account of specific role
             Token token = generateUserToken(user.getId(), email, Token.TokenType.FORGOTPWD);
-            String mailSubject = "Account recovery for House Rental Management";
             String content = "You've requested to reset your password, please click on this link to reset your password <a target=\"_blank\" href=\"http://localhost:8080/SWP391-House-Rental-Management/recover?service=resetPwd&token=" + token.getToken() + "\">RESET YOUR PASSWORD HERE</a>";
             sendEmail(email, mailSubject, content);
         }
