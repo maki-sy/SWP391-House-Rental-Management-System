@@ -24,13 +24,13 @@ public class ReviewService {
     private static final ReviewDAO REVIEW_DAO = new ReviewDAO();
 
     public String filter(String text,String in) {
-        System.out.println("Filter function called");
+        //System.out.println("Filter function called");
         String out = "";
         List<String> list = readFromFile(in);
         for (String word : text.split(" ")) {
             boolean isBadWord = false;
             for (String badWord : list) {
-                if (word.equals(badWord)) {
+                if (word.toLowerCase().equals(badWord)) {
                     isBadWord = true;
                     break;
                 }
@@ -50,7 +50,7 @@ public class ReviewService {
     }
 
     public List<String> readFromFile(String in) {
-        System.out.println("read file dc goi");
+        //System.out.println("read file dc goi");
         List<String> list = new ArrayList<>();
         try {
             FileReader fr = new FileReader(in);

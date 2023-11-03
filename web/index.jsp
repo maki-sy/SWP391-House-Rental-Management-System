@@ -456,6 +456,30 @@ ArrayList<Integer> saleListLastest = (ArrayList<Integer>) request.getAttribute("
                                     </div>
                                 </div>
                             </div><!-- End carousel item -->
+                                                        <div class="carousel-item-a swiper-slide">
+                                <div class="testimonials-box">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="testimonial-img">
+                                                <img src="https://vcdn1-giadinh.vnecdn.net/2023/01/06/anh-1-1672972811.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=cVyvOHIYwqwIWeuGa-GOjQ" alt="" class="img-fluid"style=" width: 700px; height: 450px">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="testimonial-ico">
+                                                <i class="bi bi-chat-quote-fill"></i>
+                                            </div>
+                                            <div class="testimonials-content">
+                                                <p class="testimonial-text">
+Trước khi biết website RentalHouse, mình phải tốn nhiều công sức và chi phí cho việc đăng tin cho thuê: từ việc phát tờ rơi, dán giấy, và đăng lên các website khác nhưng hiệu quả không cao. Từ khi biết website RentalHouse, mình đã thử đăng tin lên và đánh giá hiệu quả khá cao trong khi chi phí khá thấp, không còn tình trạng phòng trống kéo dài.                                                </p>
+                                            </div>
+                                            <div class="testimonial-author-box">
+                                                <img src="./assets/img/default-avt.png" alt="" class="testimonial-avatar">
+                                                <h5 class="testimonial-author"> Bá Khánh</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- End carousel item -->
 
 
 

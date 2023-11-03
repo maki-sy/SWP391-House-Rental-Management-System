@@ -393,7 +393,7 @@
                                                                 </p>
                                                             </div>
                                                             <div class="testimonial-author-box">
-                                                                <h5 class="testimonial-author"> ${o.id} <span class="fa fa-star checked">⭐</span> by ${o.lastName} ${o.firstName}  on ${o.civilID}</h5>
+                                                                <h5 class="testimonial-author"> ${o.id} ⭐ by ${o.lastName} ${o.firstName}  on ${o.civilID}</h5>
                                                             </div>
                                                         </div>
                                                     </c:forEach>
