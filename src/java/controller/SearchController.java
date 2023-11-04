@@ -60,10 +60,17 @@ public class SearchController extends HttpServlet {
             String locationn = request.getParameter("location");
 
             String index = request.getParameter("index");
-            int pageIndex = Integer.parseInt(index);
-            request.setAttribute("pIndex", pageIndex);
+            int pageIndex;
             int numOfPost = po.getNumberOfPostSearch(searchh, roomType, bedroom, priceT, areaT, locationn);
             request.setAttribute("nPost", numOfPost);
+            if (index == null) {
+                index = "1";
+            }
+            pageIndex = Integer.parseInt(index);
+            if (pageIndex > numOfPost || pageIndex < 1) {
+                pageIndex = 1;
+            }
+            request.setAttribute("pIndex", pageIndex);
 
             List<PostRental> list = dao.searchPostByAttributes(searchh, roomType, bedroom, priceT, areaT, locationn, pageIndex);
             request.setAttribute("listSearch", list);

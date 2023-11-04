@@ -137,7 +137,7 @@
                                 </select>
                             </div>
                         </div>
-                        <input type="text" name="index" value="1" style="display: none;">        
+                              
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-b">Search Property</button>
                         </div>
