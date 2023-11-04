@@ -44,8 +44,11 @@ public class AdminAccountController extends HttpServlet {
         UserDAO dao = new UserDAO();
 
         switch (action) {
-            case "add":
-                request.getRequestDispatcher("Admin/view/add-account.jsp").forward(request, response);
+            case "add-admin":
+                request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
+                break;
+            case "add-tenant-landlord":
+                request.getRequestDispatcher("Admin/view/add-tenant-landlord-account.jsp").forward(request, response);
                 break;
             case "edit": {
                 int userid = Integer.parseInt(request.getParameter("userid"));
@@ -139,157 +142,223 @@ public class AdminAccountController extends HttpServlet {
         String action = request.getParameter("action");
         UserDAO dao = new UserDAO();
         UserService uService = new UserService();
-        //Construct regular expression to validate email and phone fields
-        String regexPhone = "(84|0[1|3|5|7|8|9])+([0-9]{8})\\b";
-        String regexCivilID = "0[0-9]{2}[0-3][0-9]{8}\\b";
-        String regexPassword = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{6,}$";
 
-        //Compile regular expressions
-        Pattern p_phone = Pattern.compile(regexPhone);
-        Pattern p_civilid = Pattern.compile(regexCivilID);
-        Pattern p_password = Pattern.compile(regexPassword);
+        //Construct and compile regular expressions
+        Pattern p_email = Pattern.compile("^\\S+@\\S+\\.\\S+$");
+        Pattern p_name = Pattern.compile("^[a-zA-Z ]*$");
+        Pattern p_phone = Pattern.compile("(84|0[1|3|5|7|8|9])+([0-9]{8})\\b");
+        Pattern p_civilid = Pattern.compile("0[0-9]{2}[0-3][0-9]{8}\\b");
+        Pattern p_password = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{6,}$");
 
         //Pattern class contains matcher() method to find matching between given input and regex
-        Matcher m_phone, m_civilid, m_password;
+        Matcher m_email, m_lname, m_fname, m_phone, m_civilid, m_password;
 
-        if (action.equals("add")) {
-            String email = request.getParameter("email");
-            String fname = request.getParameter("fname");
-            String lname = request.getParameter("lname");
-            String phone = request.getParameter("phone");
-            String password = request.getParameter("password");
-
-            m_phone = p_phone.matcher(phone);
-            m_password = p_password.matcher(password);
-
-            if (!m_phone.matches()) {               // phone mismatch
-                request.setAttribute("message", "Please input valid phone number.");
-                request.getRequestDispatcher("Admin/view/add-account.jsp").forward(request, response);
-            } else if (!m_password.matches()) {     //password mismatch
-                request.setAttribute("message", "Please input valid password. A valid password must be at least 6 characters long, 1 lowercase, 1 uppercase and 1 special symbols.");
-                request.getRequestDispatcher("Admin/view/add-account.jsp").forward(request, response);
-            } else {
-                Users admin = dao.getUserByEmailRole(email, 3);
-                if (admin != null) {
-                    request.setAttribute("message", "The email you enter already exists. Please input a different email.");
-                    request.getRequestDispatcher("Admin/view/add-account.jsp").forward(request, response);
+        switch (action) {
+            case "add-admin": {
+                String email = request.getParameter("email");
+                String fname = request.getParameter("fname");
+                String lname = request.getParameter("lname");
+                String phone = request.getParameter("phone");
+                String password = request.getParameter("password");
+                m_email = p_email.matcher(email);
+                m_fname = p_name.matcher(fname);
+                m_lname = p_name.matcher(lname);
+                m_phone = p_phone.matcher(phone);
+                m_password = p_password.matcher(password);
+                if (!m_email.matches()) {                                          // email mismatch
+                    request.setAttribute("message", "Please input a valid email. A valid email should be in the form of example@example.com");
+                    request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
+                } else if (!(m_fname.matches() && m_lname.matches())) {         // first name or last name mismatch
+                    request.setAttribute("message", "Please input a valid name. A name cannot contain numbers and special characters.");
+                    request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
+                } else if (!m_phone.matches()) {                                  // phone mismatch
+                    request.setAttribute("message", "Please input a valid phone number.");
+                    request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
+                } else if (!m_password.matches()) {                               //password mismatch
+                    request.setAttribute("message", "Please input a valid password. A valid password must be at least 6 characters long, 1 lowercase, 1 uppercase and 1 special symbols.");
+                    request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
                 } else {
-                    uService.addUser(email, fname, lname, phone, password);
-                    response.sendRedirect("admin-dashboard?service=manageAccount");
-                }
-            }
-        } else if (action.equals("edit")) {
-            int userid = Integer.parseInt(request.getParameter("userid"));
-            String email = request.getParameter("email");
-            String fname = request.getParameter("fname");
-            String lname = request.getParameter("lname");
-            String civilid = request.getParameter("civilid");
-            String address = request.getParameter("address");
-            String phone = request.getParameter("phone");
-            String role = request.getParameter("role");
-            String status = request.getParameter("status");
-
-            m_phone = p_phone.matcher(phone);
-
-            if (!m_phone.matches()) {       // phone mismatch
-                request.setAttribute("message", "Please input valid phone number.");
-                Users user = dao.getUserByID(userid);
-                request.setAttribute("user", user);
-                request.setAttribute("status", Users.Status.values());
-                request.getRequestDispatcher("Admin/view/edit-account.jsp").forward(request, response);
-            } else {                               // both input matches
-                //Update information based on user's role
-                switch (role) {
-                    case "Admin":
-                        dao.updateUserInfo(userid, email, status);
-                        AdminDAO dao_a = new AdminDAO();
-                        dao_a.updateAdminInfo(userid, fname, lname, phone);
+                    Users admin = dao.getUserByEmailRole(email, 3);
+                    if (admin != null) {
+                        request.setAttribute("message", "The email you entered already exists. Please try again.");
+                        request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
+                    } else {
+                        uService.addAdminUser(email, fname, lname, phone, password);
                         response.sendRedirect("admin-dashboard?service=manageAccount");
-                        break;
-                    case "Tenant":
-                        m_civilid = p_civilid.matcher(civilid);
-                        if (!m_civilid.matches()) {
-                            request.setAttribute("message", "Please input valid civil ID.");
-                            Users user = dao.getUserByID(userid);
-                            request.setAttribute("user", user);
-                            request.setAttribute("status", Users.Status.values());
-                            request.getRequestDispatcher("Admin/view/edit-account.jsp").forward(request, response);
-                        } else {
-                            dao.updateUserInfo(userid, email, status);
-                            TenantDAO dao_t = new TenantDAO();
-                            dao_t.updateTenantInfo(userid, fname, lname, civilid, address, phone);
-                            response.sendRedirect("admin-dashboard?service=manageAccount");
-                        }
-                        break;
-                    case "Landlord":
-                        m_civilid = p_civilid.matcher(civilid);
-                        if (!m_civilid.matches()) {
-                            request.setAttribute("message", "Please input valid civil ID.");
-                            Users user = dao.getUserByID(userid);
-                            request.setAttribute("user", user);
-                            request.setAttribute("status", Users.Status.values());
-                            request.getRequestDispatcher("Admin/view/edit-account.jsp").forward(request, response);
-                        } else {
-                            dao.updateUserInfo(userid, email, status);
-                            LandlordDAO dao_l = new LandlordDAO();
-                            dao_l.updateLandlordInfo(userid, fname, lname, civilid, address, phone);
-                            response.sendRedirect("admin-dashboard?service=manageAccount");
-                        }
-                        break;
+                    }
                 }
+                break;
             }
-        } else if (action.equals("ban")) {
-            int userID;
-            int duration;
-            try {
-                userID = Integer.parseInt(request.getParameter("userID"));
-                duration = Integer.parseInt(request.getParameter("duration"));
-            } catch (NumberFormatException numberEx) {
-                System.out.println("Banning error " + numberEx.getMessage());
-                response.sendRedirect("admin-dashboard?service=manageAccount");
+            case "add-tenant-landlord": {
+                String email = request.getParameter("email");
+                String fname = request.getParameter("fname");
+                String lname = request.getParameter("lname");
+                String address = request.getParameter("address");
+                String phone = request.getParameter("phone");
+                String civilid = request.getParameter("civilid");
+                String password = request.getParameter("password");
+                String role = request.getParameter("role") == null ? "" : request.getParameter("role");
+                m_email = p_email.matcher(email);
+                m_fname = p_name.matcher(fname);
+                m_lname = p_name.matcher(lname);
+                m_civilid = p_civilid.matcher(civilid);
+                m_phone = p_phone.matcher(phone);
+                m_password = p_password.matcher(password);
+                if (!m_email.matches()) {                                          // email mismatch
+                    request.setAttribute("message", "Please input a valid email. A valid email should be in the form of example@example.com");
+                    request.getRequestDispatcher("Admin/view/add-tenant-landlord-account.jsp").forward(request, response);
+                } else if (!(m_fname.matches() && m_lname.matches())) {         // first name or last name mismatch
+                    request.setAttribute("message", "Please input a valid name. A name cannot contain numbers and special characters.");
+                    request.getRequestDispatcher("Admin/view/add-tenant-landlord-account.jsp").forward(request, response);
+                } else if (!m_phone.matches()) {                                  // phone mismatch
+                    request.setAttribute("message", "Please input a valid phone number.");
+                    request.getRequestDispatcher("Admin/view/add-tenant-landlord-account.jsp").forward(request, response);
+                } else if (!m_civilid.matches()) {                                // civilid mismatch
+                    request.setAttribute("message", "Please input a valid civil ID.");
+                    request.getRequestDispatcher("Admin/view/add-tenant-landlord-account.jsp").forward(request, response);
+                } else if (!m_password.matches()) {                               //password mismatch
+                    request.setAttribute("message", "Please input a valid password. A valid password must be at least 6 characters long, 1 lowercase, 1 uppercase and 1 special symbols.");
+                    request.getRequestDispatcher("Admin/view/add-tenant-landlord-account.jsp").forward(request, response);
+                } else {
+                    switch (role) {
+                        case "Tenant":
+                            Users tenant = dao.getUserByEmailRole(email, 1);
+                            if (tenant != null) {
+                                request.setAttribute("message", "The email you entered already exists. Please try again.");
+                                request.getRequestDispatcher("Admin/view/add-tenant-landlord-ccount.jsp").forward(request, response);
+                            } else {
+                                uService.addTenantUser(email, fname, lname, address, phone, civilid, password);
+                                response.sendRedirect("admin-dashboard?service=manageAccount");
+                            }
+                        case "Landlord":
+                            Users landlord = dao.getUserByEmailRole(email, 2);
+                            if (landlord != null) {
+                                request.setAttribute("message", "The email you entered already exists. Please try again.");
+                                request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
+                            } else {
+                                uService.addLandlordUser(email, fname, lname, address, phone, civilid, password);
+                                response.sendRedirect("admin-dashboard?service=manageAccount");
+                            }
+                    }
+                }
+                break;
+            }
+            case "edit": {
+                int userid = Integer.parseInt(request.getParameter("userid"));
+                String email = request.getParameter("email");
+                String fname = request.getParameter("fname");
+                String lname = request.getParameter("lname");
+                String civilid = request.getParameter("civilid");
+                String address = request.getParameter("address");
+                String phone = request.getParameter("phone");
+                String role = request.getParameter("role");
+                String status = request.getParameter("status");
+                m_phone = p_phone.matcher(phone);
+                if (!m_phone.matches()) {       // phone mismatch
+                    request.setAttribute("message", "Please input valid phone number.");
+                    Users user = dao.getUserByID(userid);
+                    request.setAttribute("user", user);
+                    request.setAttribute("status", Users.Status.values());
+                    request.getRequestDispatcher("Admin/view/edit-account.jsp").forward(request, response);
+                } else {                               // both input matches
+                    //Update information based on user's role
+                    switch (role) {
+                        case "Admin":
+                            dao.updateUserInfo(userid, email, status);
+                            AdminDAO dao_a = new AdminDAO();
+                            dao_a.updateAdminInfo(userid, fname, lname, phone);
+                            response.sendRedirect("admin-dashboard?service=manageAccount");
+                            break;
+                        case "Tenant":
+                            m_civilid = p_civilid.matcher(civilid);
+                            if (!m_civilid.matches()) {
+                                request.setAttribute("message", "Please input valid civil ID.");
+                                Users user = dao.getUserByID(userid);
+                                request.setAttribute("user", user);
+                                request.setAttribute("status", Users.Status.values());
+                                request.getRequestDispatcher("Admin/view/edit-account.jsp").forward(request, response);
+                            } else {
+                                dao.updateUserInfo(userid, email, status);
+                                TenantDAO dao_t = new TenantDAO();
+                                dao_t.updateTenantInfo(userid, fname, lname, civilid, address, phone);
+                                response.sendRedirect("admin-dashboard?service=manageAccount");
+                            }
+                            break;
+                        case "Landlord":
+                            m_civilid = p_civilid.matcher(civilid);
+                            if (!m_civilid.matches()) {
+                                request.setAttribute("message", "Please input valid civil ID.");
+                                Users user = dao.getUserByID(userid);
+                                request.setAttribute("user", user);
+                                request.setAttribute("status", Users.Status.values());
+                                request.getRequestDispatcher("Admin/view/edit-account.jsp").forward(request, response);
+                            } else {
+                                dao.updateUserInfo(userid, email, status);
+                                LandlordDAO dao_l = new LandlordDAO();
+                                dao_l.updateLandlordInfo(userid, fname, lname, civilid, address, phone);
+                                response.sendRedirect("admin-dashboard?service=manageAccount");
+                            }
+                            break;
+                    }
+                }
+                break;
+            }
+            case "ban": {
+                int userID;
+                int duration;
+                try {
+                    userID = Integer.parseInt(request.getParameter("userID"));
+                    duration = Integer.parseInt(request.getParameter("duration"));
+                } catch (NumberFormatException numberEx) {
+                    System.out.println("Banning error " + numberEx.getMessage());
+                    response.sendRedirect("admin-dashboard?service=manageAccount");
+                    return;
+                }
+
+                // If this account exist
+                uService.banUser(userID, duration);
+                response.sendRedirect("admin-dashboard?service=account-utils");
+                return;
+
+            }
+            case "add-point": {
+                int userID;
+                int amount;
+                try {
+                    userID = Integer.parseInt(request.getParameter("userId"));
+                    amount = Integer.parseInt(request.getParameter("amount"));
+
+                    // get user object to set in the request, if user does not
+                    // exist, exception will be thrown in addPoint() and dispatch
+                    // to 404-error (which does not use user variable from
+                    // request). With other exceptions (user != null), dispatch to
+                    // add-point.jsp and therefore add-point.jsp can access it
+                    Users user = uService.getUserByID(userID);
+                    request.setAttribute("user", user);
+
+                    LandlordService lService = new LandlordService();
+                    lService.addPoint(userID, amount);
+                } catch (NumberFormatException numEx) {
+                    System.out.println("doPost add point " + numEx.getMessage());
+                    request.setAttribute("msg", numEx.getMessage());
+                    request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
+                    return;
+                } catch (IllegalArgumentException illArgEx) {
+                    System.out.println("doPost add point " + illArgEx.getMessage());
+                    request.setAttribute("msg", illArgEx.getMessage());
+                    request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
+                    return;
+                } catch (Exception ex) {
+                    System.out.println("doPost add point " + ex.getMessage());
+                    request.setAttribute("msg", ex.getMessage());
+                    request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
+                    return;
+                }
+                response.sendRedirect("admin-dashboard?service=account-utils");
                 return;
             }
-
-            // If this account exist
-            uService.banUser(userID, duration);
-            response.sendRedirect("admin-dashboard?service=account-utils");
-            return;
-
-        } else if (action.equals("add-point")) {
-            int userID;
-            int amount;
-            try {
-                userID = Integer.parseInt(request.getParameter("userId"));
-                amount = Integer.parseInt(request.getParameter("amount"));
-
-                // get user object to set in the request, if user does not 
-                // exist, exception will be thrown in addPoint() and dispatch 
-                // to 404-error (which does not use user variable from 
-                // request). With other exceptions (user != null), dispatch to 
-                // add-point.jsp and therefore add-point.jsp can access it
-                Users user = uService.getUserByID(userID);
-                request.setAttribute("user", user);
-
-                LandlordService lService = new LandlordService();
-                lService.addPoint(userID, amount);
-            } catch (NumberFormatException numEx) {
-                System.out.println("doPost add point " + numEx.getMessage());
-                request.setAttribute("msg", numEx.getMessage());
-                request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
-                return;
-            } catch (IllegalArgumentException illArgEx) {
-                System.out.println("doPost add point " + illArgEx.getMessage());
-                request.setAttribute("msg", illArgEx.getMessage());
-                request.getRequestDispatcher("Admin/view/add-point.jsp").forward(request, response);
-                return;
-            } catch (Exception ex) {
-                System.out.println("doPost add point " + ex.getMessage());
-                request.setAttribute("msg", ex.getMessage());
-                request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
-                return;
-            }
-            response.sendRedirect("admin-dashboard?service=account-utils");
-            return;
+            default:
+                break;
         }
 
     }
