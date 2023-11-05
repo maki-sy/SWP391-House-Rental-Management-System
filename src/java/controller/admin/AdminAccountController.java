@@ -230,6 +230,7 @@ public class AdminAccountController extends HttpServlet {
                                 uService.addTenantUser(email, fname, lname, address, phone, civilid, password);
                                 response.sendRedirect("admin-dashboard?service=manageAccount");
                             }
+                            break;
                         case "Landlord":
                             Users landlord = dao.getUserByEmailRole(email, 2);
                             if (landlord != null) {
@@ -239,7 +240,9 @@ public class AdminAccountController extends HttpServlet {
                                 uService.addLandlordUser(email, fname, lname, address, phone, civilid, password);
                                 response.sendRedirect("admin-dashboard?service=manageAccount");
                             }
+                            break;
                     }
+                    response.sendRedirect("admin-dashboard?service=manageAccount");
                 }
                 break;
             }
