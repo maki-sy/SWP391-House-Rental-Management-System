@@ -48,19 +48,19 @@ public class Post extends HttpServlet {
             PromotionService pros = new PromotionService();
             SearchService handle = new SearchService();
 
-            //lay index tu cai JSP
+            int totalPost = po.getTotalNumberOfPost();
+            request.setAttribute("totalPost", totalPost);
             String index = request.getParameter("index");
-            int numOfPost = po.getNumberOfPost();
+            int numOfPage = po.getNumberOfPage();
             int pageIndex;
-            request.setAttribute("numOfPost", numOfPost);
+            request.setAttribute("numOfPost", numOfPage);
             if (index == null) {
                 index = "1";
             }
             pageIndex = Integer.parseInt(index);
-            if (pageIndex > numOfPost || pageIndex < 1) {
+            if (pageIndex > numOfPage || pageIndex < 1) {
                 pageIndex = 1;
             }
-
             request.setAttribute("pageIndex", pageIndex);
 
             ArrayList<PostRental> post = po.getPagingList(pageIndex);

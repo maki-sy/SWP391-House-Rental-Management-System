@@ -315,6 +315,11 @@ public class UserService {
             return null;
         }
 
+        if (user.getStatus().toString().equals("DEL")) { // If this user is disabled
+            System.out.println("Account " + user.getEmail() + " has been disabled");
+            return null;
+        }
+
         byte[] salt = user.getSalt();
         byte[] correctPass = user.getHashedPassword();
         byte[] inputPass = hashingPassword(password, salt);
@@ -356,6 +361,11 @@ public class UserService {
         if (user != null) {
             if (BAN_DAO.checkBannedByID(user.getId())) { // If this user is banned
                 System.out.println("Account " + user.getEmail() + " has been banned");
+                return null;
+            }
+
+            if (user.getStatus().toString().equals("DEL")) { // If this user is disabled
+                System.out.println("Account " + user.getEmail() + " has been disabled");
                 return null;
             }
 
@@ -712,13 +722,31 @@ public class UserService {
         return user;
     }
 
-    public void addUser(String email, String fname, String lname, String phone, String password) {
+    public void addAdminUser(String email, String fname, String lname, String phone, String password) {
         byte[] salt = generateSalt();
         byte[] hashedPwd = hashingPassword(password, salt);
         Users user = new Users(email, hashedPwd, salt, 3, Users.Status.VER);
         int userID = USER_DAO.addUser(user);
         Admin admin = new Admin(userID, fname, lname, phone);
         ADMIN_DAO.addAdmin(admin);
+    }
+
+    public void addTenantUser(String email, String fname, String lname, String address, String phone, String civilID, String password) {
+        byte[] salt = generateSalt();
+        byte[] hashedPwd = hashingPassword(password, salt);
+        Users user = new Users(email, hashedPwd, salt, 1, Users.Status.VER);
+        int userID = USER_DAO.addUser(user);
+        Tenant tenant = new Tenant(userID, fname, lname, address, phone, civilID);
+        TENANT_DAO.addTenant(tenant);
+    }
+
+    public void addLandlordUser(String email, String fname, String lname, String address, String phone, String civilID, String password) {
+        byte[] salt = generateSalt();
+        byte[] hashedPwd = hashingPassword(password, salt);
+        Users user = new Users(email, hashedPwd, salt, 2, Users.Status.VER);
+        int userID = USER_DAO.addUser(user);
+        Landlord landlord = new Landlord(userID, fname, lname, address, phone, civilID, 0); //set new Landlord account with 0 point
+        LANDLORD_DAO.addLandlord(landlord);
     }
 
     /**
