@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Admin | Add Account</title>
+        <title>Admin | Add Admin Account</title>
 
         <%@page import="DAO.UserDAO, model.Users, model.Users.Status, service.UserService" %>
         <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
@@ -228,12 +228,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Add New Account</h1>
+                                <h1>Add New Admin Account</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
-                                    <li class="breadcrumb-item active">Add Account</li>
+                                    <li class="breadcrumb-item active">Add Admin Account</li>
                                 </ol>
                             </div>
                         </div>
@@ -243,7 +243,7 @@
                 <!-- Main content -->
                 <section class="content">
 
-                    <form action="admin-account?action=add" method="POST">
+                    <form action="admin-account?action=add-admin" method="POST">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-primary">
@@ -259,27 +259,27 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="email">Account Email</label>
-                                            <input type="text" id="email" name="email" class="form-control" value="">
+                                            <input type="text" id="email" name="email" class="form-control" value="" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="fname">First Name</label>
-                                            <input type="text" id="fname" name="fname" class="form-control" value="">
+                                            <input type="text" id="fname" name="fname" class="form-control" value="" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="lname">Last Name</label>
-                                            <input type="text" id="lname" name="lname" class="form-control" value="">
+                                            <input type="text" id="lname" name="lname" class="form-control" value="" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control" value="">
+                                            <input type="text" id="phone" name="phone" class="form-control" value="" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input type="password" id="password" name="password" class="form-control" value="">
+                                            <input type="password" id="password" name="password" class="form-control" value="" required>
                                         </div>
                                         <div class="text-left text-danger">
                                             <p>${message}</p>

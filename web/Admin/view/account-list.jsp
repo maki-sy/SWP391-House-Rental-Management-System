@@ -284,7 +284,7 @@
                                             Status
                                         </th>
                                         <th style="width: 15%">
-                                            <a href="admin-account?action=add"  class="btn btn-success btn-sm" ><i class="fas fa-plus"></i> <span>Add New Account</span></a>
+
                                         </th>
                                     </tr>
                                 </thead>
@@ -355,6 +355,10 @@
                                     </tr>
                                 </tbody>                  
                             </table>
+                        </div>
+                        <div class= "col-sm-6 offset-sm-3">
+                            <a href="admin-account?action=add-admin"  class="btn btn-success btn-sm" ><i class="fas fa-plus"></i> <span>Add New Admin Account</span></a>
+                            <a href="admin-account?action=add-tenant-landlord"  class="btn btn-info btn-sm float-right" ><i class="fas fa-plus"></i> <span>Add New Tenant/Landlord Account</span></a>
                         </div>
                         <!-- /.card-body -->
                     </div>
