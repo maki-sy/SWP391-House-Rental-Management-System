@@ -166,6 +166,21 @@ public class PostDAO extends DBContext {
         return 0;
     }
 
+    public int getTotalNumberOfPost() {
+        String sql = "select count(*) from Post";
+        ResultSet rs = getData(sql);
+        int total = 0;
+        try {
+            while (rs.next()) {
+                total = rs.getInt(1);
+                return total;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
     public int getNumberOfPostAfterSearch(String keyword, String type, String bedroom, String priceTo, String areaTo, String location) {
         String sql = "SELECT COUNT(*) FROM Post a "
                 + "JOIN Property_Location b ON a.location_id = b.id "
@@ -921,7 +936,7 @@ public class PostDAO extends DBContext {
 
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
-        List<PostRental> getPagingPost = dao.getPagingPost(2);
-        System.out.println(getPagingPost);
+        int total = dao.getTotalNumberOfPost();
+        System.out.println(total + "tuananh");
     }
 }

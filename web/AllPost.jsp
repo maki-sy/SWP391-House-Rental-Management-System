@@ -136,8 +136,7 @@
                                     <% } %>
                                 </select>
                             </div>
-                        </div>
-                        <input type="text" name="index" value="1" style="display: none;">        
+                        </div>     
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-b">Search Property</button>
                         </div>
@@ -152,7 +151,7 @@
                   List<PostRental> list = (List<PostRental>) request.getAttribute("listOfPost");
                   ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
                   ArrayList<Integer> saleList = (ArrayList<Integer>) request.getAttribute("saleList");
-                  
+                  int totalPost = (Integer) request.getAttribute("totalPost");
         %>
         <main id="main">
 
@@ -167,7 +166,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-8">
-                            <h1 class="color-text-a">Result: <%=list.size()%></h1>
+                            <h1 class="color-text-a">Result: <%=totalPost%></h1>
                         </div>
                         <div class="col-md-12 col-lg-4">
                             <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">

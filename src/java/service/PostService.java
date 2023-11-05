@@ -130,7 +130,7 @@ public class PostService extends DBContext {
         return list;
     }
 
-    public int getNumberOfPost() {
+    public int getNumberOfPage() {
         DAO.PostDAO dao = new PostDAO();
         return dao.getCountNumberOfPage();
     }
@@ -140,10 +140,14 @@ public class PostService extends DBContext {
         return dao.getNumberOfPostAfterSearch(keyword, type, bedroom, priceTo, areaTo, location);
     }
 
+    public int getTotalNumberOfPost() {
+        DAO.PostDAO dao = new PostDAO();
+        return dao.getTotalNumberOfPost();
+    }
+
     public static void main(String[] args) {
         PostService dao = new PostService();
-      
-        
+
     }
 
 }
