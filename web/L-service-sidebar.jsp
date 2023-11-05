@@ -79,7 +79,7 @@
                                                      class=" w-100 btn btn-dark ">Manage my
                         wallet points</button></a>
             </li>
-            <li class="list-group-item">
+<!--            <li class="list-group-item">
                 <div class="contain">
                     <a href="#!">
                         <div class="btn btn-primary"> + </div>
@@ -89,7 +89,7 @@
                         </button>
                     </a>
                 </div>
-            </li>
+            </li>-->
             <li class="list-group-item">
                 <div class="contain">
 

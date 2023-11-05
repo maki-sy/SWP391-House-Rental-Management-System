@@ -41,100 +41,7 @@
     <body>
 
         <!-- ======= Property Search Section ======= -->
-        <div class="click-closed"></div>
-        <!--/ Form Search Star /-->
-        <div class="box-collapse">
-            <div class="title-box-d">
-                <h3 class="title-d">Search Property</h3>
-            </div>
-            <span class="close-box-collapse right-boxed bi bi-x"></span>
-            <div class="box-collapse-wrap form">
-                <form class="form-a">
-                    <div class="row">
-                        <div class="col-md-12 mb-2">
-                            <div class="form-group">
-                                <label class="pb-2" for="Type">Keyword</label>
-                                <input type="text" class="form-control form-control-lg form-control-a"
-                                       placeholder="Keyword">
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="Type">Type</label>
-                                <select class="form-control form-select form-control-a" id="Type">
-                                    <option>All Type</option>
-                                    <option>For Rent</option>
-                                    <option>For Sale</option>
-                                    <option>Open House</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="city">City</label>
-                                <select class="form-control form-select form-control-a" id="city">
-                                    <option>All City</option>
-                                    <option>Alabama</option>
-                                    <option>Arizona</option>
-                                    <option>California</option>
-                                    <option>Colorado</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="bedrooms">Bedrooms</label>
-                                <select class="form-control form-select form-control-a" id="bedrooms">
-                                    <option>Any</option>
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
-                                </select>
-                            </div>
-                        </div>
 
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="bathrooms">Bathrooms</label>
-                                <select class="form-control form-select form-control-a" id="bathrooms">
-                                    <option>Any</option>
-                                    <option>01</option>
-                                    <option>02</option>
-                                    <option>03</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Min Price</label>
-                                <select class="form-control form-select form-control-a" id="price">
-                                    <option>Unlimite</option>
-                                    <option>$50,000</option>
-                                    <option>$100,000</option>
-                                    <option>$150,000</option>
-                                    <option>$200,000</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <div class="form-group mt-3">
-                                <label class="pb-2" for="price">Max price</label>
-                                <select class="form-control form-select form-control-a" id="price">
-                                    <option>Unlimite</option>
-                                    <option>$50,000</option>
-                                    <option>$100,000</option>
-                                    <option>$150,000</option>
-                                    <option>$200,000</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-b">Search Property</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
         <!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
@@ -165,119 +72,14 @@
                                          style="width: 150px;">
                                     <div class="mb-3"></div>
                                     <ul class="list-group text-start">
-                                        <li class="text-start list-group-item active list-group-item-action" aria-current="true">Manage pending requests</li>
-                                        <li class="list-group-item"><span class="text-bg-primary">--View--</span><span> View detailed post information</span></li>
-                                        <li class="list-group-item"><span class="text-bg-warning">--Contact--</span><span> Go to the customer's personal page</span></li>
-                                        <li class="list-group-item"><span class="text-bg-success">--Approve--</span><span> Customers can view your personal information</span></li>
-                                        <li class="list-group-item"><span class="text-bg-danger">--Reject--</span><span> Customers can't see your contact information</span></li>
+                                        <li class="text-start list-group-item active list-group-item-action" aria-current="true">View transaction history</li>
+                                        <li class="list-group-item"><span class="text-bg-primary">--View--</span><span>Detailed information about all transactions</span></li>                                        
                                     </ul>
                                 </div>
                             </div>
-                            <div class="card mb-4 mb-lg-0">
-                                <div class="card-body p-0">
-                                    <ul class="list-group list-group-flush rounded-3">
-                                        <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark "> Manage rental requests</button></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="contain">
-                                                <a href="landlordServicesPage?service=pending-requests">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Pending requests
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="contain">
-
-                                                <a href="landlordServicesPage?service=requests-processed">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Requests processed
-                                                    </button>
-                                                </a>
-                                            </div>
-
-                                        </li>
-                                        <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button"
-                                                                                 class=" w-100 btn btn-dark "> Manage My
-                                                    Post</button></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="contain">
-                                                <a href="#!">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Published posts
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="contain">
-
-                                                <a href="#!">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Add new post
-                                                    </button>
-                                                </a>
-                                            </div>
-
-                                        </li>
-                                        <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Manage my wallet points</button></a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="contain">
-                                                <a href="#!">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Request deposit
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="contain">
-
-                                                <a href="#!">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Transaction history
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </li>
-
-                                        <li class="list-group-item text-center">
-                                            <a class="pe-none" href="#!"><button type="button" class=" w-100 btn btn-dark ">Promotions</button></a>
-                                        </li>
-
-                                        <li class="list-group-item">
-                                            <div class="contain">
-                                                <a href="PromotionManage">
-                                                    <div class="btn btn-primary"> + </div>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary">Manage Promotions
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                            </div>
+                            <!-- SIDE BAR HERE -->
+                            <%@include file="/L-service-sidebar.jsp" %>
+                            <!-- END SIDE BAR -->
                         </div>
 
                         <div class="card col-lg-8">
@@ -317,6 +119,7 @@
                             </table>
                         </div>
                     </div>
+                </div>          
             </section>
             <!-- code here -->
 
