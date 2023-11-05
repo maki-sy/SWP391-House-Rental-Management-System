@@ -42,7 +42,13 @@
                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
 
                 <div class="dropdown-menu">
-                    <% if(user.getRoleID() ==2 ) { %>
+                    <% if(user.getRoleID() == 1) { %>
+                    <!--Tenant services-->
+                    <a class="dropdown-item " href="wishlist?service=view">My wishlist</a>
+                    <a class="dropdown-item " href="order?service=viewOrder">My order</a>
+                    <% } %>
+                    
+                    <% if(user.getRoleID() == 2 ) { %>
                     <!--Landlord service-->
                     <a class="dropdown-item " href="ManageServicesPage">Manage services</a> 
                     <% } %>

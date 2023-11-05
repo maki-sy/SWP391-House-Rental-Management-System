@@ -119,22 +119,10 @@
                                         </li>
                                         <li
                                             class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=changePassword"><button type="button"
-                                                                                  class="btn btn-primary">Change
-                                                    password</button></a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="wishlist?service=view">
-                                                <button type="button" class="btn btn-primary">View my wish list</button>
+                                            <a href="Profile?service=changePassword">
+                                                <button type="button" class="btn btn-primary">Change password</button>
                                             </a>
                                         </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="order?service=viewOrder"><button type="button" class="btn btn-primary">My Order</button></a>
-                                        </li>
-
-
                                     </ul>
                                 </div>
                             </div>
