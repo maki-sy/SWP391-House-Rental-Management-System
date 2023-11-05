@@ -272,7 +272,9 @@
                                     <label for="amount"><i class="fas fa-money-check"></i> Amount to transfer</label>
                                     <input type="number" class="form-control rounded-0" id="amount" name="amount" placeholder="Amount of point" required>
                                 </div>
+                                <% if(request.getAttribute("msg") != null) { %>
                                 <p class="alert alert-danger">${msg}</p>
+                                <% } %>
                             </div>
                             <!-- /.card-body -->
 

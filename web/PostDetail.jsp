@@ -302,7 +302,7 @@
                                         }
                                     </script>
 
-                                    <% if(user!=null){ %>
+                                    <% if(user != null && user.getRoleID() == 1){ %>
                                     <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
                                     <a><button class="btn btn-primary" onclick="openForm()">Order</button></a>
 
@@ -318,7 +318,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <%} else {%>
+                                    <%} else if(user == null){%>
                                     <a href="login"><button type="button" class="btn btn-primary">Create an Order</button></a>
                                     <%}%>
 

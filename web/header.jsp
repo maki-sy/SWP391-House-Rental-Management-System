@@ -42,8 +42,22 @@
                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My profile</a>
 
                 <div class="dropdown-menu">
-                    <a class="dropdown-item " href="ManageServicesPage">Manage services</a>
+                    <% if(user.getRoleID() == 1) { %>
+                    <!--Tenant services-->
+                    <a class="dropdown-item " href="wishlist?service=view">My wishlist</a>
+                    <a class="dropdown-item " href="order?service=viewOrder">My order</a>
+                    <% } %>
+                    
+                    <% if(user.getRoleID() == 2 ) { %>
+                    <!--Landlord service-->
+                    <a class="dropdown-item " href="ManageServicesPage">Manage services</a> 
+                    <% } %>
+                    
+                    <% if(user.getRoleID() != 3 ) { %>
+                    <!--Manage account for Landlord and Tenant-->
                     <a class="dropdown-item " href="Profile?service=displayProfile">Manage account</a>
+                    <% } %>
+                    
                     <a class="dropdown-item " href="login?type=logout">Logout</a>
                 </div>
             </li>
@@ -54,8 +68,10 @@
                 data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
             <i class="bi bi-search"></i>
         </button>
-        <% if(user != null) { %>
-        <a href="${pageContext.request.contextPath}/ReportCenter?type=general"><i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i></a>
+        <% if(user != null && user.getRoleID()!=3) { %>
+        <a href="${pageContext.request.contextPath}/ReportCenter?type=general">
+            <i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i>
+        </a>
         <% } %>
     </div>
     <script>
