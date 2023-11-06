@@ -8,15 +8,11 @@
 <%@page import="model.Orders, DAO.OrdersDAO" %>
 <%@page import="java.util.ArrayList, java.sql.ResultSet"%>
 <%@ page import="model.Users" %>
-<%@ page import="service.OrderService" %>
+<%@ page import="service.OrderService"%>
+<%@ page import="service.PostService"%>
 <%@page import="model.PostRental, model.Landlord, model.PostImage, DAO.PostDAO"%>
 <!DOCTYPE html>
 <html>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="assets/css/order-style.css">
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -39,6 +35,11 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/customer-card.css" rel="stylesheet">
+    <script type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <style>
         .intro-title a {
             color: white; /* Thay đổi màu chữ thành đỏ (#ff0000) */
@@ -54,17 +55,15 @@
             OrderService service = new OrderService();
                 ArrayList<Orders> listOfOrders = (ArrayList<Orders>)request.getAttribute("TenantOrders");
     %>
-    <a class="btn btn-primary" href="Profile?service=displayProfile">Back</a>
     <%@include file="header.jsp" %>
-    <section class="ftco-section">
+    <section class="ftco-section" style="margin-top:140px">
         <div class="container">
-            <div class="row justify-content-center">
+            <div class="row justify-content-center">    
                 <div class="row">
                     <div class="col">
                         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
-                                <li class="breadcrumb-item"><a href="Profile?service=displayProfile">User Profile</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">My Order</li>
                             </ol>
                         </nav>
@@ -73,17 +72,18 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-wrap">
-                        <table class="table">
-                            <thead class="thead-primary">
+                    <div class="card col-lg-12" style="margin-top:40px">
+
+                        <table class="table table-hover text-center">
+                            <thead>
                                 <tr>
 
-                                    <th>Image</th>
-                                    <th>Property</th>
-                                    <th>Landlord</th>
-                                    <th>Date ordered</th>
-                                    <th>Status</th>
-                                    <th style="padding-right: 1px">Cancel</th>
+                                    <th class="col-lg-2" scope="col">Image</th>
+                                    <th class="col-lg-2" scope="col">Property</th>
+                                    <th class="col-lg-2" scope="col">Landlord</th>
+                                    <th class="col-lg-2" scope="col">Date ordered</th>
+                                    <th class="col-lg-2" scope="col">Status</th>
+                                    <th class="col-lg-1" scope="col"style="padding-right: 1px">Cancel</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,16 +100,26 @@
                 String landlordName = service.getLandlordFullName(landlordID);
                 String landlordEmail = service.getEmailFromLandlordByPostID(postID);
                 int order_id=order.getOrderId();
+                PostService po = new PostService();
+                String thumbnail = po.getImageThumbailsByPostID(postID);
                                 %>
-                                <tr class="alert" role="alert">
+                                <tr>
 
                                     <td>
-                                        <div class="img" style="background-image: url(images/product-1.png);"></div>
+                                        <div>
+                                            <img src="<%=thumbnail%>" alt="" class="img-a img-fluid img-thumbnail" style="overflow-clip-margin: content-box; overflow: clip;">
+                                        </div>
                                     </td>
                                     <td>
-                                        <div class="email">
+                                        <div>
                                             <span><%=postName%></span>
-                                            <a href="housedetail?id=<%=postID%>"><span style="color: blue; text-decoration: underline;">View details</span></a>
+                                            <div>
+                                                <a href="housedetail?id=<%=postID%>">
+                                                    <button class="w-25 btn btn-sm btn-primary">
+                                                        <ion-icon name="eye-outline"></ion-icon>
+                                                    </button>
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                     <td>
@@ -120,9 +130,9 @@
                                                 <input type="hidden" name="id" value="<%=landlordID%>">
                                                 <input type="hidden" name="email" value="<%=landlordEmail%>">
                                                 <input type="hidden" name="service" value="viewLandlord">
-                                                <span ><input style="color: blue; text-decoration: underline" type="submit" class="text-button" name="submit" value="View landlord details"></span>
+                                                <button type="submit" class="w-25 btn btn-sm btn-primary" name="submit" value="View landlord details">
+                                                    <ion-icon name="eye-outline"></ion-icon></button>
                                             </form>
-
                                             <%}else{%>
                                             <span>&nbsp;</span>
                                             <%}%>
@@ -138,13 +148,12 @@
                                     <td>
                                         <%if(status.equals("processing")){%>
                                         <a href="order?service=cancelOrder&id=<%=order_id%>">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                            <button type="button" class="w-100 btn btn-sm btn-primary">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </a>
                                         <%}%>  
                                     </td>
-
                                 </tr>
                                 <%
     }

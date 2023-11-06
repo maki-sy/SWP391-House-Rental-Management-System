@@ -98,7 +98,7 @@
                                     <tr>
                                         <th class="col-lg-1" scope="col">#</th>
                                         <th class="col-lg-auto" scope="col">Order ID</th>
-                                        <th class="col-lg-auto" scope="col">Tennant Name</th>
+                                        <th class="col-lg-auto" scope="col">Tenant Name</th>
                                         <th class="col-lg-auto" scope="col">Status</th>
                                         <th class="col-lg-auto" scope="col">Order date</th>
                                         <th class="col-lg-1" scope="col">View</th>
