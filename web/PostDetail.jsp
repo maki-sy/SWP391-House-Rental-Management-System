@@ -7,14 +7,18 @@
 <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
 <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
 
-<%@ page import="model.Users, service.PostService" %>
+<%@ page import="model.Users, service.PostService, service.WishlistService, service.OrderService" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
     Users user = session.getAttribute("user") == null ? null : (Users)session.getAttribute("user");
     PostService pService = new PostService();
+    WishlistService wService = new WishlistService();
+    OrderService oService = new OrderService();
 %>
-
+<--<!-- askdjkasdjkajsdljaldsjdadsdsa
+as
+asd-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,18 +26,16 @@
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <title>House Detail</title>
+        <title>House Details</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
         <!-- Favicons -->
         <link href="assets/img/favicon.png" rel="icon">
         <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
-        <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
         <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -95,6 +97,14 @@
                 outline: none;
                 box-shadow: none;
             }
+
+            .heart-button {
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+            }
+
         </style>
         <!-- =======================================================
         * Template Name: EstateAgency
@@ -210,6 +220,7 @@
             ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
             String location_name = (String) request.getAttribute("location_name"); 
             String postSale = (String) request.getAttribute("postSale"); 
+            
         %>
 
 
@@ -220,14 +231,26 @@
                     <div class="row">
                         <div class="col-md-12 col-lg-8">
                             <div class="title-single-box">
-                                <!--Wishlish-->
+                                <!--Wishlist-->
+
                                 <div style="display: flex; gap: 20px">
                                     <h1 class="title-single"><%=post.getName()%></h1>
-                                    <%if(user != null && user.getRoleID()==1){%>
-                                    <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="fa fa-heart" aria-hidden="true" style="color:pink;font-size:30px"></i></a>
-                                        <%}%>
+                                    <%if(user != null && user.getRoleID()==1){
+                                          if(wService.checkExist(user.getId(),post.getId())){
+                                    %>
+                                    <form action="wishlist?service=deleteheart" method="POST">
+                                        <input type="hidden" name="wishId" value="<%= post.getId() %>">
+                                        <button type="submit" class="heart-button">
+                                            <i class="fa fa-heart" style="color:pink;font-size:35px;padding-top: 6px" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+
+                                    <%} else{%>
+                                    <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="far fa-heart" style="color:pink;font-size:35px;padding-top: 6px"></i></a>
+                                        <%}
+                            }%>
                                 </div>
-                                <!--Wishlish-->
+                                <!--Wishlist-->
                                 <span class="color-text-a"><%=post.getAddress()%></span>
                             </div>
                         </div>
@@ -256,8 +279,8 @@
             <!-- ======= Property Single ======= -->
             <section class="property-single nav-arrow-b">
                 <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div id="property-single-carousel" class="swiper">
                                 <div class="swiper-wrapper">
                                     <%for(String imageUrl : thumbnailList){%>
@@ -269,91 +292,108 @@
                             </div>
                             <div class="property-single-carousel-pagination carousel-pagination"></div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="property-price foo">
+                                <div class="card-header-c d-flex">
+                                    <div class="card-box-ico"style="border-radius:20px">
+                                        <span class="bi bi-cash" style="color: green"></span>
+                                        <span style="font-size:50px">$<%= (postSale.equals("Free")) ? postSale : String.format("%.1f", Double.parseDouble(postSale)) %></span>
+                                    </div>
+                                    <!--ORDER FORM    !!!-->
+                                    <div style="margin-top:8%;">
+                                        <% if(user != null && user.getRoleID() == 1){ %>
+                                        <%if(oService.isOrdered(user.getId(), post.getId())==1){%>
+                                        <button class="btn btn-primary" style="padding:20px;background: gray; margin-left: 100px" readonly>Ordered <i class="fas fa-home"></i></button>
+                                            <%} else if(oService.isOrdered(user.getId(), post.getId())==2){%>
+                                        <button class="btn btn-primary" style="padding:20px;background: gray; margin-left: 100px" readonly>Pending... <i class="fas fa-home"></i></button>
+                                            <%}else{%>                                    
+                                        <a><button style="padding:20px;margin-left: 100px" class="btn btn-primary" onclick="openForm()">Order <i class="fas fa-home"></i></button></a>
+                                        <%}%>
+                                    </div>
+                                    <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+                                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                                            <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">                                               
+                                                <h1 style="text-align: center">Order</h1>                                           
+                                                <p>Content of Orders.........</p>
+                                                <input type="hidden" name="postid" value="<%=post.getId()%>">
+                                                <div>
+                                                    <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
+                                                    <input type="hidden" name="service" value="createOrder">
+                                                    <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <%} else if(user == null){%>
+                                    <div style="">                                        
+                                        <a href="login"><button style="margin-left: 120px;padding: 20px" class="btn btn-primary">Order <i class="fas fa-home"></i></button></a>    
+                                    </div>
+                                    <%}%>
+                                </div>
+
+                                
+                            </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="title-box-d section-t4">
+                                            <h3 class="title-d">Quick Summary</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="summary-list">
+                                    <ul class="list">
+
+                                        <li class="d-flex justify-content-between">
+                                            <strong>Address:</strong>
+                                            <span><%=post.getAddress()%></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between">
+                                            <strong>Location:</strong>
+                                            <span><%=location_name%></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between">
+                                            <strong>Area:</strong>
+                                            <span><%=post.getArea()%>m
+                                                <sup>2</sup>
+                                            </span>
+                                        </li>
+                                        <li class="d-flex justify-content-between">
+                                            <strong>Beds:</strong>
+                                            <span><%=post.getNumOfBeds()%></span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                        </div>
+                                
                     </div>
 
 
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="row justify-content-between">
+                            <div class="row justify-content-between" style="margin-top:5%">
+                                <div class="col-md-12 col-lg-12 section-md-t3 text-center">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="title-box-d">
+                                                <h3 class="title-d">Property Description</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="property-description">
+                                        <p class="description color-text-a">
+                                            <%=post.getDesscription()%>
+                                        </p>
+                                    </div>
+                                </div>
                                 <div class="col-md-5 col-lg-4">
-                                    <div class="property-price d-flex justify-content-center foo">
-                                        <div class="card-header-c d-flex">
-                                            <div class="card-box-ico">
-                                                <span class="bi bi-cash">$</span>
-                                            </div>
 
-                                            <div class="card-title-c align-self-center">
-                                                <h5 class="title-c">
-                                                    <%= (postSale.equals("Free")) ? postSale : String.format("%.1f", Double.parseDouble(postSale)) %>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <script>
-                                        function openForm() {
-                                            document.getElementById("myForm").style.display = "block";
-                                        }
-                                        function closeForm() {
-                                            document.getElementById("myForm").style.display = "none";
-                                        }
-                                        function submitOrder() {
-                                            alert("Order has been successfully submitted to the landlord.");
-                                        }
-                                    </script>
 
-                                    <% if(user != null && user.getRoleID() == 1){ %>
-                                    <!--ORDER FORM    !!!                           <a href="order?postid=//postID"><button type="button" class="btn btn-primary">Create an Order</button>-->
-                                    <a><button class="btn btn-primary" onclick="openForm()">Order</button></a>
 
-                                    <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-                                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                                            <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">
-                                                <h1 style="text-align: center">Order</h1>
-                                                <p>Content of Orders.........</p>
-                                                <input type="hidden" name="postid" value="<%=post.getId()%>">
-                                                <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
-                                                <input type="hidden" name="service" value="createOrder">
-                                                <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <%} else if(user == null){%>
-                                    <a href="login"><button type="button" class="btn btn-primary">Create an Order</button></a>
-                                    <%}%>
 
-                                    <div class="property-summary">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="title-box-d section-t4">
-                                                    <h3 class="title-d">Quick Summary</h3>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="summary-list">
-                                            <ul class="list">
 
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Address:</strong>
-                                                    <span><%=post.getAddress()%></span>
-                                                </li>
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Location:</strong>
-                                                    <span><%=location_name%></span>
-                                                </li>
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Area:</strong>
-                                                    <span><%=post.getArea()%>m
-                                                        <sup>2</sup>
-                                                    </span>
-                                                </li>
-                                                <li class="d-flex justify-content-between">
-                                                    <strong>Beds:</strong>
-                                                    <span><%=post.getNumOfBeds()%></span>
-                                                </li>
-
-                                            </ul>
-                                        </div>
+                                    <div class="property-summary">                                      
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="title-box-d section-t4">
@@ -402,20 +442,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-7 col-lg-7 section-md-t3">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="title-box-d">
-                                                <h3 class="title-d">Property Description</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="property-description">
-                                        <p class="description color-text-a">
-                                            <%=post.getDesscription()%>
-                                        </p>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
 
@@ -439,6 +466,17 @@
 
         <!-- Template Main JS File -->
         <script src="assets/js/main.js"></script>
+        <script>
+                                                        function openForm() {
+                                                            document.getElementById("myForm").style.display = "block";
+                                                        }
+                                                        function closeForm() {
+                                                            document.getElementById("myForm").style.display = "none";
+                                                        }
+                                                        function submitOrder() {
+                                                            alert("Order has been successfully submitted to the landlord.");
+                                                        }
+        </script>
 
     </body>
 

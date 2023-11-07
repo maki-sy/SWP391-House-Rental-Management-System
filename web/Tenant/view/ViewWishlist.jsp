@@ -31,6 +31,10 @@
 
         <!-- Template Main CSS File -->
         <link href="<%= request.getContextPath() %>/assets/css/style.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="./assets/css/login-style.css">
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     </head>
     <body>
         <!-- ======= JSP ======= -->
@@ -44,7 +48,7 @@
         <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
-        
+
         <!-- End Property Search Section -->
 
         <!-- ======= Header/Navbar ======= -->
@@ -52,7 +56,7 @@
         <!-- ======= Header/Navbar ======= -->
 
         <main id="main">
-            <section class="section-news section-t3" style="margin-top:50px">
+            <section class="section-news section-t3" style="margin-top:40px">
                 <div class="container py-5">
                     <div class="row">
                         <div class="col">
@@ -67,72 +71,35 @@
 
                     <% if(user != null){ %>
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="card mb-4">
-                                <div class="card-body text-center">
-                                    <img src="<%=session.getAttribute("userAvatar")%>" alt="avatar"
-                                         class="rounded-circle img-fluid" style="width: 150px;">
-                                    <!--<h5 class="my-3"><%--=tenant.getFirstName()--%>&nbsp;<%--=tenant.getLastName()--%></h5>-->
-                                    <p class="text-muted mb-1"><%=user.getEmail()%></p>
-                                    <p class="text-muted mb-4">*******</p>
-                                    <div class="d-flex justify-content-center mb-2">
-                                        <button type="button" class="btn btn-primary"
-                                                disabled><%--=role_name--%>Tenant</button>
-                                        <button type="button" class="btn btn-outline-primary ms-1"
-                                                disabled><%=user.getStatus()%></button>
-                                    </div>
-                                    
-                                    <form action="uploadavt" method="post" enctype="multipart/form-data">
-                                        <div class="input-group mb-3">
-                                            <input type="file" name="avatar" class="form-control" accept="image/*">
-                                        </div>
-                                        <button class="btn btn-primary" type="submit">Upload/Update Avatar</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="card mb-4 mb-lg-0">
-                                <div class="card-body p-0">
-                                    <ul class="list-group list-group-flush rounded-3">
-
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=updateProfile">
-                                                <button type="button" class="btn btn-primary">Edit public information</button>
-                                            </a>
-                                        </li>
-                                        <li
-                                            class="list-group-item justify-content-between align-items-center">
-                                            <a href="Profile?service=changePassword">
-                                                <button type="button" class="btn btn-primary">Change password</button>
-                                            </a>
-                                        </li>
 
 
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-8">
+                        <div class="col-lg-12 text-center">
 
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th class="col-lg-1" scope="col">#</th>
-                                        <th class="col-lg-auto" scope="col">Post title</th>
+                                        <th class="col-lg-2" scope="col">Image</th>
+                                        <th class="col-lg-3" scope="col">Post title</th>
                                         <th class="col-lg-1" scope="col">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%int count=0; for(Wishlist w : wishes) {%>
+                                    <%int count=0; for(Wishlist w : wishes) {
+                                    %>
                                     <tr>
-                                        <th scope="row">
+                                        <th style="height: 250px;line-height: 250px;" scope="row">
                                             <%= ++count %>
                                         </th>
                                         <td>
+                                            <div>
+                                                <img src="<%=pService.getImageThumbailsByPostID(w.getPostId())%>" alt=""  width="200" height="200" class="img-a img-fluid img-thumbnail">
+                                            </div>
+                                        </td>
+                                        <td style="height: 250px;line-height: 250px;">
                                             <a href="housedetail?id=<%= w.getPostId() %>"><%= pService.getPostName(w.getPostId()) %></a>
                                         </td>
-                                        <td>
+                                        <td style="height: 250px;line-height: 250px;">
                                             <form action="wishlist?service=delete" method="POST">
                                                 <input type="hidden" name="wishId" value="<%= w.getId() %>">
                                                 <button type="submit" class="w-100 btn btn-sm btn-primary">

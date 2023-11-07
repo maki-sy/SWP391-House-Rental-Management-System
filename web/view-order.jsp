@@ -36,6 +36,7 @@
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/customer-card.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script type="module"
     src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule
@@ -110,7 +111,7 @@
                                             <img src="<%=thumbnail%>" alt="" class="img-a img-fluid img-thumbnail" style="overflow-clip-margin: content-box; overflow: clip;">
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="padding-top:80px">
                                         <div>
                                             <span><%=postName%></span>
                                             <div>
@@ -122,7 +123,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td style="padding-top:80px;padding-bottom: 80px;">
                                         <div>
                                             <span><%=landlordName%></span>
                                             <%if(status.equals("approved")){%>
@@ -139,13 +140,13 @@
                                         </div>
                                     </td>
 
-                                    <td>
+                                    <td style="padding-top:80px;padding-bottom: 80px;">
                                         <%=order_date%>
                                     </td>
-                                    <td>
+                                    <td style="padding-top:80px;padding-bottom: 80px;">
                                         <%=status%>
                                     </td>
-                                    <td>
+                                    <td style="padding-top:80px;padding-bottom: 80px;">
                                         <%if(status.equals("processing")){%>
                                         <a href="order?service=cancelOrder&id=<%=order_id%>">
                                             <button type="button" class="w-100 btn btn-sm btn-primary">

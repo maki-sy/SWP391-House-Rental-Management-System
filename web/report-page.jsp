@@ -36,7 +36,20 @@
         String type = (String)request.getAttribute("report_type");
     %>  
     <%@include file="header.jsp" %>
-    <div style="margin-top: 9rem">
+    <div class="container" style="margin-top: 9rem">
+        <div class="row justify-content-center">
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="trang-chu">Home</a></li>
+                            <li class="breadcrumb-item"><a href="ReportCenter?type=general">Report Center</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">My Report</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
         <a href="ReportCenter?type=viewreport"><button class="btn btn-primary">View previous report</button></a>
         <%
             if(user!=null){
@@ -72,7 +85,7 @@
         <form method="post" id="reportform" action="ReportCenter" style="display: flex; flex-direction: column; align-items: center;"<%--onSubmit="return validateForm();""--%>>
             <div style="max-width: 400px;">
             </div>
-            <div style="padding-bottom: 18px;font-size : 24px; color: red; text-align: center; font-weight: bold">Repsort An Issue!</div>
+            <div style="padding-bottom: 18px;font-size : 24px; color: red; text-align: center; font-weight: bold">Report An Issue!</div>
             <div style="padding-bottom: 18px;">Reported by<span style="color: red;"> *</span><br/>
                 <input type="text" style="width: 650px;" name="reporter_email" value="<%=user.getEmail()%>" readonly style="max-width : 450px;" class="form-control"/>
             </div>
@@ -103,123 +116,120 @@
             <div style="padding-bottom: 18px;"><input name="Submit" value="Submit" type="submit"  class="btn btn-primary"/></div>
         </form>
         <%}
-}%>
+        }%>
     </div>
-    <script>
-        function showInput(value) {
-            var reportDiv = document.getElementById("reportDiv");
-            var personDiv = document.getElementById("personDiv");
+</div>
+<script>
+    function showInput(value) {
+        var reportDiv = document.getElementById("reportDiv");
+        var personDiv = document.getElementById("personDiv");
 
-            // Hide both divs initially
-            reportDiv.style.display = "none";
-            personDiv.style.display = "none";
-            // Clear both input fields initially
-            reportDiv.querySelector('input').value = "";
-            personDiv.querySelector('input').value = "";
+        // Hide both divs initially
+        reportDiv.style.display = "none";
+        personDiv.style.display = "none";
+        // Clear both input fields initially
+        reportDiv.querySelector('input').value = "";
+        personDiv.querySelector('input').value = "";
 
-            if (value === "Fraudulent Post") {
-                reportDiv.style.display = "block"; // Show the div
-            } else if (value === "User Complaint") {
-                personDiv.style.display = "block"; // Show the div
-            }
+        if (value === "Fraudulent Post") {
+            reportDiv.style.display = "block"; // Show the div
+        } else if (value === "User Complaint") {
+            personDiv.style.display = "block"; // Show the div
         }
-    </script>
-    <script>
-        function isValidEmail(input) {
-            var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return emailRegex.test(input);
-        }</script>
-    <script>
-        function isValidUrl(url) {
-            var urlpattern = "http://localhost:8080/SWP391-House-Rental-Management/housedetail?id=";
-            return url.startsWith(urlpattern);
-        }
-    </script>
-    <script>
-        document.getElementById('reportform').addEventListener('submit', function (e) {
-            var categories = document.getElementById('categories');
-            var reportInput = document.getElementById("data_2");
-            var personInput = document.getElementById("data_3");
+    }
+</script>
+<script>
+    function isValidEmail(input) {
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(input);
+    }</script>
+<script>
+    function isValidUrl(url) {
+        var urlpattern = "http://localhost:8080/SWP391-House-Rental-Management/housedetail?id=";
+        return url.startsWith(urlpattern);
+    }
+</script>
+<script>
+    document.getElementById('reportform').addEventListener('submit', function (e) {
+        var categories = document.getElementById('categories');
+        var reportInput = document.getElementById("data_2");
+        var personInput = document.getElementById("data_3");
 
-            if (categories.selectedIndex === 0) {
-                alert('Please select a category.');
-                e.preventDefault();
-            } 
-            else {
-                if (categories.value === "Fraudulent Post") {
-                    if (reportInput.value.trim() === "") {
-                        alert("Please enter the relative URL of the post.");
-                        e.preventDefault();
-                    }
-                    else
-                        if (!isValidUrl(reportInput.value.trim())) {
-                            alert("Please enter a valid URL.");
-                            e.preventDefault();
-                        } 
-                        else {
-                            alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
-                        }
-                }
-            else {
-            if (categories.value === "User Complaint") {
-                if (personInput.value.trim() === "") {
-                    alert("Please enter the email of the reported person.");
+        if (categories.selectedIndex === 0) {
+            alert('Please select a category.');
+            e.preventDefault();
+        } else {
+            if (categories.value === "Fraudulent Post") {
+                if (reportInput.value.trim() === "") {
+                    alert("Please enter the relative URL of the post.");
                     e.preventDefault();
                 } else
-                    if (!isValidEmail(personInput.value.trim())) {
-                    alert("Please enter a valid email.");
+                if (!isValidUrl(reportInput.value.trim())) {
+                    alert("Please enter a valid URL.");
                     e.preventDefault();
                 } else {
                     alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
                 }
-            }
-            else{
-                alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
-            }
-        }
-    }});
-    </script>
-
-    <!--        <form action="//submit.form" id="ReportProblem100" method="post" onsubmit="return ValidateForm(this);">
-    <script type="text/javascript">
-    function ValidateForm(frm) {
-    if (frm.ProblemDescription.value == "") { alert('Please enter describe the problem.'); frm.ProblemDescription.focus(); return false; }
-    if (frm.Name.value == "") { alert('Name is required.'); frm.Name.focus(); return false; }
-    if (frm.FromEmailAddress.value == "") { alert('Email address is required.'); frm.FromEmailAddress.focus(); return false; }
-    if (frm.FromEmailAddress.value.indexOf("@") < 1 || frm.FromEmailAddress.value.indexOf(".") < 1) { alert('Please enter a valid email address.'); frm.FromEmailAddress.focus(); return false; }
-    return true; }
-    </script>-->
-
-    <!--    <select id="mySelect" onchange="myFunction()">
-            <option value="">Select a fruit:</option>
-            <option value="apple">Apple</option>
-            <option value="orange">Orange</option>
-            <option value="pineapple">Pineapple</option>
-            <option value="banana">Banana</option>
-        </select>
-    
-        <p id="demo"></p>
-    
-         Create the input element once and hide it initially 
-        <input id="myInput" type="text" style="display: none;">
-    
-        <script>
-            function myFunction() {
-                var x = document.getElementById("mySelect").value;
-                document.getElementById("demo").innerHTML = "You selected: " + x;
-    
-                // Get the existing input element
-                var input = document.getElementById("myInput");
-    
-                // If apple or orange is selected, update the input value
-                if (x === "apple" || x === "orange") {
-                    input.value = x;
-                    input.style.display = "block"; // Show the input field
+            } else {
+                if (categories.value === "User Complaint") {
+                    if (personInput.value.trim() === "") {
+                        alert("Please enter the email of the reported person.");
+                        e.preventDefault();
+                    } else
+                    if (!isValidEmail(personInput.value.trim())) {
+                        alert("Please enter a valid email.");
+                        e.preventDefault();
+                    } else {
+                        alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
+                    }
                 } else {
-                    input.value = "";
-                    input.style.display = "none"; // Hide the input field
+                    alert('Your report has been successfully submitted, please wait for the admin to process your report and respond to you in 1-3 days.');
                 }
             }
-        </script>-->
+        }
+    });
+</script>
+
+<!--        <form action="//submit.form" id="ReportProblem100" method="post" onsubmit="return ValidateForm(this);">
+<script type="text/javascript">
+function ValidateForm(frm) {
+if (frm.ProblemDescription.value == "") { alert('Please enter describe the problem.'); frm.ProblemDescription.focus(); return false; }
+if (frm.Name.value == "") { alert('Name is required.'); frm.Name.focus(); return false; }
+if (frm.FromEmailAddress.value == "") { alert('Email address is required.'); frm.FromEmailAddress.focus(); return false; }
+if (frm.FromEmailAddress.value.indexOf("@") < 1 || frm.FromEmailAddress.value.indexOf(".") < 1) { alert('Please enter a valid email address.'); frm.FromEmailAddress.focus(); return false; }
+return true; }
+</script>-->
+
+<!--    <select id="mySelect" onchange="myFunction()">
+        <option value="">Select a fruit:</option>
+        <option value="apple">Apple</option>
+        <option value="orange">Orange</option>
+        <option value="pineapple">Pineapple</option>
+        <option value="banana">Banana</option>
+    </select>
+
+    <p id="demo"></p>
+
+     Create the input element once and hide it initially 
+    <input id="myInput" type="text" style="display: none;">
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("mySelect").value;
+            document.getElementById("demo").innerHTML = "You selected: " + x;
+
+            // Get the existing input element
+            var input = document.getElementById("myInput");
+
+            // If apple or orange is selected, update the input value
+            if (x === "apple" || x === "orange") {
+                input.value = x;
+                input.style.display = "block"; // Show the input field
+            } else {
+                input.value = "";
+                input.style.display = "none"; // Hide the input field
+            }
+        }
+    </script>-->
 
 </html>
