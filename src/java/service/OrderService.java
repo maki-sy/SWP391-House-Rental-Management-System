@@ -33,13 +33,26 @@ public class OrderService {
     public boolean isSpamOrders(Orders order, int tenantID) {
         List<Orders> list = getOrdersOfTenant(tenantID);
         for (Orders ord : list) {
-            if(ord.getTenantId()==order.getTenantId()&&ord.getPostId()==order.getPostId()){
-                if(!"Rejected".equals(ord.getStatus())){
+            if (ord.getTenantId() == order.getTenantId() && ord.getPostId() == order.getPostId()) {
+                if (!"Rejected".equals(ord.getStatus())) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public int isOrdered(int tenantID, int postID) {
+        List<Orders> list = getOrdersOfTenant(tenantID);
+        for (Orders ord : list) {
+            if (ord.getTenantId() == tenantID && ord.getPostId() == postID && ord.getStatus().equals("approved")) {
+                return 1;
+            }
+            if (ord.getTenantId() == tenantID && ord.getPostId() == postID && ord.getStatus().equals("processing")) {
+                return 2;
+            }
+        }
+        return 3;
     }
 
     public Landlord getLandlordByPostID(int postID) {
@@ -60,28 +73,31 @@ public class OrderService {
         String landlord_email = user.getEmail();
         return landlord_email;
     }
-    public void deleteOrder(int id){
+
+    public void deleteOrder(int id) {
         OrdersDAO dao = new OrdersDAO();
         dao.deleteOrder(id);
     }
-    public Landlord getLandlordByID(int landlordID){
-        LandlordDAO dao=new LandlordDAO();
+
+    public Landlord getLandlordByID(int landlordID) {
+        LandlordDAO dao = new LandlordDAO();
         return dao.getLandlordByUserID(landlordID);
     }
-    public String getLandlordFullName(int landlordID){
-        LandlordDAO dao=new LandlordDAO();
-        Landlord ll=dao.getLandlordByUserID(landlordID);
+
+    public String getLandlordFullName(int landlordID) {
+        LandlordDAO dao = new LandlordDAO();
+        Landlord ll = dao.getLandlordByUserID(landlordID);
         String name;
-        name=ll.getFirstName()+" "+ll.getLastName();
-        return name;      
+        name = ll.getFirstName() + " " + ll.getLastName();
+        return name;
     }
-    public static void main(String[] args){
-        OrderService os=new OrderService();
+
+//    public static void main(String[] args) {
+//        OrderService os = new OrderService();
 //        ArrayList<Orders> list = os.getOrdersOfTenant(18);
-//        for(int i=0;i<list.size();i++)
-//            System.out.println(list.get(i).getOrderId()+" "+list.get(i).getTenantId()+" "+list.get(i).getLandlordId()+" "+list.get(i).getPostId()+" "+list.get(i).getStatus()+" "+list.get(i).getOrder_date());
-//        Landlord ll=os.getLandlordByID(6);
-//        System.out.println(ll.getFirstName());
-        System.out.println(os.getLandlordFullName(6));
-    }
+//        for (int i = 0; i < list.size(); i++) {
+//            System.out.println(list.get(i).getOrderId() + " " + list.get(i).getTenantId() + " " + list.get(i).getLandlordId() + " " + list.get(i).getPostId() + " " + list.get(i).getStatus() + " " + list.get(i).getOrder_date());
+//        }
+//        System.out.println(os.isOrdered(18, 8));
+//    }
 }

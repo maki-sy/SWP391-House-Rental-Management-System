@@ -40,7 +40,7 @@ public class WishlistController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String service = request.getParameter("service");
-        
+
         HttpSession session = request.getSession();
         Users loggedUser = (Users) session.getAttribute("user");
         PostService postService = new PostService();
@@ -55,7 +55,7 @@ public class WishlistController extends HttpServlet {
             return;
         } else { // user logged in
             try {
-                
+
                 switch (service) {
                     case "add":
                         String postId = request.getParameter("id");
@@ -66,10 +66,10 @@ public class WishlistController extends HttpServlet {
                             request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
                             return;
                         }
-                        
+
                         // add post to user's wishlist
                         uService.addToWishlist(loggedUser.getId(), Integer.parseInt(postId));
-                        response.sendRedirect("housedetail?id="+postId); // TODO: use JS
+                        response.sendRedirect("housedetail?id=" + postId); // TODO: use JS
                         break;
                     case "view":
                         List<Wishlist> wishes = uService.getWishlistByUserID(loggedUser.getId());
@@ -77,13 +77,13 @@ public class WishlistController extends HttpServlet {
                         request.getRequestDispatcher("Tenant/view/ViewWishlist.jsp").forward(request, response);
                         return;
                 }
-                
+
             } catch (NumberFormatException numberEx) {
                 System.out.println("PostID is not a number, catch you");
                 request.setAttribute("msg", "Sorry, the post you are looking for is not valid");
                 request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
             }
-            
+
         }
     }
 
@@ -104,10 +104,9 @@ public class WishlistController extends HttpServlet {
             response.sendRedirect("trang-chu");
             return;
         }
-        
+
         switch (service) {
             case "delete":
-                
                 try {
                 int wishId = Integer.parseInt(request.getParameter("wishId"));
                 uService.deleteWish(wishId);
@@ -119,7 +118,12 @@ public class WishlistController extends HttpServlet {
                 request.getRequestDispatcher("404-error-page.jsp").forward(request, response);
                 return;
             }
-            
+            case "deleteheart":
+                int wishId = Integer.parseInt(request.getParameter("wishId"));
+                    System.out.println(wishId);
+                uService.deleteWish(wishId);
+                response.sendRedirect("housedetail?id=" + wishId);
+                break;
         }
     }
 }
