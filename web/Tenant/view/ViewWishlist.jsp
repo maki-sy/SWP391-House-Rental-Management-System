@@ -100,9 +100,9 @@
                                             <a href="housedetail?id=<%= w.getPostId() %>"><%= pService.getPostName(w.getPostId()) %></a>
                                         </td>
                                         <td style="height: 250px;line-height: 250px;">
-                                            <form action="wishlist?service=delete" method="POST">
+                                            <form class="confirmForm" action="wishlist?service=delete" method="POST">
                                                 <input type="hidden" name="wishId" value="<%= w.getId() %>">
-                                                <button type="submit" class="w-100 btn btn-sm btn-primary">
+                                                <button type="submit" class="w-100 btn btn-sm btn-primary" onclick="submitDelete()">
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
                                             </form>
@@ -295,4 +295,27 @@ Purchase the pro version with working PHP/AJAX contact form: https://bootstrapma
         <script src="<%= request.getContextPath() %>/assets/js/main.js"></script>
 
     </body>
+    <script>
+
+//            function submitDelete() {
+//                alert("The post has been removed from your wishlist.");
+//            }
+//            document.getElementById("myForm").addEventListener("submit", function(event){
+//  var confirmation = confirm("Are you sure you want to submit?");
+//  if (confirmation == false) {
+//    // Prevent the form from submitting
+//    event.preventDefault();
+//  }
+//});
+                                                    var forms = document.getElementsByClassName("confirmForm");
+                                                    for (var i = 0; i < forms.length; i++) {
+                                                        forms[i].addEventListener("submit", function (event) {
+                                                            var confirmation = confirm("Are you sure you want to submit?");
+                                                            if (confirmation == false) {
+                                                                // Prevent the form from submitting
+                                                                event.preventDefault();
+                                                            }
+                                                        });
+                                                    }
+    </script>
 </html>
