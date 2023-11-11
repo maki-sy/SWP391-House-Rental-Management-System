@@ -7,7 +7,7 @@
 <%@page import="model.PostRental, model.PostImage, DAO.PostDAO, model.PropertyType, model.PropertyLocation" %>
 <%@page import="java.util.List, java.sql.ResultSet, java.util.ArrayList"%>
 
-<%@ page import="model.Users, service.PostService, service.WishlistService, service.OrderService" %>
+<%@ page import="model.Users, service.PostService, service.WishlistService, service.OrderService,service.UserService" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
@@ -15,10 +15,9 @@
     PostService pService = new PostService();
     WishlistService wService = new WishlistService();
     OrderService oService = new OrderService();
+    UserService uService = new UserService();
 %>
-<--<!-- askdjkasdjkajsdljaldsjdadsdsa
-as
-asd-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,7 +103,30 @@ asd-->
                 padding: 0;
                 cursor: pointer;
             }
-
+            .inputtag{
+                width: 100%; /* Full width */
+                padding: 12px; /* Some padding */
+                border: 1px solid #ccc; /* Gray border */
+                border-radius: 4px; /* Rounded borders */
+                box-sizing: border-box; /* Make sure that padding and width stays in place */
+                margin-top: 6px; /* Add a top margin */
+                margin-bottom: 16px; /* Bottom margin */
+                resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+                color: green;
+                font-size: larger;
+            }
+            .inputtaghalf{
+                width: 30%; /* Full width */
+                padding: 12px; /* Some padding */
+                border: 1px solid #ccc; /* Gray border */
+                border-radius: 4px; /* Rounded borders */
+                box-sizing: border-box; /* Make sure that padding and width stays in place */
+                margin-top: 6px; /* Add a top margin */
+                margin-bottom: 16px; /* Bottom margin */
+                resize: vertical; /* Allow the user to vertically resize the textarea (not horizontally) */
+                color: green;
+                font-size: larger;
+            }
         </style>
         <!-- =======================================================
         * Template Name: EstateAgency
@@ -220,6 +242,7 @@ asd-->
             ArrayList<String> thumbnailList = (ArrayList<String>) request.getAttribute("thumbnailList");
             String location_name = (String) request.getAttribute("location_name"); 
             String postSale = (String) request.getAttribute("postSale"); 
+            String thumbnail = pService.getImageThumbailsByPostID(post.getId());
             
         %>
 
@@ -311,22 +334,55 @@ asd-->
                                                 <%}%>
                                     </div>
                                     <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-                                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                                        <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 3px solid #888; width: 65%;">
                                             <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">                                               
-                                                <h1 style="text-align: center">Order</h1>                                           
-                                                <label for="email">Email:</label>
-                                                <input type="email" id="email" name="email" required>
-                                                <label for="postname">Post Name:</label>
-                                                <input type="text" id="postname" name="postname" required>
-                                                <label for="date">Date Ordered:</label>
-                                                <input type="date" id="date" name="date" required>
-                                                <label for="rentcost">Rent Cost:</label>
-                                                <input type="number" id="rentcost" name="rentcost" required>
-                                                <label for="landlordname">Landlord Name:</label>
-                                                <input type="text" id="landlordname" name="landlordname" required>
-                                                <input type="hidden" name="postid" value="<%=post.getId()%>">
-                                                <input type="hidden" name="postid" value="<%=post.getId()%>">
-                                                <div>
+                                                <h1 style="text-align: center; font-family: cursive; margin-bottom: 40px">Order for: <%=post.getName()%></h1>    
+                                                <div style="display:flex">
+                                                    <div style="margin-right: 100px">
+                                                        <img src="<%=thumbnail%>" alt="" class="img-a img-fluid img-thumbnail" style="overflow-clip-margin: content-box; overflow: clip;">
+                                                    </div>
+                                                    <div style="display: block; font-size: 20px;">
+                                                        <div>
+                                                            <label>First Name:</label>
+                                                            <input class="inputtaghalf" value="<%=uService.getFirstName(user.getId())%>" readonly disabled>
+                                                            <label>Last Name:</label>
+                                                            <input class="inputtaghalf" value="<%=uService.getLastName(user.getId())%>" readonly disabled>
+                                                        </div>
+                                                        <div>
+                                                            <label for="email">Email:</label>
+                                                            <input class="inputtag" value="<%=user.getEmail()%>" readonly disabled>
+                                                        </div>
+                                                        <div>
+                                                            <label>Sent:</label>
+                                                        </div>
+                                                        <p style="display: none" id="datetime"></p>
+                                                        <input class="inputtag" type="text" id="datetimeInput" readonly>
+
+
+                                                        <script>
+                                                            var dt = new Date();
+                                                            document.getElementById("datetime").innerHTML = dt.toLocaleString();
+                                                            document.getElementById("datetimeInput").value = dt.toLocaleString();
+                                                        </script>
+                                                        <div>
+                                                            <label for="rentcost">Rent: $</label>
+                                                            <input class="inputtag" type="number" value="<%= (postSale.equals("Free")) ? postSale : String.format("%.1f", Double.parseDouble(postSale)) %>" readonly disabled>
+                                                        </div>
+                                                        <div>
+                                                            <label for="landlordname">Landlord:</label>
+                                                            <input class="inputtag" type="text" value="<%=oService.getLandlordFullName(post.getLandlord_id())%>" readonly disabled>
+                                                        </div>
+                                                        <div>
+                                                            <i class='fas fa-exclamation-triangle' style="color: yellow"></i>
+                                                        </div>
+                                                        <div>
+                                                            <p style="font-size:smaller;color:green">By submitting this form, the landlord can get access to your personal information. You can contact the landlord only when your order has been approved.</p>
+                                                        </div>
+                                                            
+                                                        <input type="hidden" name="postid" value="<%=post.getId()%>">
+                                                    </div>
+                                                </div>
+                                                <div style="margin-top:20px">
                                                     <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
                                                     <input type="hidden" name="service" value="createOrder">
                                                     <button class="btn btn-primary"type="button" onclick="closeForm()">Close</button>
