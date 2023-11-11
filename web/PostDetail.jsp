@@ -262,7 +262,8 @@
                                           if(wService.checkExist(user.getId(),post.getId())){
                                     %>
                                     <form action="wishlist?service=deleteheart" method="POST">
-                                        <input type="hidden" name="wishId" value="<%= post.getId() %>">
+                                        <input type="hidden" name="postId" value="<%= post.getId() %>">
+                                        <input type="hidden" name="userId" value="<%= user.getId() %>">
                                         <button type="submit" class="heart-button">
                                             <i class="fa fa-heart" onclick="submitWishlist()" style="color:pink;font-size:35px;padding-top: 6px" aria-hidden="true"></i>
                                         </button>

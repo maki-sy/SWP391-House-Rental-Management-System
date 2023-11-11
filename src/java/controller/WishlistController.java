@@ -119,10 +119,10 @@ public class WishlistController extends HttpServlet {
                 return;
             }
             case "deleteheart":
-                int wishId = Integer.parseInt(request.getParameter("wishId"));
-                    System.out.println(wishId);
-                uService.deleteWish(wishId);
-                response.sendRedirect("housedetail?id=" + wishId);
+                int postId = Integer.parseInt(request.getParameter("postId"));
+                int userId = Integer.parseInt(request.getParameter("userId"));
+                uService.deleteWish(userId, postId);
+                response.sendRedirect("housedetail?id=" + postId);
                 break;
         }
     }
