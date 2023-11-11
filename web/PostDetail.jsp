@@ -241,12 +241,12 @@ asd-->
                                     <form action="wishlist?service=deleteheart" method="POST">
                                         <input type="hidden" name="wishId" value="<%= post.getId() %>">
                                         <button type="submit" class="heart-button">
-                                            <i class="fa fa-heart" style="color:pink;font-size:35px;padding-top: 6px" aria-hidden="true"></i>
+                                            <i class="fa fa-heart" onclick="submitWishlist()" style="color:pink;font-size:35px;padding-top: 6px" aria-hidden="true"></i>
                                         </button>
                                     </form>
 
                                     <%} else{%>
-                                    <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="far fa-heart" style="color:pink;font-size:35px;padding-top: 6px"></i></a>
+                                    <a href="wishlist?service=add&id=<%= post.getId() %>"><i class="far fa-heart"  onclick="submitWishlist()" style="color:pink;font-size:35px;padding-top: 6px"></i></a>
                                         <%}
                             }%>
                                 </div>
@@ -475,6 +475,9 @@ asd-->
                                                         }
                                                         function submitOrder() {
                                                             alert("Order has been successfully submitted to the landlord.");
+                                                        }
+                                                        function submitWishlist() {
+                                                            alert("The post is now in your wishlist.");
                                                         }
         </script>
 

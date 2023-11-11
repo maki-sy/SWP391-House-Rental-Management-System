@@ -148,7 +148,7 @@
                                     </td>
                                     <td style="padding-top:80px;padding-bottom: 80px;">
                                         <%if(status.equals("processing")){%>
-                                        <a href="order?service=cancelOrder&id=<%=order_id%>">
+                                        <a href="order?service=cancelOrder&id=<%=order_id%>" onclick="return confirmAction()">
                                             <button type="button" class="w-100 btn btn-sm btn-primary">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
@@ -166,36 +166,14 @@
             </div>
         </div>
     </section>
-
+    <script>
+        function confirmAction() {
+            return confirm("Are you sure you want to cancel this order?");
+        }
+    </script>
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
 </html>
-<%--
-            for(Orders order : listOfOrders){
-                int tenantID = order.getTenantId();
-                int landlordID = order.getLandlordId();
-                int postID = order.getPostId();
-                String order_date = order.getOrder_date();
-                String status = order.getStatus();
-                PostRental post = Pdao.getPostDetailsbyID(postID);
-                String postName = post.getName();
-                Landlord landlord = service.getLandlordByID(landlordID);
-                //String landlordName = service.getLandlordFullName(landlordID);
-                String landlordEmail = service.getEmailFromLandlordByPostID(postID);
-                int order_id=order.getOrderId();
-                                %>
-                            <div>
-                                <%=order_id%>
-                                <%=tenantID%>
-                                <%=landlordID%>
-                                <%=postID%>
-                                <%=order_date%>
-                                <%=status%>
-                                <%=landlordEmail%>
-<%--=service.getLandlordFullName(landlordID)--%>
 </div>
-<%--
-}
---%>
