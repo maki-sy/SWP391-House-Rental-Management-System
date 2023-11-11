@@ -308,13 +308,23 @@ asd-->
                                         <button class="btn btn-primary" style="padding:20px;background: gray; margin-left: 100px" readonly>Pending... <i class="fas fa-home"></i></button>
                                             <%}else{%>                                    
                                         <a><button style="padding:20px;margin-left: 100px" class="btn btn-primary" onclick="openForm()">Order <i class="fas fa-home"></i></button></a>
-                                        <%}%>
+                                                <%}%>
                                     </div>
                                     <div id="myForm" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
                                         <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
                                             <form action="order" method="POST" style="display: flex; flex-direction: column; align-items: center;">                                               
                                                 <h1 style="text-align: center">Order</h1>                                           
-                                                <p>Content of Orders.........</p>
+                                                <label for="email">Email:</label>
+                                                <input type="email" id="email" name="email" required>
+                                                <label for="postname">Post Name:</label>
+                                                <input type="text" id="postname" name="postname" required>
+                                                <label for="date">Date Ordered:</label>
+                                                <input type="date" id="date" name="date" required>
+                                                <label for="rentcost">Rent Cost:</label>
+                                                <input type="number" id="rentcost" name="rentcost" required>
+                                                <label for="landlordname">Landlord Name:</label>
+                                                <input type="text" id="landlordname" name="landlordname" required>
+                                                <input type="hidden" name="postid" value="<%=post.getId()%>">
                                                 <input type="hidden" name="postid" value="<%=post.getId()%>">
                                                 <div>
                                                     <button class="btn btn-primary" type="submit" onclick="submitOrder(); closeForm()">Send Order</button>
@@ -331,41 +341,41 @@ asd-->
                                     <%}%>
                                 </div>
 
-                                
+
                             </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="title-box-d section-t4">
-                                            <h3 class="title-d">Quick Summary</h3>
-                                        </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="title-box-d section-t4">
+                                        <h3 class="title-d">Quick Summary</h3>
                                     </div>
                                 </div>
-                                <div class="summary-list">
-                                    <ul class="list">
+                            </div>
+                            <div class="summary-list">
+                                <ul class="list">
 
-                                        <li class="d-flex justify-content-between">
-                                            <strong>Address:</strong>
-                                            <span><%=post.getAddress()%></span>
-                                        </li>
-                                        <li class="d-flex justify-content-between">
-                                            <strong>Location:</strong>
-                                            <span><%=location_name%></span>
-                                        </li>
-                                        <li class="d-flex justify-content-between">
-                                            <strong>Area:</strong>
-                                            <span><%=post.getArea()%>m
-                                                <sup>2</sup>
-                                            </span>
-                                        </li>
-                                        <li class="d-flex justify-content-between">
-                                            <strong>Beds:</strong>
-                                            <span><%=post.getNumOfBeds()%></span>
-                                        </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Address:</strong>
+                                        <span><%=post.getAddress()%></span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Location:</strong>
+                                        <span><%=location_name%></span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Area:</strong>
+                                        <span><%=post.getArea()%>m
+                                            <sup>2</sup>
+                                        </span>
+                                    </li>
+                                    <li class="d-flex justify-content-between">
+                                        <strong>Beds:</strong>
+                                        <span><%=post.getNumOfBeds()%></span>
+                                    </li>
 
-                                    </ul>
-                                </div>
+                                </ul>
+                            </div>
                         </div>
-                                
+
                     </div>
 
 
