@@ -151,6 +151,30 @@ public class WishlistDAO extends DBContext {
     }
 
     /**
+     * Delete a wish of a user for a post
+     *
+     * @param userId
+     * @param postId
+     * @return
+     */
+    public int deleteWishById(int userId, int postId) {
+        String SQL = "DELETE FROM [dbo].[Wishlist]\n"
+                + "      WHERE user_id = ? AND property_id = ?;";
+        int deleted = 0;
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            preStmt.setInt(1, userId);
+            preStmt.setInt(2, postId);
+
+            deleted = preStmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("deleteWishById reports " + ex.getMessage());
+            Logger.getLogger(WishlistDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return deleted;
+    }
+
+    /**
      * Check whether this property has been added to user's wish list before
      *
      * @param userId

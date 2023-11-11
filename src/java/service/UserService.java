@@ -772,6 +772,16 @@ public class UserService {
     }
 
     /**
+     * Delete a wish corresponding to postId of a userId
+     * @param userId
+     * @param postId
+     * @return 
+     */
+    public int deleteWish(int userId, int postId) {
+        return WISHLIST_DAO.deleteWishById(userId, postId);
+    }
+
+    /**
      * Ban an user by user's id. Ban is only taken if this user's id exists and
      * not already been banned. TODO: Using Timer for auto unban
      *
