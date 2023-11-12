@@ -201,7 +201,7 @@ public class PostDAO extends DBContext {
     }
 
     public int getTotalNumberOfPost() {
-        String sql = "select count(*) from Post";
+        String sql = "select count(*) from Post where status != 'draft' and status != 'deleted'";
         ResultSet rs = getData(sql);
         int total = 0;
         try {
