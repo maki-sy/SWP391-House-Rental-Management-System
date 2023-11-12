@@ -773,9 +773,10 @@ public class UserService {
 
     /**
      * Delete a wish corresponding to postId of a userId
+     *
      * @param userId
      * @param postId
-     * @return 
+     * @return
      */
     public int deleteWish(int userId, int postId) {
         return WISHLIST_DAO.deleteWishById(userId, postId);
@@ -794,6 +795,7 @@ public class UserService {
 
             LocalDateTime startDate = LocalDateTime.now();
             LocalDateTime endDate = startDate.plusDays(duration);
+//            LocalDateTime endDate = startDate.plusMinutes(1);
 
             UserBanned ban = BAN_DAO.getBannedUserByID(userID);
             if (ban == null) { // this user has never been banned before, add it to database
@@ -872,6 +874,20 @@ public class UserService {
 
     }
 
+    /**
+     * This function is intended for used by Timer class. Un-ban all users that
+     * ban_end_date is over by current time
+     */
+    public void timerUnban() throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.[SSS][SS][S]");
+        LocalDateTime now = LocalDateTime.now();
+        List<UserBanned> bans = BAN_DAO.getBannedUsers(now.toString());
+        for (UserBanned ban : bans) {
+            System.out.println("Ban expire date: " + ban.getEndDate());
+            unbanUser(ban.getId());
+        }
+    }
+
     public UserAvatar getAvatarByUserID(int id) {
         UserAvatarDAO dao = new UserAvatarDAO();
         return dao.getAvatarByUserID(id);
@@ -914,4 +930,9 @@ public class UserService {
         }
         return "unknown.jpg";
     }
+
+//    public static void main(String[] args) {
+//        UserService uService = new UserService();
+//        uService.timerUnban();
+//    }
 }
