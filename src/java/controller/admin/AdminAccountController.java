@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.regex.*;
 import model.Users;
 import model.Users.Status;
+import service.AdminService;
 import service.LandlordService;
 import service.UserService;
 
@@ -41,6 +42,7 @@ public class AdminAccountController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         UserService uService = new UserService();
+        AdminService aService = new AdminService();
         UserDAO dao = new UserDAO();
 
         switch (action) {
@@ -61,7 +63,11 @@ public class AdminAccountController extends HttpServlet {
             }
             case "delete": {
                 int userid = Integer.parseInt(request.getParameter("userid"));
+                Users user = dao.getUserByID(userid);
                 dao.updateUserDelete(userid);
+                if (user.getRoleID() == 2) {                 // User is Landlord
+                    aService.updateAllPostToDelete(userid);
+                }
                 response.sendRedirect("admin-dashboard?service=manageAccount");
                 break;
             }
@@ -142,6 +148,7 @@ public class AdminAccountController extends HttpServlet {
         String action = request.getParameter("action");
         UserDAO dao = new UserDAO();
         UserService uService = new UserService();
+        AdminService aService = new AdminService();
 
         //Construct and compile regular expressions
         Pattern p_email = Pattern.compile("^\\S+@\\S+\\.\\S+$");
@@ -241,8 +248,10 @@ public class AdminAccountController extends HttpServlet {
                                 response.sendRedirect("admin-dashboard?service=manageAccount");
                             }
                             break;
+                        default:
+                            request.setAttribute("message", "The role of your account is invalid. Please try again.");
+                            request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
                     }
-                    response.sendRedirect("admin-dashboard?service=manageAccount");
                 }
                 break;
             }
@@ -299,9 +308,13 @@ public class AdminAccountController extends HttpServlet {
                                 dao.updateUserInfo(userid, email, status);
                                 LandlordDAO dao_l = new LandlordDAO();
                                 dao_l.updateLandlordInfo(userid, fname, lname, civilid, address, phone);
+                                aService.updateAllPostToDraft(userid);
                                 response.sendRedirect("admin-dashboard?service=manageAccount");
                             }
                             break;
+                        default:
+                            request.setAttribute("message", "The role of your account is invalid. Please try again.");
+                            request.getRequestDispatcher("Admin/view/add-admin-account.jsp").forward(request, response);
                     }
                 }
                 break;

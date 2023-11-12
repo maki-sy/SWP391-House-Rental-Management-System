@@ -112,7 +112,7 @@ public class UserDAO extends DBContext {
 //                + "VALUES (?,?,?,?,?);";
 
         // Method 2: Using PreparedStatement to return IDENTITY columns
-        String SQL = "INSERT INTO USers(email, hashed_password, salt, role_id, status\n)"
+        String SQL = "INSERT INTO Users(email, hashed_password, salt, role_id, status\n)"
                 + "VALUES (?,?,?,?,?);";
 
         // ===== DEBUG =====
