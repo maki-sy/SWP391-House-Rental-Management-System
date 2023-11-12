@@ -35,6 +35,17 @@ public class AdminService extends DBContext {
         DAO.PostDAO dao = new PostDAO();
         dao.updatePostByAdmin(id);
     }
+    
+    public void updateAllPostToDelete(int landlord_id) {
+        DAO.PostDAO dao = new PostDAO();
+        dao.updatePostToDeleteByAdmin(landlord_id);
+    }
+    
+    public void updateAllPostToDraft(int landlord_id) {
+        DAO.PostDAO dao = new PostDAO();
+        dao.updatePostToDraftByAdmin(landlord_id);
+    }
+    
     public void updateReportStatus(int id) {
         DAO.ReportDAO dao = new ReportDAO();
         dao.updateReportStatus(id);

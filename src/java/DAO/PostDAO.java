@@ -147,6 +147,40 @@ public class PostDAO extends DBContext {
         }
     }
 
+    public void updatePostToDeleteByAdmin(int id) {
+        try {
+            String sql1 = "SELECT id FROM Post where landlord_id = ?";
+            PreparedStatement stm1 = connect.prepareStatement(sql1);
+            stm1.setInt(1, id);
+            ResultSet rs1 = stm1.executeQuery();
+            while (rs1.next()) {
+                String sql2 = "UPDATE Post SET status = 'deleted' WHERE id = ?";
+                PreparedStatement stm2 = connect.prepareStatement(sql2);
+                stm2.setInt(1, rs1.getInt(1));
+                stm2.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updatePostToDraftByAdmin(int id) {
+        try {
+            String sql1 = "SELECT id FROM Post where landlord_id = ?";
+            PreparedStatement stm1 = connect.prepareStatement(sql1);
+            stm1.setInt(1, id);
+            ResultSet rs1 = stm1.executeQuery();
+            while (rs1.next()) {
+                String sql2 = "UPDATE Post SET status = 'draft' WHERE id = ?";
+                PreparedStatement stm2 = connect.prepareStatement(sql2);
+                stm2.setInt(1, rs1.getInt(1));
+                stm2.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public int getCountNumberOfPage() {
         String sql = "select count(*) from Post";
         ResultSet rs = getData(sql);

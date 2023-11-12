@@ -295,8 +295,8 @@
                                             <label for="role">Role</label>
                                             <select name="role" id="role" required>
                                                 <option value="" disabled selected>Select role</option>
-                                                <option value="tenant">Tenant</option>
-                                                <option value="landlord">Landlord</option>
+                                                <option value="Tenant">Tenant</option>
+                                                <option value="Landlord">Landlord</option>
                                             </select>
                                         </div>
                                         <div class="text-left text-danger">
