@@ -339,8 +339,13 @@ ArrayList<Integer> saleListLastest = (ArrayList<Integer>) request.getAttribute("
                             <% for (int i = 0; i < list.size(); i++) { %>
                             <div class="carousel-item-b swiper-slide">
                                 <div class="card-box-a card-shadow">
-                                    <div class="img-box-a">
-                                        <img src="<%=thumbnailsLast.get(i)%>" alt="" class="img-a img-fluid">
+                                    <div class="img-box-a" style="position: relative;">
+                                        <img src="<%=thumbnailsLast.get(i)%>" alt="" class="img-a img-fluid img-thumbnail" style="overflow-clip-margin: content-box; overflow: clip;">
+                                        <% if (saleListLastest.get(i) > 0) {%>
+                                        <div style="position: absolute; top: 10px; left: 10px; background-color: red; color: white; padding: 5px;">
+                                            Sale Off <%= saleListLastest.get(i) %>% 
+                                        </div>
+                                        <%}%>
                                     </div>
 
                                     <div class="card-overlay">
