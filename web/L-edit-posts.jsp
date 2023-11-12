@@ -43,13 +43,13 @@
             postList = (ArrayList<PostRental>)request.getAttribute("postList");
         %>
         <!-- End JSP Code -->
-        
+
         <!-- ======= Header/Navbar ======= -->
         <%@include file="header.jsp" %>
         <!-- End Header/Navbar -->
 
         <!-- Main content -->
-      <main id="main" style="margin-top: 3rem">
+        <main id="main" style="margin-top: 3rem">
             <section class="section-news section-t3">
                 <div class="container py-5">
                     <div class="row">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                             <!-- SIDE BAR HERE -->
-                             <%@include file="L-service-sidebar.jsp" %>
+                            <%@include file="L-service-sidebar.jsp" %>
                             <!-- END SIDE BAR -->
                         </div>
 
