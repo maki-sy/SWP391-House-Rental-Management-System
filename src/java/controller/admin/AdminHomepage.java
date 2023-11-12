@@ -10,11 +10,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.PostRental;
 import model.Report;
 import model.Users;
 import service.AdminService;
+import service.UserService;
 
 /**
  *
@@ -36,6 +38,15 @@ public class AdminHomepage extends HttpServlet {
             throws ServletException, IOException {
         String ser = request.getParameter("service");
         AdminService service = new AdminService();
+        UserService handleUser = new UserService();
+        HttpSession session = request.getSession();
+        Users user = (Users) session.getAttribute("user");
+        if (user != null) {
+            int id = user.getId();
+            String urlAvt = handleUser.getAvatarByUserID(id).getAvatar_url();
+            session.setAttribute("userAvatar", urlAvt);
+        }
+
         if (ser == null) {
             request.getRequestDispatcher("Admin/view/admin-view.jsp").forward(request, response);
             return;
@@ -52,7 +63,7 @@ public class AdminHomepage extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             service.updatePostStatus(id);
             request.getRequestDispatcher("admin-dashboard?service=managePost").forward(request, response);
-        } else if(ser.equals("account-utils")){
+        } else if (ser.equals("account-utils")) {
             List<Users> users = service.getAllUsers();
             request.setAttribute("listOfUsers", users);
             request.getRequestDispatcher("Admin/view/account-utilities.jsp").forward(request, response);

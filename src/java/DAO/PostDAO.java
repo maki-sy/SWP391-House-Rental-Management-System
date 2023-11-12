@@ -147,6 +147,40 @@ public class PostDAO extends DBContext {
         }
     }
 
+    public void updatePostToDeleteByAdmin(int id) {
+        try {
+            String sql1 = "SELECT id FROM Post where landlord_id = ?";
+            PreparedStatement stm1 = connect.prepareStatement(sql1);
+            stm1.setInt(1, id);
+            ResultSet rs1 = stm1.executeQuery();
+            while (rs1.next()) {
+                String sql2 = "UPDATE Post SET status = 'deleted' WHERE id = ?";
+                PreparedStatement stm2 = connect.prepareStatement(sql2);
+                stm2.setInt(1, rs1.getInt(1));
+                stm2.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void updatePostToDraftByAdmin(int id) {
+        try {
+            String sql1 = "SELECT id FROM Post where landlord_id = ?";
+            PreparedStatement stm1 = connect.prepareStatement(sql1);
+            stm1.setInt(1, id);
+            ResultSet rs1 = stm1.executeQuery();
+            while (rs1.next()) {
+                String sql2 = "UPDATE Post SET status = 'draft' WHERE id = ?";
+                PreparedStatement stm2 = connect.prepareStatement(sql2);
+                stm2.setInt(1, rs1.getInt(1));
+                stm2.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public int getCountNumberOfPage() {
         String sql = "select count(*) from Post";
         ResultSet rs = getData(sql);
@@ -167,7 +201,7 @@ public class PostDAO extends DBContext {
     }
 
     public int getTotalNumberOfPost() {
-        String sql = "select count(*) from Post";
+        String sql = "select count(*) from Post where status != 'draft' and status != 'deleted'";
         ResultSet rs = getData(sql);
         int total = 0;
         try {
@@ -932,6 +966,45 @@ public class PostDAO extends DBContext {
             Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
+    }
+
+    /**
+     * Get all expired posts (posts have post_end_date before current date)
+     *
+     * @return
+     */
+    public List<PostRental> getAllExpiredPosts() {
+        String SQL = "SELECT *\n"
+                + "FROM Post\n"
+                + "WHERE GETDATE() > post_end_date;";
+        List<PostRental> posts = new ArrayList<>();
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            ResultSet rs = preStmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
+
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                posts.add(po);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getAllExpiredPosts() reports " + ex.getMessage());
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return posts;
     }
 
     public static void main(String[] args) {
