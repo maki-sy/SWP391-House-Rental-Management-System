@@ -158,7 +158,7 @@
                                                 <p class="mb-0">Address</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=tenant.getAddress()%>" maxlength="80"></p>
+                                                <p class="text-muted mb-0"><input type="text" name="address" value="<%=tenant.getAddress()%>" maxlength="80" required></p>
                                             </div>
                                         </div>
                                         <hr>
