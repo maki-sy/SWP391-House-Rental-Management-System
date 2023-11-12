@@ -29,9 +29,9 @@
                     <li class="nav-item d-none d-sm-inline-block">
                         <a href="trang-chu" class="nav-link">Home</a>
                     </li>
-                    <li class="nav-item d-none d-sm-inline-block">
+<!--                    <li class="nav-item d-none d-sm-inline-block">
                         <a href="contact.jsp" class="nav-link">Contact</a>
-                    </li>
+                    </li>-->
                 </ul>
 
                 
@@ -91,6 +91,14 @@
                                     <i class="nav-icon fas fa-cog"></i>
                                     <p>
                                         Account Utilities
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="login?type=logout" class="nav-link">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Logout
                                     </p>
                                 </a>
                             </li>

@@ -91,6 +91,14 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="login?type=logout" class="nav-link">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>
+                                        Logout
+                                    </p>
+                                </a>
+                            </li>
                         </ul>            
                         <!-- /.sidebar-menu -->
                 </div>
