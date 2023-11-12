@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Landlord;
@@ -425,6 +426,21 @@ public class LandlordService {
     }
 
     /**
+     * This function is intended to be called by Timer class inside
+     * ServletContext. This function will query for all expired posts
+     * (post_end_date happens before current date) and set status to draft
+     */
+    public void timerMovePostToDraft() throws Exception {
+        List<PostRental> expiredPosts = postDAO.getAllExpiredPosts();
+        for (PostRental post : expiredPosts) {
+            boolean success = isMovePostToDraftSuccessByPostId(post.getId());
+            if (!success) {
+                throw new Exception("Some error occurred during move post to draft");
+            }
+        }
+    }
+
+    /**
      *
      * @param postId
      * @return
@@ -526,7 +542,7 @@ public class LandlordService {
     }
 
     /**
-     * 
+     *
      * @param userId
      * @return
      * @creater tienPV

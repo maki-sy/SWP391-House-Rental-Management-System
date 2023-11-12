@@ -968,6 +968,45 @@ public class PostDAO extends DBContext {
         return result;
     }
 
+    /**
+     * Get all expired posts (posts have post_end_date before current date)
+     *
+     * @return
+     */
+    public List<PostRental> getAllExpiredPosts() {
+        String SQL = "SELECT *\n"
+                + "FROM Post\n"
+                + "WHERE GETDATE() > post_end_date;";
+        List<PostRental> posts = new ArrayList<>();
+        try ( PreparedStatement preStmt = connect.prepareStatement(SQL)) {
+            ResultSet rs = preStmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                double price = rs.getDouble(3);
+                int type = rs.getInt(4);
+                int area = rs.getInt(5);
+                int numofbeds = rs.getInt(6);
+                String address = rs.getString(7);
+                String dess = rs.getString(8);
+                int landlord_id = rs.getInt(9);
+                int location_id = rs.getInt(10);
+                String status = rs.getString(11);
+                int promotion_id = rs.getInt(12);
+                Date start = rs.getDate(13);
+                Date end = rs.getDate(14);
+
+                PostRental po = new PostRental(id, name, price, type, area, numofbeds, address, dess, landlord_id, location_id, status, promotion_id, start, end);
+                posts.add(po);
+            }
+        } catch (SQLException ex) {
+            System.out.println("getAllExpiredPosts() reports " + ex.getMessage());
+            Logger.getLogger(PostDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return posts;
+    }
+
     public static void main(String[] args) {
         PostDAO dao = new PostDAO();
         int total = dao.getTotalNumberOfPost();
