@@ -60,7 +60,6 @@
             int roleID = user.getRoleID();
             ReportDAO Pdao = new ReportDAO();
             ReportService service = new ReportService();
-            if(roleID==1){
                 List<Report> listOfReports = (List<Report>)request.getAttribute("reports");
     %>
     <%@include file="header.jsp" %>
@@ -126,7 +125,6 @@
                                     </td>
                                 </tr>
                                 <%
-    }
     }
                                 %>
                             </tbody>

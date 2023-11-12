@@ -5,8 +5,10 @@
 package service;
 
 import DAO.ReportDAO;
+import DAO.UserDAO;
 import java.util.List;
 import model.Report;
+import model.Users;
 
 /**
  *
@@ -25,5 +27,11 @@ public class ReportService {
     public void deleteReport(int id){
         ReportDAO daoReport = new ReportDAO();
         daoReport.deleteReport(id);
+    }
+    public String getEmailbyUserID(int id){
+        UserDAO dao= new UserDAO();
+        Users landlord = dao.getUserByID(id);
+        String email=landlord.getEmail();
+        return email;
     }
 }

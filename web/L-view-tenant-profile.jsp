@@ -92,6 +92,9 @@
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="card mb-4">
+                                        <a href="ReportCenter?type=user&tenantid=<%=tenant.getId()%>">
+                                            <i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i>
+                                        </a>
                                         <div class="card-body text-center">
                                             <img src=<%=request.getAttribute("tenantAvatarURL")%> alt="avatar"
                                                  class="rounded-circle img-fluid" style="width: 150px;">

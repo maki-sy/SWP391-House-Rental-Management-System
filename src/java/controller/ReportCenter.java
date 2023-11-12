@@ -126,6 +126,21 @@ public class ReportCenter extends HttpServlet {
                 request.setAttribute("url_ref", url);
                 request.getRequestDispatcher("report-page.jsp").forward(request, response);
             }
+            if (type.equals("user")) {
+                request.setAttribute("report_type", type);
+                request.setAttribute("category", "User Complaint");
+                String email;
+                int landlordid = request.getParameter("landlordid") != null ? Integer.parseInt(request.getParameter("landlordid")) : 0;
+                int tenantid = request.getParameter("tenantid") != null ? Integer.parseInt(request.getParameter("tenantid")) : 0;
+                if (landlordid!=0) {
+                    email=reportservice.getEmailbyUserID(landlordid);
+                } else {
+                    email=reportservice.getEmailbyUserID(tenantid);
+                }
+                
+                request.setAttribute("email", email);
+                request.getRequestDispatcher("report-page.jsp").forward(request, response);
+            }
             if (type.equals("general")) {
                 request.setAttribute("report_type", type);
                 request.getRequestDispatcher("report-page.jsp").forward(request, response);
