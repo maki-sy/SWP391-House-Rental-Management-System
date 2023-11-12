@@ -40,13 +40,13 @@
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/login-style.css">
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
-              integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
-              integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+          integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+          integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <style>
         .intro-title a {
             color: white; /* Thay đổi màu chữ thành đỏ (#ff0000) */
@@ -60,7 +60,6 @@
             int roleID = user.getRoleID();
             ReportDAO Pdao = new ReportDAO();
             ReportService service = new ReportService();
-            if(roleID==1){
                 List<Report> listOfReports = (List<Report>)request.getAttribute("reports");
     %>
     <%@include file="header.jsp" %>
@@ -101,34 +100,33 @@
                 String description = report.getDescription();
                 int report_id=report.getReport_id();
                                 %>
-                                    <td>
-                                        <div>
-                                            <span><%=category%></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <span><%=description%></span>
-                                        </div>
-                                    </td>
+                            <td>
+                                <div>
+                                    <span><%=category%></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <span><%=description%></span>
+                                </div>
+                            </td>
 
 
-                                    <td class="email">
-                                        <%=report_date%>
-                                    </td>
-                                    <td><%=status%></td>
-                                    <td>
-                                        <a href="ReportCenter?type=cancel&id=<%=report_id%>">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true"><i class="fa fa-close"></i></span>
-                                            </button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <%
-    }
-    }
-                                %>
+                            <td class="email">
+                                <%=report_date%>
+                            </td>
+                            <td><%=status%></td>
+                            <td>
+                                <a href="ReportCenter?type=cancel&id=<%=report_id%>" onclick="return confirmAction()"> 
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                    </button>
+                                </a>
+                            </td>
+                            </tr>
+                            <%
+}
+                            %>
                             </tbody>
                         </table>
                     </div>
@@ -141,4 +139,10 @@
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        function confirmAction() {
+            return confirm("Are you sure you want to cancel this report?");
+        }
+      
+    </script>
 </html>

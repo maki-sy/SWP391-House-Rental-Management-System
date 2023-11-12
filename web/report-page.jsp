@@ -80,7 +80,33 @@
                 </div>
                 <div style="padding-bottom: 18px;"><input name="Submit" value="Submit" type="submit"  class="btn btn-primary"/></div>
         </form>
-        <%}else{%> 
+        <%} else if(type.equals("user")){
+        String email = (String)request.getAttribute("email");
+        %>
+        <form method="post" id="reportform" action="ReportCenter" style="display: flex; flex-direction: column; align-items: center;"<%--onSubmit="return validateForm();""--%>>
+            <div style="max-width: 400px;">
+            </div>
+            <div style="padding-bottom: 18px;font-size : 24px; color: red; text-align: center; font-weight: bold">Report An Issue!</div>
+            <div style="padding-bottom: 18px;">Reported by<span style="color: red;"> *</span><br/>
+                <input type="text" style="width: 650px;" name="reporter_email" value="<%=user.getEmail()%>" readonly style="max-width : 450px;" class="form-control"/>
+            </div>
+            <div style="padding-bottom: 18px;">Categories<br/>
+                <select name="categories" style="width: 650px;" id="categories" style="max-width : 300px;" class="form-control" onchange="showInput(this.value)" required>
+                    <option disabled>Select a category</option>
+                    <option value="User Complaint" selected>User Complaint</option>
+                </select>
+
+                <!-- Initially hide this div -->
+                <div id="personDiv" style="padding-bottom: 18px;">Reported Person<span style="color: red;"> *</span><br/>
+                    <input type="text" style="width: 650px;" placeholder="Email of the reported person" id="data_3" name="reported_email" style="max-width : 450px;" value="<%=email%>" class="form-control" readonly/>
+                </div>
+
+                <div style="padding-bottom: 18px;">Description<br/>
+                    <textarea id="data_7" style="width: 650px;" name="description" placeholder="Provide a description for your problem..." style="max-width : 450px;" rows="6" class="form-control"></textarea>
+                </div>
+                <div style="padding-bottom: 18px;"><input name="Submit" value="Submit" type="submit"  class="btn btn-primary"/></div>
+        </form>
+        <%} else{%> 
 
         <form method="post" id="reportform" action="ReportCenter" style="display: flex; flex-direction: column; align-items: center;"<%--onSubmit="return validateForm();""--%>>
             <div style="max-width: 400px;">
