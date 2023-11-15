@@ -10,7 +10,7 @@
 <%@page import="model.Landlord"%>
 <%@ page import="model.Users"%>
 <%@ page import="service.OrderService" %>
-
+<%@ page import="service.LandlordService"%>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -35,6 +35,18 @@
 
         <!-- Template Main CSS File -->
         <link href="assets/css/style.css" rel="stylesheet">
+        <link href="assets/css/customer-card.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <style>
+            .intro-title a {
+                color: white; /* Thay ??i màu ch? thành ?? (#ff0000) */
+                text-decoration: none; /* Lo?i b? g?ch chân d??i v?n b?n */
+            }
+        </style>
 
         <!-- =======================================================
       * Template Name: EstateAgency
@@ -56,13 +68,14 @@
         LandlordDAO LDao = new LandlordDAO();
         OrderService service = new OrderService();
         Landlord landlord = LDao.getLandlordByUserID(landlord_id);
+        LandlordService handleService = new LandlordService();
         %>
 
 
         <!-- End JSP Code -->
 
         <!-- ======= Property Search Section ======= -->
-       
+
 
         <!-- ======= Header/Navbar ======= -->
         <%@include file="header.jsp" %>
@@ -85,11 +98,11 @@
                         <div class="col-lg-4">
                             <div class="card mb-4">
                                 <%if(user != null){%>
-                        <a href="ReportCenter?type=user&landlordid=<%=landlord.getId()%>"><i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i></a>
-                            <%}%>
+                                <a href="ReportCenter?type=user&landlordid=<%=landlord.getId()%>"><i class='fas fa-exclamation-triangle' style='font-size:28px;color:yellow'></i></a>
+                                    <%}%>
                                 <div class="card-body text-center">
-                                    
-                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="avatar"
+
+                                    <img src="<%=handleService.getAvatarURLByUserID(landlord_id)%>" alt="avatar"
                                          class="rounded-circle img-fluid" style="width: 150px;">
                                     <h5 class="my-3"><%=landlord.getFirstName()%>&nbsp;<%=landlord.getLastName()%></h5>
                                     <p class="text-muted mb-1"><%=landlord_email%></p>
