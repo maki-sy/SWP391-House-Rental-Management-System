@@ -683,7 +683,7 @@ public class PostDAO extends DBContext {
         ArrayList<PostRental> postList = new ArrayList<>();
         String sqlCommand = "SELECT *\n"
                 + "  FROM [dbo].[Post]\n"
-                + "  WHERE [landlord_id] = " + userId + " AND status != 'basic' AND status != 'deleted'\n"
+                + "  WHERE [landlord_id] = " + userId + " AND status != 'deleted'\n"
                 + "  ORDER BY [id] DESC";
         ResultSet rs = getData(sqlCommand);
         try {
