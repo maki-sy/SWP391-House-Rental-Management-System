@@ -114,7 +114,6 @@ public class LandlordServicesPage extends HttpServlet {
             } else if (service.equals("delete-post")) {
                 int postId = Integer.parseInt(request.getParameter("post-id"));
                 handleService.isDeletedPostSuccessByPostId(postId, appPath);
-
                 request.setAttribute("mess", "Post deleted successfully :)");
                 ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
                 request.setAttribute("postList", postList);
@@ -122,10 +121,17 @@ public class LandlordServicesPage extends HttpServlet {
             } else if (service.equals("edit-detail-post")) {
                 int postId = Integer.parseInt(request.getParameter("post-id"));
                 PostRental post = handleService.getPostByPostId(postId);
-                ArrayList<String> urlList = handleService.getPostImageURLByPostId(postId);
-                request.setAttribute("post", post);
-                request.setAttribute("urlList", urlList);
-                request.getRequestDispatcher("L-edit-detail-post.jsp").forward(request, response);
+                if (post.getStatus().equals("basic")) {
+                    request.setAttribute("mess", "Post with the basic package cannot be edited :(");
+                    ArrayList<PostRental> postList = handleService.getEditablePostsByUserId(user.getId());
+                    request.setAttribute("postList", postList);
+                    request.getRequestDispatcher("L-edit-posts.jsp").forward(request, response);
+                } else {
+                    ArrayList<String> urlList = handleService.getPostImageURLByPostId(postId);
+                    request.setAttribute("post", post);
+                    request.setAttribute("urlList", urlList);
+                    request.getRequestDispatcher("L-edit-detail-post.jsp").forward(request, response);
+                }
 
             } else if (service.equals("submit-edit-detail-post")) {
                 int postId = Integer.parseInt(request.getParameter("post-id"));
