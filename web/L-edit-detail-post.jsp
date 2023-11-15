@@ -367,7 +367,7 @@
                                         [
                                             Validator.checkTextFields('#Post-title', 10, 60),
                                             Validator.checkTextFields('#Detailed-description', 50, 600),
-                                            Validator.checkTextFields('#address', 10, 20),
+                                            Validator.checkTextFields('#address', 10, 60),
                                             Validator.checkImageFields('#formFileMultiple', 2, 20),
                                             Validator.checkFloatFields('#Rental-price', 20, 10000),
                                             Validator.checkDigitFields('#House-area', 5, 300),
